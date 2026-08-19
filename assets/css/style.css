@@ -36,7 +36,17 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  /* ── 跨浏览器字体一致性（三道防线） ──
+     1) 显式 16px 基准：浏览器默认字号可被用户设置改写，显式声明固定基数；
+     2) text-size-adjust:100%：禁止浏览器（尤其移动端）"自动膨胀"文字，
+        否则同一页面在不同浏览器字号不一致；
+     3) 兜底 sans 字体进 font-family 栈，避免个别浏览器无衬线回退异常。 */
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
 
 body {
   font-family: var(--sans);
@@ -51,6 +61,8 @@ body {
 
 a { color: var(--red); }
 button { font-family: inherit; cursor: pointer; }
+/* 表单控件默认不继承字体（各浏览器 UA 内置样式不同）→ 显式继承，统一渲染 */
+input, textarea, select { font-family: inherit; }
 
 /* 可访问性：键盘焦点清晰可见 */
 :focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }
@@ -448,7 +460,7 @@ button { font-family: inherit; cursor: pointer; }
    第2行第2-3列=描述；第3行=标签；第4行=链接 */
 .card--t1 {
   display: grid;
-  grid-template-columns: 84px minmax(0, 1fr) auto;
+  grid-template-columns: 48px minmax(0, 1fr) auto;
   grid-template-areas:
     "media title fav"
     "media desc  desc"
@@ -457,8 +469,9 @@ button { font-family: inherit; cursor: pointer; }
   gap: 6px 12px;
   padding: 14px;
 }
-.card--t1 .card__media { grid-area: media; width: 84px; height: 84px; border-radius: 10px; align-self: center; }
-.card--t1 .card__media-fallback { font-size: 30px; }
+.card--t1 .card__media { grid-area: media; width: 48px; height: 48px; border-radius: 8px; align-self: center; }
+/* 文字 logo：容器 48×48，字符 24px（用户 v4.4.3 指定） */
+.card--t1 .card__media-fallback { font-size: 24px; }
 .card--t1 .card__title { grid-area: title; align-self: end; }
 .card--t1 .card__fav   { grid-area: fav;   align-self: end; }
 .card--t1 .card__desc  { grid-area: desc;  align-self: start; }
@@ -524,8 +537,8 @@ button { font-family: inherit; cursor: pointer; }
   .category-nav__fav-star { font-size: 18px; }
   .category-nav__fav-text span:first-child { font-size: 12px; }
   .category-nav__fav-text span:last-child  { font-size: 11px; }
-  .card--t1 { grid-template-columns: 64px minmax(0, 1fr) auto; padding: 12px; gap: 5px 10px; }
-  .card--t1 .card__media { width: 64px; height: 64px; }
+  .card--t1 { grid-template-columns: 48px minmax(0, 1fr) auto; padding: 12px; gap: 5px 10px; }
+  .card--t1 .card__media { width: 48px; height: 48px; }
   .card--t1 .card__media-fallback { font-size: 24px; }
   .card__fav { width: 26px; height: 26px; }
   .card__fav svg { width: 17px; height: 17px; }

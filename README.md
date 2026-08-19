@@ -1,12 +1,3 @@
-# Quick Link: https://zhengxie.com.cn/
-
-# <a href="mailto:seymour.zx@foxmail.com">Email</a>
-
-<a href="https://zhengxie.com.cn/">首页HOME</a>
-
-# zhengxie.com.cn
-https://zhengxie.com.cn/
-
 # 正协导航
 
 > **让每一次寻找，都不止于找到**
@@ -204,6 +195,8 @@ git push -u origin main
 - [ ] 引擎滑道：切换引擎，输入关键词回车跳转对应结果页
 - [ ] 各滑道/行内容超出时，悬停滚轮可左右滚动（页面暂停）
 - [ ] 移动端一行 2 个、平板 3 个、桌面 4 个卡片
+- [ ] 字体跨浏览器一致：`html` 显式 16px 基准 + `text-size-adjust: 100%` + 表单控件 `font-family: inherit`（style.css 顶部，勿删）
+- [ ] 卡片1 媒体容器 48×48（桌面/手机统一），文字 logo 24px（v4.4.3 用户指定）
 - [ ] 图标加载失败处显示文字 logo 占位，不破版
 - [ ] 统计与广告代码已上线生效（GA4 / 百度统计×2 / AdSense，均已接入真实 ID，见对应章节）
 - [ ] 两个广告位 slot 已分开（顶部 `5952548493` / 底部 `4856101005`），AdSense 后台可分位查看收益
