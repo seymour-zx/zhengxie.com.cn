@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>正协导航 - 让每一次寻找，都不止于找到</title>
+<meta name="description" content="域名新注册，网站内容筹划中，当前进度 0%。暂未上线，可接受域名出售或合作，联系：seymour.zx@foxmail.com">
+<link href="./favicon.ico" rel="shortcut icon" type="image/x-icon" />
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2f4df5057c929092e36a0d6357e35261";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #0a0118;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    position: relative;
+  }
+
+  /* 动态渐变背景 */
+  .bg {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, #0a0118, #1a0b2e, #0d1b2a, #0a0118);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    z-index: -3;
+  }
+  @keyframes gradientShift {
+    0%,100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  /* 漂浮光斑 */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(60px);
+    z-index: -2;
+    opacity: 0.5;
+    animation: float 12s ease-in-out infinite;
+  }
+  .orb1 {
+    width: 400px; height: 400px;
+    background: #7c3aed;
+    top: -100px; left: -100px;
+    animation-delay: 0s;
+  }
+  .orb2 {
+    width: 500px; height: 500px;
+    background: #06b6d4;
+    bottom: -150px; right: -100px;
+    animation-delay: -4s;
+  }
+  .orb3 {
+    width: 300px; height: 300px;
+    background: #ec4899;
+    top: 50%; left: 70%;
+    animation-delay: -8s;
+  }
+  @keyframes float {
+    0%,100% { transform: translate(0,0) scale(1); }
+    33% { transform: translate(30px,-50px) scale(1.1); }
+    66% { transform: translate(-20px,20px) scale(0.9); }
+  }
+
+  /* 网格层 */
+  .grid {
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(124,58,237,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,58,237,0.08) 1px, transparent 1px);
+    background-size: 50px 50px;
+    z-index: -1;
+    mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.8), transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.8), transparent 70%);
+  }
+
+  /* 主内容 */
+  .container {
+    text-align: center;
+    padding: 40px;
+    animation: fadeUp 1.2s ease-out;
+    max-width: 600px;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* 发光logo圆 */
+  .logo-ring {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 30px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    background: linear-gradient(#0a0118, #0a0118) padding-box,
+                conic-gradient(from 0deg, #7c3aed, #06b6d4, #ec4899, #7c3aed) border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: spin 8s linear infinite;
+    box-shadow: 0 0 40px rgba(124,58,237,0.3);
+  }
+  .logo-ring span {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, #7c3aed, #06b6d4, #ec4899, #7c3aed);
+    animation: spin 4s linear infinite reverse;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* 主标题 */
+  .title {
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-weight: 800;
+    letter-spacing: 4px;
+    background: linear-gradient(90deg, #a78bfa, #22d3ee, #f472b6);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: textShine 4s ease infinite, floatY 6s ease-in-out infinite;
+    margin-bottom: 16px;
+  }
+  @keyframes textShine {
+    0%,100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  @keyframes floatY {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  /* 副标题 */
+  .subtitle {
+    font-size: clamp(1rem, 3vw, 1.3rem);
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  /* 描述 */
+  .desc {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.45);
+    max-width: 420px;
+    margin: 0 auto 40px;
+    line-height: 1.8;
+  }
+
+  /* 进度条 */
+  .progress-wrap {
+    max-width: 360px;
+    margin: 0 auto 36px;
+  }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: rgba(255,255,255,0.3);
+    margin-bottom: 8px;
+    letter-spacing: 2px;
+  }
+  .progress-bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 2px;
+    background: linear-gradient(90deg, #7c3aed, #06b6d4);
+    position: relative;
+    transition: width 1.5s ease;
+  }
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 20px; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8));
+    animation: shimmer 2s ease infinite;
+  }
+  @keyframes shimmer {
+    0% { transform: translateX(-20px); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateX(0); opacity: 0; }
+  }
+
+  /* 底部联系区 */
+  .contact {
+    margin-top: 8px;
+  }
+  .contact-label {
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.25);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .contact-email {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    padding: 10px 22px;
+    border: 1px solid rgba(124,58,237,0.4);
+    border-radius: 30px;
+    background: rgba(124,58,237,0.08);
+    transition: all 0.3s ease;
+  }
+  .contact-email:hover {
+    color: #fff;
+    border-color: #7c3aed;
+    background: rgba(124,58,237,0.2);
+    box-shadow: 0 0 25px rgba(124,58,237,0.35);
+    transform: translateY(-2px);
+  }
+  .contact-email .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #22d3ee;
+    box-shadow: 0 0 8px #22d3ee;
+    animation: blink 1.5s infinite;
+  }
+  @keyframes blink {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* 底部版权 */
+  .footer {
+    position: fixed;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 11px;
+    color: rgba(255,255,255,0.12);
+    letter-spacing: 1px;
+  }
+
+  /* 粒子层 */
+  .particles {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+  .particle {
+    position: absolute;
+    background: rgba(255,255,255,0.3);
+    border-radius: 50%;
+    animation: particleRise linear infinite;
+  }
+  @keyframes particleRise {
+    0% { transform: translateY(100vh) scale(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+  <div class="bg"></div>
+  <div class="grid"></div>
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+  <div class="particles" id="particles"></div>
+
+  <div class="container">
+    <div class="logo-ring"><span></span></div>
+    <h1 class="title">MAYBE COMING SOON</h1>
+    <p class="subtitle">新域名 · 全新启程</p>
+    <p class="desc">该域名已完成注册，目前正在筹划中。<br>目前进度：0% · 暂无具体内容规划。</p>
+
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>PROGRESS</span>
+        <span>0%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+      </div>
+    </div>
+
+    <div class="contact">
+      <div class="contact-label">💬 可出售 / 可合作</div>
+      <a class="contact-email" href="mailto:seymour.zx@foxmail.com">
+        <span class="dot"></span>
+        seymour.zx@foxmail.com
+      </a>
+    </div>
+  </div>
+
+  <div class="footer">© 2026 — Domain Registered • Under Planning</div>
+
+  <script>
+    // 生成上浮粒子
+    const container = document.getElementById('particles');
+    for (let i = 0; i < 30; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.animationDuration = (8 + Math.random() * 10) + 's';
+      p.style.animationDelay = (Math.random() * 10) + 's';
+      const size = 1 + Math.random() * 3;
+      p.style.width = size + 'px';
+      p.style.height = size + 'px';
+      container.appendChild(p);
+    }
+  </script>
+</body>
+</html>
