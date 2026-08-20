@@ -1,11 +1,73 @@
 正协导航 · 死链检测报告
-检查时间: 2026-08-19 23:03:28
-URL 总数: 3，正常(200): 3，异常: 0
+检查时间: 2026-08-20 12:08:14
+URL 总数: 66，正常(200): 54，异常: 12
 
 == 异常 / 非 200 列表 ==
-（无）
+[202] 官网  https://dribbble.com
+[404] 热搜榜  https://s.weibo.com/top/summary
+[404] 官网  https://yiyan.baidu.com
+[ERR] 热榜  https://www.zhihu.com/hot
+[ERR] 官网  https://chatgpt.com
+[ERR] 官网  https://claude.ai
+[ERR] 官网  https://www.midjourney.com
+[ERR] 官网  https://www.news.cn
+[ERR] 官网  https://www.huxiu.com
+[ERR] 官网  https://www.thepaper.cn
+[ERR] 官网  https://stackoverflow.com
+[ERR] 官网  https://open.spotify.com
 
 == 正常列表 ==
+[200] 中国政协网  http://www.cppcc.gov.cn/
+[200] 官网  https://36kr.com
 [200] 百度百科  https://baike.baidu.com
+[200] 官网  https://baike.baidu.com
+[200] 豆瓣读书  https://book.douban.com
+[200] 知乎日报  https://daily.zhihu.com
+[200] 官网  https://developer.mozilla.org
+[200] 文档  https://docs.midjourney.com
+[200] 官网  https://github.com
+[200] 排行榜  https://github.com/explore
+[200] Trending  https://github.com/trending
+[200] 官网  https://gitlab.com
+[200] 官网  https://huaban.com
+[200] 官网  https://huggingface.co
+[200] 模型库  https://huggingface.co/models
+[200] 官网  https://juejin.cn
+[200] 官网  https://kimi.moonshot.cn
+[200] Gmail  https://mail.google.com
 [200] 地图  https://map.baidu.com
+[200] 豆瓣电影  https://movie.douban.com
+[200] 官网  https://music.163.com
+[200] 官网  https://pan.baidu.com
+[200] 官方文档  https://platform.openai.com
+[200] 官网  https://shimo.im
+[200] 官网  https://sspai.com
+[200] 官网  https://v.qq.com
+[200] 官网  https://weibo.com
+[200] API  https://www.anthropic.com
 [200] 官网  https://www.baidu.com
+[200] 官网  https://www.behance.net
+[200] 官网  https://www.bilibili.com
+[200] 排行榜  https://www.bilibili.com/v/popular/rank/all
+[200] 官网  https://www.bing.com
+[200] 官网  https://www.coursera.org
+[200] 官网  https://www.douban.com
+[200] 官网  https://www.figma.com
+[200] 官网  https://www.google.com
+[200] 地图  https://www.google.com/maps
+[200] 官网  https://www.icourse163.org
+[200] 官网  https://www.ifanr.com
+[200] 官网  https://www.iqiyi.com
+[200] 官网  https://www.lanzou.com
+[200] 官网  https://www.notion.so
+[200] 模板  https://www.notion.so/templates
+[200] 官网  https://www.pinterest.com
+[200] 官网  https://www.processon.com
+[200] 官网  https://www.shanbay.com
+[200] 官网  https://www.v2ex.com
+[200] 官网  https://www.xuetangx.com
+[200] 官网  https://www.yinxiang.com
+[200] 官网  https://www.youtube.com
+[200] 官网  https://www.zcool.com.cn
+[200] 官网  https://www.zhihu.com
+[200] 官网  https://zh.wikipedia.org
