@@ -323,9 +323,7 @@ git push -u origin main
 
 ### 百度统计（双站点代码，已接入）
 
-两个站点代码（com.cn 主站 + info 站）合并注入，IDs 维护在脚本数组里：
-
-README.md
+两个站点代码（com.cn 主站 + info 站）合并注入，IDs 维护在 `build.py` 的 `PAGE_TEMPLATE` 百度统计脚本数组 `ids` 里（顺序：com.cn 站 `2f4df5057c929092e36a0d6357e35261` → info 站 `70e38224e5ebd850150b00a19835a25f`）。更换媒体资源时同步改该数组并重新 `python assets/py/build.py`。
 
 ### Google Analytics GA4（已接入 `G-B880S4NQVK`）
 
