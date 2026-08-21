@@ -30,6 +30,10 @@
   var favToggle = document.getElementById('fav-toggle');
   var resultCount = document.getElementById('result-count');
   var favToggleStar = favToggle ? favToggle.querySelector('.category-nav__fav-star') : null;
+  var themeToggle = document.getElementById('theme-toggle');
+  var backToTop = document.getElementById('back-to-top');
+  var emptyState = document.getElementById('empty-state');
+  var randomBtn = document.getElementById('random-site');
 
   var catBtns = Array.prototype.slice.call(document.querySelectorAll('.category-btn'));
   var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
@@ -66,6 +70,8 @@
   function applyFilter() {
     var kw = siteInput.value.trim();
     var visible = 0;
+    var activeKeywords = filterTags.slice();
+    if (kw && activeKeywords.indexOf(kw) === -1) { activeKeywords.push(kw); }
     cards.forEach(function (card) {
       var catOk = activeCat === 'all' || card.getAttribute('data-cat') === activeCat;
       var text = card.textContent;
@@ -79,18 +85,27 @@
       var favOk = !showFav || !!(favBtn && favs[favBtn.getAttribute('data-key')]);
       var show = catOk && kwOk && favOk;
       card.hidden = !show;
-      if (show) { visible++; }
+      if (show) {
+        visible++;
+        highlightCard(card, activeKeywords);
+      }
     });
     /* 结果计数：无筛选显示总数，有筛选显示「当前显示 X / N」 */
     if (resultCount) {
       var filtering = activeCat !== 'all' || filterTags.length > 0 || kw || showFav;
       if (filtering) {
-        resultCount.textContent = '当前显示 ' + visible + ' / ' + cards.length + ' 个站点';
+        resultCount.textContent = '当前显示 ' + visible + ' / ' + cards.length + ' 张卡片';
       } else {
-        resultCount.textContent = '共 ' + cards.length + ' 个站点';
+        resultCount.textContent = '共 ' + cards.length + ' 张卡片';
       }
       resultCount.classList.toggle('is-empty', filtering && visible === 0);
     }
+    /* 空结果状态 */
+    if (emptyState) {
+      emptyState.hidden = visible > 0;
+    }
+    /* URL hash 同步 */
+    updateHash();
     /* 显隐变化后立即复检溢出标记（卡片从隐藏恢复显示时，
        clientWidth 从 0 恢复正常，必须重新检测，否则滚轮接管失效） */
     refreshScrollable();
@@ -274,6 +289,129 @@
     }
   }, { passive: false });
 
+  /* ── 7. 暗色模式切换（localStorage 持久化） ── */
+  if (themeToggle) {
+    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    themeToggle.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+    themeToggle.addEventListener('click', function () {
+      var current = document.documentElement.getAttribute('data-theme') === 'dark';
+      var next = current ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('zx_theme', next); } catch (e) {}
+      themeToggle.setAttribute('aria-pressed', next === 'dark' ? 'true' : 'false');
+    });
+  }
+
+  /* ── 8. 键盘快捷键 ── */
+  /* / → 聚焦站内搜索；Esc → 清除搜索框并失焦 */
+  document.addEventListener('keydown', function (e) {
+    if (e.key === '/' && document.activeElement !== siteInput && document.activeElement !== engineInput) {
+      var tag = (document.activeElement.tagName || '').toLowerCase();
+      if (tag !== 'input' && tag !== 'textarea') {
+        e.preventDefault();
+        siteInput.focus();
+        siteInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+    if (e.key === 'Escape' && document.activeElement === siteInput) {
+      siteInput.value = '';
+      siteInput.blur();
+      applyFilter();
+    }
+  });
+
+  /* ── 9. 回到顶部按钮 ── */
+  if (backToTop) {
+    window.addEventListener('scroll', function () {
+      backToTop.hidden = window.scrollY < 400;
+    }, { passive: true });
+    backToTop.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  /* ── 10. URL hash 同步筛选状态 ── */
+  /* 支持 #cat=AI智能 或 #cat=AI智能&q=百度 或 #cat=AI智能&q=百度,谷歌 格式，方便分享筛选后的视图。
+     多个关键词用「明文逗号」拼接（不做 encodeURIComponent 转换，否则逗号变成 %2C，
+     在复制/新标签打开时行为异常）。 */
+  var skipPush = false;   // 还原 hash 期间置 true：用 replaceState 而非 pushState，避免污染历史栈
+  function syncFromHash() {
+    var hash = window.location.hash.slice(1);
+    if (!hash) { return; }
+    var params = {};
+    hash.split('&').forEach(function (pair) {
+      var kv = pair.split('=');
+      /* 值保持原始（仅键解码）：逗号分隔的多标签在下方按 ',' 切分后各自 decode */
+      if (kv[0] && kv[1] !== undefined) { params[decodeURIComponent(kv[0])] = kv[1]; }
+    });
+    skipPush = true;
+    if (params.cat) {
+      var btn = document.querySelector('.category-btn[data-cat="' + CSS.escape(decodeURIComponent(params.cat)) + '"]');
+      if (btn) { btn.click(); }
+    }
+    if (params.q) {
+      /* 多个关键词以逗号拼接，逐个还原为筛选标签（修复此前整体作为一个标签的 bug） */
+      params.q.split(',').forEach(function (t) {
+        t = t.trim();
+        if (t) { addTag(decodeURIComponent(t)); }
+      });
+    }
+    skipPush = false;
+  }
+  var hashTimer = null;
+  function updateHash() {
+    var parts = [];
+    if (activeCat !== 'all') { parts.push('cat=' + encodeURIComponent(activeCat)); }
+    if (filterTags.length > 0) { parts.push('q=' + filterTags.map(encodeURIComponent).join(',')); }
+    var hash = parts.length ? '#' + parts.join('&') : '';
+    if (window.location.hash === hash) { return; }
+    if (skipPush) {
+      /* 还原 hash 期间：立即 replaceState，不打断浏览器前进/后退历史 */
+      history.replaceState(null, '', hash || window.location.pathname);
+      return;
+    }
+    /* 防抖：连续输入/切换只写入一次历史记录，
+       浏览器前进/后退即可在筛选状态之间切换（hashchange 触发 syncFromHash 还原） */
+    if (hashTimer) { clearTimeout(hashTimer); }
+    hashTimer = setTimeout(function () {
+      if (window.location.hash !== hash) {
+        history.pushState(null, '', hash || window.location.pathname);
+      }
+    }, 300);
+  }
+  window.addEventListener('hashchange', syncFromHash);
+
+  /* ── 11. 搜索高亮 ── */
+  function highlightCard(card, keywords) {
+    var targets = card.querySelectorAll('.card__title, .card__desc');
+    targets.forEach(function (el) {
+      var orig = el.getAttribute('data-orig');
+      if (!orig) {
+        orig = el.textContent;
+        el.setAttribute('data-orig', orig);
+      }
+      if (!keywords.length) { el.textContent = orig; return; }
+      var html = orig;
+      keywords.forEach(function (kw) {
+        if (!kw) { return; }
+        var re = new RegExp('(' + kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+        html = html.replace(re, '<mark>$1</mark>');
+      });
+      el.innerHTML = html;
+    });
+  }
+
+  /* ── 12. 随机漫步：随机打开一张卡片 ── */
+  if (randomBtn) {
+    randomBtn.addEventListener('click', function () {
+      var visibleCards = cards.filter(function (c) { return !c.hidden; });
+      if (!visibleCards.length) { return; }
+      var pick = visibleCards[Math.floor(Math.random() * visibleCards.length)];
+      var link = pick.querySelector('.card__link');
+      if (link) { window.open(link.href, '_blank', 'noopener'); }
+    });
+  }
+
   /* ── 初始化 ── */
   /* 还原各卡片星标态（localStorage） */
   var cardFavBtns = Array.prototype.slice.call(document.querySelectorAll('.card__fav'));
@@ -283,4 +421,5 @@
   updateFavToggleStar();
   renderTags();
   applyFilter();
+  syncFromHash();
 })();

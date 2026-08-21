@@ -1,0 +1,17 @@
+{
+  "name": "正协导航",
+  "short_name": "正协导航",
+  "description": "全量收录的精选站点导航，让每一次寻找，都不止于找到",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#9E1B22",
+  "icons": [
+    {
+      "src": "assets/images/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

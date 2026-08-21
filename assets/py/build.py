@@ -316,13 +316,56 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
   <meta name="referrer" content="no-referrer">
   <title>正协导航 - 让每一次寻找，都不止于找到</title>
   <meta name="description" content="正协导航：全量收录的精选站点导航，覆盖常用入口、AI智能、资讯媒体、设计创意、开发技术、学习教育、效率工具、影音娱乐等分类，让每一次寻找，都不止于找到。">
-  <meta name="keywords" content="正协导航,网址导航,网站导航,AI工具,效率工具">
+  <meta name="keywords" content="正协导航,网址导航,网站导航,AI工具,效率工具,政协,导航网站">
+  <meta name="author" content="正协导航">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://zhengxie.com.cn/">
+  <!-- 社交分享 -->
   <meta property="og:title" content="正协导航 - 让每一次寻找，都不止于找到">
-  <meta property="og:description" content="全量收录的精选站点导航。">
+  <meta property="og:description" content="全量收录的精选站点导航，覆盖AI智能、资讯媒体、设计创意、开发技术、学习教育等分类。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://zhengxie.com.cn/">
+  <meta property="og:image" content="https://zhengxie.com.cn/assets/images/logo.svg">
+  <meta property="og:site_name" content="正协导航">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="正协导航 - 让每一次寻找，都不止于找到">
+  <meta name="twitter:description" content="全量收录的精选站点导航。">
+  <!-- PWA / 移动端 -->
+  <meta name="theme-color" content="#9E1B22" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0D0C0E" media="(prefers-color-scheme: dark)">
+  <link rel="manifest" href="manifest.json">
+  <!-- 图标 -->
   <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+  <link rel="apple-touch-icon" href="assets/images/logo.svg">
+  <!-- 性能：预连接外部资源 -->
+  <link rel="preconnect" href="https://www.googletagmanager.com">
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com">
+  <link rel="preconnect" href="https://hm.baidu.com">
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com">
   <link rel="stylesheet" href="assets/css/style.css">
+  <!-- 暗色模式：在 CSS 加载前同步设置，避免闪烁(FOUC)。优先级：localStorage > 系统偏好 -->
+  <script>
+    (function(){try{var t=localStorage.getItem('zx_theme');if(!t){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();
+  </script>
+  <!-- JSON-LD 结构化数据：帮助搜索引擎理解站点类型与搜索功能 -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "正协导航",
+    "alternateName": "正协导航 - 让每一次寻找，都不止于找到",
+    "url": "https://zhengxie.com.cn/",
+    "description": "全量收录的精选站点导航",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://zhengxie.com.cn/?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
 
   <!-- ═══ 统计（GA4 + 百度统计×2，双域名各一份） ═══ -->
   <!-- Google Analytics GA4 -->
@@ -351,6 +394,8 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
           crossorigin="anonymous"></script>
 </head>
 <body>
+  <!-- 无障碍：跳到主内容 -->
+  <a href="#cards-container" class="skip-link">跳到主内容</a>
 
   <!-- ═══ 第1行块：Hero 区 ═══ -->
   <header class="hero">
@@ -415,7 +460,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 
   <!-- ═══ 第4.5行块：结果计数（搜索框与筛选标签行之间，静态渲染总数，JS 动态更新） ═══ -->
   <section class="result-count wrap" aria-label="筛选结果统计">
-    <p class="result-count__text" id="result-count">共 {{TOTAL_CARDS}} 个站点</p>
+    <p class="result-count__text" id="result-count">共 {{TOTAL_CARDS}} 张卡片</p>
   </section>
 
   <!-- ═══ 第5行块：筛选标签区（1行三段式：当前筛选 + 滑道 + 清除筛选） ═══ -->
@@ -435,6 +480,14 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
     {{CARDS}}
   </main>
 
+  <!-- 空结果状态（JS 控制显隐） -->
+  <div class="empty-state" id="empty-state" hidden>
+    <div class="empty-state__icon" aria-hidden="true">
+      <svg viewBox="0 0 64 64" width="48" height="48"><circle cx="28" cy="28" r="18" fill="none" stroke="currentColor" stroke-width="2"/><line x1="42" y1="42" x2="54" y2="54" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </div>
+    <p class="empty-state__text">没有找到匹配的结果，换个关键词或分类试试</p>
+  </div>
+
   <!-- ═══ 第7行块：Google 广告位②（底部专用单元：slot 与顶部分开，AdSense 后台可分位统计收益） ═══ -->
   <aside class="ad ad--bottom" aria-label="广告">
     <p class="ad__label">广告</p>
@@ -448,13 +501,28 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 
   <!-- ═══ 第8行块：Footer ═══ -->
   <footer class="footer">
-    <p class="footer__copyright">© 2026 正协导航 · 让每一次寻找，都不止于找到</p>
-    <ul class="footer__links">
-      <li><a href="#">关于本站</a></li>
-      <li><a href="#">收录申请</a></li>
-      <li><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">粤ICP备XXXXXXXX号</a></li>
-    </ul>
+    <div class="footer__inner wrap">
+      <p class="footer__copyright">© 2026 正协导航 · 让每一次寻找，都不止于找到</p>
+      <nav class="footer__nav" aria-label="页脚导航">
+        <a href="./">首页</a>
+        <a href="units/about/">关于本站</a>
+        <a href="units/submit/">收录申请</a>
+        <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">粤ICP备XXXXXXXX号</a>
+      </nav>
+      <div class="footer__tools">
+        <button type="button" class="footer__random" id="random-site">随机漫步</button>
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="切换深色/浅色模式" aria-pressed="false">
+          <svg class="theme-toggle__sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.2" y1="4.2" x2="5.6" y2="5.6"/><line x1="18.4" y1="18.4" x2="19.8" y2="19.8"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.2" y1="19.8" x2="5.6" y2="18.4"/><line x1="18.4" y1="5.6" x2="19.8" y2="4.2"/></svg>
+          <svg class="theme-toggle__moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </div>
+    </div>
   </footer>
+
+  <!-- 回到顶部按钮 -->
+  <button type="button" class="back-to-top" id="back-to-top" aria-label="回到顶部" hidden>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l-8 8h5v8h6v-8h5z" fill="currentColor"/></svg>
+  </button>
 
   <script src="assets/js/main.js" defer></script>
 </body>

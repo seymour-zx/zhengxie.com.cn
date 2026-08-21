@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /assets/xlsx/
+Disallow: /assets/py/
+
+Sitemap: https://zhengxie.com.cn/sitemap.xml
