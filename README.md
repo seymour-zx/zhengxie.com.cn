@@ -58,6 +58,11 @@
 | 404 完全自包含（内联 CSS/JS） | 404 引用外部 style.css |
 | 卡片外链标签：直角金边胶囊 + 「↗」外跳标记（区别于圆形分类标签） | 12px 灰色虚线下划线小字、无 ↗ |
 | 搜索框默认激活 Google（主引擎百度/必应/Google 原位不变，仅初始高亮 Google） | 默认激活百度 |
+| 滚动按钮组：4 个独立按钮，按滚动位置只显示 1 个（编号 1 向上 ⬆、2 到顶 ⏫、3 向下 ⬇、4 到底 ⏬） | 单图标固定回顶按钮 |
+| 点击循环：3 → 4 → 1 → 2 → 3，每次点击 + 滚动到当前按钮的目标 + 切到下一态图标，点击期间锁住用户输入 + 滚动结束后由 pendingTarget 稳态显示 | 点击 = 固定回顶 |
+| 滚动自动判定（按 y vs alignTarget）：贴顶=3、贴底=1、y<alignTarget 上滑=2/下滑=3、y≈alignTarget 上滑=1/下滑=4、y>alignTarget 上滑=1/下滑=4 | 无 |
+| alignTarget = firstCard.offsetTop - stickyTop.offsetHeight（第一张可见卡片顶端对齐 sticky 整体块底部） | 无 |
+| 滚动期间点击锁：lockUserInput 阻止 wheel/touchmove/keydown，连续点击前 forceUnlock 清掉上一轮残留 handler 避免永久锁定 | 无 |
 
 > 子页 `units/about`、`units/submit` 为既有项目结构（资源相对、内链绝对），非本轮主动新增，仅在此标注其形态，不作改动即可。
 
