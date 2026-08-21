@@ -7,10 +7,52 @@
   <meta name="robots" content="noindex, follow">
   <title>页面未找到 - 正协导航</title>
   <meta name="description" content="您访问的页面不存在或已删除。返回正协导航首页，继续探索精选站点。">
-  <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <!-- favicon 用绝对域名：404 可能从任意深层路径触发，相对路径会失效 -->
+  <link rel="icon" type="image/svg+xml" href="https://zhengxie.com.cn/assets/images/logo.svg">
   <meta name="theme-color" content="#9E1B22">
+  <!-- 暗色模式：CSS 加载前同步设置，避免闪烁(FOUC)，与整站一致 -->
+  <script>
+    (function(){try{var t=localStorage.getItem('zx_theme');if(!t){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();
+  </script>
+  <!-- 404 自包含：内联所需 CSS（主题变量 + hero + footer + 错误页样式），不依赖外部 style.css，
+       从任意深层路径触发也不会样式丢失 -->
   <style>
+    :root {
+      --red: #9E1B22; --red-deep: #7A1418; --red-soft: #C25B61; --red-soft-deep: #A33A40;
+      --gold: #C5A572; --gold-bright: #D4AF37; --gold-deep: #B08D3E;
+      --bg: #FFFFFF; --bg-warm: #FAF6F0; --text: #1A1A1A; --text-sub: #5C5C5C;
+      --serif: "Noto Serif SC","Songti SC","SimSun",serif;
+      --sans: "Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+    }
+    [data-theme="dark"] {
+      --red: #D65A60; --red-deep: #9E1B22; --red-soft: #4A2326; --red-soft-deep: #3A181B;
+      --gold: #C9A86A; --gold-bright: #E8CB84; --gold-deep: #A07E3C;
+      --bg: #0D0C0E; --bg-warm: #171519; --text: #EDE8E0; --text-sub: #9C948B;
+      --serif: "Noto Serif SC","Songti SC","SimSun",serif;
+      --sans: "Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { font-size: 16px; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body { font-family: var(--sans); background: var(--bg); color: var(--text); line-height: 1.6; }
+    .hero {
+      background: linear-gradient(180deg, var(--bg-warm) 0%, var(--bg) 100%);
+      text-align: center; padding: 56px 16px 44px; border-bottom: 1px solid var(--gold);
+    }
+    .hero__logo {
+      font-family: var(--serif); font-weight: 900; font-size: clamp(42px, 7vw, 76px);
+      letter-spacing: .06em;
+      background: linear-gradient(135deg, var(--red) 0%, var(--red-deep) 60%, var(--gold) 125%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .hero__slogan {
+      margin-top: 10px; font-family: var(--serif); font-size: clamp(15px, 2.2vw, 21px);
+      color: var(--red); letter-spacing: .18em;
+    }
+    .footer {
+      border-top: 1px solid var(--gold); background: var(--bg-warm); text-align: center;
+      padding: 26px 16px 30px; color: var(--text-sub); font-size: 13px;
+    }
+    .footer__copyright { letter-spacing: .06em; }
     .error-page { min-height: 70vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 20px; }
     .error-page__code { font-family: var(--serif); font-size: clamp(80px, 18vw, 160px); font-weight: 900; background: linear-gradient(135deg, var(--red), var(--red-deep) 60%, var(--gold) 125%); -webkit-background-clip: text; background-clip: text; color: transparent; line-height: 1; }
     .error-page__msg { font-family: var(--serif); font-size: clamp(18px, 3vw, 24px); color: var(--red); margin-top: 16px; letter-spacing: .1em; }
@@ -30,12 +72,13 @@
     <p class="error-page__code">404</p>
     <p class="error-page__msg">页面未找到</p>
     <p class="error-page__desc">您访问的页面不存在或已被移除。别担心，正协导航的精选站点仍在等您。</p>
-    <a href="/" class="error-page__btn">返回首页</a>
-    <a href="units/about/" class="error-page__link">了解正协导航</a>
+    <a href="https://zhengxie.com.cn/" class="error-page__btn">返回首页</a>
+    <a href="https://zhengxie.com.cn/units/about/" class="error-page__link">了解正协导航</a>
   </main>
   <footer class="footer">
     <p class="footer__copyright">© 2026 正协导航 · 让每一次寻找，都不止于找到</p>
   </footer>
-  <script>setTimeout(function(){window.location.href='/';},8000);</script>
+  <!-- 8 秒后自动跳回首页 -->
+  <script>setTimeout(function(){window.location.href='https://zhengxie.com.cn/';},8000);</script>
 </body>
 </html>

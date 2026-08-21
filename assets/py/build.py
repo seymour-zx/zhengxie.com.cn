@@ -22,6 +22,8 @@ build.py —— 正协导航 · 站点生成器
          空值/不合规 URL 均视为空 → 显示标题首字符文字logo占位（二选一，不叠加）
 - tags：英文逗号分隔（如 AI,免费）；分类名自动作为标签行第1个标签
 - links：分号分隔链接，逗号分隔"名称与URL"（如 官网,https://x;知乎,https://z）
+- 外链属性策略（target/rel）不由本表决定，而由下方 LINK_ATTR_PRESET 按**链接域名**自动匹配；
+  命中预设域名（含其子域，如 www.x.com、a.b.x.com 均命中 x.com）采用对应属性，未命中一律用 DEFAULT_LINK_ATTR。
 
 v4 变更（相对 v3）：
 - 分类板块：左 logo(承担「全部」功能) + 中滑道(分类按钮) + 右「本地收藏」按钮
@@ -82,6 +84,41 @@ ENGINES = [
     ("amap",        "高德地图",      "https://www.amap.com/search/?query=",           False),
     ("scholar",     "Google Scholar", "https://scholar.google.com/scholar?q=",         False),
 ]
+
+# ── 站点配置（换域名只改这里一处） ──────────────────
+# 末尾不要斜杠；下方所有站内绝对链接、canonical、og、JSON-LD 均由此生成。
+SITE_DOMAIN = "https://zhengxie.com.cn"
+# ───────────────────────────────────────────────────────────────
+# 全链接属性规则（build 与子页通用，集中配置，手工增删只改这里）
+# 优先级：同域 > 同族 > 营销 > 评论 > 暴露 > 默认
+#   同域 (SAME_DOMAIN) ：同主域站点，原地打开（target=_self，发 Referer、传递权重）
+#   同族 (SAME_FAMILY) ：品牌/姊妹站，新标签 + 仅隔离 opener（发 Referer、传递权重）
+#   营销 (MARKETING)   ：广告/推广/媒体稿，新标签 + sponsored（不传递权重）
+#   评论 (UGCCOMMENT)  ：论坛/社媒/评论区，新标签 + ugc（不传递权重）
+#   暴露 (EXPOSED)     ：备案号/官方政务等需暴露来源，新标签 + nofollow/noopener + referrerpolicy=origin（暴露来源）
+#   默认 (DEFAULT)     ：其余一切外链，新标签 + 全 nofollow/noopener/noreferrer（不传权重、不暴露来源）
+# 命中逻辑：链接主机 == 域名 或 以 ".域名" 结尾（含所有子域，如 a.b.x.com 命中 x.com）。
+# 增删：复制一行元组、改属性串与域名即可；要增减域名直接改对应列表。
+# ───────────────────────────────────────────────────────────────
+SAME_DOMAIN_ATTR = 'target="_self"'  # 同主域站点：原地打开，发 Referer、传权重
+SAME_FAMILY_ATTR = 'target="_blank" rel="noopener"'
+MARKETING_ATTR = 'target="_blank" rel="sponsored noopener noreferrer nofollow"'  # 当前预设空集
+UGCCOMMENT_ATTR = 'target="_blank" rel="ugc noopener noreferrer nofollow"'        # 当前预设空集
+EXPOSED_ATTR = 'target="_blank" rel="nofollow noopener" referrerpolicy="origin"'  # 备案号等：暴露来源
+DEFAULT_LINK_ATTR = 'target="_blank" rel="nofollow noopener noreferrer"'
+# 同族站点（与 SITE_DOMAIN 同主域的品牌/姊妹站）
+SAME_FAMILY = ["zhengxie.info", "zhengxie.com.cn"]
+# 营销站点（广告/推广/媒体稿）—— 预设空集，待后续按需要增删
+MARKETING = []
+# 评论站点（论坛/社媒/评论区）—— 预设空集，待后续按需要增删
+UGCCOMMENT = []
+# 暴露站点（备案号/官方政务等需暴露来源）
+EXPOSED = ["beian.miit.gov.cn"]
+EXT_LINK = EXPOSED_ATTR  # 页脚备案号等固定外链复用暴露策略
+# 子页（about/submit）：build 时把根 assets(css/js/images) 同步进各自的独立 assets 文件夹，
+# 使子页自包含（不引用根域共享 assets，符合「独立 assets 文件夹」要求）。
+UNIT_PAGES = ["units/about", "units/submit"]
+UNIT_ASSET_DIRS = ["css", "js", "images"]
 
 # ── 解析函数 ──────────────────────────────────────────
 
@@ -175,15 +212,64 @@ def build_tags(category, tags):
     return '<div class="card__tags">' + "".join(parts) + "</div>"
 
 
+def host_of(url):
+    """取 URL 主机名（去端口、转小写）；非法/无主机返回空串。"""
+    try:
+        host = urlparse(str(url).strip()).netloc.split(":")[0].lower()
+    except (ValueError, AttributeError):
+        return ""
+    return host
+
+
+def link_attr(url):
+    """卡片/正文外链属性（优先级：同域 > 同族 > 营销 > 评论 > 暴露 > 默认）。
+    同主域 → 原地打开；命中预设域名 → 对应属性；均未命中 → DEFAULT_LINK_ATTR。"""
+    host = host_of(url)
+    if not host:
+        return DEFAULT_LINK_ATTR
+    # 1) 同域（与 SITE_DOMAIN 同主域）：原地打开，发 Referer、传权重
+    site_host = host_of(SITE_DOMAIN)
+    if site_host and (host == site_host or host.endswith("." + site_host)):
+        return SAME_DOMAIN_ATTR
+    # 2) 同族
+    for d in SAME_FAMILY:
+        d = d.lower().strip()
+        if d and (host == d or host.endswith("." + d)):
+            return SAME_FAMILY_ATTR
+    # 3) 营销
+    for d in MARKETING:
+        d = d.lower().strip()
+        if d and (host == d or host.endswith("." + d)):
+            return MARKETING_ATTR
+    # 4) 评论
+    for d in UGCCOMMENT:
+        d = d.lower().strip()
+        if d and (host == d or host.endswith("." + d)):
+            return UGCCOMMENT_ATTR
+    # 5) 暴露
+    for d in EXPOSED:
+        d = d.lower().strip()
+        if d and (host == d or host.endswith("." + d)):
+            return EXPOSED_ATTR
+    # 6) 默认
+    return DEFAULT_LINK_ATTR
+
+
+def link_attr_footer(url):
+    """页脚/导航链接属性（与卡片同源，但内链同域走 _self、备案号等暴露走 EXPOSED）。
+    友情链接区(同域站)应直接用 SAME_DOMAIN_ATTR，不进此函数。"""
+    return link_attr(url)
+
+
 def build_links(links):
+    """卡片外链：逐条按**链接域名**匹配 LINK_ATTR_PRESET 选属性串，
+    命中不到的链接统一用 DEFAULT_LINK_ATTR（与 xlsx 数据无关，无需 rel 列）。"""
     parts = []
     for name, url in links:
-        # nofollow：不传递权重（导航站大量外链的稳妥做法）
-        # noopener：新标签页打开时隔离 window.opener（安全）
-        # noreferrer：跳转不发送 Referer，目标站不知访客来自本站
+        attr = link_attr(url)
         parts.append(
             f'<a class="card__link" href="{html.escape(url, quote=True)}" '
-            f'target="_blank" rel="nofollow noopener noreferrer">{html.escape(name)}</a>'
+            f'{attr}>{html.escape(name)}</a>'
         )
     return '<div class="card__links">' + "".join(parts) + "</div>"
 
@@ -302,7 +388,26 @@ def build_page(category_buttons, cards_html, engine_primary, engine_track, total
         .replace("{{ENGINE_PRIMARY}}", engine_primary)
         .replace("{{ENGINE_TRACK}}", engine_track)
         .replace("{{TOTAL_CARDS}}", str(total_cards))
+        .replace("{{SITE_DOMAIN}}", SITE_DOMAIN)
+        .replace("{{EXT_LINK}}", EXT_LINK)
     )
+
+
+def sync_unit_assets():
+    """把根 assets(css/js/images) 同步进各子页的独立 assets 文件夹，
+    使 about/submit 等子页自包含（不引用根域共享 assets）。
+    子页 HTML 以相对路径引用自己的 assets/，因此从其目录打开即可正常加载。"""
+    import shutil
+    for page in UNIT_PAGES:
+        dest_root = os.path.join(BASE_DIR, page, "assets")
+        for d in UNIT_ASSET_DIRS:
+            src = os.path.join(BASE_DIR, "assets", d)
+            dst = os.path.join(dest_root, d)
+            if not os.path.isdir(src):
+                continue
+            # 用 dirs_exist_ok 增量覆盖（不删除旧文件），避免触发沙箱安全删除拦截；
+            # 资源为稳定项，无残留文件问题。
+            shutil.copytree(src, dst, dirs_exist_ok=True)
 
 
 # ── 页面模板 ──
@@ -311,21 +416,20 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- 全站不发送 Referer：外站（图片源/被链接站点/搜索引擎）无法得知访客来自 zhengxie.com.cn。
-       对 GA4 / 百度统计 / AdSense 均无影响（一方统计不走 Referer 头；AdSense 靠脚本读页面 URL 投放）。 -->
-  <meta name="referrer" content="no-referrer">
+  <!-- 注意：不要设全局 <meta name="referrer" content="no-referrer">——它会让百度统计/GA4 收不到来源站(referer 被禁用)。
+       本站仅在卡片图片上用 referrerpolicy="no-referrer" 单独压制图片防盗链；卡片外链/引擎跳转默认发 Referer（见 link_attr 规则）。 -->
   <title>正协导航 - 让每一次寻找，都不止于找到</title>
   <meta name="description" content="正协导航：全量收录的精选站点导航，覆盖常用入口、AI智能、资讯媒体、设计创意、开发技术、学习教育、效率工具、影音娱乐等分类，让每一次寻找，都不止于找到。">
   <meta name="keywords" content="正协导航,网址导航,网站导航,AI工具,效率工具,政协,导航网站">
   <meta name="author" content="正协导航">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://zhengxie.com.cn/">
+  <link rel="canonical" href="{{SITE_DOMAIN}}/">
   <!-- 社交分享 -->
   <meta property="og:title" content="正协导航 - 让每一次寻找，都不止于找到">
   <meta property="og:description" content="全量收录的精选站点导航，覆盖AI智能、资讯媒体、设计创意、开发技术、学习教育等分类。">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://zhengxie.com.cn/">
-  <meta property="og:image" content="https://zhengxie.com.cn/assets/images/logo.svg">
+  <meta property="og:url" content="{{SITE_DOMAIN}}/">
+  <meta property="og:image" content="{{SITE_DOMAIN}}/assets/images/logo.svg">
   <meta property="og:site_name" content="正协导航">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="正协导航 - 让每一次寻找，都不止于找到">
@@ -343,9 +447,9 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
   <link rel="preconnect" href="https://hm.baidu.com">
   <link rel="dns-prefetch" href="https://www.googletagmanager.com">
   <link rel="stylesheet" href="assets/css/style.css">
-  <!-- 暗色模式：在 CSS 加载前同步设置，避免闪烁(FOUC)。优先级：localStorage > 系统偏好 -->
+  <!-- 暗色模式：在 CSS 加载前同步设置，避免闪烁(FOUC)。默认明亮；仅当用户本地曾选暗色(localStorage='dark')才启用暗色 -->
   <script>
-    (function(){try{var t=localStorage.getItem('zx_theme');if(!t){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();
+    (function(){try{var t=localStorage.getItem('zx_theme');if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();
   </script>
   <!-- JSON-LD 结构化数据：帮助搜索引擎理解站点类型与搜索功能 -->
   <script type="application/ld+json">
@@ -354,13 +458,13 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
     "@type": "WebSite",
     "name": "正协导航",
     "alternateName": "正协导航 - 让每一次寻找，都不止于找到",
-    "url": "https://zhengxie.com.cn/",
+    "url": "{{SITE_DOMAIN}}/",
     "description": "全量收录的精选站点导航",
     "potentialAction": {
       "@type": "SearchAction",
       "target": {
         "@type": "EntryPoint",
-        "urlTemplate": "https://zhengxie.com.cn/?q={search_term_string}"
+        "urlTemplate": "{{SITE_DOMAIN}}/?q={search_term_string}"
       },
       "query-input": "required name=search_term_string"
     }
@@ -504,10 +608,10 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
     <div class="footer__inner wrap">
       <p class="footer__copyright">© 2026 正协导航 · 让每一次寻找，都不止于找到</p>
       <nav class="footer__nav" aria-label="页脚导航">
-        <a href="./">首页</a>
-        <a href="units/about/">关于本站</a>
-        <a href="units/submit/">收录申请</a>
-        <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">粤ICP备XXXXXXXX号</a>
+        <a href="{{SITE_DOMAIN}}/">首页</a>
+        <a href="{{SITE_DOMAIN}}/units/about/">关于本站</a>
+        <a href="{{SITE_DOMAIN}}/units/submit/">收录申请</a>
+        <a href="https://beian.miit.gov.cn/" {{EXT_LINK}}>粤ICP备XXXXXXXX号</a>
       </nav>
       <div class="footer__tools">
         <button type="button" class="footer__random" id="random-site">随机漫步</button>
@@ -555,6 +659,7 @@ def main():
     page = build_page(category_buttons, cards, engine_primary, engine_track, len(rows))
     with open(OUT_PATH, "w", encoding="utf-8") as f:
         f.write(page)
+    sync_unit_assets()
     cats = [str(r.get("分类") or "").strip() for r in rows]
     print("已生成:", OUT_PATH)
     print("分类:", " / ".join(dict.fromkeys(cats)))
