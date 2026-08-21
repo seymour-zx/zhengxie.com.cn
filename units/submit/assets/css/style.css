@@ -472,12 +472,15 @@ input, textarea, select { font-family: inherit; }
 .card__tag--cat { border-color: var(--red); font-weight: 600; }
 .card__link {
   flex: none;
-  font-size: 12px; color: var(--text-sub);
+  font-size: 13px; color: var(--text-sub);
   text-decoration: none;
-  border-bottom: 1px dashed var(--gold);
-  padding-bottom: 1px;
+  border: 1px solid var(--gold); border-radius: 0;
+  padding: 3px 12px;
+  transition: all .15s ease;
 }
-.card__link:hover { color: var(--red); border-bottom-color: var(--red); }
+.card__link:hover { background: var(--red); color: #fff; border-color: var(--red); }
+.card__link-arrow { font-size: 11px; margin-left: 2px; opacity: .7; }
+.card__link:hover .card__link-arrow { opacity: 1; }
 
 /* ═══════════ 结构1：4行3列（v4.1） ═══════════
    第1-2行第1列=媒体（跨两行）；第1行第2列=名称、第3列=收藏；
@@ -608,27 +611,26 @@ input, textarea, select { font-family: inherit; }
 }
 
 /* ── 回到顶部按钮 ── */
-.back-to-top {
-  position: fixed;
-  bottom: 24px; right: 24px;
+/* 滚动按钮：4 个独立按钮，按滚动位置只显示 1 个 */
+.scroll-btns { position: fixed; bottom: 24px; right: 24px; z-index: 90; }
+.scroll-btn {
+  position: absolute; right: 0; bottom: 0;
   width: 44px; height: 44px;
-  border: 1px solid var(--gold);
-  border-radius: 50%;
-  background: var(--bg);
-  color: var(--red);
-  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--gold); border-radius: 50%;
+  background: var(--bg); color: var(--red);
+  display: none; align-items: center; justify-content: center;
   padding: 0; cursor: pointer;
   box-shadow: var(--shadow-hover);
-  z-index: 90;
-  opacity: 0;
-  transform: translateY(10px);
+  opacity: 0; transform: translateY(10px);
   transition: opacity .2s ease, transform .2s ease, border-color .15s ease;
 }
-.back-to-top:not([hidden]) { opacity: 1; transform: translateY(0); }
-.back-to-top svg { width: 22px; height: 22px; }
-.back-to-top:hover { border-color: var(--gold-bright); color: var(--gold-bright); }
+/* 按 data-target 显示对应按钮 */
+.scroll-btn.is-active { display: flex; opacity: 1; transform: translateY(0); }
+.scroll-btn svg { width: 22px; height: 22px; }
+.scroll-btn:hover { border-color: var(--gold-bright); color: var(--gold-bright); }
 @media (max-width: 639px) {
-  .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+  .scroll-btns { bottom: 16px; right: 16px; }
+  .scroll-btn { width: 40px; height: 40px; }
 }
 
 /* ── 空结果状态 ── */
@@ -715,7 +717,7 @@ input, textarea, select { font-family: inherit; }
 
 /* ── 打印样式 ── */
 @media print {
-  .hero__search, .ad, .sticky-top, .back-to-top, .theme-toggle,
+  .hero__search, .ad, .sticky-top, .scroll-btns, .theme-toggle,
   .card__fav, .filter-tags, .site-search, .result-count, .footer__random,
   .skip-link, .empty-state { display: none !important; }
   .card { border: 1px solid #ccc; box-shadow: none; break-inside: avoid; }

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4 态图标对照表</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+         padding: 32px; background: #fafafa; color: #222; }
+  h1 { margin-bottom: 8px; }
+  p { color: #666; margin-bottom: 32px; }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; max-width: 720px; }
+  .item { background: #fff; border: 2px solid #ddd; border-radius: 12px;
+          padding: 24px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .item .num { font-size: 48px; font-weight: 700; color: #9e1b22; line-height: 1; }
+  .item svg { width: 80px; height: 80px; color: #9e1b22; }
+  .item .name { font-size: 18px; color: #333; }
+  .item .desc { font-size: 13px; color: #888; text-align: center; }
+</style>
+</head>
+<body>
+  <h1>4 态图标对照表</h1>
+  <p>每个图标固定编号（1~4）+ 名称 + 形状描述。请确认每个图标的「名称 + 形状」与我们讨论时一致。</p>
+
+  <div class="grid">
+    <!-- 编号 1：纯向上箭头 -->
+    <div class="item" id="i1">
+      <div class="num">1</div>
+      <svg viewBox="0 0 24 24"><path d="M12 4l-8 8h5v8h6v-8h5z" fill="currentColor"/></svg>
+      <div class="name">向上</div>
+      <div class="desc">纯向上箭头，无横线</div>
+    </div>
+
+    <!-- 编号 2：箭头 + 顶上横线 -->
+    <div class="item" id="i2">
+      <div class="num">2</div>
+      <svg viewBox="0 0 24 24">
+        <path d="M3 2.5h18v2h-18z" fill="currentColor"/>
+        <path d="M12 4l-8 8h5v8h6v-8h5z" fill="currentColor"/>
+      </svg>
+      <div class="name">到顶</div>
+      <div class="desc">箭头 + 顶上横线</div>
+    </div>
+
+    <!-- 编号 3：纯向下箭头 -->
+    <div class="item" id="i3">
+      <div class="num">3</div>
+      <svg viewBox="0 0 24 24"><path d="M12 20l-8-8h5v-8h6v8h5z" fill="currentColor"/></svg>
+      <div class="name">向下</div>
+      <div class="desc">纯向下箭头，无横线</div>
+    </div>
+
+    <!-- 编号 4：箭头 + 下边横线 -->
+    <div class="item" id="i4">
+      <div class="num">4</div>
+      <svg viewBox="0 0 24 24">
+        <path d="M12 20l-8-8h5v-8h6v8h5z" fill="currentColor"/>
+        <path d="M3 19.5h18v2h-18z" fill="currentColor"/>
+      </svg>
+      <div class="name">到底</div>
+      <div class="desc">箭头 + 下边横线</div>
+    </div>
+  </div>
+</body>
+</html>

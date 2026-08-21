@@ -320,14 +320,181 @@
     }
   });
 
-  /* ── 9. 回到顶部按钮 ── */
-  if (backToTop) {
+  /* ── 9. 滚动按钮：4 个独立按钮，按滚动位置只显示 1 个 ──
+     编号 1 向上 ⬆  → 点击 → scrollTo(alignTarget)
+     编号 2 到顶 ⏫ → 点击 → scrollTo(0)
+     编号 3 向下 ⬇  → 点击 → scrollTo(alignTarget)
+     编号 4 到底 ⏬ → 点击 → scrollTo(bottomY)
+     滚动时根据当前 y vs alignTarget 决定显示哪个按钮：
+       y ≈ bottomY → 向上（编号 1）
+       y ≈ 0 → 到顶（编号 2）
+       y < alignTarget → 向下（编号 3）
+       y > alignTarget → 向上（编号 1） */
+  var scrollBtns = document.getElementById('scroll-btns');
+  if (scrollBtns) {
+    var catBar = document.getElementById('category-bar');
+    var stickyTop = document.querySelector('.sticky-top');   // 分类容器所在的 sticky 整体块
+    var EPS = 0.5;
+    var bottomYAbs = function () {
+      return document.documentElement.scrollHeight - window.innerHeight;
+    };
+    /* 第一个可见卡片（filter hidden 后的 cards[0]）。
+       若全部被筛选隐藏则返回 null，规则退化为只用 lastDir。 */
+    var firstCard = function () {
+      for (var i = 0; i < cards.length; i++) {
+        if (!cards[i].hidden) return cards[i];
+      }
+      return null;
+    };
+    /* alignTarget：让第一张卡片顶端对齐分类容器（sticky 整体块）底部。
+       即 y = firstCard.offsetTop - stickyTop.offsetHeight
+       （sticky 容器 offsetTop + offsetHeight = 它的文档绝对底部位置，
+         用户从下方滚回来时，y 滚到 firstCard.offsetTop - stickyTop.offsetHeight，
+         此时 firstCard.top 刚好等于 stickyTop 视觉高度，第一张卡片顶端贴着分类容器底） */
+    var alignTarget = function () {
+      var fc = firstCard();
+      if (!fc || !stickyTop) return 0;
+      return Math.max(0, fc.offsetTop - stickyTop.offsetHeight);
+    };
+    var btns = scrollBtns.querySelectorAll('.scroll-btn');
+    /* 点击循环顺序：3(向下) → 4(到底) → 1(向上) → 2(到顶) → 3 */
+    var clickCycleNext = function (cur) {
+      var order = ['down', 'bottom', 'up', 'top'];
+      var idx = order.indexOf(cur);
+      return order[(idx + 1) % order.length];
+    };
+    var showTarget = function (target) {
+      for (var i = 0; i < btns.length; i++) {
+        if (btns[i].getAttribute('data-target') === target) {
+          btns[i].classList.add('is-active');
+        } else {
+          btns[i].classList.remove('is-active');
+        }
+      }
+    };
+
+    /* 滚动自动判定显示哪个按钮 */
+    var lastDir = 'down';
+    var lastY = window.scrollY;
+    var clickLock = false;        // 点击触发的滚动期间锁住用户输入与 syncScroll
+    var pendingTarget = null;     // 滚动结束后应显示的目标（点击循环 next）
+    var pendingUnlock = null;     // 滚动结束后解除锁定的函数
+
+    var lockUserInput = function () {
+      /* 阻止用户滚动输入；返回 unlock 函数用于解除监听。
+         注：每次调用都生成新 handler 引用，但 unlock 时只移除这一组。
+         连续点击时若前一次 unlock 尚未触发，新调用会覆盖 pendingUnlock，
+         导致旧 handler 残留。修复：每次 lock 前先调用旧 unlock 清场。 */
+      var wheelHandler = function (e) { e.preventDefault(); };
+      var touchHandler = function (e) { e.preventDefault(); };
+      var keyHandler = function (e) {
+        var keys = ['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' ', 'Spacebar'];
+        if (keys.indexOf(e.key) !== -1) e.preventDefault();
+      };
+      window.addEventListener('wheel', wheelHandler, { passive: false });
+      window.addEventListener('touchmove', touchHandler, { passive: false });
+      window.addEventListener('keydown', keyHandler, { passive: false });
+      return function unlock() {
+        window.removeEventListener('wheel', wheelHandler);
+        window.removeEventListener('touchmove', touchHandler);
+        window.removeEventListener('keydown', keyHandler);
+      };
+    };
+    /* 在新一次 lock 前，强制清理旧的锁（避免残留 handler 永久锁定）。 */
+    var forceUnlock = function () {
+      if (pendingUnlock) { pendingUnlock(); pendingUnlock = null; }
+      clickLock = false;
+      pendingTarget = null;
+      if (scrollEndTimer) { clearTimeout(scrollEndTimer); scrollEndTimer = null; }
+    };
+
+    var syncScroll = function () {
+      if (clickLock) {
+        // 锁定期间：不重算 lastDir（保留用户预期方向）
+        var y = window.scrollY;
+        lastY = y;   // 只更新 lastY，不更新 lastDir
+        return;
+      }
+      var y = window.scrollY;
+      lastDir = (y > lastY) ? 'down' : (y < lastY ? 'up' : lastDir);
+      lastY = y;
+      var botY = bottomYAbs();
+      if (Math.abs(y - botY) <= EPS) { showTarget('up'); return; }   // 贴底 → 向上
+      if (y <= EPS) { showTarget('down'); return; }                  // 贴顶 → 向下（编号3）
+      var fc = firstCard();
+      if (!fc || !stickyTop) {
+        showTarget(lastDir === 'up' ? 'up' : 'down');
+        return;
+      }
+      var fcTop = fc.getBoundingClientRect().top;
+      var stickyBot = stickyTop.getBoundingClientRect().bottom;
+      var atAlign = Math.abs(fcTop - stickyBot) <= EPS;   // 第一张卡片顶端正好对齐 sticky 底
+      if (fcTop > stickyBot) {
+        // y < alignTarget（卡片还在 sticky 下方，未对齐）
+        if (lastDir === 'up') showTarget('top');   // 上滑 → 到顶
+        else showTarget('down');                   // 下滑 → 向下
+      } else if (atAlign) {
+        // y ≈ alignTarget（卡片顶端正好贴着 sticky 底）
+        if (lastDir === 'down') showTarget('bottom');   // 下滑 → 到底
+        else showTarget('up');                           // 上滑 → 向上
+      } else {
+        // y > alignTarget（卡片已被 sticky 遮盖）
+        if (lastDir === 'down') showTarget('bottom');   // 下滑 → 到底
+        else showTarget('up');                           // 上滑 → 向上
+      }
+    };
+
+    /* 滚动结束检测：连续 100ms y 不变视为滚动结束 */
+    var scrollEndTimer = null;
+    var onScrollEnd = function () {
+      if (scrollEndTimer) clearTimeout(scrollEndTimer);
+      scrollEndTimer = setTimeout(function () {
+        clickLock = false;
+        // 解除用户输入锁定
+        if (pendingUnlock) { pendingUnlock(); pendingUnlock = null; }
+        // 滚动结束：直接显示点击循环稳态（pendingTarget），不再让 syncScroll 重算
+        if (pendingTarget) {
+          showTarget(pendingTarget);
+          pendingTarget = null;
+        } else {
+          syncScroll();
+        }
+      }, 100);
+    };
+
     window.addEventListener('scroll', function () {
-      backToTop.hidden = window.scrollY < 400;
+      onScrollEnd();
     }, { passive: true });
-    backToTop.addEventListener('click', function () {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+    syncScroll();
+
+    /* 点击按钮：根据 data-target 滚到对应目标，不切其他按钮。
+       滚动后 syncScroll 会按新位置重新判定显示。 */
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].addEventListener('click', (function (btn) {
+        return function () {
+          /* 点击循环切图标 + 滚动到当前按钮的目标。
+             点 1(向上) → 滚到 alignTarget + 显示 2(到顶)
+             点 2(到顶) → 滚到 0           + 显示 3(向下)
+             点 3(向下) → 滚到 alignTarget + 显示 4(到底)
+             点 4(到底) → 滚到 bottomY     + 显示 1(向上)
+             连续点击时先 forceUnlock 清掉上一轮的锁，避免 handler 残留。 */
+          var cur = btn.getAttribute('data-target');
+          var next = clickCycleNext(cur);
+          forceUnlock();   // 清掉上一轮残留的锁 + 计时器
+          clickLock = true;
+          pendingTarget = next;
+          if (cur === 'up' || cur === 'down') {
+            lastDir = (cur === 'up') ? 'up' : 'down';
+            lastY = window.scrollY;
+          }
+          pendingUnlock = lockUserInput();
+          if (cur === 'top') window.scrollTo({ top: 0, behavior: 'smooth' });
+          else if (cur === 'bottom') window.scrollTo({ top: bottomYAbs(), behavior: 'smooth' });
+          else window.scrollTo({ top: alignTarget(), behavior: 'smooth' });
+          showTarget(next);
+        };
+      })(btns[i]));
+    }
   }
 
   /* ── 10. URL hash 同步筛选状态 ── */

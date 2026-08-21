@@ -269,7 +269,7 @@ def build_links(links):
         attr = link_attr(url)
         parts.append(
             f'<a class="card__link" href="{html.escape(url, quote=True)}" '
-            f'{attr}>{html.escape(name)}</a>'
+            f'{attr}>{html.escape(name)}<span class="card__link-arrow" aria-hidden="true">↗</span></a>'
         )
     return '<div class="card__links">' + "".join(parts) + "</div>"
 
@@ -340,20 +340,21 @@ def load_rows():
             return (type_order(r), int(r.get("站序") or 0))
         except (TypeError, ValueError):
             return (type_order(r), 10**9)
-    rows.sort(key=order_key)
-    return rows
-
-
-def build_category_buttons(rows):
-    """分类按钮：按站序首现顺序去重。
-    v4：「全部」不再作为列表按钮——由左置 logo 承担全部功能。"""
-    seen = []
+    # 分类按钮顺序：原始数据从上到下首次出现（先于 type 分组排序）
+    cat_order = []
     for r in rows:
         c = str(r.get("分类") or "").strip()
-        if c and c not in seen:
-            seen.append(c)
+        if c and c not in cat_order:
+            cat_order.append(c)
+    rows.sort(key=order_key)
+    return rows, cat_order
+
+
+def build_category_buttons(cat_order):
+    """分类按钮：按原始数据首现顺序去重（不随 type 分组排序）。
+    v4：「全部」不再作为列表按钮——由左置 logo 承担全部功能。"""
     parts = []
-    for c in seen:
+    for c in cat_order:
         parts.append(
             f'<li><h2><button type="button" class="category-btn" '
             f'data-cat="{html.escape(c, quote=True)}">{html.escape(c)}</button></h2></li>'
@@ -367,7 +368,7 @@ def build_engine_buttons():
     primary_parts = []
     track_parts = []
     for i, (key, label, url, is_primary) in enumerate(ENGINES):
-        active = ' class="active" aria-pressed="true"' if (is_primary and i == 0) else ' aria-pressed="false"'
+        active = ' class="active" aria-pressed="true"' if key == "google" else ' aria-pressed="false"'
         btn = (
             f'<button type="button" data-engine="{html.escape(key)}" '
             f'data-url="{html.escape(url, quote=True)}"{active}>'
@@ -543,7 +544,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
         <span class="logo__brand" aria-hidden="true"><span>正协</span><span>导航</span></span>
         <span class="logo__all" aria-hidden="true">全部</span>
       </button>
-      <ul class="category-nav__list track">
+      <ul class="category-nav__list track" id="category-bar">
         {{CATEGORY_BUTTONS}}
       </ul>
       <button type="button" class="category-nav__fav" id="fav-toggle" aria-pressed="false" aria-label="本地收藏">
@@ -623,10 +624,31 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
     </div>
   </footer>
 
-  <!-- 回到顶部按钮 -->
-  <button type="button" class="back-to-top" id="back-to-top" aria-label="回到顶部" hidden>
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l-8 8h5v8h6v-8h5z" fill="currentColor"/></svg>
-  </button>
+  <!-- 滚动按钮组：4 个独立按钮，按滚动位置只显示 1 个 -->
+  <div class="scroll-btns" id="scroll-btns">
+    <button type="button" class="scroll-btn scroll-btn--up" data-target="up" aria-label="向上滚到分类容器下方">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 4l-8 8h5v8h6v-8h5z" fill="currentColor"/>
+      </svg>
+    </button>
+    <button type="button" class="scroll-btn scroll-btn--top" data-target="top" aria-label="到顶部">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3 2.5h18v2h-18z" fill="currentColor"/>
+        <path d="M12 4l-8 8h5v8h6v-8h5z" fill="currentColor"/>
+      </svg>
+    </button>
+    <button type="button" class="scroll-btn scroll-btn--down" data-target="down" aria-label="向下滚到分类容器下方">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 20l-8-8h5v-8h6v8h5z" fill="currentColor"/>
+      </svg>
+    </button>
+    <button type="button" class="scroll-btn scroll-btn--bottom" data-target="bottom" aria-label="到底部">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 20l-8-8h5v-8h6v8h5z" fill="currentColor"/>
+        <path d="M3 19.5h18v2h-18z" fill="currentColor"/>
+      </svg>
+    </button>
+  </div>
 
   <script src="assets/js/main.js" defer></script>
 </body>
@@ -649,11 +671,11 @@ def build_cards(rows):
 
 
 def main():
-    rows = load_rows()
+    rows, cat_order = load_rows()
     if not rows:
         sys.exit("错误：links.xlsx 中没有数据行。")
     print(f"读取 {len(rows)} 条记录")
-    category_buttons = build_category_buttons(rows)
+    category_buttons = build_category_buttons(cat_order)
     cards = build_cards(rows)
     engine_primary, engine_track = build_engine_buttons()
     page = build_page(category_buttons, cards, engine_primary, engine_track, len(rows))
