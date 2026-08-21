@@ -148,7 +148,7 @@ python -m http.server 8080
 | 链接位置 | 类型 | target / rel（实际写入） | 说明 |
 |----------|------|--------------------------|------|
 | 站内搜索框（Hero 站内搜索） | 站内 JS 筛选，无外跳 | 无 `<a>` | 仅在站内过滤卡片，不发起外链 |
-| 集合搜索（Hero 引擎跳转，如百度/Google/微博） | 外跳到搜索引擎结果页 | 由 `link_attr()` 按域名命中；当前营销/评论为**空集**，故百度/Google/微博等均走**默认** `nofollow noopener noreferrer`；后续若往 `MARKETING`/`UGCCOMMENT` 加域名则自动升级为 sponsored/ugc | 新窗口打开，规则与卡片外链同源 |
+| 集合搜索（Hero 引擎跳转，如百度/Google/微博） | 外跳到搜索引擎结果页 | **定死、不走 `link_attr()` 全套规则**：JS 用 `window.open(url, '_blank', 'noopener')` 打开（仅 `noopener`，不带 `noreferrer`/`nofollow`/`sponsored`/`ugc`/`referrerpolicy`），所有引擎行为一致且**会发送 Referer**。此为有意保留的现态（用户确认不改 py） | 与卡片外链规则**不同源**，属独立硬编码路径 |
 | assets 引用（css/js/images 静态资源） | 站内资源 | 相对路径 `assets/...`，无 target/rel | 同域加载，不涉及外链策略 |
 | 卡片图片（`<img>` 媒体） | 外站图片 | `referrerpolicy="no-referrer"`（仅此项压制 Referer） | 防图片防盗链；其余外链不发此属性 |
 | 卡片外链接（links 列逐条） | 外链 | 按优先级 `同域>同族>营销>评论>暴露>默认` 命中；同域 `_self`、同族 `noopener`、营销 `sponsored…`（空集暂未启用）、评论 `ugc…`（空集暂未启用）、暴露 `nofollow noopener` + `referrerpolicy="origin"`、默认 `nofollow noopener noreferrer` | 全项目统一，含子页（子页无卡片，但规则通用） |
