@@ -66,6 +66,10 @@
 
 > 子页 `units/about`、`units/submit` 为既有项目结构（资源相对、内链绝对），非本轮主动新增，仅在此标注其形态，不作改动即可。
 
+> **子页统一形态（含 2026-08-22 新增的 `units/privacy`）**：手写静态页，`<head>` **不设**全局 referrer meta（与主页/README「不设全局 referrer」规则一致）、FOUC **仅当 `localStorage('zx_theme')==='dark'` 才暗色**（不跟随系统偏好）；资源相对 `assets/...`、内链绝对 `https://zhengxie.com.cn/...` 且 `target="_self"`；`build.py` 的 `UNIT_PAGES` 已含 about/submit/privacy，重 build 会同步各自独立 assets。
+
+> **隐私政策页（🔶 本次主动新增，可退回）**：`units/privacy/index.html` 由我据站点真实技术实现起草（含免责声明「AI 辅助生成、非执业律师正式意见」）；内容如实陈述——本站为纯静态站、无后端/无注册、本地收藏存 localStorage 不上传、接入百度统计/GA4/AdSense、不设全局 referrer、外链按优先级规则打开。**改动前原状态**：站内无隐私政策页（页脚无隐私链接、sitemap 无隐私条目）。退回即删 `units/privacy/`、撤 `UNIT_PAGES` 中的 privacy 项、撤 sitemap/页脚/README 相关行。
+
 ### 4. 讨论过无结论清单（⏳ PENDING — 动手前先问）
 
 | 议题                                                               | 现状                                            |
@@ -94,6 +98,10 @@
 正协导航/
 ├── index.html               站点主页（由 build.py 生成，静态渲染，SEO 友好）
 ├── README.md                本手册
+├── units/
+│   ├── about/index.html      关于本站（手写静态页，资源相对、内链绝对）
+│   ├── submit/index.html     收录申请（同上）
+│   └── privacy/index.html    隐私政策（同上，2026-08-22 新增）
 └── assets/
     ├── css/
     │   └── style.css        全站样式（奢华红金白、响应式 Grid）
@@ -159,9 +167,9 @@ python -m http.server 8080
 | assets 引用（css/js/images 静态资源） | 站内资源 | 相对路径 `assets/...`，无 target/rel | 同域加载，不涉及外链策略 |
 | 卡片图片（`<img>` 媒体） | 外站图片 | `referrerpolicy="no-referrer"`（仅此项压制 Referer） | 防图片防盗链；其余外链不发此属性 |
 | 卡片外链接（links 列逐条） | 外链 | 按优先级 `同域>同族>营销>评论>暴露>默认` 命中；同域 `_self`、同族 `noopener`、营销 `sponsored…`（空集暂未启用）、评论 `ugc…`（空集暂未启用）、暴露 `nofollow noopener` + `referrerpolicy="origin"`、默认 `nofollow noopener noreferrer` | 全项目统一，含子页（子页无卡片，但规则通用） |
-| 页脚备案号（beian.miit.gov.cn） | 外链（暴露） | `target="_blank" rel="nofollow noopener" referrerpolicy="origin"`（`EXT_LINK`） | 需暴露本站来源（含 origin） |
+| 页脚备案号（beian.miit.gov.cn） | 外链（暴露） | **当前为注释占位、不渲染**：项目托管于 GitHub Pages，无 ICP 备案，故首页模板与子页（about/submit/privacy）**均不显示**备案链接；代码保留 `粤ICP备XXXXXXXX号` 占位与暴露属性，待迁移国内服务器完成备案后取消注释即可（届时属性为 `target="_blank" rel="nofollow noopener" referrerpolicy="origin"`，暴露来源 origin） | 迁移前不可点击、不可见 |
 | 页脚/导航内链（首页/关于/收录申请） | 内链（同域） | `target="_self"`（原地打开，发 Referer、传权重） | 由 `SITE_DOMAIN` 生成绝对路径 |
-| 子页 about/submit 内链与正文链接 | 内链（同域） | `target="_self"` | 手写静态页已显式标注，与首页一致 |
+| 子页 about/submit/privacy 内链与正文链接 | 内链（同域） | `target="_self"` | 手写静态页已显式标注，与首页一致；隐私页为标准合规文本、含 AI 免责声明 |
 
 ---
 
