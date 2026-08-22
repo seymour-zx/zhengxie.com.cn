@@ -75,7 +75,7 @@
 
 > **隐私政策页（🔶 本次主动新增，可退回）**：`pages/privacy/index.html` 由我据站点真实技术实现起草（含免责声明「AI 辅助生成、非执业律师正式意见」）；内容如实陈述——本站为纯静态站、无后端/无注册、本地收藏存 localStorage 不上传、接入百度统计/GA4/AdSense、不设全局 referrer、外链按优先级规则打开。**改动前原状态**：站内无隐私政策页（页脚无隐私链接、sitemap 无隐私条目）。退回即删 `pages/privacy/`、撤 sitemap/页脚/README 相关行。
 
-> **5 个说明型子页（🔶 2026-08-22 主动新增，可整体退回）**：`pages/contact`（联系我们，含收录/反馈/合作邮箱 hello@zhengxie.com.cn）、`pages/disclaimer`（免责声明，含 AI 辅助生成免责声明）、`pages/guide`（使用指南，讲本地收藏/三维度筛选/集合搜索/URL分享/随机漫步/暗色快捷键）、`pages/sitemap`（站点地图，可视化分类索引+功能页+机器可读 sitemap.xml 入口，分类锚点回首页 `#cat=分类`）、`pages/changelog`（更新日志，按时间倒序记录站点迭代）。形态同隐私页（资源 `../../assets/` 引用根、内链绝对 `_self`、无全局 referrer meta、FOUC 仅本地 dark）；写入 `sitemap.xml`（priority 0.50）、页脚导航统一 10 链接（含「网站全景」）。退回即删对应 5 个 `pages/*/` 目录、撤 sitemap/页脚/README 相关行（具体步骤见 `assets/skills/SKILL.md` 退回方案段）。
+> **5 个说明型子页（🔶 2026-08-22 主动新增，可整体退回）**：`pages/contact`（联系我们，含收录/反馈/合作邮箱 seymour.zx@foxmail.com）、`pages/disclaimer`（免责声明，含 AI 辅助生成免责声明）、`pages/guide`（使用指南，讲本地收藏/三维度筛选/集合搜索/URL分享/随机漫步/暗色快捷键）、`pages/sitemap`（站点地图，可视化分类索引+功能页+机器可读 sitemap.xml 入口，分类锚点回首页 `#cat=分类`）、`pages/changelog`（更新日志，按时间倒序记录站点迭代）。形态同隐私页（资源 `../../assets/` 引用根、内链绝对 `_self`、无全局 referrer meta、FOUC 仅本地 dark）；写入 `sitemap.xml`（priority 0.50）、页脚导航统一 10 链接（含「网站全景」）。退回即删对应 5 个 `pages/*/` 目录、撤 sitemap/页脚/README 相关行（具体步骤见 `assets/skills/SKILL.md` 退回方案段）。
 
 > **全站中枢页（🔶 2026-08-22 末主动新增，可退回）**：`pages/overview/index.html`「网站全景」= S2 骨架升级版（全站中枢：架构总览 + 各板块活体切片 + 榜单区块 + 分发中枢）。路径 `/pages/overview/`，页脚链接文本「网站全景」。手动同步 GA4+百度统计双 id（无 AdSense，同 404 策略）；资源 `../../assets/` 引用根、写入 `sitemap.xml`（priority 0.70）。退回即删 `pages/overview/`、撤 sitemap/页脚/README 相关行。旧 `units/` 目录已整体删除（2026-08-22 末）。
 
