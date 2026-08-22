@@ -56,7 +56,7 @@
 | 搜索关键词金色高亮 | 关键词仅筛选，不高亮 |
 | 随机漫步（页脚随机开一张可见卡） | 无此按钮 |
 | 404 完全自包含（内联 CSS/JS） | 404 引用外部 style.css |
-| 404 按来源动态返回按钮（依据 `document.referrer`：站内→返回上一页 `history.back()`、外链/搜索引擎→返回来源站、直接访问或无可识别来源→返回首页；8 秒自动跳转同源） | 404 仅固定「返回首页」按钮 |
+| 404 按来源动态返回按钮（依据 `document.referrer`：站内→返回上一页 `history.back()`、外链/搜索引擎跳入→只给「返回正协导航首页」（**不提供"返回来源网站"，避免 JS 跳转伪造 ref 的安全风险**）、直接访问或无可识别来源→返回首页；8 秒自动跳转同源） | 404 仅固定「返回首页」按钮 |
 | 卡片外链标签：直角金边胶囊 + 「↗」外跳标记（区别于圆形分类标签） | 12px 灰色虚线下划线小字、无 ↗ |
 | 搜索框默认激活 Google（主引擎百度/必应/Google 原位不变，仅初始高亮 Google） | 默认激活百度 |
 | 滚动按钮组：4 个独立按钮，按滚动位置只显示 1 个（编号 1 向上 ⬆、2 到顶 ⏫、3 向下 ⬇、4 到底 ⏬） | 单图标固定回顶按钮 |
@@ -67,9 +67,25 @@
 
 > 子页 `units/about`、`units/submit` 为既有项目结构（资源相对、内链绝对），非本轮主动新增，仅在此标注其形态，不作改动即可。
 
-> **子页统一形态（含 2026-08-22 新增的 `units/privacy`）**：手写静态页，`<head>` **不设**全局 referrer meta（与主页/README「不设全局 referrer」规则一致）、FOUC **仅当 `localStorage('zx_theme')==='dark'` 才暗色**（不跟随系统偏好）；资源相对 `assets/...`、内链绝对 `https://zhengxie.com.cn/...` 且 `target="_self"`；`build.py` 的 `UNIT_PAGES` 已含 about/submit/privacy，重 build 会同步各自独立 assets。
+> **子页统一形态（含 2026-08-22 新增的 `units/privacy`，及 2026-08-22 新增的 contact/disclaimer/guide/sitemap/changelog）**：手写静态页，`<head>` **不设**全局 referrer meta（与主页/README「不设全局 referrer」规则一致）、FOUC **仅当 `localStorage('zx_theme')==='dark'` 才暗色**（不跟随系统偏好）；资源相对 `assets/...`、内链绝对 `https://zhengxie.com.cn/...` 且 `target="_self"`；`build.py` 的 `UNIT_PAGES` 已含 about/submit/privacy/contact/disclaimer/guide/sitemap/changelog，重 build 会同步各自独立 assets。
+> **子页新增/调整的具体操作步骤（标准形态 7 要点、页脚模板、全站联动清单、验证步骤、退回方案）已抽离至 `assets/skills/SKILL.md`**——任何会话要新增子页时，先读该 SKILL.md 照做，避免 README 与操作步骤两处维护漂移。
 
 > **隐私政策页（🔶 本次主动新增，可退回）**：`units/privacy/index.html` 由我据站点真实技术实现起草（含免责声明「AI 辅助生成、非执业律师正式意见」）；内容如实陈述——本站为纯静态站、无后端/无注册、本地收藏存 localStorage 不上传、接入百度统计/GA4/AdSense、不设全局 referrer、外链按优先级规则打开。**改动前原状态**：站内无隐私政策页（页脚无隐私链接、sitemap 无隐私条目）。退回即删 `units/privacy/`、撤 `UNIT_PAGES` 中的 privacy 项、撤 sitemap/页脚/README 相关行。
+
+> **5 个说明型子页（🔶 2026-08-22 主动新增，可整体退回）**：`units/contact`（联系我们，含收录/反馈/合作邮箱 hello@zhengxie.com.cn）、`units/disclaimer`（免责声明，含 AI 辅助生成免责声明）、`units/guide`（使用指南，讲本地收藏/三维度筛选/集合搜索/URL分享/随机漫步/暗色快捷键）、`units/sitemap`（站点地图，可视化分类索引+功能页+机器可读 sitemap.xml 入口，分类锚点回首页 `#cat=分类`）、`units/changelog`（更新日志，按时间倒序记录站点迭代）。形态同隐私页（资源相对、内链绝对 `_self`、无全局 referrer meta、FOUC 仅本地 dark）；全部进入 `UNIT_PAGES` 同步 assets、写入 `sitemap.xml`（priority 0.50）、页脚导航统一 9 链接。退回即删对应 5 个 `units/*/` 目录、撤 `UNIT_PAGES` 中 5 项、撤 sitemap/页脚/README 相关行（具体步骤见 `assets/skills/SKILL.md` 退回方案段）。
+
+### 3.1 专家转介纪律（🚫 任何会话必守，AI 硬边界）
+
+> **用户明示原则**：专业的事找专业的专家，不要浪费时间/资源消耗却结果不达预期。AI 在**工程实现**（静态站结构、build 流程、README/SKILL 维护、统计代码接入）上擅长；在需要**执业资质、第三方平台策略、专业评审**的任务上不擅长且不应越界。
+>
+> **落入以下任一类任务时，AI 必须主动停止、明确告知用户应咨询对应专家/connector，不得硬做、不得给未经验证的"专业结论"**：
+> - **法律合规文本**（隐私政策/免责声明/个保法条文是否达标）→ 执业律师；WorkBuddy 内可询 `同花顺法律AI助手` / `北大法宝·法律智能检索` / `fazhi-law` / `yuandian-mcp 华宇元典` / `pkulaw 北大法宝`
+> - **SEO 收录策略 / 统计归因配置**（百度统计 referer、sitemap 优先级对收录影响）→ SEO 实务专家；或百度搜索资源平台 / Google Search Central 官方文档
+> - **视觉设计评审**（奢华风是否到位、暗色对比度无障碍 WCAG）→ UI/UX 专家（`ui-ux-pro-max`）或人工设计师
+> - **ICP 备案实操 / 国内服务器迁移合规** → 域名服务商（阿里云/腾讯云）官方备案通道 / `腾讯云 CloudBase`
+> - **广告收益优化**（AdSense 布局/单价策略）→ Google AdSense 官方帮助中心
+>
+> AI 仅提供"如实陈述技术实现"的草稿（隐私/免责页已置顶"AI 辅助、非执业律师意见"声明），不自行定稿、不替代专业判断。完整纪律与专家清单见 `assets/skills/SKILL.md`「专家转介纪律」段。
 
 ### 4. 讨论过无结论清单（⏳ PENDING — 动手前先问）
 
@@ -85,6 +101,7 @@
 
 - [x] **P0** 暗色模式重做为奢华金系（v6 已完成）
 - [x] **P0** 移除分类计数徽章、空结果清除按钮；暗色切换移页脚；随机漫步移页脚（已完成）
+- [x] **P1** 新增 5 个说明型子页：contact/disclaimer/guide/sitemap/changelog（2026-08-22 完成，含 UNIT_PAGES/sitemap/页脚/README 同步）
 - [ ] **P1** 将 `units/about`、`units/submit` 纳入 `build.py` 模板，消除换域名时手动替换字面量（依赖第 4 节待定项决策）
 - [ ] **P1** 评估并决策 GitHub Pages 国内访问稳定性问题（是否迁移 CDN）
 - [ ] **P2** 用 `check_links.py` 定期跑死链检测，维护 `link_report.txt`
@@ -102,7 +119,12 @@
 ├── units/
 │   ├── about/index.html      关于本站（手写静态页，资源相对、内链绝对）
 │   ├── submit/index.html     收录申请（同上）
-│   └── privacy/index.html    隐私政策（同上，2026-08-22 新增）
+│   ├── privacy/index.html    隐私政策（同上，2026-08-22 新增）
+│   ├── contact/index.html    联系我们（同上，2026-08-22 新增）
+│   ├── disclaimer/index.html 免责声明（同上，2026-08-22 新增）
+│   ├── guide/index.html      使用指南（同上，2026-08-22 新增）
+│   ├── sitemap/index.html    站点地图（同上，2026-08-22 新增）
+│   └── changelog/index.html  更新日志（同上，2026-08-22 新增）
 └── assets/
     ├── css/
     │   └── style.css        全站样式（奢华红金白、响应式 Grid）
@@ -114,8 +136,10 @@
     │   └── link_report.txt  死链检测报告（运行 check_links.py 后生成）
     ├── images/
     │   └── logo.svg         站点 Logo（红底金字方形，正协/导航 两行）
-    └── xlsx/
-        └── links.xlsx       唯一数据源（维护时只需编辑这个文件）
+    ├── xlsx/
+    │   └── links.xlsx       唯一数据源（维护时只需编辑这个文件）
+    └── skills/
+        └── SKILL.md         项目内 SOP：子页新增全流程 + 专家转介纪律（操作步骤类，与本章决策规范互补；换设备时读此文件照做）
 ```
 
 ---
@@ -358,6 +382,10 @@ git push -u origin main
 - **不设**全局 `<meta name="referrer" content="no-referrer">`（会让百度统计后台显示"referer 被禁用"，收不到来源站）；仅卡片图片用 `referrerpolicy="no-referrer"` 单独压制。卡片外链 / 引擎跳转默认**发 Referer**。
 - 卡片链接按 `link_attr()` 优先级 `同域>同族>营销>评论>暴露>默认` 匹配属性：同域 `target="_self"`、同族 `noopener`、营销 `sponsored noopener noreferrer nofollow`、评论 `ugc noopener noreferrer nofollow`、暴露 `nofollow noopener noreferrer`、默认 `nofollow noopener`（见「站点配置」章节与汇总表）。
 - 该策略对 GA4 / 百度统计 / AdSense **无影响**（一方统计不走 Referer 头；AdSense 靠脚本读取页面 URL 投放；默认外链发 Referer 反而利于百度统计来源归因）。
+
+### 404 页面统计接入（与主页一致，不含广告）
+
+`404.html` 为手写自包含静态页（内联 CSS/JS，不依赖 `build.py` 生成）。其 `<head>` 已注入与主页**完全相同**的 GA4（`G-B880S4NQVK`）与百度统计（双 id `2f4df5057c929092e36a0d6357e35261` + `70e38224e5ebd850150b00a19835a25f`）脚本，**但刻意不放 AdSense 广告位**（404 为错误页，不应展示广告）。改统计 ID 时，需**手动同步** `404.html` 与 `build.py` 模板两处（子页手写、非 build 生成，故无自动同步）。
 
 ---
 

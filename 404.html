@@ -61,6 +61,28 @@
     .error-page__link { display: block; margin-top: 16px; color: var(--text-sub); font-size: 13px; text-decoration: none; }
     .error-page__link:hover { color: var(--red); }
   </style>
+  <!-- ═══ 统计（与主页一致：GA4 + 百度统计×2，双域名各一份） ═══ -->
+  <!-- Google Analytics GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-B880S4NQVK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-B880S4NQVK');
+  </script>
+  <!-- 百度统计（com.cn 站 + info 站，两个站点代码合并注入） -->
+  <script>
+  var _hmt = _hmt || [];
+  (function() {
+    var ids = ["2f4df5057c929092e36a0d6357e35261", "70e38224e5ebd850150b00a19835a25f"];
+    var s = document.getElementsByTagName("script")[0];
+    for (var i = 0; i < ids.length; i++) {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?" + ids[i];
+      s.parentNode.insertBefore(hm, s);
+    }
+  })();
+  </script>
 </head>
 <body>
   <header class="hero">
@@ -71,7 +93,7 @@
     <p class="error-page__code">404</p>
     <p class="error-page__msg">页面未找到</p>
     <p class="error-page__desc">您访问的页面不存在或已被移除。别担心，正协导航的精选站点仍在等您。</p>
-    <!-- 返回按钮由 JS 按来源(document.referrer)动态生成：站内→返回上一页 / 外链→返回来源站 / 直接访问或无可识别来源→返回首页 -->
+    <!-- 返回按钮由 JS 按来源(document.referrer)动态生成：站内→返回上一页 / 外链或搜索引擎跳入→返回正协导航首页 / 直接访问或无可识别来源→返回首页 -->
     <span id="back-action"></span>
     <a href="https://zhengxie.com.cn/units/about/" class="error-page__link">了解正协导航</a>
   </main>
@@ -113,9 +135,8 @@
       });
       secondary = btn(HOME, '返回正协导航首页', null);
     } else if (isExternal) {
-      // 外链 / 搜索引擎跳入：主按钮返回来源站，副按钮回本站首页
-      primary = btn(ref, '返回来源网站', null);
-      secondary = btn(HOME, '返回正协导航首页', null);
+      // 外链 / 搜索引擎跳入：只给"返回正协导航首页"（不提供"返回来源网站"——避免 JS 跳转伪造 ref 的安全风险，且 404 场景回来源站价值低）
+      primary = btn(HOME, '返回正协导航首页', null);
     } else {
       // 直接访问（地址栏/书签/扫码）或来源设了 no-referrer：只能回首页
       primary = btn(HOME, '返回正协导航首页', null);

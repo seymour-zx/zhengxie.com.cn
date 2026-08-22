@@ -117,7 +117,9 @@ EXPOSED = ["beian.miit.gov.cn"]
 EXT_LINK = EXPOSED_ATTR  # 页脚备案号等固定外链复用暴露策略
 # 子页（about/submit）：build 时把根 assets(css/js/images) 同步进各自的独立 assets 文件夹，
 # 使子页自包含（不引用根域共享 assets，符合「独立 assets 文件夹」要求）。
-UNIT_PAGES = ["units/about", "units/submit", "units/privacy"]
+UNIT_PAGES = ["units/about", "units/submit", "units/privacy",
+               "units/contact", "units/disclaimer", "units/guide",
+               "units/sitemap", "units/changelog"]
 UNIT_ASSET_DIRS = ["css", "js", "images"]
 
 # ── 解析函数 ──────────────────────────────────────────
@@ -612,6 +614,11 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
         <a href="{{SITE_DOMAIN}}/">首页</a>
         <a href="{{SITE_DOMAIN}}/units/about/">关于本站</a>
         <a href="{{SITE_DOMAIN}}/units/submit/">收录申请</a>
+        <a href="{{SITE_DOMAIN}}/units/contact/">联系我们</a>
+        <a href="{{SITE_DOMAIN}}/units/disclaimer/">免责声明</a>
+        <a href="{{SITE_DOMAIN}}/units/guide/">使用指南</a>
+        <a href="{{SITE_DOMAIN}}/units/sitemap/">站点地图</a>
+        <a href="{{SITE_DOMAIN}}/units/changelog/">更新日志</a>
         <a href="{{SITE_DOMAIN}}/units/privacy/">隐私政策</a>
         <!-- 备案号占位：当前项目托管于 GitHub Pages，无 ICP 备案，故不渲染备案链接；待迁移国内服务器完成备案后，替换粤ICP备XXXXXXXX号并取消本注释、改用以下形式：
         <a href="https://beian.miit.gov.cn/" {{EXT_LINK}}>粤ICP备XXXXXXXX号</a>
