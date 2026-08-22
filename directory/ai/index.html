@@ -92,38 +92,10 @@
   <header class="hero">
     <h1 class="hero__logo">正协导航</h1>
     <p class="hero__slogan">让每一次寻找，都不止于找到</p>
-    <!-- 集合搜索引擎：主引擎按钮(原位) + 输入行 + 下方引擎滑道(扩展) -->
-    <form class="hero__search" id="engine-search" action="#" role="search" aria-label="集合搜索">
-      <div class="hero__engines" role="tablist" aria-label="主搜索引擎">
-        <button type="button" data-engine="baidu" data-url="https://www.baidu.com/s?wd=" aria-pressed="false">百度</button>
-        <button type="button" data-engine="google" data-url="https://www.google.com/search?q=" class="active" aria-pressed="true">Google</button>
-        <button type="button" data-engine="bing" data-url="https://www.bing.com/search?q=" aria-pressed="false">必应</button>
-      </div>
-      <div class="hero__searchrow">
-        <input type="search" id="engine-input" placeholder="输入关键词，搜索全网" autocomplete="off">
-        <button type="submit">搜一下</button>
-      </div>
-      <div class="track hero__engines-track" role="tablist" aria-label="更多引擎">
-        <button type="button" data-engine="taobao" data-url="https://s.taobao.com/search?q=" aria-pressed="false">淘宝</button>
-        <button type="button" data-engine="jd" data-url="https://search.jd.com/Search?keyword=" aria-pressed="false">京东</button>
-        <button type="button" data-engine="pdd" data-url="https://mobile.yangkeduo.com/search_result.html?search_key=" aria-pressed="false">拼多多</button>
-        <button type="button" data-engine="zhihu" data-url="https://www.zhihu.com/search?q=" aria-pressed="false">知乎</button>
-        <button type="button" data-engine="baike" data-url="https://baike.baidu.com/item/" aria-pressed="false">百度百科</button>
-        <button type="button" data-engine="wiki" data-url="https://zh.wikipedia.org/w/index.php?search=" aria-pressed="false">维基百科</button>
-        <button type="button" data-engine="bilibili" data-url="https://search.bilibili.com/all?keyword=" aria-pressed="false">B站</button>
-        <button type="button" data-engine="douyin" data-url="https://www.douyin.com/search/" aria-pressed="false">抖音</button>
-        <button type="button" data-engine="github" data-url="https://github.com/search?q=" aria-pressed="false">GitHub</button>
-        <button type="button" data-engine="stackoverflow" data-url="https://stackoverflow.com/search?q=" aria-pressed="false">Stack Overflow</button>
-        <button type="button" data-engine="juejin" data-url="https://juejin.cn/search?query=" aria-pressed="false">掘金</button>
-        <button type="button" data-engine="weibo" data-url="https://s.weibo.com/weibo?q=" aria-pressed="false">微博</button>
-        <button type="button" data-engine="weixin" data-url="https://weixin.sogou.com/weixin?type=2&amp;query=" aria-pressed="false">微信搜一搜</button>
-        <button type="button" data-engine="toutiao" data-url="https://so.toutiao.com/search?keyword=" aria-pressed="false">头条搜索</button>
-        <button type="button" data-engine="music163" data-url="https://music.163.com/#/search/m/?s=" aria-pressed="false">网易云音乐</button>
-        <button type="button" data-engine="youdao" data-url="https://dict.youdao.com/search?q=" aria-pressed="false">有道翻译</button>
-        <button type="button" data-engine="amap" data-url="https://www.amap.com/search/?query=" aria-pressed="false">高德地图</button>
-        <button type="button" data-engine="scholar" data-url="https://scholar.google.com/scholar?q=" aria-pressed="false">Google Scholar</button>
-      </div>
-    </form>
+    <!-- 第1行块下半部：根页=集合搜索框；directory 频道页=专题介绍块（由 build_page 注入） -->
+        <section class="channel-intro" aria-label="专题介绍">
+      <p class="channel-intro__desc">正协导航 AI 频道：精选 ChatGPT、DeepSeek、Midjourney、通义千问、Kimi、文心一言等 AI 工具与大模型，让每一次寻找，都不止于找到。</p>
+    </section>
   </header>
 
   <!-- ═══ 第2行块：Google 广告位①（全宽自适应：左右零留白，撑满可用宽度给 Google 选择） ═══ -->

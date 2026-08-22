@@ -244,12 +244,15 @@
   engineBtns.forEach(function (b) {
     b.addEventListener('click', function () { setActiveEngine(b); });
   });
-  engineForm.addEventListener('submit', function (e) {
-    e.preventDefault();
-    var kw = engineInput.value.trim();
-    if (!kw || !currentEngineUrl) { return; }
-    window.open(currentEngineUrl + encodeURIComponent(kw), '_blank', 'noopener');
-  });
+  // directory 频道页无集合搜索框（已替换为专题介绍块），此处需空值保护
+  if (engineForm && engineInput) {
+    engineForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var kw = engineInput.value.trim();
+      if (!kw || !currentEngineUrl) { return; }
+      window.open(currentEngineUrl + encodeURIComponent(kw), '_blank', 'noopener');
+    });
+  }
 
   /* ── 6. 统一滑动行为（所有滑道 + 卡片四类行） ──
      - 内容确实超出（scrollWidth > clientWidth）时标记 is-scrollable；

@@ -49,6 +49,80 @@ v4.1 修订：
 - 卡片收藏按钮改为 SVG 星形（描边金/激活填充金），位置统一固定在名称行右端（grid 布局成员）
 - 顶部 logo 保持正方形；未激活态底色改淡化红，激活态正红渐变+金环
 - 「本地收藏」按钮改为与 logo 同尺寸正方形、金色系：未点击显示 ★，点击后显示「本地/收藏」两行
+
+================================================================================
+## 同骨架导航产品页（/directory/）· 框架约定（本文件即权威源）
+================================================================================
+> 跨设备说明：本约定**内置此 docstring**，而非独立 `docs/*.md`。原因——换设备对话时
+> 只能保证读到 `README.md` 与 `assets/skills/SKILL.md` 两个 md；若在其他设备读到本
+> `build.py`，以此 docstring 为唯一权威源（独立的 `docs/SUBPAGE_BUILD_DESIGN.md`
+> 已删除，其内容已并入此处，不可再引用该路径）。
+
+build.py 一次运行**同时生成两类 S1 导航产品页**：
+  (1) 根 `index.html`           —— 读 `assets/xlsx/self_links.xlsx`
+  (2) 各 `directory/<name>/index.html` —— 自动扫描 `directory/` 下含
+       `assets/xlsx/self_links.xlsx` 的子目录逐个生成，**无需手工登记目录清单**。
+
+### 范围与边界（用户逐项确认，必须照做）
+1. py 只生成 S1 骨架页：根 `index.html` + `directory/<name>/index.html`。
+2. 每个 `directory/<name>/` 有**自己独立**的 `self_links.xlsx`，独立编排，**不是根表子集**。
+3. `pages/` 子页（about/submit/privacy/overview…）**py 完全不管**，维持手写（S3/S4/S5），
+   本文件不生成也不触碰。
+4. 自动扫描：在 `directory/` 下建 `<name>/` 并放入 `self_links.xlsx` + `self_meta.json`，
+   重跑 build 即生成；无 `DIRECTORY_PAGES` 清单。
+5. `directory/index.html` **不在 build.py 任务内**：它是手写静态页（非 S1、汇总/门户性质），
+   与 `pages/` 子页同级，py 不碰、绝不生成。
+6. directory 频道页 hero 下半部 = **专题介绍块（无搜索框）**：`build_channel_intro()`
+   直接复制该页 `self_meta.json` 的 `description`（`<section>` + `<p>`，一段），不自动生成
+   概览段落。根页 hero 仍保留完整集合搜索框 + 搜一下按钮。两类页共用 `{{HERO_SEARCH}}`
+   占位符（`HERO_SEARCH_BLOCK` / `build_channel_intro` 二选一注入）。
+   站内筛选框（`#site-search-input`，筛选本页卡片）两页均保留。
+
+### 文件命名与路径约定
+- `self_` 前缀 = 某页面**独享**的数据文件（不与其他页共享）：
+  · 根页数据源   `assets/xlsx/self_links.xlsx`
+  · 目录数据源   `directory/<name>/assets/xlsx/self_links.xlsx`
+  · 根页元信息   `assets/json/self_meta.json`
+  · 目录元信息   `directory/<name>/assets/json/self_meta.json`
+- 全站共享文件**不加** `self_`：`assets/json/manifest.json`、`assets/xlsx/link-policy.json`、
+  `assets/py/*.py`、`pages/<name>/index.html`（手写本体）。
+- 目录页列结构须与根 `self_links.xlsx` 一致（站序/type/分类/title/url/media/tags…），
+  否则 `build_cards` 不复用。
+
+### 元信息（self_meta.json）约定
+- 仅 3 字段：`title` / `description` / `keywords`，注入 `<title>` / `<meta description>` /
+  `<meta keywords>`，且 `og:title`/`og:description`/`twitter:title`/`twitter:description`/
+  JSON-LD 的 name/description **全部引用** title/description（不单独写）。
+- 常量（代码固定，不进 meta）：`author`=正协导航、`og:type`=website、
+  `twitter:card`=summary、`og:image`={SITE_DOMAIN}/assets/images/logo.svg、
+  `og:site_name`=正协导航。
+- **canonical 不进 meta**：由 `SITE_DOMAIN` + 路径规则自动拼
+  （根 `/`、目录 `/directory/<name>/`），`<name>` 取自扫描目录名。
+- **self_meta.json 为必填项**：`self_links.xlsx` 与（非空、含 3 字段的）`self_meta.json`
+  **二者齐备才生成**该目录 `index.html`；缺任一 → 跳过不生成。空占位文件（0 字节 / 0 数据行
+  / 非法 JSON）在每次运行时被删除；字段不全（填写中）只跳过生成、**保留文件不删**。
+- 兜底：`ROOT_META`（py 常量）打底，`meta = {**ROOT_META, **load_meta(...)}`，读不到
+  self_meta.json 也不崩（但 directory 页要求齐备，故实际会跳过而非兜底）。
+
+### 生成流程（每次运行 main()）
+1. 先生成根 `index.html`（读 `assets/json/self_meta.json`，兜底 `ROOT_META`）。
+2. 对 `directory/`：① 删除所有 `directory/<name>/index.html`（防旧页残留）；
+   ② 遍历含 `self_links.xlsx` 的子目录，删除空 `self_links.xlsx`、空 `self_meta.json`；
+   ③ 生成循环：xlsx + 有效 meta 齐备才 `render_and_write`，否则跳过。
+
+### 资源 / 页脚前缀
+- 资源前缀 `ASSET_PREFIX`：根页 `""`、目录页 `"../../"`（`manifest`/css/js/favicon 走它，
+  指向根唯一 assets 真源）。
+- 页脚 `pages/` 链接：目录页前缀改 `../../pages/...`（同结构）。
+
+### 品牌常量
+- `BRAND` / `SLOGAN` 集中在顶部常量；logo 双 span 由 `BRAND_A`/`BRAND_B`（`BRAND` 对半拆）
+  驱动。改品牌名/口号只动这两处。
+
+### 本期不做
+- 不生成 `pages/`、`/blog/`、`/news/`、`/journal/`；不做"从根表拆频道"；不改 xlsx 结构
+  加"频道"列；不动 `directory/index.html`；不自动维护 `sitemap.xml`（待用户授权）。
+- 用户明确：**不提交 git**。
 """
 
 import html
@@ -584,7 +658,7 @@ def list_directory_pages():
         xlsx = os.path.join(d, "assets", "xlsx", "self_links.xlsx")
         if not os.path.isfile(xlsx):
             continue
-        meta = os.path.join(d, "self_meta.json")
+        meta = os.path.join(d, "assets", "json", "self_meta.json")
         out = os.path.join(d, "index.html")
         canonical = "/directory/%s/" % name
         pages.append((name, xlsx, meta, out, canonical))
@@ -614,18 +688,20 @@ def is_empty_meta(path):
 
 
 def build_page(category_buttons, cards_html, engine_primary, engine_track, total_cards,
-               prefix="", meta=None, canonical_path="/"):
+               prefix="", meta=None, canonical_path="/", hero_search=""):
     """组装完整 index.html（静态模板，占位符替换）。
 
     prefix:         资源/链接路径前缀。根页=""；directory 页="../../"
     meta:           页面元信息 dict（title/description/keywords），缺失回退 ROOT_META
     canonical_path: 相对站点根的路径（"/" 或 "/directory/<name>/"），由调用方按 SITE_DOMAIN 自动拼，不来自 meta
+    hero_search:    hero 下半部 HTML：根页=集合搜索框；directory 页=专题介绍块
     """
     m = dict(ROOT_META)
     if meta:
         m.update({k: v for k, v in meta.items() if v})
     return (
         PAGE_TEMPLATE.replace("{{CATEGORY_BUTTONS}}", category_buttons)
+        .replace("{{HERO_SEARCH}}", hero_search)
         .replace("{{CARDS}}", cards_html)
         .replace("{{ENGINE_PRIMARY}}", engine_primary)
         .replace("{{ENGINE_TRACK}}", engine_track)
@@ -739,19 +815,8 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
   <header class="hero">
     <h1 class="hero__logo">{{BRAND}}</h1>
     <p class="hero__slogan">{{SLOGAN}}</p>
-    <!-- 集合搜索引擎：主引擎按钮(原位) + 输入行 + 下方引擎滑道(扩展) -->
-    <form class="hero__search" id="engine-search" action="#" role="search" aria-label="集合搜索">
-      <div class="hero__engines" role="tablist" aria-label="主搜索引擎">
-        {{ENGINE_PRIMARY}}
-      </div>
-      <div class="hero__searchrow">
-        <input type="search" id="engine-input" placeholder="输入关键词，搜索全网" autocomplete="off">
-        <button type="submit">搜一下</button>
-      </div>
-      <div class="track hero__engines-track" role="tablist" aria-label="更多引擎">
-        {{ENGINE_TRACK}}
-      </div>
-    </form>
+    <!-- 第1行块下半部：根页=集合搜索框；directory 频道页=专题介绍块（由 build_page 注入） -->
+    {{HERO_SEARCH}}
   </header>
 
   <!-- ═══ 第2行块：Google 广告位①（全宽自适应：左右零留白，撑满可用宽度给 Google 选择） ═══ -->
@@ -898,6 +963,40 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 """
 
 
+# 根页 hero 下半部：集合搜索框（含主引擎按钮 + 输入行 + 搜一下 + 下方引擎滑道）
+HERO_SEARCH_BLOCK = """    <form class="hero__search" id="engine-search" action="#" role="search" aria-label="集合搜索">
+      <div class="hero__engines" role="tablist" aria-label="主搜索引擎">
+        {{ENGINE_PRIMARY}}
+      </div>
+      <div class="hero__searchrow">
+        <input type="search" id="engine-input" placeholder="输入关键词，搜索全网" autocomplete="off">
+        <button type="submit">搜一下</button>
+      </div>
+      <div class="track hero__engines-track" role="tablist" aria-label="更多引擎">
+        {{ENGINE_TRACK}}
+      </div>
+    </form>"""
+
+
+def build_channel_intro(meta):
+    """directory 频道页 hero 下半部：专题介绍块（替换集合搜索框）。
+
+    设计取舍（用户 2026-08-23 指令）：
+    - 频道页去掉搜索框/搜一下按钮（对用户价值不大），改为语义化专题介绍。
+    - 内容 = 直接复制 self_meta.json 的 description，不额外自动生成概览段落。
+    - 标签：<section> 专题分组；内仅一段 <p> 承载 description。
+    """
+    m = dict(ROOT_META)
+    if meta:
+        m.update({k: v for k, v in meta.items() if v})
+    desc = html.escape(m["description"])
+    return (
+        "    <section class=\"channel-intro\" aria-label=\"专题介绍\">\n"
+        f"      <p class=\"channel-intro__desc\">{desc}</p>\n"
+        "    </section>"
+    )
+
+
 def build_cards(rows):
     """生成全部卡片 HTML。v4.1：type 变化处插入 grid-break 强制换行，
     不同类型的卡片绝不在同一行显示。"""
@@ -921,8 +1020,13 @@ def render_and_write(xlsx_path, out_path, prefix="", meta=None, canonical_path="
     category_buttons = build_category_buttons(cat_order)
     cards = build_cards(rows)
     engine_primary, engine_track = build_engine_buttons()
+    # hero 下半部：根页保留集合搜索框；directory 频道页替换为专题介绍块
+    if prefix == "":
+        hero_search = HERO_SEARCH_BLOCK
+    else:
+        hero_search = build_channel_intro(meta)
     page = build_page(category_buttons, cards, engine_primary, engine_track, len(rows),
-                      prefix=prefix, meta=meta, canonical_path=canonical_path)
+                      prefix=prefix, meta=meta, canonical_path=canonical_path, hero_search=hero_search)
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(page)
     cats = [str(r.get("分类") or "").strip() for r in rows]
@@ -933,7 +1037,7 @@ def render_and_write(xlsx_path, out_path, prefix="", meta=None, canonical_path="
 def main():
     # 1) 根页 index.html（meta 读根 self_meta.json，兜底 ROOT_META）
     #    canonical 由 SITE_DOMAIN + "/" 自动拼，不进 meta（域名与路径代码已知）
-    root_meta = load_meta(os.path.join(BASE_DIR, "self_meta.json"))
+    root_meta = load_meta(os.path.join(BASE_DIR, "assets", "json", "self_meta.json"))
     render_and_write(XLSX_PATH, OUT_PATH, prefix="", meta=root_meta,
                      canonical_path="/", label="根页")
 

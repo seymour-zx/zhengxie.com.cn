@@ -8,6 +8,8 @@
 
 > **⚠️ 操作铁律**：任何设备 / 任何会话对本项目做任何改动前，**必须先读完下方「决策与偏好总览」整章**，并严格遵守各条目的状态标记。改动若与该章冲突即视为错误——先回退、再与用户确认，绝不允许「凭感觉又加一个功能」导致用户重复纠正（此前已发生过：分类计数徽章、暗色偏蓝紫）。
 
+> **🌐 跨设备权威源约定（2026-08-23 指令）**：换设备对话时**只有本 `README.md` 与 `assets/skills/SKILL.md` 两个 md 保证可读**。因此所有"AI 必须遵守的项目规范"必须落在这两个 md 之一，或落在代码里（如 `assets/py/build.py` 顶部 docstring 已内置 `/directory/` 框架约定，即为跨设备权威源）。其它 `docs/*.md`（`docs/` 目录已删除，原 `SUBPAGE_BUILD_DESIGN.md` 内容已并入 build.py docstring 与这两 md）**不算跨设备权威源**，不得作为规则的唯一出处。新增/修改项目级规则前先自问："这条在另台设备读得到吗？"读不到就别只放在 docs/ 里。详见 `assets/skills/SKILL.md` 顶部同款约定。
+
 ---
 
 ## ⚠️ 决策与偏好总览（任何会话开始优化前必读）
@@ -64,7 +66,7 @@
 | 滚动自动判定（按 y vs alignTarget）：贴顶=3、贴底=1、y<alignTarget 上滑=2/下滑=3、y≈alignTarget 上滑=1/下滑=4、y>alignTarget 上滑=1/下滑=4 | 无 |
 | alignTarget = firstCard.offsetTop - stickyTop.offsetHeight（第一张可见卡片顶端对齐 sticky 整体块底部） | 无 |
 | 滚动期间点击锁：lockUserInput 阻止 wheel/touchmove/keydown，连续点击前 forceUnlock 清掉上一轮残留 handler 避免永久锁定 | 无 |
-| 同骨架导航频道页生成器 `assets/py/build_directory.py`：自动扫描 `directory/<name>/`（每个含独立 `assets/xlsx/links.xlsx` + 可选 `assets/meta.json`），套用 S1 骨架生成 `directory/<name>/index.html`；资源引用 `../../assets/`、canonical `/directory/<name>/`、统计代码复用根页；meta.json 全字段 + 根页 ROOT_META 兜底（未自定义字段跟随根页）。示例 `directory/ai/` 已跑通（2026-08-22）。另见 `docs/SUBPAGE_BUILD_DESIGN.md` | 无此脚本（频道页需手写或拆根表子集） |
+| 同骨架导航频道页生成器 `assets/py/build.py`：自动扫描 `directory/<name>/`（每个含独立 `assets/xlsx/self_links.xlsx` + 必填 `assets/json/self_meta.json`），套用 S1 骨架生成 `directory/<name>/index.html`；资源引用 `../../assets/`、canonical `/directory/<name>/`、统计代码复用根页；self_meta.json 仅 3 字段（title/description/keywords）+ 根页 ROOT_META 兜底（未自定义字段跟随根页）。示例 `directory/ai/` 已跑通（2026-08-23）。框架约定详见 `assets/py/build.py` 顶部 docstring（跨设备可读） | 无此脚本（频道页需手写或拆根表子集） |
 
 > 子页 `pages/about`、`pages/submit` 为既有项目结构（资源相对、内链绝对），非本轮主动新增，仅在此标注其形态，不作改动即可。
 
@@ -75,7 +77,7 @@
 
 > **5 个说明型子页（🔶 2026-08-22 主动新增，可整体退回）**：`pages/contact`（联系我们，含收录/反馈/合作邮箱 hello@zhengxie.com.cn）、`pages/disclaimer`（免责声明，含 AI 辅助生成免责声明）、`pages/guide`（使用指南，讲本地收藏/三维度筛选/集合搜索/URL分享/随机漫步/暗色快捷键）、`pages/sitemap`（站点地图，可视化分类索引+功能页+机器可读 sitemap.xml 入口，分类锚点回首页 `#cat=分类`）、`pages/changelog`（更新日志，按时间倒序记录站点迭代）。形态同隐私页（资源 `../../assets/` 引用根、内链绝对 `_self`、无全局 referrer meta、FOUC 仅本地 dark）；写入 `sitemap.xml`（priority 0.50）、页脚导航统一 10 链接（含「网站全景」）。退回即删对应 5 个 `pages/*/` 目录、撤 sitemap/页脚/README 相关行（具体步骤见 `assets/skills/SKILL.md` 退回方案段）。
 
-> **全站中枢页（🔶 2026-08-22 末主动新增，可退回）**：`overview/index.html`「网站全景」= S2 骨架升级版（全站中枢：架构总览 + 各板块活体切片 + 榜单区块 + 分发中枢）。路径 `/overview/`，页脚链接文本「网站全景」。手动同步 GA4+百度统计双 id（无 AdSense，同 404 策略）；资源 `../../assets/` 引用根、写入 `sitemap.xml`（priority 0.70）。退回即删 `overview/`、撤 sitemap/页脚/README 相关行。旧 `units/` 目录已整体删除（2026-08-22 末）。
+> **全站中枢页（🔶 2026-08-22 末主动新增，可退回）**：`pages/overview/index.html`「网站全景」= S2 骨架升级版（全站中枢：架构总览 + 各板块活体切片 + 榜单区块 + 分发中枢）。路径 `/pages/overview/`，页脚链接文本「网站全景」。手动同步 GA4+百度统计双 id（无 AdSense，同 404 策略）；资源 `../../assets/` 引用根、写入 `sitemap.xml`（priority 0.70）。退回即删 `pages/overview/`、撤 sitemap/页脚/README 相关行。旧 `units/` 目录已整体删除（2026-08-22 末）。
 
 ### 3.1 专家转介纪律（🚫 任何会话必守，AI 硬边界）
 
@@ -99,7 +101,7 @@
 > **六大骨架（当前版，S2 已升级）**：
 > | 骨架 | 名称 | 布局范式 | 生成方式 | 现有实例 | 未来可装 |
 > |------|------|---------|---------|---------|---------|
-> | **S1** | 导航产品页 | 卡片 Grid + 三维度筛选 + 集合搜索（sticky 吸顶） | build.py 生成根页；build_directory.py 生成同骨架频道页 | `index.html`（根域 `/`，引流核心，不动） | 细分导航频道页（`/directory/ai/` 等，由 build_directory.py 自动扫描生成） |
+> | **S1** | 导航产品页 | 卡片 Grid + 三维度筛选 + 集合搜索（sticky 吸顶） | build.py 生成根页 + 自动扫描 `directory/` 生成同骨架频道页 | `index.html`（根域 `/`，引流核心，不动） | 细分导航频道页（`/directory/ai/` 等，由 build.py 自动扫描生成） |
 > | **S2** | 全站中枢页（网站全景） | **中枢型**：架构总览 + 各板块活体切片（真实部分内容）+ 榜单区块 + 分发中枢 | 手写或 build | `pages/overview/`（页脚链接文本「网站全景」） | 全站大脑/心脏/脊柱式总览，用户"逛+发现"入口 |
 > | **S3** | 说明信息页 | 单栏静态说明，无长文排版 | 手写自包含 | about / contact / guide / sitemap / changelog | 帮助中心、FAQ、单页介绍 |
 > | **S4** | 合规页 | 同 S3 同构 + 「AI 辅助、非执业律师意见」声明 + 专家复核标记 | 手写自包含 | privacy / disclaimer | 服务条款、Cookie 政策 |
@@ -116,13 +118,13 @@
 > **骨架通用技术契约（全部骨架共用，不可违反）**：资源引用——根页用 `assets/...`，子页（`pages/*/`）用 `../../assets/...` **指向根目录唯一 assets 真源**（子页不再自包含、不再复制 assets，`build.py` 的 `UNIT_PAGES`/`sync_unit_assets` 已于 2026-08-22 移除）；内链绝对 `https://zhengxie.com.cn/...` 且 `target="_self"`；`<head>` **不设**全局 referrer meta；FOUC **仅当 `localStorage('zx_theme')==='dark'` 才暗色**（不跟随系统）；页脚导航统一 10 链接 + 备案号注释占位；`canonical` / `robots` / `description` 齐备；奢华红金白视觉语言（暗色金系，禁蓝紫）。
 >
 > **各骨架差异点（骨架特有契约）**：
-> - **S1**：唯一由 build.py 生成；页脚 10 链接（含「网站全景」）由 `build.py` 首页模板控制（非手写）；含统计/广告代码注入；卡片按 type 分组分行（见「页面与交互说明」章）。
+> - **S1**：唯一由 build.py 生成（根 `index.html` + 自动扫描 `directory/<name>/index.html`）；页脚 10 链接（含「网站全景」）由 `build.py` 首页模板控制（非手写）；含统计/广告代码注入；卡片按 type 分组分行（见「页面与交互说明」章）。`directory/<name>/` 框架约定见 `assets/py/build.py` 顶部 docstring（跨设备可读）。
 > - **S2 / S6 若由 build 生成**：需新增 build 模板定义骨架（目前 build 仅支持 S1，手写子页直接引用 `../../assets/` 即可）；**纯手写时**直接套 `assets/skills/SKILL.md` 中对应骨架模板。
 > - **S4**：正文置顶法律免责声明；内容涉及个保法/效力条款时**触发专家转介纪律**（不替代执业律师）。
 > - **S6**：详情页用 `<article>` 语义 + 阅读排版（行宽约 70ch、段落间距、`figure/figcaption` 插图）；列表页 `articles/index.html` 做索引（标题+摘要+日期+封面）；可选 RSS `feed.xml`、分页、标签归档；长文页仍沿用全局页脚 10 链接与视觉语言。
 > - **S6 内容属性规范（2026-08-22 拍板，锁死）**：
 >   - **目录语义边界**：`blog/` = 本站原创 + 转载正文（长文入此）；`news/` = 挂**别人网站文章链接**的索引页（**不放正文**，feed 并入 news）；`journal/` = 日记；`units/` 已弃用、**禁用于内容集合**。三者均与导航产品目录（`pages/`、`directory/`）语义隔离，不混淆。`directory/` = 同骨架导航产品频道页（S1 实例，由 build 从各目录专属 `self_links.xlsx` 生成，非根表子集）。
->   - **文件命名约定**：`self_` 前缀 = 某页面/功能**独享**的数据文件（不与其他页面共享）。当前独享文件：`assets/xlsx/self_links.xlsx`（根页数据源）、`directory/<name>/assets/xlsx/self_links.xlsx`（目录页数据源）、`directory/<name>/assets/self_meta.json`（目录页页面级信息）。全站共享文件不加 `self_`（如 `assets/json/manifest.json`、`assets/xlsx/link-policy.json`）。
+>   - **文件命名约定**：`self_` 前缀 = 某页面/功能**独享**的数据文件（不与其他页面共享）。当前独享文件：`assets/xlsx/self_links.xlsx`（根页数据源）、`directory/<name>/assets/xlsx/self_links.xlsx`（目录页数据源）、`assets/json/self_meta.json`（根页页面级信息）、`directory/<name>/assets/json/self_meta.json`（目录页页面级信息，3 字段 title/description/keywords）。全站共享文件不加 `self_`（如 `assets/json/manifest.json`、`assets/xlsx/link-policy.json`）。
 >   - **原创 / 转载标识**：每篇详情页头部显式标注「原创 / 转载」徽标（如 `<span class="badge badge--original">原创</span>` / `<span class="badge badge--repost">转载</span>`）。**转载必做**：正文内文首或文末注明原作者、出处链接、转载日期；版权合规属专家转介范畴（见 3.1 节），AI 只出草稿不替用户定论。
 >   - **参考来源区**：长文文末统一用 `<section class="references"><ol><li><a href="..." target="_blank" rel="noopener">来源标题</a></li></ol></section>` 列出引用/参考链接（外链 `noopener`，不发权重）；无来源可不显此区。
 >
@@ -149,6 +151,9 @@
 - [ ] **P2** 用 `check_links.py` 定期跑死链检测，维护 `link_report.txt`
 - [ ] **P2** 移动端体验复核（一行 2 卡、滑道触屏左右滑、暗色切换可达性）
 - [ ] **P3** 视需要扩充 `self_links.xlsx` 分类与卡片数据
+- [ ] **P2** 目录树补全：README「目录结构」补 `directory/`（含 `<name>/` 子目录、`assets/`、`index.html` 由 build.py 生成）与 `assets/json/`（self_meta.json + manifest.json）
+- [ ] **P2** 手写 `directory/index.html` 汇总/门户页（按决策属手写、非 build 任务，目前缺失）
+- [ ] **P2** 扩展 `check_links.py` 覆盖 `directory/*/self_links.xlsx` 死链检测（当前仅扫描根表）
 
 ---
 

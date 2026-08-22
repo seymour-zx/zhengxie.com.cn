@@ -5,6 +5,8 @@
 > 若需"换设备触发即自动执行"，请将本文件复制到 `{workspace}/.workbuddy/skills/<name>/SKILL.md` 并用 SkillManage 注册。
 > 本文件内容与 `README.md` 决策总章互为补充：README 管"决策/规范"，本文件管"可重复的操作步骤"。
 >
+> **🌐 跨设备权威源约定（AI 必守，用户 2026-08-23 指令）**：换设备对话时，**只有 `README.md` 与 `assets/skills/SKILL.md` 这两个 md 保证可读**。因此所有"AI 必须遵守的项目规范/约定"必须落在这两个 md 之一，**或落在代码里**（如 `assets/py/build.py` 顶部 docstring 已内置 `/directory/` 框架约定，即为跨设备权威源）。其它 `docs/*.md`（`docs/` 目录已删除，原 `SUBPAGE_BUILD_DESIGN.md` 内容已并入 build.py docstring 与这两 md）**不算跨设备权威源**，不得作为任何规则的唯一出处；若在 docs/ 写过约定，须同步进这两 md 或代码。新增/修改项目级规则时先自问："这条在另台设备读得到吗？"读不到就别只放在 docs/ 里。
+>
 > **🚫 专家转介纪律（AI 硬边界，任何设备/会话都必须遵守）**：本项目的法律合规文本、SEO 策略、视觉设计评审等**不属于 AI 擅长的确定性工程范畴**，AI 只做"如实陈述技术实现"的草稿，**不替代专业判断**。遇到下列任务，AI 必须**主动停止、明确告知用户应咨询对应专家/connector**，不得硬做、不得给看似专业实则未经验证的结论。具体清单见文末「专家转介纪律」段。
 
 ---
@@ -12,7 +14,7 @@
 ## 适用场景（触发词）
 
 用户要求"新增子页面 / 加说明页 / 加一个 XX 页 / 补全站点说明类页面"时，按本流程执行。
-本项目已有子页：about（关于）、submit（收录申请）、privacy（隐私政策）、contact（联系我们）、disclaimer（免责声明）、guide（使用指南）、sitemap（站点地图）、changelog（更新日志）。
+本项目已有子页：about（关于）、submit（收录申请）、privacy（隐私政策）、contact（联系我们）、disclaimer（免责声明）、guide（使用指南）、sitemap（站点地图）、changelog（更新日志）、overview（网站全景，S2 中枢页）。
 
 ---
 
@@ -20,7 +22,7 @@
 
 每个 `pages/<name>/index.html` 必须满足：
 
-1. **资源相对**：`<link rel="stylesheet" href="assets/css/style.css">`、`<link rel="icon" href="assets/images/logo.svg">`（不引用根域共享 assets）。
+1. **资源相对（引用根目录共享 assets 真源）**：`<link rel="stylesheet" href="../../assets/css/style.css">`、`<link rel="icon" href="../../assets/images/logo.svg">`（子页不再自包含，统一 `../../assets/` 指向根目录唯一 assets）。
 2. **内链绝对 + `_self`**：站内跳转用 `https://zhengxie.com.cn/...` 且 `target="_self"`（如页脚导航、正文交叉链接）。
 3. **不设全局 referrer meta**：`<head>` 中**不要**写 `<meta name="referrer" content="no-referrer">`（全站已锁定"不设全局 referrer"规则）。
 4. **FOUC 仅本地 dark**：`<head>` 内联脚本仅当 `localStorage('zx_theme')==='dark'` 才设 `data-theme="dark"`，**不跟随系统偏好**。
@@ -73,7 +75,7 @@
 
 ## 全站联动清单（新增子页后必须同步，缺一不可）
 
-> 目录约定（2026-08-22 末生效，2026-08-22 更新）：说明/合规/功能型子页 + 全站中枢页**统一放 `pages/<name>/`**（`units/` 已整体删除、`test.html` 已删；中枢页 `pages/overview/` 由根 `overview/` 移入）。导航频道（S1 实例）放 `directory/<name>/`，由 `assets/py/build_directory.py` 自动扫描各目录专属 `assets/xlsx/links.xlsx` 生成 `index.html`（非根表子集；原 `nav/<name>/` 草稿约定作废，2026-08-22 用户指定为 `directory/`）。
+> 目录约定（2026-08-22 末生效，2026-08-23 更新）：说明/合规/功能型子页 + 全站中枢页**统一放 `pages/<name>/`**（`units/` 已整体删除、`test.html` 已删；中枢页 `pages/overview/` 由根 `overview/` 移入）。导航频道（S1 实例）放 `directory/<name>/`，由 `assets/py/build.py` 自动扫描各目录专属 `assets/xlsx/self_links.xlsx` 生成 `index.html`（非根表子集；原 `nav/<name>/` 草稿约定作废，2026-08-22 用户指定为 `directory/`）。框架约定详见 `assets/py/build.py` 顶部 docstring（跨设备可读）。
 
 1. **子页资源引用（2026-08-22 调整）**：子页 `pages/<name>/index.html` **不再复制 assets、不再自包含**，直接以相对路径 `../../assets/css/style.css`、`../../assets/images/logo.svg`、`../../assets/js/main.js` 引用**根目录**共享 assets（根 assets 为唯一真源，`build.py` 已移除 `UNIT_PAGES`/`sync_unit_assets` 复制逻辑）。新增子页时照此写引用即可，无需改 `build.py`。
 2. **`assets/py/build.py` 首页模板页脚**：若新子页需在首页页脚出现，在 footer `<nav>` 内加 `<a href="{{SITE_DOMAIN}}/pages/<name>/">名称</a>`（中枢页用 `{{SITE_DOMAIN}}/pages/overview/` 文本「网站全景」；注意用 `{{SITE_DOMAIN}}` 占位，build 会替换；首页模板页脚已含 10 链接）。
@@ -162,7 +164,7 @@
 > **S6 与 S3 的边界**：S3 是"单页静态说明、无长文排版、无插图流、无列表索引"；S6 是"长文 + 插图 + 上一篇下一篇 + 列表索引"。日记/博客**一律走 S6，不塞进 S3/about**。
 
 **S6 内容属性规范（2026-08-22 拍板，锁死，与 README 3.2 节对应）**：
-- **目录语义边界**：`blog/` = 本站原创 + 转载正文；`news/` = 挂外站文章链接的索引（无正文，feed 并入）；`journal/` = 日记；`units/` 已弃用、禁用于内容集合。与导航产品目录（`pages/`、`nav/`）语义隔离。
+- **目录语义边界**：`blog/` = 本站原创 + 转载正文；`news/` = 挂外站文章链接的索引（无正文，feed 并入）；`journal/` = 日记；`units/` 已弃用、禁用于内容集合。与导航产品目录（`pages/`、`directory/`）语义隔离。
 - **原创 / 转载标识**：详情页头部显式「原创 / 转载」徽标。转载**必须**文内注明原作者 + 出处链接 + 转载日期；版权合规触发专家转介纪律（AI 只出草稿，不替用户下结论）。
 - **参考来源区**：文末 `<section class="references"><ol><li><a href="..." target="_blank" rel="noopener">来源标题</a></li></ol></section>` 列引用链接；无来源可省。
 - **列表页字段**：标题 + 摘要 + 发布日期 + 封面 + 来源徽标（原创/转载），每条链到详情页。

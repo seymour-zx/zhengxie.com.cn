@@ -153,6 +153,24 @@ input, textarea, select { font-family: inherit; }
   letter-spacing: .18em;
 }
 .hero__search { max-width: 660px; margin: 30px auto 0; }
+/* directory 频道页专题介绍块（替换 hero 搜索框） */
+.channel-intro {
+  max-width: 760px;
+  margin: 28px auto 0;
+  text-align: left;
+  background: var(--bg);
+  border: 1px solid var(--gold);
+  border-radius: 16px;
+  padding: 22px 26px;
+  box-shadow: 0 4px 14px rgba(158, 27, 34, .08);
+}
+.channel-intro__desc {
+  margin: 0;
+  font-size: clamp(15px, 2vw, 18px);
+  line-height: 1.8;
+  color: var(--text);
+}
+[data-theme="dark"] .channel-intro { box-shadow: 0 4px 14px rgba(0, 0, 0, .3); }
 /* 主引擎按钮（原位：搜索框上方，胶囊分组） */
 .hero__engines {
   display: inline-flex; gap: 4px;
