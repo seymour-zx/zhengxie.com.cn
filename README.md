@@ -65,14 +65,16 @@
 | alignTarget = firstCard.offsetTop - stickyTop.offsetHeight（第一张可见卡片顶端对齐 sticky 整体块底部） | 无 |
 | 滚动期间点击锁：lockUserInput 阻止 wheel/touchmove/keydown，连续点击前 forceUnlock 清掉上一轮残留 handler 避免永久锁定 | 无 |
 
-> 子页 `units/about`、`units/submit` 为既有项目结构（资源相对、内链绝对），非本轮主动新增，仅在此标注其形态，不作改动即可。
+> 子页 `pages/about`、`pages/submit` 为既有项目结构（资源相对、内链绝对），非本轮主动新增，仅在此标注其形态，不作改动即可。
 
-> **子页统一形态（含 2026-08-22 新增的 `units/privacy`，及 2026-08-22 新增的 contact/disclaimer/guide/sitemap/changelog）**：手写静态页，`<head>` **不设**全局 referrer meta（与主页/README「不设全局 referrer」规则一致）、FOUC **仅当 `localStorage('zx_theme')==='dark'` 才暗色**（不跟随系统偏好）；资源相对 `assets/...`、内链绝对 `https://zhengxie.com.cn/...` 且 `target="_self"`；`build.py` 的 `UNIT_PAGES` 已含 about/submit/privacy/contact/disclaimer/guide/sitemap/changelog，重 build 会同步各自独立 assets。
+> **子页统一形态（目录已于 2026-08-22 末从 `units/` 迁移至 `pages/`）**：手写静态页，`<head>` **不设**全局 referrer meta（与主页/README「不设全局 referrer」规则一致）、FOUC **仅当 `localStorage('zx_theme')==='dark'` 才暗色**（不跟随系统偏好）；资源相对 `assets/...`、内链绝对 `https://zhengxie.com.cn/...` 且 `target="_self"`；`build.py` 的 `UNIT_PAGES` 已含 pages/about/submit/privacy/contact/disclaimer/guide/sitemap/changelog 与 `overview`，重 build 会同步各自独立 assets。
 > **子页新增/调整的具体操作步骤（标准形态 7 要点、页脚模板、全站联动清单、验证步骤、退回方案）已抽离至 `assets/skills/SKILL.md`**——任何会话要新增子页时，先读该 SKILL.md 照做，避免 README 与操作步骤两处维护漂移。
 
-> **隐私政策页（🔶 本次主动新增，可退回）**：`units/privacy/index.html` 由我据站点真实技术实现起草（含免责声明「AI 辅助生成、非执业律师正式意见」）；内容如实陈述——本站为纯静态站、无后端/无注册、本地收藏存 localStorage 不上传、接入百度统计/GA4/AdSense、不设全局 referrer、外链按优先级规则打开。**改动前原状态**：站内无隐私政策页（页脚无隐私链接、sitemap 无隐私条目）。退回即删 `units/privacy/`、撤 `UNIT_PAGES` 中的 privacy 项、撤 sitemap/页脚/README 相关行。
+> **隐私政策页（🔶 本次主动新增，可退回）**：`pages/privacy/index.html` 由我据站点真实技术实现起草（含免责声明「AI 辅助生成、非执业律师正式意见」）；内容如实陈述——本站为纯静态站、无后端/无注册、本地收藏存 localStorage 不上传、接入百度统计/GA4/AdSense、不设全局 referrer、外链按优先级规则打开。**改动前原状态**：站内无隐私政策页（页脚无隐私链接、sitemap 无隐私条目）。退回即删 `pages/privacy/`、撤 `UNIT_PAGES` 中的 privacy 项、撤 sitemap/页脚/README 相关行。
 
-> **5 个说明型子页（🔶 2026-08-22 主动新增，可整体退回）**：`units/contact`（联系我们，含收录/反馈/合作邮箱 hello@zhengxie.com.cn）、`units/disclaimer`（免责声明，含 AI 辅助生成免责声明）、`units/guide`（使用指南，讲本地收藏/三维度筛选/集合搜索/URL分享/随机漫步/暗色快捷键）、`units/sitemap`（站点地图，可视化分类索引+功能页+机器可读 sitemap.xml 入口，分类锚点回首页 `#cat=分类`）、`units/changelog`（更新日志，按时间倒序记录站点迭代）。形态同隐私页（资源相对、内链绝对 `_self`、无全局 referrer meta、FOUC 仅本地 dark）；全部进入 `UNIT_PAGES` 同步 assets、写入 `sitemap.xml`（priority 0.50）、页脚导航统一 9 链接。退回即删对应 5 个 `units/*/` 目录、撤 `UNIT_PAGES` 中 5 项、撤 sitemap/页脚/README 相关行（具体步骤见 `assets/skills/SKILL.md` 退回方案段）。
+> **5 个说明型子页（🔶 2026-08-22 主动新增，可整体退回）**：`pages/contact`（联系我们，含收录/反馈/合作邮箱 hello@zhengxie.com.cn）、`pages/disclaimer`（免责声明，含 AI 辅助生成免责声明）、`pages/guide`（使用指南，讲本地收藏/三维度筛选/集合搜索/URL分享/随机漫步/暗色快捷键）、`pages/sitemap`（站点地图，可视化分类索引+功能页+机器可读 sitemap.xml 入口，分类锚点回首页 `#cat=分类`）、`pages/changelog`（更新日志，按时间倒序记录站点迭代）。形态同隐私页（资源相对、内链绝对 `_self`、无全局 referrer meta、FOUC 仅本地 dark）；全部进入 `UNIT_PAGES` 同步 assets、写入 `sitemap.xml`（priority 0.50）、页脚导航统一 10 链接（含「网站全景」）。退回即删对应 5 个 `pages/*/` 目录、撤 `UNIT_PAGES` 中 5 项、撤 sitemap/页脚/README 相关行（具体步骤见 `assets/skills/SKILL.md` 退回方案段）。
+
+> **全站中枢页（🔶 2026-08-22 末主动新增，可退回）**：`overview/index.html`「网站全景」= S2 骨架升级版（全站中枢：架构总览 + 各板块活体切片 + 榜单区块 + 分发中枢）。路径 `/overview/`，页脚链接文本「网站全景」。手动同步 GA4+百度统计双 id（无 AdSense，同 404 策略）；进入 `UNIT_PAGES` 同步 assets、写入 `sitemap.xml`（priority 0.70）。退回即删 `overview/`、撤 `UNIT_PAGES` 中 overview 项、撤 sitemap/页脚/README 相关行。旧 `units/` 目录保留为 meta refresh 过渡页（自动跳 `pages/`），不删（保外链/收录价值）。
 
 ### 3.1 专家转介纪律（🚫 任何会话必守，AI 硬边界）
 
@@ -87,11 +89,44 @@
 >
 > AI 仅提供"如实陈述技术实现"的草稿（隐私/免责页已置顶"AI 辅助、非执业律师意见"声明），不自行定稿、不替代专业判断。完整纪律与专家清单见 `assets/skills/SKILL.md`「专家转介纪律」段。
 
+### 3.2 页面骨架总分类（S1–S6，任何内容先归骨架再套模板）
+
+> **分类原则（重要）**：本站是"以导航为主、但会包罗所有静态页面形态的综合站"。因此**不按内容主题分类**（那样无穷无尽），而按**页面骨架契约**分类——由「生成方式 × 布局范式 × 资源引用 × SEO 角色」四维决定。
+>
+> **骨架可演进原则（用户 2026-08-22 明示）**：新页面**优先归集**已有骨架；但当某类内容在形态/契约/SEO 角色上确实无法被现有骨架覆盖、且对网站长远发展有利时，**应新增骨架（S7、S8…）**。骨架本身可随产品演进而**升级改版**（如本站立项即把 S2 从"门户首页"升级为"全站中枢页·网站全景"）。不预设骨架数量上限，但每次新增/升级都须写入本章并同步 `assets/skills/SKILL.md`。
+>
+> **六大骨架（当前版，S2 已升级）**：
+> | 骨架 | 名称 | 布局范式 | 生成方式 | 现有实例 | 未来可装 |
+> |------|------|---------|---------|---------|---------|
+> | **S1** | 导航产品页 | 卡片 Grid + 三维度筛选 + 集合搜索（sticky 吸顶） | build.py 生成 | `index.html`（根域 `/`，引流核心，不动） | 细分导航频道页（`/nav/ai/` 等） |
+> | **S2** | 全站中枢页（网站全景） | **中枢型**：架构总览 + 各板块活体切片（真实部分内容）+ 榜单区块 + 分发中枢 | 手写或 build | `pages/overview/`（页脚链接文本「网站全景」） | 全站大脑/心脏/脊柱式总览，用户"逛+发现"入口 |
+> | **S3** | 说明信息页 | 单栏静态说明，无长文排版 | 手写自包含 | about / contact / guide / sitemap / changelog | 帮助中心、FAQ、单页介绍 |
+> | **S4** | 合规页 | 同 S3 同构 + 「AI 辅助、非执业律师意见」声明 + 专家复核标记 | 手写自包含 | privacy / disclaimer | 服务条款、Cookie 政策 |
+> | **S5** | 功能入口页 | 表单 / 提交 / 交互型 | 手写自包含 | submit | 订阅、反馈、登录入口 |
+> | **S6** | 文章 / 内容页 | 列表索引 + 详情（长文 + 插图 + 上一篇/下一篇） | 手写或 build | （暂无） | 博客、日记、文档站、教程、新闻 |
+>
+> **S2 全站中枢页（网站全景）详细契约**：
+> - **定位**：非"入口/眼耳口"，而是全站**大脑/心脏/脊柱/中枢神经**——用户在此**了解整体架构**（导航产品有什么、博客有什么、其他推荐板块）、**看见各板块活体切片**（非"点击进入"四字，而是真实部分内容：导航前几个分类、博客最新 3 篇、榜单 Top5）、**看全局榜单**、并**分发**去各板块。与 S1（根域导航产品页，服务"用"）形成互补双核心：S1 服务"用工具"，S2 服务"逛+发现"。
+> - **四大区块**：①架构总览区（可视化展示站点所有板块及关系，如站点神经系统图）；②各板块活体切片区（每板块展示真实部分内容 + 去向链接）；③榜单区块（收录榜单 TopN + 访问量榜单 TopN）；④分发中枢（每切片明确去向，中枢本身可停留消费）。可加品牌理念区（一句话定位）。
+> - **路径与命名**：路径 `/pages/overview/`（属 S3/S4/S5 同级说明型目录 `pages/` 下的中枢页，符合"中枢整合全站"定位），各页 `<a>` 链接文本统一为「网站全景」（与 S1 的"首页/导航"文本区分，不与"导航站"概念混淆）；canonical 指向 `https://zhengxie.com.cn/pages/overview/`。
+> - **榜单 S7 预留（升级口）**：榜单**当前留在 S2 内**作区块；当维度增多、常更新、需分页/筛选/全量查看时，**升为独立骨架 S7「榜单/排行页」**（路径如 `/rank/`），从 S2 榜单块"更多"跳转看全量完整排行。触发条件达成前不新增，达成后写入本章并同步 SKILL.md。
+> - **数据来源（⏳ PENDING）**：架构总览/活体切片/榜单的数据从哪来（导航分类提取 `index.html` 的 `data-cat` / 博客未来从 S6 / 榜单需 build 扩展或手动维护），待用户拍板，不擅自决定。
+>
+> **骨架通用技术契约（全部骨架共用，不可违反）**：资源相对 `assets/...`（各页自包含，不引用根域共享 assets）；内链绝对 `https://zhengxie.com.cn/...` 且 `target="_self"`；`<head>` **不设**全局 referrer meta；FOUC **仅当 `localStorage('zx_theme')==='dark'` 才暗色**（不跟随系统）；页脚导航统一 9 链接 + 备案号注释占位；`canonical` / `robots` / `description` 齐备；奢华红金白视觉语言（暗色金系，禁蓝紫）。
+>
+> **各骨架差异点（骨架特有契约）**：
+> - **S1**：唯一由 build.py 生成；页脚 10 链接（含「网站全景」）由 `build.py` 首页模板控制（非手写）；含统计/广告代码注入；卡片按 type 分组分行（见「页面与交互说明」章）。
+> - **S2 / S6 若由 build 生成**：需新增对应 `UNIT_PAGES` 项并在 build 模板定义骨架（目前 build 仅支持 S1 与手写子页复制 assets）；**纯手写时**直接套 `assets/skills/SKILL.md` 中对应骨架模板。
+> - **S4**：正文置顶法律免责声明；内容涉及个保法/效力条款时**触发专家转介纪律**（不替代执业律师）。
+> - **S6**：详情页用 `<article>` 语义 + 阅读排版（行宽约 70ch、段落间距、`figure/figcaption` 插图）；列表页 `articles/index.html` 做索引（标题+摘要+日期+封面）；可选 RSS `feed.xml`、分页、标签归档；长文页仍沿用全局页脚 10 链接与视觉语言。
+>
+> **新增内容决策流**：用户提出新页面 → 先判「属哪一已有骨架」→ 套该骨架模板 → 走 `assets/skills/SKILL.md` 对应联动清单。**若现有骨架都无法覆盖且对长远有利** → 与用户确认后**新增骨架编号（S7+）**并写入本章与 SKILL.md，不得私自套错骨架或擅自锁死"不新增"。
+
 ### 4. 讨论过无结论清单（⏳ PENDING — 动手前先问）
 
 | 议题                                                               | 现状                                            |
 | ---------------------------------------------------------------- | --------------------------------------------- |
-| 换域名时 `units/about`、`units/submit` 的 canonical 与内链仍是**字面量**，需手动替换 | 是否把子页也纳入 `build.py` 模板统一管理？待用户拍板              |
+| 换域名时 `pages/about`、`pages/submit` 的 canonical 与内链仍是**字面量**，需手动替换 | 是否把子页也纳入 `build.py` 模板统一管理？待用户拍板              |
 | 国内访问 GitHub Pages 不稳定                                            | 是否迁移到国内 CDN / Vercel / Netlify？待用户拍板（见可选部署方案） |
 | 分类在导航栏的默认排序 / 隐藏逻辑                                               | 暂无定论，维持「按数据自动生成」现状                            |
 
@@ -102,8 +137,9 @@
 - [x] **P0** 暗色模式重做为奢华金系（v6 已完成）
 - [x] **P0** 移除分类计数徽章、空结果清除按钮；暗色切换移页脚；随机漫步移页脚（已完成）
 - [x] **P1** 新增 5 个说明型子页：contact/disclaimer/guide/sitemap/changelog（2026-08-22 完成，含 UNIT_PAGES/sitemap/页脚/README 同步）
-- [ ] **P1** 将 `units/about`、`units/submit` 纳入 `build.py` 模板，消除换域名时手动替换字面量（依赖第 4 节待定项决策）
+- [ ] **P1** 将 `pages/about`、`pages/submit` 纳入 `build.py` 模板，消除换域名时手动替换字面量（依赖第 4 节待定项决策）
 - [ ] **P1** 评估并决策 GitHub Pages 国内访问稳定性问题（是否迁移 CDN）
+- [x] **P1** 清理开发残留：`test.html`（根目录测试页，已删）、`units/`（旧过渡页+占位，已整体删除，2026-08-22 末）；全站 `/overview/` 已统一改 `/pages/overview/`、`units/` 引用清零
 - [ ] **P2** 用 `check_links.py` 定期跑死链检测，维护 `link_report.txt`
 - [ ] **P2** 移动端体验复核（一行 2 卡、滑道触屏左右滑、暗色切换可达性）
 - [ ] **P3** 视需要扩充 `links.xlsx` 分类与卡片数据
@@ -114,17 +150,19 @@
 
 ```
 正协导航/
-├── index.html               站点主页（由 build.py 生成，静态渲染，SEO 友好）
+├── index.html               站点主页/导航产品页（由 build.py 生成，静态渲染，SEO 友好，根域 /）
 ├── README.md                本手册
-├── units/
-│   ├── about/index.html      关于本站（手写静态页，资源相对、内链绝对）
-│   ├── submit/index.html     收录申请（同上）
-│   ├── privacy/index.html    隐私政策（同上，2026-08-22 新增）
-│   ├── contact/index.html    联系我们（同上，2026-08-22 新增）
-│   ├── disclaimer/index.html 免责声明（同上，2026-08-22 新增）
-│   ├── guide/index.html      使用指南（同上，2026-08-22 新增）
-│   ├── sitemap/index.html    站点地图（同上，2026-08-22 新增）
-│   └── changelog/index.html  更新日志（同上，2026-08-22 新增）
+├── 404.html                 错误页（自包含、按来源动态返回、含 GA4+百度统计、无 AdSense）
+├── pages/                   说明/合规/功能型子页（原 units/，2026-08-22 末迁移；S2/S3/S4/S5 均归此）
+│   ├── overview/index.html  网站全景（全站中枢页 S2，2026-08-22 末由根 overview/ 移入）
+│   ├── about/index.html      关于本站（S3 手写静态页，资源相对、内链绝对）
+│   ├── submit/index.html     收录申请（S5）
+│   ├── privacy/index.html    隐私政策（S4，2026-08-22 新增）
+│   ├── contact/index.html    联系我们（S3，2026-08-22 新增）
+│   ├── disclaimer/index.html 免责声明（S4，2026-08-22 新增）
+│   ├── guide/index.html      使用指南（S3，2026-08-22 新增）
+│   ├── sitemap/index.html    站点地图（S3，2026-08-22 新增）
+│   └── changelog/index.html  更新日志（S3，2026-08-22 新增）
 └── assets/
     ├── css/
     │   └── style.css        全站样式（奢华红金白、响应式 Grid）

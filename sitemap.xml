@@ -6,42 +6,47 @@
     <priority>1.00</priority>
   </url>
   <url>
-    <loc>https://zhengxie.com.cn/units/about/</loc>
+    <loc>https://zhengxie.com.cn/pages/overview/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://zhengxie.com.cn/pages/about/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.60</priority>
   </url>
   <url>
-    <loc>https://zhengxie.com.cn/units/submit/</loc>
+    <loc>https://zhengxie.com.cn/pages/submit/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.60</priority>
   </url>
   <url>
-    <loc>https://zhengxie.com.cn/units/privacy/</loc>
+    <loc>https://zhengxie.com.cn/pages/privacy/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.60</priority>
   </url>
   <url>
-    <loc>https://zhengxie.com.cn/units/contact/</loc>
+    <loc>https://zhengxie.com.cn/pages/contact/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.50</priority>
   </url>
   <url>
-    <loc>https://zhengxie.com.cn/units/disclaimer/</loc>
+    <loc>https://zhengxie.com.cn/pages/disclaimer/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.50</priority>
   </url>
   <url>
-    <loc>https://zhengxie.com.cn/units/guide/</loc>
+    <loc>https://zhengxie.com.cn/pages/guide/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.50</priority>
   </url>
   <url>
-    <loc>https://zhengxie.com.cn/units/sitemap/</loc>
+    <loc>https://zhengxie.com.cn/pages/sitemap/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.50</priority>
   </url>
   <url>
-    <loc>https://zhengxie.com.cn/units/changelog/</loc>
+    <loc>https://zhengxie.com.cn/pages/changelog/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.50</priority>
   </url>

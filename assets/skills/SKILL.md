@@ -73,42 +73,95 @@
 
 ## 全站联动清单（新增子页后必须同步，缺一不可）
 
-1. **`assets/py/build.py` 的 `UNIT_PAGES`**：追加 `"units/<name>"`。
-   - 当前值：`["units/about", "units/submit", "units/privacy", "units/contact", "units/disclaimer", "units/guide", "units/sitemap", "units/changelog"]`
+> 目录约定（2026-08-22 末生效，2026-08-22 更新）：说明/合规/功能型子页 + 全站中枢页**统一放 `pages/<name>/`**（`units/` 已整体删除、`test.html` 已删；中枢页 `pages/overview/` 由根 `overview/` 移入）。导航频道未来放 `nav/<name>/`（S1 实例）。
+
+1. **`assets/py/build.py` 的 `UNIT_PAGES`**：追加 `"pages/<name>"`（中枢页也走 `pages/overview`）。
+   - 当前值：`["pages/about", "pages/submit", "pages/privacy", "pages/contact", "pages/disclaimer", "pages/guide", "pages/sitemap", "pages/changelog", "pages/overview"]`
    - 重 build 时 `sync_unit_assets()` 会自动把根 `assets/{css,js,images}` 复制到该子页的 `assets/`，使其自包含。
-2. **`assets/py/build.py` 首页模板页脚**：若新子页需在首页页脚出现，在 footer `<nav>` 内加 `<a href="{{SITE_DOMAIN}}/units/<name>/">名称</a>`（注意用 `{{SITE_DOMAIN}}` 占位，build 会替换；且首页模板页脚已含 9 链接，新增时一并补全）。
-3. **手写子页页脚**：about / submit / privacy / contact / disclaimer / guide / sitemap / changelog 共 8 个手写页，页脚 nav 需与新子页互链（保持 9 链接一致）。可用统一模板批量替换 nav 块。
-4. **`sitemap.xml`**：在 `</urlset>` 前加 `<url>` 条目，`<loc>https://zhengxie.com.cn/units/<name>/</loc>`、`<changefreq>monthly</changefreq>`、`<priority>0.50</priority>`。
+2. **`assets/py/build.py` 首页模板页脚**：若新子页需在首页页脚出现，在 footer `<nav>` 内加 `<a href="{{SITE_DOMAIN}}/pages/<name>/">名称</a>`（中枢页用 `{{SITE_DOMAIN}}/pages/overview/` 文本「网站全景」；注意用 `{{SITE_DOMAIN}}` 占位，build 会替换；首页模板页脚已含 10 链接）。
+3. **手写子页页脚**：pages 下 9 个手写页（含 overview）页脚 nav 需与新子页互链（保持 10 链接一致，含「网站全景」）。可用统一模板批量替换 nav 块。
+4. **`sitemap.xml`**：在 `</urlset>` 前加 `<url>` 条目，`<loc>https://zhengxie.com.cn/pages/<name>/</loc>`、`<changefreq>monthly</changefreq>`、`<priority>0.50</priority>`（中枢页 `pages/overview` 用 priority 0.70）。
 5. **`README.md`**：决策总章第 3 节补该子页的 🔶 状态标注（附原状态=无此页，可退回）；BACKLOG 标记完成情况。
-6. **`index.html`**：若是 build 重新生成，确认页脚 9 链接完整、隐私路径为 `units/privacy/`（非旧路径 `units/privacy/1`）。
+6. **`index.html`**：若是 build 重新生成，确认页脚 10 链接完整（含「网站全景」）、路径为 `pages/<name>/` 与 `pages/overview/`。
 
 ---
 
 ## 真实分类列表（用于站点地图 / 筛选锚点）
 
-首页 `category-bar` 的 `data-cat` 真实值（供 `units/sitemap/` 做分类索引卡片，锚点 `#cat=<分类>` 回首页筛选）：
+首页 `category-bar` 的 `data-cat` 真实值（供 `pages/sitemap/` 做分类索引卡片，锚点 `#cat=<分类>` 回首页筛选）：
 
 ```
 机构 | 政协 | 资讯媒体 | 常用入口 | AI智能 | 设计创意 | 开发技术 | 学习教育 | 效率工具 | 影音娱乐
 ```
 
-`units/sitemap/` 已用这 10 个分类做可视化卡片；新增分类索引类页面时以本列表为准（从 `index.html` 的 `data-cat` 重新提取，避免硬编码过期）。
+`pages/sitemap/` 已用这 10 个分类做可视化卡片；新增分类索引类页面时以本列表为准（从 `index.html` 的 `data-cat` 重新提取，避免硬编码过期）。
 
 ---
 
 ## 验证步骤（完成后必跑）
 
 1. 运行 build：`python assets/py/build.py`（路径用本项目 managed python）。确认读记录数正常、生成 index.html 无报错。
-2. 校验新子页 assets 同步：`ls units/<name>/assets` 应含 `css js images`。
-3. 校验首页页脚：grep `units/<name>/` 在 index.html 出现；grep `units/privacy/1` 应为 0（旧路径已清除）。
-4. 校验 sitemap.xml：含新 `<loc>` 条目，总数 = 1（首页）+ N（子页）。
-5. 抽查子页：无全局 referrer meta、FOUC 脚本仅本地 dark、内链 `_self`、页脚 9 链接齐全。
+2. 校验新子页 assets 同步：`ls pages/<name>/assets` 应含 `css js images`（中枢页 `ls pages/overview/assets`）。
+3. 校验首页页脚：grep `pages/<name>/` 与 `pages/overview/` 在 index.html 出现；grep `units/` 应为 0（旧目录已整体删除，2026-08-22 末）。
+4. 校验 sitemap.xml：含新 `<loc>` 条目（均为 `pages/` 路径），总数 = 1（首页）+ 1（pages/overview）+ N（pages 子页）。
+5. 抽查子页：无全局 referrer meta、FOUC 脚本仅本地 dark、内链 `_self`、页脚 10 链接齐全（含「网站全景」）。
 
 ---
 
 ## 退回方案
 
-若用户要求撤销某个子页：删 `units/<name>/` 目录 → 撤 `UNIT_PAGES` 中对应项 → 撤 sitemap.xml 对应条目 → 撤所有页脚 nav 中对应 `<a>` → 撤 README 对应行 → 重 build。
+若用户要求撤销某个子页：删 `pages/<name>/`（中枢页为 `pages/overview/`）目录 → 撤 `UNIT_PAGES` 中对应项 → 撤 sitemap.xml 对应条目 → 撤所有页脚 nav 中对应 `<a>` → 撤 README 对应行 → 重 build。
+
+---
+
+## 页面骨架模板规范（S1–S6+，与 README 3.2 节对应）
+
+> 本站页面按骨架契约分类（详见 README 3.2 节）。**骨架可演进原则**：新页面优先归集已有骨架；确无法覆盖且对长远有利时新增骨架（S7+）；骨架可升级改版。以下补 **S2（全站中枢页·网站全景，已升级）** 与 **S6（文章/内容页）** 的模板规范（目前站点暂无这两类实例，先沉淀规范，未来套用）。S1 规范见 README「页面与交互说明」章（build.py 生成，非手写模板）。
+
+### S2 — 全站中枢页（网站全景）【已升级，非普通入口页】
+
+**定位（与 README 3.2 一致）**：全站大脑/心脏/脊柱/中枢神经，**不是**"入口/眼耳口"。用户在此了解整体架构、看见各板块活体切片、看全局榜单、并分发去各板块。与 S1（根域 `/` 导航产品页，服务"用"）互补双核心：S2 服务"逛+发现"。
+
+**路径与命名**：路径 `/overview/`；各页 `<a>` 链接文本统一「网站全景」（不以"门户/首页"命名，避免与 S1 导航产品页及"导航站"概念混淆）。
+
+**四大区块结构（手写模板骨架）**：
+1. **架构总览区**：可视化展示站点所有板块及关系（如"站点神经系统图"：导航产品 / 博客 / 榜单 / 各推荐板块的节点与连线）。
+2. **各板块活体切片区**：每个板块展示**真实部分内容**（非"点击进入"四字）——导航取前几个分类（`index.html` 的 `data-cat`）、博客取最新 3 篇标题+摘要、其他推荐板块取预览；每切片带明确去向链接。
+3. **榜单区块**：收录榜单 TopN + 访问量榜单 TopN。**当前留在 S2 内**；维度增多/常更新时升 S7 独立榜单页（从本区块"更多"跳转全量）。
+4. **分发中枢**：每切片/榜单均有去向，中枢本身可停留消费概览。
+
+**技术契约**：
+- 生成方式：手写静态页（或未来 build 扩展）；资源相对 `assets/`、内链绝对 `_self`、无全局 referrer、FOUC 仅本地 dark、页脚 9 链接 + 备案占位（同通用契约）。
+- 统计：手写页**手动同步** GA4 + 百度统计双 id（同 `404.html` 做法，不含 AdSense）。
+- SEO：`canonical` 指向 `https://zhengxie.com.cn/overview/`；`og:type=website`；补 description/keywords（强调"全站总览"）。
+- 数据来源（⏳ PENDING，不擅自决定）：架构/切片/榜单数据从哪来待用户拍板。
+
+**联动**：手写时无需改 `UNIT_PAGES`（仅 S1 与手写子页复制 assets 走 UNIT_PAGES）；建 `overview/` 时建议加入 `UNIT_PAGES` 同步 assets；sitemap.xml 加 `<url>`（priority 0.50，低于 S1 根域）；README 3.2 补 🔶 标注（如"网站全景中枢页，2026-XX 立项"）。
+
+### S6 — 文章 / 内容页（列表索引 + 详情）
+
+**适用**：博客、日记、文档站、教程、新闻等一切长文内容。这是 about 等说明页**不属于**的形态——区别在于长文排版 + 插图流 + 列表索引。
+
+**两种文件**：
+1. **列表索引页** `articles/index.html`（或 `/blog/`、`/docs/`）：标题 + 摘要 + 发布日期 + 封面图网格/列表；每项链到详情页。可纯手写，未来可由 build 从 markdown/xlsx 生成。
+2. **详情页** `articles/<slug>/index.html`：`<article>` 语义包裹；阅读排版（正文 `max-width:70ch`、段落 `line-height:1.8`、标题层级 `h1>h2>h3`）；插图用 `<figure><img><figcaption>`；文末「上一篇 / 下一篇」导航；发布时间 `<time>`。
+
+**技术契约（详情页）**：
+- 资源相对 `assets/`（每篇自带或共享 `articles/assets/`）、内链绝对 `_self`、无全局 referrer、FOUC 仅本地 dark。
+- 页脚：沿用全局 9 链接 + 备案占位（与 S3 一致，不可省略）。
+- 统计：手写详情页**手动同步** GA4 + 百度统计双 id（同 S2/404 做法）。
+- SEO：`<link rel="canonical" href="https://zhengxie.com.cn/articles/<slug>/">`；`og:type=article`、`article:published_time`；结构化数据可用 `BlogPosting` JSON-LD（可选）。
+
+**插图规范**：图片用合规 URL（同 README「数据维护」合规 URL 定义）或相对 `assets/images/`；防盗链用 `referrerpolicy="no-referrer"`（仅图片，不全局）；`figure` 包裹保证排版语义。
+
+**联动清单（新增一个文章/内容板块时）**：
+1. 若走 build 生成：在 `build.py` 新增数据源与模板（扩展 UNIT_PAGES / 新增 ARTICLE 模板）；若纯手写：直接建 `articles/<slug>/index.html`。
+2. `sitemap.xml`：列表页 + 每篇详情页各加 `<url>`（详情页 priority 0.40，列表页 0.50）。
+3. 全局页脚 9 链接：文章页页脚 nav 与其他页一致（保持全站统一）。
+4. `README.md` 3.2 节：补该板块的 🔶 状态标注（如"博客板块，2026-XX 新增"）。
+5. 若内容涉及法律/个保条款：触发专家转介纪律（S4 同理，不替代执业律师）。
+
+> **S6 与 S3 的边界**：S3 是"单页静态说明、无长文排版、无插图流、无列表索引"；S6 是"长文 + 插图 + 上一篇下一篇 + 列表索引"。日记/博客**一律走 S6，不塞进 S3/about**。
 
 ---
 
