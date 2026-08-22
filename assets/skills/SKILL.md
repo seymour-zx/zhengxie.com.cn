@@ -73,7 +73,7 @@
 
 ## 全站联动清单（新增子页后必须同步，缺一不可）
 
-> 目录约定（2026-08-22 末生效，2026-08-22 更新）：说明/合规/功能型子页 + 全站中枢页**统一放 `pages/<name>/`**（`units/` 已整体删除、`test.html` 已删；中枢页 `pages/overview/` 由根 `overview/` 移入）。导航频道未来放 `nav/<name>/`（S1 实例）。
+> 目录约定（2026-08-22 末生效，2026-08-22 更新）：说明/合规/功能型子页 + 全站中枢页**统一放 `pages/<name>/`**（`units/` 已整体删除、`test.html` 已删；中枢页 `pages/overview/` 由根 `overview/` 移入）。导航频道（S1 实例）放 `directory/<name>/`，由 `assets/py/build_directory.py` 自动扫描各目录专属 `assets/xlsx/links.xlsx` 生成 `index.html`（非根表子集；原 `nav/<name>/` 草稿约定作废，2026-08-22 用户指定为 `directory/`）。
 
 1. **子页资源引用（2026-08-22 调整）**：子页 `pages/<name>/index.html` **不再复制 assets、不再自包含**，直接以相对路径 `../../assets/css/style.css`、`../../assets/images/logo.svg`、`../../assets/js/main.js` 引用**根目录**共享 assets（根 assets 为唯一真源，`build.py` 已移除 `UNIT_PAGES`/`sync_unit_assets` 复制逻辑）。新增子页时照此写引用即可，无需改 `build.py`。
 2. **`assets/py/build.py` 首页模板页脚**：若新子页需在首页页脚出现，在 footer `<nav>` 内加 `<a href="{{SITE_DOMAIN}}/pages/<name>/">名称</a>`（中枢页用 `{{SITE_DOMAIN}}/pages/overview/` 文本「网站全景」；注意用 `{{SITE_DOMAIN}}` 占位，build 会替换；首页模板页脚已含 10 链接）。

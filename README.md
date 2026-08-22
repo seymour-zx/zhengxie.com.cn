@@ -37,7 +37,7 @@
 | 条目                                        | 为什么禁止                                                                   |
 | ----------------------------------------- | ----------------------------------------------------------------------- |
 | 分类按钮上的**数量 / 计数徽章**（category count badge） | 与结果计数行重复；用户**跨设备、多次**明确拒绝                                               |
-| 在 `links.xlsx` 数据表**新增「判断外链 rel / 属性」的列** | 链接行可含多个外链，逐行判断麻烦；外链属性统一由 `build.py` 的 `LINK_ATTR_PRESET` 域名白名单决定（见配置章节） |
+| 在 `self_links.xlsx` 数据表**新增「判断外链 rel / 属性」的列** | 链接行可含多个外链，逐行判断麻烦；外链属性统一由 `build.py` 的 `LINK_ATTR_PRESET` 域名白名单决定（见配置章节） |
 | 空结果状态的「**清除所有筛选 / 一键清除**」按钮               | 与筛选栏「清除筛选」重复，且会误重置分类；空结果只显示提示文案                                         |
 | 暗色模式做成**偏蓝 / 偏紫调**（"科技感"廉价感）              | 已发生一次并重做为金系，禁止复现                                                        |
 | 暗色切换按钮**占用置顶吸顶区**                         | 会挤压小屏分类滑道、影响第一印象；切换按钮固定放页脚工具簇                                           |
@@ -64,6 +64,7 @@
 | 滚动自动判定（按 y vs alignTarget）：贴顶=3、贴底=1、y<alignTarget 上滑=2/下滑=3、y≈alignTarget 上滑=1/下滑=4、y>alignTarget 上滑=1/下滑=4 | 无 |
 | alignTarget = firstCard.offsetTop - stickyTop.offsetHeight（第一张可见卡片顶端对齐 sticky 整体块底部） | 无 |
 | 滚动期间点击锁：lockUserInput 阻止 wheel/touchmove/keydown，连续点击前 forceUnlock 清掉上一轮残留 handler 避免永久锁定 | 无 |
+| 同骨架导航频道页生成器 `assets/py/build_directory.py`：自动扫描 `directory/<name>/`（每个含独立 `assets/xlsx/links.xlsx` + 可选 `assets/meta.json`），套用 S1 骨架生成 `directory/<name>/index.html`；资源引用 `../../assets/`、canonical `/directory/<name>/`、统计代码复用根页；meta.json 全字段 + 根页 ROOT_META 兜底（未自定义字段跟随根页）。示例 `directory/ai/` 已跑通（2026-08-22）。另见 `docs/SUBPAGE_BUILD_DESIGN.md` | 无此脚本（频道页需手写或拆根表子集） |
 
 > 子页 `pages/about`、`pages/submit` 为既有项目结构（资源相对、内链绝对），非本轮主动新增，仅在此标注其形态，不作改动即可。
 
@@ -98,7 +99,7 @@
 > **六大骨架（当前版，S2 已升级）**：
 > | 骨架 | 名称 | 布局范式 | 生成方式 | 现有实例 | 未来可装 |
 > |------|------|---------|---------|---------|---------|
-> | **S1** | 导航产品页 | 卡片 Grid + 三维度筛选 + 集合搜索（sticky 吸顶） | build.py 生成 | `index.html`（根域 `/`，引流核心，不动） | 细分导航频道页（`/nav/ai/` 等） |
+> | **S1** | 导航产品页 | 卡片 Grid + 三维度筛选 + 集合搜索（sticky 吸顶） | build.py 生成根页；build_directory.py 生成同骨架频道页 | `index.html`（根域 `/`，引流核心，不动） | 细分导航频道页（`/directory/ai/` 等，由 build_directory.py 自动扫描生成） |
 > | **S2** | 全站中枢页（网站全景） | **中枢型**：架构总览 + 各板块活体切片（真实部分内容）+ 榜单区块 + 分发中枢 | 手写或 build | `pages/overview/`（页脚链接文本「网站全景」） | 全站大脑/心脏/脊柱式总览，用户"逛+发现"入口 |
 > | **S3** | 说明信息页 | 单栏静态说明，无长文排版 | 手写自包含 | about / contact / guide / sitemap / changelog | 帮助中心、FAQ、单页介绍 |
 > | **S4** | 合规页 | 同 S3 同构 + 「AI 辅助、非执业律师意见」声明 + 专家复核标记 | 手写自包含 | privacy / disclaimer | 服务条款、Cookie 政策 |
@@ -120,7 +121,8 @@
 > - **S4**：正文置顶法律免责声明；内容涉及个保法/效力条款时**触发专家转介纪律**（不替代执业律师）。
 > - **S6**：详情页用 `<article>` 语义 + 阅读排版（行宽约 70ch、段落间距、`figure/figcaption` 插图）；列表页 `articles/index.html` 做索引（标题+摘要+日期+封面）；可选 RSS `feed.xml`、分页、标签归档；长文页仍沿用全局页脚 10 链接与视觉语言。
 > - **S6 内容属性规范（2026-08-22 拍板，锁死）**：
->   - **目录语义边界**：`blog/` = 本站原创 + 转载正文（长文入此）；`news/` = 挂**别人网站文章链接**的索引页（**不放正文**，feed 并入 news）；`journal/` = 日记；`units/` 已弃用、**禁用于内容集合**。三者均与导航产品目录（`pages/`、`nav/`）语义隔离，不混淆。
+>   - **目录语义边界**：`blog/` = 本站原创 + 转载正文（长文入此）；`news/` = 挂**别人网站文章链接**的索引页（**不放正文**，feed 并入 news）；`journal/` = 日记；`units/` 已弃用、**禁用于内容集合**。三者均与导航产品目录（`pages/`、`directory/`）语义隔离，不混淆。`directory/` = 同骨架导航产品频道页（S1 实例，由 build 从各目录专属 `self_links.xlsx` 生成，非根表子集）。
+>   - **文件命名约定**：`self_` 前缀 = 某页面/功能**独享**的数据文件（不与其他页面共享）。当前独享文件：`assets/xlsx/self_links.xlsx`（根页数据源）、`directory/<name>/assets/xlsx/self_links.xlsx`（目录页数据源）、`directory/<name>/assets/self_meta.json`（目录页页面级信息）。全站共享文件不加 `self_`（如 `assets/json/manifest.json`、`assets/xlsx/link-policy.json`）。
 >   - **原创 / 转载标识**：每篇详情页头部显式标注「原创 / 转载」徽标（如 `<span class="badge badge--original">原创</span>` / `<span class="badge badge--repost">转载</span>`）。**转载必做**：正文内文首或文末注明原作者、出处链接、转载日期；版权合规属专家转介范畴（见 3.1 节），AI 只出草稿不替用户定论。
 >   - **参考来源区**：长文文末统一用 `<section class="references"><ol><li><a href="..." target="_blank" rel="noopener">来源标题</a></li></ol></section>` 列出引用/参考链接（外链 `noopener`，不发权重）；无来源可不显此区。
 >
@@ -146,7 +148,7 @@
 - [x] **P1** 清理开发残留：`test.html`（根目录测试页，已删）、`units/`（旧过渡页+占位，已整体删除，2026-08-22 末）；全站 `/overview/` 已统一改 `/pages/overview/`、`units/` 引用清零
 - [ ] **P2** 用 `check_links.py` 定期跑死链检测，维护 `link_report.txt`
 - [ ] **P2** 移动端体验复核（一行 2 卡、滑道触屏左右滑、暗色切换可达性）
-- [ ] **P3** 视需要扩充 `links.xlsx` 分类与卡片数据
+- [ ] **P3** 视需要扩充 `self_links.xlsx` 分类与卡片数据
 
 ---
 
@@ -179,7 +181,7 @@
     ├── images/
     │   └── logo.svg         站点 Logo（红底金字方形，正协/导航 两行）
     ├── xlsx/
-    │   └── links.xlsx       唯一数据源（维护时只需编辑这个文件）
+    │   └── self_links.xlsx  根页独享数据源（前缀 self_ 表示独享；维护时只需编辑这个文件）
     └── skills/
         └── SKILL.md         项目内 SOP：子页新增全流程 + 专家转介纪律（操作步骤类，与本章决策规范互补；换设备时读此文件照做）
 ```
@@ -194,7 +196,7 @@
 # 1. 安装依赖（只需一次）
 pip install openpyxl
 
-# 2. 生成站点（读 links.xlsx → 覆盖写 index.html）
+# 2. 生成站点（读 self_links.xlsx → 覆盖写 index.html）
 python assets/py/build.py
 
 # 3. 本地预览（任意静态服务器均可，如）
@@ -242,7 +244,7 @@ python -m http.server 8080
 
 ## 数据维护（核心工作流）
 
-**只需编辑 `assets/xlsx/links.xlsx`，不需要改任何代码。**
+**只需编辑 `assets/xlsx/self_links.xlsx`，不需要改任何代码。**
 
 ### 数据表列说明
 
@@ -262,7 +264,7 @@ python -m http.server 8080
 ### 数据维护流程（三件事）
 
 ```bash
-# 1. 编辑 links.xlsx（增删改行、改站序、改分类、改标签/链接）
+# 1. 编辑 self_links.xlsx（增删改行、改站序、改分类、改标签/链接）
 
 # 2. 重新生成站点
 python assets/py/build.py

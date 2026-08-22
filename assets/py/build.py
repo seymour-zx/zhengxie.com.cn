@@ -2,7 +2,7 @@
 """
 build.py —— 正协导航 · 站点生成器
 ====================================
-读取 assets/xlsx/links.xlsx，生成完整的 index.html。
+读取 assets/xlsx/self_links.xlsx（根页独享数据源，前缀 self_ 表示独享），生成完整的 index.html。
 
 设计原则（SEO 友好）：
 - 所有导航卡片、分类按钮、链接全部内联在静态 HTML 中，不使用 JS 注入；
@@ -14,7 +14,7 @@ build.py —— 正协导航 · 站点生成器
 输出：
     index.html（站点根目录，覆盖更新）
 
-数据表列（links.xlsx 第一行为表头）：
+数据表列（self_links.xlsx 第一行为表头）：
     站序 | 分类 | type | title | desc | media | tags | links
 - 站序：数字，卡片按站序从小到大排列
 - type：1=4行2列logo卡，2=5行横向封面卡，3=5行纵向封面卡（封面黄金比例 1.618）
@@ -52,6 +52,7 @@ v4.1 修订：
 """
 
 import html
+import json
 import os
 import re
 import sys
@@ -65,8 +66,26 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # 不再复制 assets 进各子页目录（见 2026-08-22 调整：子页用 ../../assets/ 回退到根）。
 # 因此 build 时无需 sync 子页 assets；根 assets 为唯一真源。
 
-XLSX_PATH = os.path.join(BASE_DIR, "assets", "xlsx", "links.xlsx")
+XLSX_PATH = os.path.join(BASE_DIR, "assets", "xlsx", "self_links.xlsx")
 OUT_PATH = os.path.join(BASE_DIR, "index.html")
+
+# ── 站点品牌（全局常量：换名只改这里一处，模板/兜底 meta 全部联动） ──
+BRAND = "正协导航"
+SLOGAN = "让每一次寻找，都不止于找到"
+# logo 双 span 拆分：中文 4 字品牌默认前 2 字 + 后 2 字（改 BRAND 时自动联动）
+_BRAND_MID = len(BRAND) // 2
+BRAND_A = BRAND[:_BRAND_MID] or BRAND
+BRAND_B = BRAND[_BRAND_MID:] or ""
+
+# ── 根页元信息兜底（读不到 self_meta.json 时用此值，保证生成永不崩） ──
+ROOT_META = {
+    "title": f"{BRAND} - {SLOGAN}",
+    "description": f"{BRAND}：全量收录的精选站点导航，覆盖常用入口、AI智能、资讯媒体、设计创意、开发技术、学习教育、效率工具、影音娱乐等分类，{SLOGAN}。",
+    "keywords": f"{BRAND},网址导航,网站导航,AI工具,效率工具,政协,导航网站",
+}
+# directory 子页相对资源前缀（子页在 /directory/<name>/ 下，回退两级到根 assets）
+DIR_ASSET_PREFIX = "../../"
+DIRECTORY_ROOT = os.path.join(BASE_DIR, "directory")
 
 # ── 搜索引擎清单（key, 显示名, 搜索URL, 是否主引擎） ──
 # 主引擎（百度/Google/必应）原位不变（搜索框上方按钮）；其余进下方引擎滑道。
@@ -467,10 +486,11 @@ def build_card(row):
     )
 
 
-def load_rows():
+def load_rows(xlsx_path=None):
     """读取 xlsx 全部数据行。
-    v4.1 排序：先按 type（1→2→3，非法排最后），再按站序从小到大。"""
-    wb = load_workbook(XLSX_PATH, read_only=True, data_only=True)
+    v4.1 排序：先按 type（1→2→3，非法排最后），再按站序从小到大。
+    xlsx_path 缺省用全局 XLSX_PATH（根页）；directory 页传入各自的 self_links.xlsx。"""
+    wb = load_workbook(xlsx_path or XLSX_PATH, read_only=True, data_only=True)
     ws = wb.active
     rows = []
     header = None
@@ -538,8 +558,72 @@ def build_engine_buttons():
     return "\n        ".join(primary_parts), "\n        ".join(track_parts)
 
 
-def build_page(category_buttons, cards_html, engine_primary, engine_track, total_cards):
-    """组装完整 index.html（静态模板，占位符替换）"""
+def load_meta(json_path):
+    """读取 self_meta.json（页面级元信息）。文件不存在/损坏返回 {}，由调用方兜底 ROOT_META。"""
+    if not json_path or not os.path.isfile(json_path):
+        return {}
+    try:
+        with open(json_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        return data if isinstance(data, dict) else {}
+    except (ValueError, OSError):
+        return {}
+
+
+def list_directory_pages():
+    """自动扫描 directory/ 下含 self_links.xlsx 的子目录。
+    返回 [(name, xlsx_path, meta_path, out_path, canonical_path), ...]。
+    不用手工维护列表——放一个带 self_links.xlsx 的子目录即自动生成。"""
+    pages = []
+    if not os.path.isdir(DIRECTORY_ROOT):
+        return pages
+    for name in sorted(os.listdir(DIRECTORY_ROOT)):
+        d = os.path.join(DIRECTORY_ROOT, name)
+        if not os.path.isdir(d):
+            continue
+        xlsx = os.path.join(d, "assets", "xlsx", "self_links.xlsx")
+        if not os.path.isfile(xlsx):
+            continue
+        meta = os.path.join(d, "self_meta.json")
+        out = os.path.join(d, "index.html")
+        canonical = "/directory/%s/" % name
+        pages.append((name, xlsx, meta, out, canonical))
+    return pages
+
+
+def _file_empty(path):
+    """文件不存在或 0 字节 → 视为空"""
+    return not os.path.isfile(path) or os.path.getsize(path) == 0
+
+
+def is_empty_xlsx(path):
+    """xlsx 为空：不存在 / 0字节 / 读取后无数据行 → 视为空占位"""
+    if _file_empty(path):
+        return True
+    try:
+        rows, _ = load_rows(path)
+    except Exception:
+        return True
+    return not rows
+
+
+def is_empty_meta(path):
+    """meta 为空：不存在 / 0字节 / 非法JSON / 完全无字段 → 视为空占位。
+    仅用于『删除空文件』判断；部分字段（填写中）不视为空，不删。"""
+    return _file_empty(path) or not load_meta(path)
+
+
+def build_page(category_buttons, cards_html, engine_primary, engine_track, total_cards,
+               prefix="", meta=None, canonical_path="/"):
+    """组装完整 index.html（静态模板，占位符替换）。
+
+    prefix:         资源/链接路径前缀。根页=""；directory 页="../../"
+    meta:           页面元信息 dict（title/description/keywords），缺失回退 ROOT_META
+    canonical_path: 相对站点根的路径（"/" 或 "/directory/<name>/"），由调用方按 SITE_DOMAIN 自动拼，不来自 meta
+    """
+    m = dict(ROOT_META)
+    if meta:
+        m.update({k: v for k, v in meta.items() if v})
     return (
         PAGE_TEMPLATE.replace("{{CATEGORY_BUTTONS}}", category_buttons)
         .replace("{{CARDS}}", cards_html)
@@ -548,6 +632,15 @@ def build_page(category_buttons, cards_html, engine_primary, engine_track, total
         .replace("{{TOTAL_CARDS}}", str(total_cards))
         .replace("{{SITE_DOMAIN}}", SITE_DOMAIN)
         .replace("{{EXT_LINK}}", EXT_LINK)
+        .replace("{{ASSET_PREFIX}}", prefix)
+        .replace("{{META_TITLE}}", m["title"])
+        .replace("{{META_DESC}}", m["description"])
+        .replace("{{META_KEYWORDS}}", m["keywords"])
+        .replace("{{CANONICAL_PATH}}", canonical_path)
+        .replace("{{BRAND}}", BRAND)
+        .replace("{{BRAND_A}}", BRAND_A)
+        .replace("{{BRAND_B}}", BRAND_B)
+        .replace("{{SLOGAN}}", SLOGAN)
     )
 
 
@@ -559,35 +652,35 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- 注意：不要设全局 <meta name="referrer" content="no-referrer">——它会让百度统计/GA4 收不到来源站(referer 被禁用)。
        本站仅在卡片图片上用 referrerpolicy="no-referrer" 单独压制图片防盗链；卡片外链/引擎跳转默认发 Referer（见 link_attr 规则）。 -->
-  <title>正协导航 - 让每一次寻找，都不止于找到</title>
-  <meta name="description" content="正协导航：全量收录的精选站点导航，覆盖常用入口、AI智能、资讯媒体、设计创意、开发技术、学习教育、效率工具、影音娱乐等分类，让每一次寻找，都不止于找到。">
-  <meta name="keywords" content="正协导航,网址导航,网站导航,AI工具,效率工具,政协,导航网站">
-  <meta name="author" content="正协导航">
+  <title>{{META_TITLE}}</title>
+  <meta name="description" content="{{META_DESC}}">
+  <meta name="keywords" content="{{META_KEYWORDS}}">
+  <meta name="author" content="{{BRAND}}">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="{{SITE_DOMAIN}}/">
+  <link rel="canonical" href="{{SITE_DOMAIN}}{{CANONICAL_PATH}}">
   <!-- 社交分享 -->
-  <meta property="og:title" content="正协导航 - 让每一次寻找，都不止于找到">
-  <meta property="og:description" content="全量收录的精选站点导航，覆盖AI智能、资讯媒体、设计创意、开发技术、学习教育等分类。">
+  <meta property="og:title" content="{{META_TITLE}}">
+  <meta property="og:description" content="{{META_DESC}}">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="{{SITE_DOMAIN}}/">
+  <meta property="og:url" content="{{SITE_DOMAIN}}{{CANONICAL_PATH}}">
   <meta property="og:image" content="{{SITE_DOMAIN}}/assets/images/logo.svg">
-  <meta property="og:site_name" content="正协导航">
+  <meta property="og:site_name" content="{{BRAND}}">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="正协导航 - 让每一次寻找，都不止于找到">
-  <meta name="twitter:description" content="全量收录的精选站点导航。">
+  <meta name="twitter:title" content="{{META_TITLE}}">
+  <meta name="twitter:description" content="{{META_DESC}}">
   <!-- PWA / 移动端 -->
   <meta name="theme-color" content="#9E1B22" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0D0C0E" media="(prefers-color-scheme: dark)">
-  <link rel="manifest" href="manifest.json">
+  <link rel="manifest" href="{{ASSET_PREFIX}}assets/json/manifest.json">
   <!-- 图标 -->
-  <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
-  <link rel="apple-touch-icon" href="assets/images/logo.svg">
+  <link rel="icon" type="image/svg+xml" href="{{ASSET_PREFIX}}assets/images/logo.svg">
+  <link rel="apple-touch-icon" href="{{ASSET_PREFIX}}assets/images/logo.svg">
   <!-- 性能：预连接外部资源 -->
   <link rel="preconnect" href="https://www.googletagmanager.com">
   <link rel="preconnect" href="https://pagead2.googlesyndication.com">
   <link rel="preconnect" href="https://hm.baidu.com">
   <link rel="dns-prefetch" href="https://www.googletagmanager.com">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="{{ASSET_PREFIX}}assets/css/style.css">
   <!-- 暗色模式：在 CSS 加载前同步设置，避免闪烁(FOUC)。默认明亮；仅当用户本地曾选暗色(localStorage='dark')才启用暗色 -->
   <script>
     (function(){try{var t=localStorage.getItem('zx_theme');if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();
@@ -597,10 +690,10 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "正协导航",
-    "alternateName": "正协导航 - 让每一次寻找，都不止于找到",
-    "url": "{{SITE_DOMAIN}}/",
-    "description": "全量收录的精选站点导航",
+    "name": "{{META_TITLE}}",
+    "alternateName": "{{META_TITLE}}",
+    "url": "{{SITE_DOMAIN}}{{CANONICAL_PATH}}",
+    "description": "{{META_DESC}}",
     "potentialAction": {
       "@type": "SearchAction",
       "target": {
@@ -644,8 +737,8 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 
   <!-- ═══ 第1行块：Hero 区 ═══ -->
   <header class="hero">
-    <h1 class="hero__logo">正协导航</h1>
-    <p class="hero__slogan">让每一次寻找，都不止于找到</p>
+    <h1 class="hero__logo">{{BRAND}}</h1>
+    <p class="hero__slogan">{{SLOGAN}}</p>
     <!-- 集合搜索引擎：主引擎按钮(原位) + 输入行 + 下方引擎滑道(扩展) -->
     <form class="hero__search" id="engine-search" action="#" role="search" aria-label="集合搜索">
       <div class="hero__engines" role="tablist" aria-label="主搜索引擎">
@@ -681,7 +774,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
       <button type="button" class="category-nav__logo category-btn active" data-cat="all" aria-pressed="true" aria-label="全部">
         <!-- 两份文字静态渲染，CSS 按激活态切换：激活(=全部选中)=品牌名；未激活(已选分类)显示「全部」引导返回。
              禁用 JS 时静态 HTML 带 active → 显示品牌名，SEO 无损。 -->
-        <span class="logo__brand" aria-hidden="true"><span>正协</span><span>导航</span></span>
+        <span class="logo__brand" aria-hidden="true"><span>{{BRAND_A}}</span><span>{{BRAND_B}}</span></span>
         <span class="logo__all" aria-hidden="true">全部</span>
       </button>
       <ul class="category-nav__list track" id="category-bar">
@@ -747,18 +840,18 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
   <!-- ═══ 第8行块：Footer ═══ -->
   <footer class="footer">
     <div class="footer__inner wrap">
-      <p class="footer__copyright">© 2026 正协导航 · 让每一次寻找，都不止于找到</p>
+      <p class="footer__copyright">© 2026 {{BRAND}} · {{SLOGAN}}</p>
       <nav class="footer__nav" aria-label="页脚导航">
-        <a href="{{SITE_DOMAIN}}/">首页</a>
-        <a href="{{SITE_DOMAIN}}/pages/about/">关于本站</a>
-        <a href="{{SITE_DOMAIN}}/pages/submit/">收录申请</a>
-        <a href="{{SITE_DOMAIN}}/pages/contact/">联系我们</a>
-        <a href="{{SITE_DOMAIN}}/pages/disclaimer/">免责声明</a>
-        <a href="{{SITE_DOMAIN}}/pages/guide/">使用指南</a>
-        <a href="{{SITE_DOMAIN}}/pages/sitemap/">站点地图</a>
-        <a href="{{SITE_DOMAIN}}/pages/changelog/">更新日志</a>
-        <a href="{{SITE_DOMAIN}}/pages/privacy/">隐私政策</a>
-        <a href="{{SITE_DOMAIN}}/pages/overview/">网站全景</a>
+        <a href="{{ASSET_PREFIX}}">首页</a>
+        <a href="{{ASSET_PREFIX}}pages/about/">关于本站</a>
+        <a href="{{ASSET_PREFIX}}pages/submit/">收录申请</a>
+        <a href="{{ASSET_PREFIX}}pages/contact/">联系我们</a>
+        <a href="{{ASSET_PREFIX}}pages/disclaimer/">免责声明</a>
+        <a href="{{ASSET_PREFIX}}pages/guide/">使用指南</a>
+        <a href="{{ASSET_PREFIX}}pages/sitemap/">站点地图</a>
+        <a href="{{ASSET_PREFIX}}pages/changelog/">更新日志</a>
+        <a href="{{ASSET_PREFIX}}pages/privacy/">隐私政策</a>
+        <a href="{{ASSET_PREFIX}}pages/overview/">网站全景</a>
         <!-- 备案号占位：当前项目托管于 GitHub Pages，无 ICP 备案，故不渲染备案链接；待迁移国内服务器完成备案后，替换粤ICP备XXXXXXXX号并取消本注释、改用以下形式：
         <a href="https://beian.miit.gov.cn/" {{EXT_LINK}}>粤ICP备XXXXXXXX号</a>
         -->
@@ -799,7 +892,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
     </button>
   </div>
 
-  <script src="assets/js/main.js" defer></script>
+  <script src="{{ASSET_PREFIX}}assets/js/main.js" defer></script>
 </body>
 </html>
 """
@@ -819,21 +912,65 @@ def build_cards(rows):
     return "".join(parts)
 
 
-def main():
-    rows, cat_order = load_rows()
+def render_and_write(xlsx_path, out_path, prefix="", meta=None, canonical_path="/", label="根页"):
+    """通用渲染：读取 xlsx → 生成静态页 → 写出。根页与 directory 页共用。"""
+    rows, cat_order = load_rows(xlsx_path)
     if not rows:
-        sys.exit("错误：links.xlsx 中没有数据行。")
-    print(f"读取 {len(rows)} 条记录")
+        print(f"跳过 {label}：{xlsx_path} 无数据行。")
+        return 0
     category_buttons = build_category_buttons(cat_order)
     cards = build_cards(rows)
     engine_primary, engine_track = build_engine_buttons()
-    page = build_page(category_buttons, cards, engine_primary, engine_track, len(rows))
-    with open(OUT_PATH, "w", encoding="utf-8") as f:
+    page = build_page(category_buttons, cards, engine_primary, engine_track, len(rows),
+                      prefix=prefix, meta=meta, canonical_path=canonical_path)
+    with open(out_path, "w", encoding="utf-8") as f:
         f.write(page)
     cats = [str(r.get("分类") or "").strip() for r in rows]
-    print("已生成:", OUT_PATH)
-    print("分类:", " / ".join(dict.fromkeys(cats)))
-    print("type 分布:", {t: sum(1 for r in rows if str(r.get('type')).strip() == t) for t in ('1', '2', '3')})
+    print(f"已生成[{label}]: {out_path}  ({len(rows)} 张卡片, 分类: {' / '.join(dict.fromkeys(cats))})")
+    return len(rows)
+
+
+def main():
+    # 1) 根页 index.html（meta 读根 self_meta.json，兜底 ROOT_META）
+    #    canonical 由 SITE_DOMAIN + "/" 自动拼，不进 meta（域名与路径代码已知）
+    root_meta = load_meta(os.path.join(BASE_DIR, "self_meta.json"))
+    render_and_write(XLSX_PATH, OUT_PATH, prefix="", meta=root_meta,
+                     canonical_path="/", label="根页")
+
+    # 2) directory/ 子页：先清残留，再按要求生成
+    if os.path.isdir(DIRECTORY_ROOT):
+        # 2a) 删除所有 py 生成的 directory/<name>/index.html，避免旧页残留
+        for name in sorted(os.listdir(DIRECTORY_ROOT)):
+            old = os.path.join(DIRECTORY_ROOT, name, "index.html")
+            if os.path.isfile(old):
+                os.remove(old)
+                print(f"清理: 删除旧 {old}")
+
+        # 2b) 遍历子目录：清理空数据文件 + 生成
+        #     规则：self_links.xlsx 与 self_meta.json 都齐备才生成；缺一个或都缺 → 不生成
+        for name, xlsx, meta_path, out, canonical in list_directory_pages():
+            # 空 self_links.xlsx（占位/未填数据）→ 删除且不生成
+            if is_empty_xlsx(xlsx):
+                os.remove(xlsx)
+                print(f"清理: 删除空 {xlsx}")
+                continue
+            # self_meta.json 必填：缺失 → 不生成
+            if not os.path.isfile(meta_path):
+                print(f"跳过 directory/{name}：缺少 self_meta.json")
+                continue
+            # self_meta.json 空/非法 → 删除且不生成
+            if is_empty_meta(meta_path):
+                os.remove(meta_path)
+                print(f"清理: 删除空 {meta_path}（空/非法）")
+                continue
+            # self_meta.json 字段不全（填写中）→ 不生成，但保留文件
+            m = load_meta(meta_path)
+            if not (m.get("title") and m.get("description") and m.get("keywords")):
+                print(f"跳过 directory/{name}：self_meta.json 字段不全（保留文件）")
+                continue
+            render_and_write(xlsx, out, prefix=DIR_ASSET_PREFIX, meta=m,
+                             canonical_path=canonical, label=f"directory/{name}")
+
     print(f"引擎: {len(ENGINES)} 个（主{sum(1 for e in ENGINES if e[3])} + 滑道{sum(1 for e in ENGINES if not e[3])}）")
 
 

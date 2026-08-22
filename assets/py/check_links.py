@@ -2,7 +2,7 @@
 """
 check_links.py —— 正协导航 · 死链检测
 ====================================
-读取 assets/xlsx/links.xlsx 中 links 列的 URL，逐个请求检查可达性，
+读取 assets/xlsx/self_links.xlsx 中 links 列的 URL，逐个请求检查可达性，
 输出报告 assets/py/link_report.txt。
 
 用法：
@@ -26,7 +26,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from openpyxl import load_workbook
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-XLSX_PATH = os.path.join(BASE_DIR, "assets", "xlsx", "links.xlsx")
+XLSX_PATH = os.path.join(BASE_DIR, "assets", "xlsx", "self_links.xlsx")
 REPORT_PATH = os.path.join(BASE_DIR, "assets", "py", "link_report.txt")
 
 HEADERS = {
@@ -95,7 +95,7 @@ def main():
 
     urls = collect_urls(XLSX_PATH, args.limit)
     if not urls:
-        sys.exit("错误：links.xlsx 中没有可检查的 URL。")
+        sys.exit("错误：self_links.xlsx 中没有可检查的 URL。")
 
     print(f"开始检查 {len(urls)} 个 URL ...")
     results = []
