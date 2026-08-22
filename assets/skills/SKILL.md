@@ -18,13 +18,13 @@
 
 ## 子页标准形态（手写静态页，必须与现有子页同构）
 
-每个 `units/<name>/index.html` 必须满足：
+每个 `pages/<name>/index.html` 必须满足：
 
 1. **资源相对**：`<link rel="stylesheet" href="assets/css/style.css">`、`<link rel="icon" href="assets/images/logo.svg">`（不引用根域共享 assets）。
 2. **内链绝对 + `_self`**：站内跳转用 `https://zhengxie.com.cn/...` 且 `target="_self"`（如页脚导航、正文交叉链接）。
 3. **不设全局 referrer meta**：`<head>` 中**不要**写 `<meta name="referrer" content="no-referrer">`（全站已锁定"不设全局 referrer"规则）。
 4. **FOUC 仅本地 dark**：`<head>` 内联脚本仅当 `localStorage('zx_theme')==='dark'` 才设 `data-theme="dark"`，**不跟随系统偏好**。
-5. **页脚导航统一 9 链接**（顺序固定）+ 备案号注释占位：
+5. **页脚导航统一 10 链接**（顺序固定，含「网站全景」）+ 备案号注释占位：
 
    ```
    首页 | 关于本站 | 收录申请 | 联系我们 | 免责声明 | 使用指南 | 站点地图 | 更新日志 | 隐私政策
@@ -39,7 +39,7 @@
    ```
 
 6. **theme-toggle 按钮**：页脚含暗色切换按钮，脚本与现有子页一致（读 `data-theme`、写 `localStorage('zx_theme')`、更新 `aria-pressed`）。
-7. **canonical / robots / description**：`<link rel="canonical" href="https://zhengxie.com.cn/units/<name>/">`；`<meta name="robots" content="index, follow">`；补 `description` 与 `keywords`。
+7. **canonical / robots / description**：`<link rel="canonical" href="https://zhengxie.com.cn/pages/<name>/">`；`<meta name="robots" content="index, follow">`；补 `description` 与 `keywords`。
 
 ### 最小页脚模板（直接复制修改）
 
@@ -49,14 +49,14 @@
     <p class="footer__copyright">© 2026 正协导航 · 让每一次寻找，都不止于找到</p>
     <nav class="footer__nav" aria-label="页脚导航">
       <a target="_self" href="https://zhengxie.com.cn/">首页</a>
-      <a target="_self" href="https://zhengxie.com.cn/units/about/">关于本站</a>
-      <a target="_self" href="https://zhengxie.com.cn/units/submit/">收录申请</a>
-      <a target="_self" href="https://zhengxie.com.cn/units/contact/">联系我们</a>
-      <a target="_self" href="https://zhengxie.com.cn/units/disclaimer/">免责声明</a>
-      <a target="_self" href="https://zhengxie.com.cn/units/guide/">使用指南</a>
-      <a target="_self" href="https://zhengxie.com.cn/units/sitemap/">站点地图</a>
-      <a target="_self" href="https://zhengxie.com.cn/units/changelog/">更新日志</a>
-      <a target="_self" href="https://zhengxie.com.cn/units/privacy/">隐私政策</a>
+      <a target="_self" href="https://zhengxie.com.cn/pages/about/">关于本站</a>
+      <a target="_self" href="https://zhengxie.com.cn/pages/submit/">收录申请</a>
+      <a target="_self" href="https://zhengxie.com.cn/pages/contact/">联系我们</a>
+      <a target="_self" href="https://zhengxie.com.cn/pages/disclaimer/">免责声明</a>
+      <a target="_self" href="https://zhengxie.com.cn/pages/guide/">使用指南</a>
+      <a target="_self" href="https://zhengxie.com.cn/pages/sitemap/">站点地图</a>
+      <a target="_self" href="https://zhengxie.com.cn/pages/changelog/">更新日志</a>
+      <a target="_self" href="https://zhengxie.com.cn/pages/privacy/">隐私政策</a>
       <!-- 备案号占位：...（见上） -->
     </nav>
     <div class="footer__tools">
@@ -120,7 +120,7 @@
 
 **定位（与 README 3.2 一致）**：全站大脑/心脏/脊柱/中枢神经，**不是**"入口/眼耳口"。用户在此了解整体架构、看见各板块活体切片、看全局榜单、并分发去各板块。与 S1（根域 `/` 导航产品页，服务"用"）互补双核心：S2 服务"逛+发现"。
 
-**路径与命名**：路径 `/overview/`；各页 `<a>` 链接文本统一「网站全景」（不以"门户/首页"命名，避免与 S1 导航产品页及"导航站"概念混淆）。
+**路径与命名**：路径 `/pages/overview/`；各页 `<a>` 链接文本统一「网站全景」（不以"门户/首页"命名，避免与 S1 导航产品页及"导航站"概念混淆）。
 
 **四大区块结构（手写模板骨架）**：
 1. **架构总览区**：可视化展示站点所有板块及关系（如"站点神经系统图"：导航产品 / 博客 / 榜单 / 各推荐板块的节点与连线）。
@@ -129,12 +129,12 @@
 4. **分发中枢**：每切片/榜单均有去向，中枢本身可停留消费概览。
 
 **技术契约**：
-- 生成方式：手写静态页（或未来 build 扩展）；资源相对 `assets/`、内链绝对 `_self`、无全局 referrer、FOUC 仅本地 dark、页脚 9 链接 + 备案占位（同通用契约）。
+- 生成方式：手写静态页（或未来 build 扩展）；资源相对 `assets/`、内链绝对 `_self`、无全局 referrer、FOUC 仅本地 dark、页脚 10 链接 + 备案占位（同通用契约）。
 - 统计：手写页**手动同步** GA4 + 百度统计双 id（同 `404.html` 做法，不含 AdSense）。
-- SEO：`canonical` 指向 `https://zhengxie.com.cn/overview/`；`og:type=website`；补 description/keywords（强调"全站总览"）。
+- SEO：`canonical` 指向 `https://zhengxie.com.cn/pages/overview/`；`og:type=website`；补 description/keywords（强调"全站总览"）。
 - 数据来源（⏳ PENDING，不擅自决定）：架构/切片/榜单数据从哪来待用户拍板。
 
-**联动**：手写子页直接引用 `../../assets/`（无需改 `build.py`）；建 `overview/` 同样引用根 assets；sitemap.xml 加 `<url>`（priority 0.50，低于 S1 根域）；README 3.2 补 🔶 标注（如"网站全景中枢页，2026-XX 立项"）。
+**联动**：手写子页直接引用 `../../assets/`（无需改 `build.py`）；建 `pages/overview/` 同样引用根 assets；sitemap.xml 加 `<url>`（priority 0.70）；README 3.2 补 🔶 标注（如"网站全景中枢页，2026-08-22 末立项"）。
 
 ### S6 — 文章 / 内容页（列表索引 + 详情）
 
@@ -146,7 +146,7 @@
 
 **技术契约（详情页）**：
 - 资源相对 `assets/`（每篇自带或共享 `articles/assets/`）、内链绝对 `_self`、无全局 referrer、FOUC 仅本地 dark。
-- 页脚：沿用全局 9 链接 + 备案占位（与 S3 一致，不可省略）。
+- 页脚：沿用全局 10 链接 + 备案占位（与 S3 一致，不可省略）。
 - 统计：手写详情页**手动同步** GA4 + 百度统计双 id（同 S2/404 做法）。
 - SEO：`<link rel="canonical" href="https://zhengxie.com.cn/articles/<slug>/">`；`og:type=article`、`article:published_time`；结构化数据可用 `BlogPosting` JSON-LD（可选）。
 
@@ -155,11 +155,17 @@
 **联动清单（新增一个文章/内容板块时）**：
 1. 若走 build 生成：在 `build.py` 新增数据源与模板（新增 ARTICLE 模板）；若纯手写：直接建 `articles/<slug>/index.html`，资源引用 `../../assets/`。
 2. `sitemap.xml`：列表页 + 每篇详情页各加 `<url>`（详情页 priority 0.40，列表页 0.50）。
-3. 全局页脚 9 链接：文章页页脚 nav 与其他页一致（保持全站统一）。
+3. 全局页脚 10 链接：文章页页脚 nav 与其他页一致（保持全站统一，含「网站全景」）。
 4. `README.md` 3.2 节：补该板块的 🔶 状态标注（如"博客板块，2026-XX 新增"）。
 5. 若内容涉及法律/个保条款：触发专家转介纪律（S4 同理，不替代执业律师）。
 
 > **S6 与 S3 的边界**：S3 是"单页静态说明、无长文排版、无插图流、无列表索引"；S6 是"长文 + 插图 + 上一篇下一篇 + 列表索引"。日记/博客**一律走 S6，不塞进 S3/about**。
+
+**S6 内容属性规范（2026-08-22 拍板，锁死，与 README 3.2 节对应）**：
+- **目录语义边界**：`blog/` = 本站原创 + 转载正文；`news/` = 挂外站文章链接的索引（无正文，feed 并入）；`journal/` = 日记；`units/` 已弃用、禁用于内容集合。与导航产品目录（`pages/`、`nav/`）语义隔离。
+- **原创 / 转载标识**：详情页头部显式「原创 / 转载」徽标。转载**必须**文内注明原作者 + 出处链接 + 转载日期；版权合规触发专家转介纪律（AI 只出草稿，不替用户下结论）。
+- **参考来源区**：文末 `<section class="references"><ol><li><a href="..." target="_blank" rel="noopener">来源标题</a></li></ol></section>` 列引用链接；无来源可省。
+- **列表页字段**：标题 + 摘要 + 发布日期 + 封面 + 来源徽标（原创/转载），每条链到详情页。
 
 ---
 

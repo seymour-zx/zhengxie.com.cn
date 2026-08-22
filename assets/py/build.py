@@ -18,8 +18,14 @@ build.py —— 正协导航 · 站点生成器
     站序 | 分类 | type | title | desc | media | tags | links
 - 站序：数字，卡片按站序从小到大排列
 - type：1=4行2列logo卡，2=5行横向封面卡，3=5行纵向封面卡（封面黄金比例 1.618）
-- media：合规 URL（http/https + 合法域名/IP/localhost）仅显示图片（异步加载，失败时移除露出红渐变底）；
-         空值/不合规 URL 均视为空 → 显示标题首字符文字logo占位（二选一，不叠加）
+- media：媒体区（逗号分隔，向后兼容旧数据）。语法：
+        · `URL`                     → 仅图片（红底容器，失败移除露红底）
+        · `URL,颜色`                → 图片容器内铺该背景色（给矢量/透明 logo 衬底，不改容器红底）
+        · `颜色值`(#rgb/rgb()/hsl()/transparent) → 纯色块占位（无图模式，任何 CSS 合法颜色）
+        · `字符,颜色`               → 文字占位 + 自定义底色（字符可为任意非 URL 非颜色文本）
+        · 空/其它                   → 标题首字符 + 红渐变底（兜底）
+        颜色值示例：#FFFFFF / #3A7BD5 / rgb(58,123,213) / rgba(0,0,0,.5) / hsl(210,80%,50%) / transparent
+        仅按「第一个逗号」分割，颜色值内自带逗号(如 rgba(0,0,0,.5)) 不受影响。
 - tags：英文逗号分隔（如 AI,免费）；分类名自动作为标签行第1个标签
 - links：分号分隔链接，逗号分隔"名称与URL"（如 官网,https://x;知乎,https://z）
 - 外链属性策略（target/rel）不由本表决定，而由下方 LINK_ATTR_PRESET 按**链接域名**自动匹配；
@@ -182,15 +188,166 @@ def first_char(title):
     return ch.upper() if ch.isascii() and ch.isalpha() else ch
 
 
+_COLOR_RE = re.compile(
+    r"^\s*("
+    r"#[0-9a-fA-F]{3,8}"                                  # #rgb / #rrggbb / #rrggbbaa
+    r"|rgba?\s*\([^)]*\)"                                 # rgb() / rgba()
+    r"|hsla?\s*\([^)]*\)"                                 # hsl() / hsla()
+    r"|transparent"                                      # 透明
+    r")\s*$"
+)
+
+# 常见 CSS 颜色关键字（小写），用于兜底识别；未列出的一律当非颜色文本
+_NAMED_COLORS = {
+    "transparent", "black", "white", "red", "green", "blue", "yellow", "orange",
+    "purple", "gray", "grey", "cyan", "magenta", "pink", "brown", "lime",
+    "navy", "teal", "silver", "gold", "maroon", "olive", "aqua", "fuchsia",
+}
+
+
+def _is_valid_rgblike(body):
+    """校验 rgb()/rgba() 括号内参数是否合法（0~255 / 0%~100% + 可选 alpha 0~1）。"""
+    parts = [p.strip() for p in body.split(",") if p.strip() != ""]
+    if len(parts) not in (3, 4):
+        return False
+    for i, p in enumerate(parts):
+        if i == 3:  # alpha
+            try:
+                v = float(p)
+            except ValueError:
+                return False
+            if not (0.0 <= v <= 1.0):
+                return False
+        else:
+            if p.endswith("%"):
+                try:
+                    v = float(p[:-1])
+                except ValueError:
+                    return False
+                if not (0.0 <= v <= 100.0):
+                    return False
+            else:
+                try:
+                    v = int(p)
+                except ValueError:
+                    return False
+                if not (0 <= v <= 255):
+                    return False
+    return True
+
+
+def _is_valid_hsllike(body):
+    """校验 hsl()/hsla() 括号内参数（H 0~360 / S,L 0%~100% + 可选 alpha）。"""
+    parts = [p.strip() for p in body.split(",") if p.strip() != ""]
+    if len(parts) not in (3, 4):
+        return False
+    # H
+    try:
+        h = float(parts[0])
+    except ValueError:
+        return False
+    if not (0.0 <= h <= 360.0):
+        return False
+    # S, L
+    for i in (1, 2):
+        p = parts[i]
+        if not p.endswith("%"):
+            return False
+        try:
+            v = float(p[:-1])
+        except ValueError:
+            return False
+        if not (0.0 <= v <= 100.0):
+            return False
+    # alpha
+    if len(parts) == 4:
+        try:
+            v = float(parts[3])
+        except ValueError:
+            return False
+        if not (0.0 <= v <= 1.0):
+            return False
+    return True
+
+
+def is_color(s):
+    """判是否为 CSS 合法颜色值，用于 media 纯色块占位。
+    覆盖：#hex(3/4/6/8位) / rgb()/rgba() / hsl()/hsla() / transparent / 常见颜色名。
+    对 rgb/hsl 类**校验参数范围**，非法参数（如 rgb(1,2)、rgba(...,5)）视为非法，
+    避免把无效值塞进 style（浏览器会忽略，但属于「假装生效」）。"""
+    s = (s or "").strip()
+    if not s:
+        return False
+    m = _COLOR_RE.match(s)
+    if not m:
+        # 颜色名兜底
+        return s.lower() in _NAMED_COLORS
+    grp = m.group(1)
+    if grp.startswith("#"):
+        return True
+    if grp.startswith("rgb"):
+        inner = grp[grp.find("("):].strip("()")
+        return _is_valid_rgblike(inner)
+    if grp.startswith("hsl"):
+        inner = grp[grp.find("("):].strip("()")
+        return _is_valid_hsllike(inner)
+    if grp == "transparent":
+        return True
+    return False
+
+
 def build_media(media, title):
-    """媒体区：URL→仅图片（异步加载，失败移除图片露出红渐变底）；
-    空/非URL→仅标题首字符文字logo占位（不再与图片叠加）"""
-    if is_url(media):
-        src = html.escape(media.strip(), quote=True)
+    """媒体区（media 列语法，逗号分隔，向后兼容）：
+    - `URL`                  → 仅图片（红底容器，失败移除露红底）
+    - `URL,颜色`             → 图片容器内铺该背景色（给矢量/透明 logo 衬底）
+    - `URL,非法色/空`        → **退化为纯图**（保留 URL，不丢图）
+    - `颜色值`(#hex/rgb()/hsl()/transparent/颜色名) → 纯色块占位（无图模式）
+    - `合法色,任何尾巴`      → 纯色块（忽略尾巴）
+    - `字符,颜色`            → 文字占位 + 自定义底色
+    - `非法色 / 纯文本`      → 标题首字符 + 红渐变底（兜底）
+    降级原则：任何一步颜色语句非法，都**不崩站、不丢图**，安全退到上一级可用形态。
+    仅按「第一个逗号」分割，颜色值内自带逗号(如 rgba(0,0,0,.5)) 不受影响。"""
+    raw = (media or "").strip()
+    # 先按第一个逗号拆分（颜色值内逗号保留在 tail 中）
+    if "," in raw:
+        head, _, tail = raw.partition(",")
+        head, tail = head.strip(), tail.strip()
+    else:
+        head, tail = raw, ""
+    # 1) 纯 URL（head 为 URL 且无 tail）→ 纯图
+    if is_url(head) and not tail:
+        src = html.escape(head, quote=True)
         return (f'<div class="card__media">'
                 f'<img class="card__media-img" src="{src}" alt="" '
                 f'loading="lazy" decoding="async" referrerpolicy="no-referrer" '
                 f'onerror="this.remove()"></div>')
+    # 2) URL,合法颜色 → 图 + 底色衬底
+    if is_url(head) and tail and is_color(tail):
+        src = html.escape(head, quote=True)
+        bg = html.escape(tail, quote=True)
+        return (f'<div class="card__media" style="background:{bg}">'
+                f'<img class="card__media-img" src="{src}" alt="" '
+                f'loading="lazy" decoding="async" referrerpolicy="no-referrer" '
+                f'onerror="this.remove()"></div>')
+    # 2b) URL,非法色/空 tail → 退化为纯图（不丢图）
+    if is_url(head):
+        src = html.escape(head, quote=True)
+        return (f'<div class="card__media">'
+                f'<img class="card__media-img" src="{src}" alt="" '
+                f'loading="lazy" decoding="async" referrerpolicy="no-referrer" '
+                f'onerror="this.remove()"></div>')
+    # 3) 纯颜色值 / 合法色带尾巴 → 纯色块占位（用 head 当色，忽略尾巴）
+    if is_color(head):
+        bg = html.escape(head, quote=True)
+        return (f'<div class="card__media card__media--color" '
+                f'style="background:{bg}"></div>')
+    # 4) 字符,合法颜色 → 文字占位 + 自定义底色
+    if tail and is_color(tail):
+        ch = html.escape(head, quote=True)
+        bg = html.escape(tail, quote=True)
+        return (f'<div class="card__media" style="background:{bg}">'
+                f'<span class="card__media-fallback">{ch}</span></div>')
+    # 5) 兜底：标题首字符 + 红渐变底
     fb = html.escape(first_char(title))
     return (f'<div class="card__media">'
             f'<span class="card__media-fallback" aria-hidden="true">{fb}</span></div>')

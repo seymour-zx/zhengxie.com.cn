@@ -444,6 +444,8 @@ input, textarea, select { font-family: inherit; }
   color: #fff; text-shadow: 0 2px 8px rgba(0, 0, 0, .25);
 }
 .card__media-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* 纯色块占位（media 列仅填颜色值）：inline style 已设 background，此处保证铺满且无图时不露红底 */
+.card__media--color { background-image: none; }
 
 /* 文本行（标题/描述）：单行不换行，超出截断隐藏（不用省略号），可横向滚动 */
 .card__title {
