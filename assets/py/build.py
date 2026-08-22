@@ -55,6 +55,10 @@ from openpyxl import load_workbook
 
 # ── 路径 ──────────────────────────────────────────────
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# 子页（pages/*/index.html）直接以相对路径 ../../assets/ 引用根目录共享 assets，
+# 不再复制 assets 进各子页目录（见 2026-08-22 调整：子页用 ../../assets/ 回退到根）。
+# 因此 build 时无需 sync 子页 assets；根 assets 为唯一真源。
+
 XLSX_PATH = os.path.join(BASE_DIR, "assets", "xlsx", "links.xlsx")
 OUT_PATH = os.path.join(BASE_DIR, "index.html")
 
@@ -115,12 +119,6 @@ UGCCOMMENT = []
 # 暴露站点（备案号/官方政务等需暴露来源）
 EXPOSED = ["beian.miit.gov.cn"]
 EXT_LINK = EXPOSED_ATTR  # 页脚备案号等固定外链复用暴露策略
-# 子页（about/submit）：build 时把根 assets(css/js/images) 同步进各自的独立 assets 文件夹，
-# 使子页自包含（不引用根域共享 assets，符合「独立 assets 文件夹」要求）。
-UNIT_PAGES = ["pages/about", "pages/submit", "pages/privacy",
-               "pages/contact", "pages/disclaimer", "pages/guide",
-               "pages/sitemap", "pages/changelog", "pages/overview"]
-UNIT_ASSET_DIRS = ["css", "js", "images"]
 
 # ── 解析函数 ──────────────────────────────────────────
 
@@ -394,23 +392,6 @@ def build_page(category_buttons, cards_html, engine_primary, engine_track, total
         .replace("{{SITE_DOMAIN}}", SITE_DOMAIN)
         .replace("{{EXT_LINK}}", EXT_LINK)
     )
-
-
-def sync_unit_assets():
-    """把根 assets(css/js/images) 同步进各子页的独立 assets 文件夹，
-    使 about/submit 等子页自包含（不引用根域共享 assets）。
-    子页 HTML 以相对路径引用自己的 assets/，因此从其目录打开即可正常加载。"""
-    import shutil
-    for page in UNIT_PAGES:
-        dest_root = os.path.join(BASE_DIR, page, "assets")
-        for d in UNIT_ASSET_DIRS:
-            src = os.path.join(BASE_DIR, "assets", d)
-            dst = os.path.join(dest_root, d)
-            if not os.path.isdir(src):
-                continue
-            # 用 dirs_exist_ok 增量覆盖（不删除旧文件），避免触发沙箱安全删除拦截；
-            # 资源为稳定项，无残留文件问题。
-            shutil.copytree(src, dst, dirs_exist_ok=True)
 
 
 # ── 页面模板 ──
@@ -692,7 +673,6 @@ def main():
     page = build_page(category_buttons, cards, engine_primary, engine_track, len(rows))
     with open(OUT_PATH, "w", encoding="utf-8") as f:
         f.write(page)
-    sync_unit_assets()
     cats = [str(r.get("分类") or "").strip() for r in rows]
     print("已生成:", OUT_PATH)
     print("分类:", " / ".join(dict.fromkeys(cats)))

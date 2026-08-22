@@ -75,9 +75,7 @@
 
 > 目录约定（2026-08-22 末生效，2026-08-22 更新）：说明/合规/功能型子页 + 全站中枢页**统一放 `pages/<name>/`**（`units/` 已整体删除、`test.html` 已删；中枢页 `pages/overview/` 由根 `overview/` 移入）。导航频道未来放 `nav/<name>/`（S1 实例）。
 
-1. **`assets/py/build.py` 的 `UNIT_PAGES`**：追加 `"pages/<name>"`（中枢页也走 `pages/overview`）。
-   - 当前值：`["pages/about", "pages/submit", "pages/privacy", "pages/contact", "pages/disclaimer", "pages/guide", "pages/sitemap", "pages/changelog", "pages/overview"]`
-   - 重 build 时 `sync_unit_assets()` 会自动把根 `assets/{css,js,images}` 复制到该子页的 `assets/`，使其自包含。
+1. **子页资源引用（2026-08-22 调整）**：子页 `pages/<name>/index.html` **不再复制 assets、不再自包含**，直接以相对路径 `../../assets/css/style.css`、`../../assets/images/logo.svg`、`../../assets/js/main.js` 引用**根目录**共享 assets（根 assets 为唯一真源，`build.py` 已移除 `UNIT_PAGES`/`sync_unit_assets` 复制逻辑）。新增子页时照此写引用即可，无需改 `build.py`。
 2. **`assets/py/build.py` 首页模板页脚**：若新子页需在首页页脚出现，在 footer `<nav>` 内加 `<a href="{{SITE_DOMAIN}}/pages/<name>/">名称</a>`（中枢页用 `{{SITE_DOMAIN}}/pages/overview/` 文本「网站全景」；注意用 `{{SITE_DOMAIN}}` 占位，build 会替换；首页模板页脚已含 10 链接）。
 3. **手写子页页脚**：pages 下 9 个手写页（含 overview）页脚 nav 需与新子页互链（保持 10 链接一致，含「网站全景」）。可用统一模板批量替换 nav 块。
 4. **`sitemap.xml`**：在 `</urlset>` 前加 `<url>` 条目，`<loc>https://zhengxie.com.cn/pages/<name>/</loc>`、`<changefreq>monthly</changefreq>`、`<priority>0.50</priority>`（中枢页 `pages/overview` 用 priority 0.70）。
@@ -101,7 +99,7 @@
 ## 验证步骤（完成后必跑）
 
 1. 运行 build：`python assets/py/build.py`（路径用本项目 managed python）。确认读记录数正常、生成 index.html 无报错。
-2. 校验新子页 assets 同步：`ls pages/<name>/assets` 应含 `css js images`（中枢页 `ls pages/overview/assets`）。
+2. 校验新子页资源引用：`grep '\.\./\.\./assets/' pages/<name>/index.html` 应有 style.css / logo.svg / main.js 三项（中枢页同）；并确认根 `assets/` 下对应文件存在（子页不再有独立 assets 目录）。
 3. 校验首页页脚：grep `pages/<name>/` 与 `pages/overview/` 在 index.html 出现；grep `units/` 应为 0（旧目录已整体删除，2026-08-22 末）。
 4. 校验 sitemap.xml：含新 `<loc>` 条目（均为 `pages/` 路径），总数 = 1（首页）+ 1（pages/overview）+ N（pages 子页）。
 5. 抽查子页：无全局 referrer meta、FOUC 脚本仅本地 dark、内链 `_self`、页脚 10 链接齐全（含「网站全景」）。
@@ -110,7 +108,7 @@
 
 ## 退回方案
 
-若用户要求撤销某个子页：删 `pages/<name>/`（中枢页为 `pages/overview/`）目录 → 撤 `UNIT_PAGES` 中对应项 → 撤 sitemap.xml 对应条目 → 撤所有页脚 nav 中对应 `<a>` → 撤 README 对应行 → 重 build。
+若用户要求撤销某个子页：删 `pages/<name>/`（中枢页为 `pages/overview/`）目录 → 撤 sitemap.xml 对应条目 → 撤所有页脚 nav 中对应 `<a>` → 撤 README 对应行 → 重 build（无需撤 `UNIT_PAGES`，该常量已于 2026-08-22 移除）。
 
 ---
 
@@ -136,7 +134,7 @@
 - SEO：`canonical` 指向 `https://zhengxie.com.cn/overview/`；`og:type=website`；补 description/keywords（强调"全站总览"）。
 - 数据来源（⏳ PENDING，不擅自决定）：架构/切片/榜单数据从哪来待用户拍板。
 
-**联动**：手写时无需改 `UNIT_PAGES`（仅 S1 与手写子页复制 assets 走 UNIT_PAGES）；建 `overview/` 时建议加入 `UNIT_PAGES` 同步 assets；sitemap.xml 加 `<url>`（priority 0.50，低于 S1 根域）；README 3.2 补 🔶 标注（如"网站全景中枢页，2026-XX 立项"）。
+**联动**：手写子页直接引用 `../../assets/`（无需改 `build.py`）；建 `overview/` 同样引用根 assets；sitemap.xml 加 `<url>`（priority 0.50，低于 S1 根域）；README 3.2 补 🔶 标注（如"网站全景中枢页，2026-XX 立项"）。
 
 ### S6 — 文章 / 内容页（列表索引 + 详情）
 
@@ -155,7 +153,7 @@
 **插图规范**：图片用合规 URL（同 README「数据维护」合规 URL 定义）或相对 `assets/images/`；防盗链用 `referrerpolicy="no-referrer"`（仅图片，不全局）；`figure` 包裹保证排版语义。
 
 **联动清单（新增一个文章/内容板块时）**：
-1. 若走 build 生成：在 `build.py` 新增数据源与模板（扩展 UNIT_PAGES / 新增 ARTICLE 模板）；若纯手写：直接建 `articles/<slug>/index.html`。
+1. 若走 build 生成：在 `build.py` 新增数据源与模板（新增 ARTICLE 模板）；若纯手写：直接建 `articles/<slug>/index.html`，资源引用 `../../assets/`。
 2. `sitemap.xml`：列表页 + 每篇详情页各加 `<url>`（详情页 priority 0.40，列表页 0.50）。
 3. 全局页脚 9 链接：文章页页脚 nav 与其他页一致（保持全站统一）。
 4. `README.md` 3.2 节：补该板块的 🔶 状态标注（如"博客板块，2026-XX 新增"）。

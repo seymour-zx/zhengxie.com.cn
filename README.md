@@ -67,14 +67,14 @@
 
 > 子页 `pages/about`、`pages/submit` 为既有项目结构（资源相对、内链绝对），非本轮主动新增，仅在此标注其形态，不作改动即可。
 
-> **子页统一形态（目录已于 2026-08-22 末从 `units/` 迁移至 `pages/`）**：手写静态页，`<head>` **不设**全局 referrer meta（与主页/README「不设全局 referrer」规则一致）、FOUC **仅当 `localStorage('zx_theme')==='dark'` 才暗色**（不跟随系统偏好）；资源相对 `assets/...`、内链绝对 `https://zhengxie.com.cn/...` 且 `target="_self"`；`build.py` 的 `UNIT_PAGES` 已含 pages/about/submit/privacy/contact/disclaimer/guide/sitemap/changelog 与 `overview`，重 build 会同步各自独立 assets。
+> **子页统一形态（目录已于 2026-08-22 末从 `units/` 迁移至 `pages/`）**：手写静态页，`<head>` **不设**全局 referrer meta（与主页/README「不设全局 referrer」规则一致）、FOUC **仅当 `localStorage('zx_theme')==='dark'` 才暗色**（不跟随系统偏好）；资源以相对路径 `../../assets/css/style.css`、`../../assets/images/logo.svg`、`../../assets/js/main.js` **引用根目录共享 assets**（根 assets 为唯一真源，子页不再复制自包含 assets——`build.py` 的 `UNIT_PAGES`/`sync_unit_assets` 已于 2026-08-22 移除）；内链绝对 `https://zhengxie.com.cn/...` 且 `target="_self"`。
 > **子页新增/调整的具体操作步骤（标准形态 7 要点、页脚模板、全站联动清单、验证步骤、退回方案）已抽离至 `assets/skills/SKILL.md`**——任何会话要新增子页时，先读该 SKILL.md 照做，避免 README 与操作步骤两处维护漂移。
 
-> **隐私政策页（🔶 本次主动新增，可退回）**：`pages/privacy/index.html` 由我据站点真实技术实现起草（含免责声明「AI 辅助生成、非执业律师正式意见」）；内容如实陈述——本站为纯静态站、无后端/无注册、本地收藏存 localStorage 不上传、接入百度统计/GA4/AdSense、不设全局 referrer、外链按优先级规则打开。**改动前原状态**：站内无隐私政策页（页脚无隐私链接、sitemap 无隐私条目）。退回即删 `pages/privacy/`、撤 `UNIT_PAGES` 中的 privacy 项、撤 sitemap/页脚/README 相关行。
+> **隐私政策页（🔶 本次主动新增，可退回）**：`pages/privacy/index.html` 由我据站点真实技术实现起草（含免责声明「AI 辅助生成、非执业律师正式意见」）；内容如实陈述——本站为纯静态站、无后端/无注册、本地收藏存 localStorage 不上传、接入百度统计/GA4/AdSense、不设全局 referrer、外链按优先级规则打开。**改动前原状态**：站内无隐私政策页（页脚无隐私链接、sitemap 无隐私条目）。退回即删 `pages/privacy/`、撤 sitemap/页脚/README 相关行。
 
-> **5 个说明型子页（🔶 2026-08-22 主动新增，可整体退回）**：`pages/contact`（联系我们，含收录/反馈/合作邮箱 hello@zhengxie.com.cn）、`pages/disclaimer`（免责声明，含 AI 辅助生成免责声明）、`pages/guide`（使用指南，讲本地收藏/三维度筛选/集合搜索/URL分享/随机漫步/暗色快捷键）、`pages/sitemap`（站点地图，可视化分类索引+功能页+机器可读 sitemap.xml 入口，分类锚点回首页 `#cat=分类`）、`pages/changelog`（更新日志，按时间倒序记录站点迭代）。形态同隐私页（资源相对、内链绝对 `_self`、无全局 referrer meta、FOUC 仅本地 dark）；全部进入 `UNIT_PAGES` 同步 assets、写入 `sitemap.xml`（priority 0.50）、页脚导航统一 10 链接（含「网站全景」）。退回即删对应 5 个 `pages/*/` 目录、撤 `UNIT_PAGES` 中 5 项、撤 sitemap/页脚/README 相关行（具体步骤见 `assets/skills/SKILL.md` 退回方案段）。
+> **5 个说明型子页（🔶 2026-08-22 主动新增，可整体退回）**：`pages/contact`（联系我们，含收录/反馈/合作邮箱 hello@zhengxie.com.cn）、`pages/disclaimer`（免责声明，含 AI 辅助生成免责声明）、`pages/guide`（使用指南，讲本地收藏/三维度筛选/集合搜索/URL分享/随机漫步/暗色快捷键）、`pages/sitemap`（站点地图，可视化分类索引+功能页+机器可读 sitemap.xml 入口，分类锚点回首页 `#cat=分类`）、`pages/changelog`（更新日志，按时间倒序记录站点迭代）。形态同隐私页（资源 `../../assets/` 引用根、内链绝对 `_self`、无全局 referrer meta、FOUC 仅本地 dark）；写入 `sitemap.xml`（priority 0.50）、页脚导航统一 10 链接（含「网站全景」）。退回即删对应 5 个 `pages/*/` 目录、撤 sitemap/页脚/README 相关行（具体步骤见 `assets/skills/SKILL.md` 退回方案段）。
 
-> **全站中枢页（🔶 2026-08-22 末主动新增，可退回）**：`overview/index.html`「网站全景」= S2 骨架升级版（全站中枢：架构总览 + 各板块活体切片 + 榜单区块 + 分发中枢）。路径 `/overview/`，页脚链接文本「网站全景」。手动同步 GA4+百度统计双 id（无 AdSense，同 404 策略）；进入 `UNIT_PAGES` 同步 assets、写入 `sitemap.xml`（priority 0.70）。退回即删 `overview/`、撤 `UNIT_PAGES` 中 overview 项、撤 sitemap/页脚/README 相关行。旧 `units/` 目录保留为 meta refresh 过渡页（自动跳 `pages/`），不删（保外链/收录价值）。
+> **全站中枢页（🔶 2026-08-22 末主动新增，可退回）**：`overview/index.html`「网站全景」= S2 骨架升级版（全站中枢：架构总览 + 各板块活体切片 + 榜单区块 + 分发中枢）。路径 `/overview/`，页脚链接文本「网站全景」。手动同步 GA4+百度统计双 id（无 AdSense，同 404 策略）；资源 `../../assets/` 引用根、写入 `sitemap.xml`（priority 0.70）。退回即删 `overview/`、撤 sitemap/页脚/README 相关行。旧 `units/` 目录已整体删除（2026-08-22 末）。
 
 ### 3.1 专家转介纪律（🚫 任何会话必守，AI 硬边界）
 
@@ -112,11 +112,11 @@
 > - **榜单 S7 预留（升级口）**：榜单**当前留在 S2 内**作区块；当维度增多、常更新、需分页/筛选/全量查看时，**升为独立骨架 S7「榜单/排行页」**（路径如 `/rank/`），从 S2 榜单块"更多"跳转看全量完整排行。触发条件达成前不新增，达成后写入本章并同步 SKILL.md。
 > - **数据来源（⏳ PENDING）**：架构总览/活体切片/榜单的数据从哪来（导航分类提取 `index.html` 的 `data-cat` / 博客未来从 S6 / 榜单需 build 扩展或手动维护），待用户拍板，不擅自决定。
 >
-> **骨架通用技术契约（全部骨架共用，不可违反）**：资源相对 `assets/...`（各页自包含，不引用根域共享 assets）；内链绝对 `https://zhengxie.com.cn/...` 且 `target="_self"`；`<head>` **不设**全局 referrer meta；FOUC **仅当 `localStorage('zx_theme')==='dark'` 才暗色**（不跟随系统）；页脚导航统一 9 链接 + 备案号注释占位；`canonical` / `robots` / `description` 齐备；奢华红金白视觉语言（暗色金系，禁蓝紫）。
+> **骨架通用技术契约（全部骨架共用，不可违反）**：资源引用——根页用 `assets/...`，子页（`pages/*/`）用 `../../assets/...` **指向根目录唯一 assets 真源**（子页不再自包含、不再复制 assets，`build.py` 的 `UNIT_PAGES`/`sync_unit_assets` 已于 2026-08-22 移除）；内链绝对 `https://zhengxie.com.cn/...` 且 `target="_self"`；`<head>` **不设**全局 referrer meta；FOUC **仅当 `localStorage('zx_theme')==='dark'` 才暗色**（不跟随系统）；页脚导航统一 10 链接 + 备案号注释占位；`canonical` / `robots` / `description` 齐备；奢华红金白视觉语言（暗色金系，禁蓝紫）。
 >
 > **各骨架差异点（骨架特有契约）**：
 > - **S1**：唯一由 build.py 生成；页脚 10 链接（含「网站全景」）由 `build.py` 首页模板控制（非手写）；含统计/广告代码注入；卡片按 type 分组分行（见「页面与交互说明」章）。
-> - **S2 / S6 若由 build 生成**：需新增对应 `UNIT_PAGES` 项并在 build 模板定义骨架（目前 build 仅支持 S1 与手写子页复制 assets）；**纯手写时**直接套 `assets/skills/SKILL.md` 中对应骨架模板。
+> - **S2 / S6 若由 build 生成**：需新增 build 模板定义骨架（目前 build 仅支持 S1，手写子页直接引用 `../../assets/` 即可）；**纯手写时**直接套 `assets/skills/SKILL.md` 中对应骨架模板。
 > - **S4**：正文置顶法律免责声明；内容涉及个保法/效力条款时**触发专家转介纪律**（不替代执业律师）。
 > - **S6**：详情页用 `<article>` 语义 + 阅读排版（行宽约 70ch、段落间距、`figure/figcaption` 插图）；列表页 `articles/index.html` 做索引（标题+摘要+日期+封面）；可选 RSS `feed.xml`、分页、标签归档；长文页仍沿用全局页脚 10 链接与视觉语言。
 >
@@ -136,7 +136,7 @@
 
 - [x] **P0** 暗色模式重做为奢华金系（v6 已完成）
 - [x] **P0** 移除分类计数徽章、空结果清除按钮；暗色切换移页脚；随机漫步移页脚（已完成）
-- [x] **P1** 新增 5 个说明型子页：contact/disclaimer/guide/sitemap/changelog（2026-08-22 完成，含 UNIT_PAGES/sitemap/页脚/README 同步）
+- [x] **P1** 新增 5 个说明型子页：contact/disclaimer/guide/sitemap/changelog（2026-08-22 完成，sitemap/页脚/README 同步；子页统一引用根 `../../assets/`）
 - [ ] **P1** 将 `pages/about`、`pages/submit` 纳入 `build.py` 模板，消除换域名时手动替换字面量（依赖第 4 节待定项决策）
 - [ ] **P1** 评估并决策 GitHub Pages 国内访问稳定性问题（是否迁移 CDN）
 - [x] **P1** 清理开发残留：`test.html`（根目录测试页，已删）、`units/`（旧过渡页+占位，已整体删除，2026-08-22 末）；全站 `/overview/` 已统一改 `/pages/overview/`、`units/` 引用清零
@@ -215,10 +215,10 @@ python -m http.server 8080
   - `EXPOSED_ATTR = 'target="_blank" rel="nofollow noopener" referrerpolicy="origin"'`：暴露（备案号 `beian.miit.gov.cn` 等需暴露来源；`referrerpolicy="origin"` 仅发送源站 origin，不暴露完整路径）。
   - `DEFAULT_LINK_ATTR = 'target="_blank" rel="nofollow noopener noreferrer"'`：其余一切外链（新标签 + 不传权重 + **不暴露来源**；因带 `noreferrer`，百度统计/GA4 对这类外跳收不到 Referer，但站内统计与卡片图片不受影响）。
   - 命中逻辑在 `link_attr(url)` 中按上述优先级短路；`EXT_LINK = EXPOSED_ATTR` 供备案号等固定外链复用。手工增删：改对应常量域名列表即可，无需动 xlsx。
-- `UNIT_PAGES` / `UNIT_ASSET_DIRS`：build 时把根 `assets/{css,js,images}` **同步**进 `units/about`、`units/submit` 各自的独立 `assets/` 文件夹，使子页自包含（不引用根域共享 assets）。
+- ~~`UNIT_PAGES` / `UNIT_ASSET_DIRS`~~：**已于 2026-08-22 移除**。原用途是 build 时把根 `assets/{css,js,images}` 同步进各子页独立 `assets/` 使其自包含；现改为子页以 `../../assets/...` 直接引用根目录共享 assets，根 assets 为唯一真源，不再复制（详见骨架通用技术契约与 `assets/skills/SKILL.md`）。
 
 > **Referer 策略（重要）**：**不设**全局 `<meta name="referrer" content="no-referrer">`（它会让百度统计后台显示"referer 被禁用"，收不到来源站）。仅在**卡片图片**上用 `referrerpolicy="no-referrer"` 单独压制（防图片防盗链）；卡片外链 / 引擎跳转默认**发 Referer**。
-> 约定：站内**资源**（css/js/images）一律用相对路径（各页引用自己目录下的 `assets/`）；**内链**（页与页之间）一律用 `SITE_DOMAIN` 生成的完整绝对路径，且按 `SAME_DOMAIN_ATTR` 原地打开（`target="_self"`）；**外链**按上表优先级匹配属性。
+> 约定：站内**资源**（css/js/images）——根页用 `assets/...`、子页用 `../../assets/...`（均指向根目录唯一 assets 真源，子页不再有独立 assets 目录）；**内链**（页与页之间）一律用 `SITE_DOMAIN` 生成的完整绝对路径，且按 `SAME_DOMAIN_ATTR` 原地打开（`target="_self"`）；**外链**按上表优先级匹配属性。
 > 注意：`units/about`、`units/submit` 是手写静态页（非 build 生成），其 canonical 与内链里的域名是字面量；换域名时这两处需另行替换（或直接把子页也纳入 build 模板，后续可议）。
 
 ### 全链接规则使用情况汇总（搜索框 / 引擎跳转 / assets 引用 / 卡片链接 / 卡片外链接 / 备案号 / 子页）
@@ -491,7 +491,7 @@ git push -u origin main
 ### SEO 与元数据
 
 - 新增 `robots.txt`：`User-agent: *` + `Allow: /` + `Sitemap`；**仅** `Disallow: /assets/xlsx/`（数据源）与 `Disallow: /assets/py/`（构建脚本/内部报告），并保留根 `ads.txt` 可公开抓取（AdSense 授权必需）。
-  - **`assets/` 不整体禁爬**：`assets/{css,js,images}`（含子页 `units/*/assets/`）是公开静态资源——CSS/JS 被禁可能影响富媒体渲染，图片（logo/卡片图）被禁会丢失 Google 图片搜索与 `og:image` 社交预览；且 `<link>/<script>` 引用的资源本就不会进搜索结果，无需 `Disallow`。GitHub Pages 不支持 `X-Robots-Tag` 自定义响应头，故无法对资源文件做 `noindex`，维持现状即可。
+  - **`assets/` 不整体禁爬**：`assets/{css,js,images}` 是公开静态资源（子页经 `../../assets/` 引用同一份根资源）——CSS/JS 被禁可能影响富媒体渲染，图片（logo/卡片图）被禁会丢失 Google 图片搜索与 `og:image` 社交预览；且 `<link>/<script>` 引用的资源本就不会进搜索结果，无需 `Disallow`。GitHub Pages 不支持 `X-Robots-Tag` 自定义响应头，故无法对资源文件做 `noindex`，维持现状即可。
 - 新增 `sitemap.xml`（首页 + about + submit）
 - 新增 `manifest.json`（PWA 基础支持）
 - `<head>` 新增：`canonical`、`og:image`、`og:site_name`、`twitter:card`、`theme-color`（light/dark 双值）、`apple-touch-icon`、`preconnect`（GA / AdSense / 百度统计）
