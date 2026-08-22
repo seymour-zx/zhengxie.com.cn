@@ -3,16 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="referrer" content="no-referrer">
   <meta name="robots" content="noindex, follow">
   <title>页面未找到 - 正协导航</title>
   <meta name="description" content="您访问的页面不存在或已删除。返回正协导航首页，继续探索精选站点。">
   <!-- favicon 用绝对域名：404 可能从任意深层路径触发，相对路径会失效 -->
   <link rel="icon" type="image/svg+xml" href="https://zhengxie.com.cn/assets/images/logo.svg">
   <meta name="theme-color" content="#9E1B22">
-  <!-- 暗色模式：CSS 加载前同步设置，避免闪烁(FOUC)，与整站一致 -->
+  <!-- 暗色模式：仅当用户本地曾选暗色(localStorage='dark')才启用，不跟随系统偏好，与整站一致 -->
   <script>
-    (function(){try{var t=localStorage.getItem('zx_theme');if(!t){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();
+    (function(){try{var t=localStorage.getItem('zx_theme');if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();
   </script>
   <!-- 404 自包含：内联所需 CSS（主题变量 + hero + footer + 错误页样式），不依赖外部 style.css，
        从任意深层路径触发也不会样式丢失 -->
@@ -72,13 +71,73 @@
     <p class="error-page__code">404</p>
     <p class="error-page__msg">页面未找到</p>
     <p class="error-page__desc">您访问的页面不存在或已被移除。别担心，正协导航的精选站点仍在等您。</p>
-    <a href="https://zhengxie.com.cn/" class="error-page__btn">返回首页</a>
+    <!-- 返回按钮由 JS 按来源(document.referrer)动态生成：站内→返回上一页 / 外链→返回来源站 / 直接访问或无可识别来源→返回首页 -->
+    <span id="back-action"></span>
     <a href="https://zhengxie.com.cn/units/about/" class="error-page__link">了解正协导航</a>
   </main>
   <footer class="footer">
     <p class="footer__copyright">© 2026 正协导航 · 让每一次寻找，都不止于找到</p>
   </footer>
-  <!-- 8 秒后自动跳回首页 -->
-  <script>setTimeout(function(){window.location.href='https://zhengxie.com.cn/';},8000);</script>
+  <!-- 按来源动态生成返回按钮 -->
+  <script>
+  (function () {
+    var HOME = 'https://zhengxie.com.cn/';
+    var SITE_HOST = 'zhengxie.com.cn';
+    var ref = (document.referrer || '').trim();
+    var box = document.getElementById('back-action');
+    if (!box) return;
+
+    // 判断来源类别
+    var isInternal = ref !== '' && ref.indexOf(SITE_HOST) !== -1;
+    var isExternal = ref !== '' && ref.indexOf(SITE_HOST) === -1;
+
+    // 工具：生成按钮
+    function btn(href, text, onClick) {
+      var a = document.createElement('a');
+      a.className = 'error-page__btn';
+      a.textContent = text;
+      if (href) { a.setAttribute('href', href); }
+      else { a.setAttribute('href', 'javascript:void(0)'); }
+      if (onClick) { a.addEventListener('click', onClick); }
+      return a;
+    }
+
+    var primary, secondary = null;
+
+    if (isInternal) {
+      // 站内跳转：优先返回上一页（history.back），不可回退时跳首页
+      primary = btn('', '返回上一页', function (e) {
+        e.preventDefault();
+        if (history.length > 1) { history.back(); }
+        else { window.location.href = HOME; }
+      });
+      secondary = btn(HOME, '返回正协导航首页', null);
+    } else if (isExternal) {
+      // 外链 / 搜索引擎跳入：主按钮返回来源站，副按钮回本站首页
+      primary = btn(ref, '返回来源网站', null);
+      secondary = btn(HOME, '返回正协导航首页', null);
+    } else {
+      // 直接访问（地址栏/书签/扫码）或来源设了 no-referrer：只能回首页
+      primary = btn(HOME, '返回正协导航首页', null);
+    }
+
+    box.appendChild(primary);
+    if (secondary) {
+      var wrap = document.createElement('span');
+      wrap.style.display = 'block';
+      wrap.style.marginTop = '14px';
+      wrap.appendChild(secondary);
+      box.appendChild(wrap);
+    }
+  })();
+  </script>
+  <!-- 8 秒后自动跳转：站内优先返回上一页，否则回首页 -->
+  <script>
+  setTimeout(function(){
+    var ref=(document.referrer||'').trim();
+    if(ref!==''&&ref.indexOf('zhengxie.com.cn')!==-1){ if(history.length>1){history.back();return;} }
+    window.location.href='https://zhengxie.com.cn/';
+  },8000);
+  </script>
 </body>
 </html>

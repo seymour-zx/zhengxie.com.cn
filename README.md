@@ -56,6 +56,7 @@
 | 搜索关键词金色高亮 | 关键词仅筛选，不高亮 |
 | 随机漫步（页脚随机开一张可见卡） | 无此按钮 |
 | 404 完全自包含（内联 CSS/JS） | 404 引用外部 style.css |
+| 404 按来源动态返回按钮（依据 `document.referrer`：站内→返回上一页 `history.back()`、外链/搜索引擎→返回来源站、直接访问或无可识别来源→返回首页；8 秒自动跳转同源） | 404 仅固定「返回首页」按钮 |
 | 卡片外链标签：直角金边胶囊 + 「↗」外跳标记（区别于圆形分类标签） | 12px 灰色虚线下划线小字、无 ↗ |
 | 搜索框默认激活 Google（主引擎百度/必应/Google 原位不变，仅初始高亮 Google） | 默认激活百度 |
 | 滚动按钮组：4 个独立按钮，按滚动位置只显示 1 个（编号 1 向上 ⬆、2 到顶 ⏫、3 向下 ⬇、4 到底 ⏬） | 单图标固定回顶按钮 |
@@ -423,7 +424,8 @@ git push -u origin main
 
 ### SEO 与元数据
 
-- 新增 `robots.txt`（允许抓取，禁止 `/assets/xlsx/` 和 `/assets/py/`）
+- 新增 `robots.txt`：`User-agent: *` + `Allow: /` + `Sitemap`；**仅** `Disallow: /assets/xlsx/`（数据源）与 `Disallow: /assets/py/`（构建脚本/内部报告），并保留根 `ads.txt` 可公开抓取（AdSense 授权必需）。
+  - **`assets/` 不整体禁爬**：`assets/{css,js,images}`（含子页 `units/*/assets/`）是公开静态资源——CSS/JS 被禁可能影响富媒体渲染，图片（logo/卡片图）被禁会丢失 Google 图片搜索与 `og:image` 社交预览；且 `<link>/<script>` 引用的资源本就不会进搜索结果，无需 `Disallow`。GitHub Pages 不支持 `X-Robots-Tag` 自定义响应头，故无法对资源文件做 `noindex`，维持现状即可。
 - 新增 `sitemap.xml`（首页 + about + submit）
 - 新增 `manifest.json`（PWA 基础支持）
 - `<head>` 新增：`canonical`、`og:image`、`og:site_name`、`twitter:card`、`theme-color`（light/dark 双值）、`apple-touch-icon`、`preconnect`（GA / AdSense / 百度统计）
