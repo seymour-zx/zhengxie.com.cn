@@ -3,11 +3,11 @@
 check_links.py —— 正协导航 · 死链检测
 ====================================
 读取 assets/xlsx/self_links.xlsx 中 links 列的 URL，逐个请求检查可达性，
-输出报告 assets/py/link_report.txt。
+输出报告 assets/.build/link_report.txt。
 
 用法：
-    python assets/py/check_links.py              # 检查全部链接
-    python assets/py/check_links.py --limit 5    # 只检查前 5 条（快速测试）
+    python assets/.build/check_links.py              # 检查全部链接
+    python assets/.build/check_links.py --limit 5    # 只检查前 5 条（快速测试）
 
 说明：
 - links 列格式：名称,URL;名称,URL （分号分链接、逗号分名称与URL）

@@ -1,6 +1,7 @@
 User-agent: *
-Allow: /
-Disallow: /assets/xlsx/
-Disallow: /assets/py/
+Disallow: /assets/
+Allow: /assets/css/
+Allow: /assets/js/
+Allow: /assets/images/
 
 Sitemap: https://zhengxie.com.cn/sitemap.xml

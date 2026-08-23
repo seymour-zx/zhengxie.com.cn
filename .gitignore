@@ -1,0 +1,4 @@
+# Python 构建产物：避免 __pycache__ / *.pyc 被提交（曾被误提交，字节码可反编译暴露源码）
+assets/*/__pycache__/
+__pycache__/
+*.pyc

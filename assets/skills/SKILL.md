@@ -5,7 +5,7 @@
 > 若需"换设备触发即自动执行"，请将本文件复制到 `{workspace}/.workbuddy/skills/<name>/SKILL.md` 并用 SkillManage 注册。
 > 本文件内容与 `README.md` 决策总章互为补充：README 管"决策/规范"，本文件管"可重复的操作步骤"。
 >
-> **🌐 跨设备权威源约定（AI 必守，用户 2026-08-23 指令）**：换设备对话时，**只有 `README.md` 与 `assets/skills/SKILL.md` 这两个 md 保证可读**。因此所有"AI 必须遵守的项目规范/约定"必须落在这两个 md 之一，**或落在代码里**（如 `assets/py/build.py` 顶部 docstring 已内置 `/directory/` 框架约定，即为跨设备权威源）。其它 `docs/*.md`（`docs/` 目录已删除，原 `SUBPAGE_BUILD_DESIGN.md` 内容已并入 build.py docstring 与这两 md）**不算跨设备权威源**，不得作为任何规则的唯一出处；若在 docs/ 写过约定，须同步进这两 md 或代码。新增/修改项目级规则时先自问："这条在另台设备读得到吗？"读不到就别只放在 docs/ 里。
+> **🌐 跨设备权威源约定（AI 必守，用户 2026-08-23 指令）**：换设备对话时，**只有 `README.md` 与 `assets/skills/SKILL.md` 这两个 md 保证可读**。因此所有"AI 必须遵守的项目规范/约定"必须落在这两个 md 之一，**或落在代码里**（如 `assets/.build/build.py` 顶部 docstring 已内置 `/directory/` 框架约定，即为跨设备权威源）。其它 `docs/*.md`（`docs/` 目录已删除，原 `SUBPAGE_BUILD_DESIGN.md` 内容已并入 build.py docstring 与这两 md）**不算跨设备权威源**，不得作为任何规则的唯一出处；若在 docs/ 写过约定，须同步进这两 md 或代码。新增/修改项目级规则时先自问："这条在另台设备读得到吗？"读不到就别只放在 docs/ 里。
 >
 > **🚫 专家转介纪律（AI 硬边界，任何设备/会话都必须遵守）**：本项目的法律合规文本、SEO 策略、视觉设计评审等**不属于 AI 擅长的确定性工程范畴**，AI 只做"如实陈述技术实现"的草稿，**不替代专业判断**。遇到下列任务，AI 必须**主动停止、明确告知用户应咨询对应专家/connector**，不得硬做、不得给看似专业实则未经验证的结论。具体清单见文末「专家转介纪律」段。
 
@@ -88,10 +88,10 @@
 
 ## 全站联动清单（新增子页后必须同步，缺一不可）
 
-> 目录约定（2026-08-22 末生效，2026-08-23 更新）：说明/合规/功能型子页 + 全站中枢页**统一放 `pages/<name>/`**（`units/` 已整体删除、`test.html` 已删；中枢页 `pages/overview/` 由根 `overview/` 移入）。导航频道（S1 实例）放 `directory/<name>/`，由 `assets/py/build.py` 自动扫描各目录专属 `assets/xlsx/self_links.xlsx` 生成 `index.html`（非根表子集；原 `nav/<name>/` 草稿约定作废，2026-08-22 用户指定为 `directory/`）。框架约定详见 `assets/py/build.py` 顶部 docstring（跨设备可读）。
+> 目录约定（2026-08-22 末生效，2026-08-23 更新）：说明/合规/功能型子页 + 全站中枢页**统一放 `pages/<name>/`**（`units/` 已整体删除、`test.html` 已删；中枢页 `pages/overview/` 由根 `overview/` 移入）。导航频道（S1 实例）放 `directory/<name>/`，由 `assets/.build/build.py` 自动扫描各目录专属 `assets/xlsx/self_links.xlsx` 生成 `index.html`（非根表子集；原 `nav/<name>/` 草稿约定作废，2026-08-22 用户指定为 `directory/`）。框架约定详见 `assets/.build/build.py` 顶部 docstring（跨设备可读）。
 
 1. **子页资源引用（2026-08-22 调整）**：子页 `pages/<name>/index.html` **不再复制 assets、不再自包含**，直接以相对路径 `../../assets/css/style.css`、`../../assets/images/logo.svg`、`../../assets/js/main.js` 引用**根目录**共享 assets（根 assets 为唯一真源，`build.py` 已移除 `UNIT_PAGES`/`sync_unit_assets` 复制逻辑）。新增子页时照此写引用即可，无需改 `build.py`。
-2. **`assets/py/build.py` 首页模板页脚**：若新子页需在首页页脚出现，在 footer `<nav>` 内加 `<a href="{{SITE_DOMAIN}}/pages/<name>/">名称</a>`（中枢页用 `{{SITE_DOMAIN}}/pages/overview/` 文本「网站全景」；注意用 `{{SITE_DOMAIN}}` 占位，build 会替换；首页模板页脚已含 11 链接，含新增「频道导航」指向 `/directory/`）。
+2. **`assets/.build/build.py` 首页模板页脚**：若新子页需在首页页脚出现，在 footer `<nav>` 内加 `<a href="{{SITE_DOMAIN}}/pages/<name>/">名称</a>`（中枢页用 `{{SITE_DOMAIN}}/pages/overview/` 文本「网站全景」；注意用 `{{SITE_DOMAIN}}` 占位，build 会替换；首页模板页脚已含 11 链接，含新增「频道导航」指向 `/directory/`）。
 3. **手写子页页脚**：pages 下 9 个手写页（含 overview）页脚 nav 需与新子页互链（保持 11 链接一致，含「网站全景」与「频道导航」）。可用统一模板批量替换 nav 块。
 4. **`sitemap.xml`**：在 `</urlset>` 前加 `<url>` 条目，`<loc>https://zhengxie.com.cn/pages/<name>/</loc>`、`<changefreq>monthly</changefreq>`、`<priority>0.50</priority>`（中枢页 `pages/overview` 用 priority 0.70）。
 5. **`README.md`**：决策总章第 3 节补该子页的 🔶 状态标注（附原状态=无此页，可退回）；BACKLOG 标记完成情况。
@@ -113,7 +113,7 @@
 
 ## 验证步骤（完成后必跑）
 
-1. 运行 build：`python assets/py/build.py`（路径用本项目 managed python）。确认读记录数正常、生成 index.html 无报错。
+1. 运行 build：`python assets/.build/build.py`（路径用本项目 managed python）。确认读记录数正常、生成 index.html 无报错。
 2. 校验新子页资源引用：`grep '\.\./\.\./assets/' pages/<name>/index.html` 应有 style.css / logo.svg / main.js 三项（中枢页同）；并确认根 `assets/` 下对应文件存在（子页不再有独立 assets 目录）。
 3. 校验首页页脚：grep `pages/<name>/` 与 `pages/overview/` 在 index.html 出现；grep `units/` 应为 0（旧目录已整体删除，2026-08-22 末）。
 4. 校验 sitemap.xml：含新 `<loc>` 条目（均为 `pages/` 路径），总数 = 1（首页）+ 1（pages/overview）+ N（pages 子页）。

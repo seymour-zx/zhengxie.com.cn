@@ -10,7 +10,7 @@ build.py —— 正协导航 · 站点生成器
 - JS(main.js) 只做交互增强，禁用 JS 时页面内容完整可读可点。
 
 用法：
-    python assets/py/build.py
+    python assets/.build/build.py
 输出：
     index.html（站点根目录，覆盖更新）
 
@@ -85,7 +85,7 @@ build.py 一次运行**同时生成两类 S1 导航产品页**：
   · 根页元信息   `assets/json/self_meta.json`
   · 目录元信息   `directory/<name>/assets/json/self_meta.json`
 - 全站共享文件**不加** `self_`：`assets/json/manifest.json`、`assets/xlsx/link-policy.json`、
-  `assets/py/*.py`、`pages/<name>/index.html`（手写本体）。
+  `assets/.build/*.py`、`pages/<name>/index.html`（手写本体）。
 - 目录页列结构须与根 `self_links.xlsx` 一致（站序/type/分类/title/url/media/tags…），
   否则 `build_cards` 不复用。
 

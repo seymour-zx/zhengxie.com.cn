@@ -8,7 +8,9 @@
 
 > **⚠️ 操作铁律**：任何设备 / 任何会话对本项目做任何改动前，**必须先读完下方「决策与偏好总览」整章**，并严格遵守各条目的状态标记。改动若与该章冲突即视为错误——先回退、再与用户确认，绝不允许「凭感觉又加一个功能」导致用户重复纠正（此前已发生过：分类计数徽章、暗色偏蓝紫）。
 
-> **🌐 跨设备权威源约定（2026-08-23 指令）**：换设备对话时**只有本 `README.md` 与 `assets/skills/SKILL.md` 两个 md 保证可读**。因此所有"AI 必须遵守的项目规范"必须落在这两个 md 之一，或落在代码里（如 `assets/py/build.py` 顶部 docstring 已内置 `/directory/` 框架约定，即为跨设备权威源）。其它 `docs/*.md`（`docs/` 目录已删除，原 `SUBPAGE_BUILD_DESIGN.md` 内容已并入 build.py docstring 与这两 md）**不算跨设备权威源**，不得作为规则的唯一出处。新增/修改项目级规则前先自问："这条在另台设备读得到吗？"读不到就别只放在 docs/ 里。详见 `assets/skills/SKILL.md` 顶部同款约定。
+> **🌐 跨设备权威源约定（2026-08-23 指令）**：换设备对话时**只有本 `README.md` 与 `assets/skills/SKILL.md` 两个 md 保证可读**。因此所有"AI 必须遵守的项目规范"必须落在这两个 md 之一，或落在代码里（如 `assets/.build/build.py` 顶部 docstring 已内置 `/directory/` 框架约定，即为跨设备权威源）。其它 `docs/*.md`（`docs/` 目录已删除，原 `SUBPAGE_BUILD_DESIGN.md` 内容已并入 build.py docstring 与这两 md）**不算跨设备权威源**，不得作为规则的唯一出处。新增/修改项目级规则前先自问："这条在另台设备读得到吗？"读不到就别只放在 docs/ 里。详见 `assets/skills/SKILL.md` 顶部同款约定。
+
+> **📖 动手前必读 SKILL.md（2026-08-23 指令）**：本仓库内的 `assets/skills/SKILL.md` 是**项目内部 SOP（标准作业流程）**，集中了所有构建、目录约定、子页联动、SEO 规则等"AI 必须遵守的规范"。**任何设备 / 任何会话 / 任何维护者（含 AI 团队）开始改动本项目前，必须先打开并读完该 SKILL.md**，再动手。README 只作概览与入口，细节与操作步骤一律以 SKILL.md 为准——避免两处维护漂移、也避免规范随会话丢失。如果进项目时没被明确指向它，请主动寻找仓库内的 `SKILL.md` 先读，再开工。
 
 ---
 
@@ -66,7 +68,7 @@
 | 滚动自动判定（按 y vs alignTarget）：贴顶=3、贴底=1、y<alignTarget 上滑=2/下滑=3、y≈alignTarget 上滑=1/下滑=4、y>alignTarget 上滑=1/下滑=4 | 无 |
 | alignTarget = firstCard.offsetTop - stickyTop.offsetHeight（第一张可见卡片顶端对齐 sticky 整体块底部） | 无 |
 | 滚动期间点击锁：lockUserInput 阻止 wheel/touchmove/keydown，连续点击前 forceUnlock 清掉上一轮残留 handler 避免永久锁定 | 无 |
-| 同骨架导航频道页生成器 `assets/py/build.py`：自动扫描 `directory/<name>/`（每个含独立 `assets/xlsx/self_links.xlsx` + 必填 `assets/json/self_meta.json`），套用 S1 骨架生成 `directory/<name>/index.html`；资源引用 `../../assets/`、canonical `/directory/<name>/`、统计代码复用根页；self_meta.json 仅 3 字段（title/description/keywords）+ 根页 ROOT_META 兜底（未自定义字段跟随根页）。示例 `directory/ai/` 已跑通（2026-08-23）。框架约定详见 `assets/py/build.py` 顶部 docstring（跨设备可读） | 无此脚本（频道页需手写或拆根表子集） |
+| 同骨架导航频道页生成器 `assets/.build/build.py`：自动扫描 `directory/<name>/`（每个含独立 `assets/xlsx/self_links.xlsx` + 必填 `assets/json/self_meta.json`），套用 S1 骨架生成 `directory/<name>/index.html`；资源引用 `../../assets/`、canonical `/directory/<name>/`、统计代码复用根页；self_meta.json 仅 3 字段（title/description/keywords）+ 根页 ROOT_META 兜底（未自定义字段跟随根页）。示例 `directory/ai/` 已跑通（2026-08-23）。框架约定详见 `assets/.build/build.py` 顶部 docstring（跨设备可读） | 无此脚本（频道页需手写或拆根表子集） |
 
 > 子页 `pages/about`、`pages/submit` 为既有项目结构（资源相对、内链绝对），非本轮主动新增，仅在此标注其形态，不作改动即可。
 
@@ -118,7 +120,7 @@
 > **骨架通用技术契约（全部骨架共用，不可违反）**：资源引用——根页用 `assets/...`，子页（`pages/*/`）用 `../../assets/...` **指向根目录唯一 assets 真源**（子页不再自包含、不再复制 assets，`build.py` 的 `UNIT_PAGES`/`sync_unit_assets` 已于 2026-08-22 移除）；内链绝对 `https://zhengxie.com.cn/...` 且 `target="_self"`；`<head>` **不设**全局 referrer meta；FOUC **仅当 `localStorage('zx_theme')==='dark'` 才暗色**（不跟随系统）；页脚导航统一 11 链接（含「网站全景」「频道导航」） + 备案号注释占位；`canonical` / `robots` / `description` 齐备；奢华红金白视觉语言（暗色金系，禁蓝紫）。
 >
 > **各骨架差异点（骨架特有契约）**：
-> - **S1**：唯一由 build.py 生成（根 `index.html` + 自动扫描 `directory/<name>/index.html`）；页脚 11 链接（含「网站全景」「频道导航」）由 `build.py` 首页模板控制（非手写）；含统计/广告代码注入；卡片按 type 分组分行（见「页面与交互说明」章）。`directory/<name>/` 框架约定见 `assets/py/build.py` 顶部 docstring（跨设备可读）。
+> - **S1**：唯一由 build.py 生成（根 `index.html` + 自动扫描 `directory/<name>/index.html`）；页脚 11 链接（含「网站全景」「频道导航」）由 `build.py` 首页模板控制（非手写）；含统计/广告代码注入；卡片按 type 分组分行（见「页面与交互说明」章）。`directory/<name>/` 框架约定见 `assets/.build/build.py` 顶部 docstring（跨设备可读）。
 > - **S2 / S6 若由 build 生成**：需新增 build 模板定义骨架（目前 build 仅支持 S1，手写子页直接引用 `../../assets/` 即可）；**纯手写时**直接套 `assets/skills/SKILL.md` 中对应骨架模板。
 > - **S4**：正文置顶法律免责声明；内容涉及个保法/效力条款时**触发专家转介纪律**（不替代执业律师）。
 > - **S6**：详情页用 `<article>` 语义 + 阅读排版（行宽约 70ch、段落间距、`figure/figcaption` 插图）；列表页 `articles/index.html` 做索引（标题+摘要+日期+封面）；可选 RSS `feed.xml`、分页、标签归档；长文页仍沿用全局页脚 11 链接（含「频道导航」「网站全景」）与视觉语言。
@@ -215,7 +217,7 @@
 pip install openpyxl
 
 # 2. 生成站点（读 self_links.xlsx → 覆盖写 index.html）
-python assets/py/build.py
+python assets/.build/build.py
 
 # 3. 本地预览（任意静态服务器均可，如）
 python -m http.server 8080
@@ -228,7 +230,7 @@ python -m http.server 8080
 
 ## 站点配置（换域名只改一处）
 
-`assets/py/build.py` 顶部「站点配置」区集中了所有跨页一致的设置，改域名/外链策略**只动这一处**：
+`assets/.build/build.py` 顶部「站点配置」区集中了所有跨页一致的设置，改域名/外链策略**只动这一处**：
 
 - `SITE_DOMAIN`：站点域名（末尾无斜杠）。`index.html` 的 `canonical` / `og:url` / `og:image` / JSON-LD / `SearchAction` 及页脚内链均由它生成。
 - **全链接属性规则**（集中配置，全项目通用含子页；手工增删只改 `build.py` 顶部常量）：按**优先级** `同域 > 同族 > 营销 > 评论 > 暴露 > 默认` 匹配链接主机名（主机 == 域名 或 以 `.域名` 结尾，含所有子域）：
@@ -287,12 +289,12 @@ python -m http.server 8080
 # 1. 编辑 self_links.xlsx（增删改行、改站序、改分类、改标签/链接）
 
 # 2. 重新生成站点
-python assets/py/build.py
+python assets/.build/build.py
 
 # 3. 检查死链（可选，推荐定期跑）
-python assets/py/check_links.py          # 检查全部
-python assets/py/check_links.py --limit 5   # 只查前 5 条，快速测试
-# 结果写入 assets/py/link_report.txt
+python assets/.build/check_links.py          # 检查全部
+python assets/.build/check_links.py --limit 5   # 只查前 5 条，快速测试
+# 结果写入 assets/.build/link_report.txt
 ```
 
 然后提交推送到 GitHub，GitHub Pages 自动更新。
@@ -402,7 +404,7 @@ git push -u origin main
 
 ### 4. 上线检查清单
 
-- [ ] `python assets/py/build.py` 已重新生成并推送最新 index.html
+- [ ] `python assets/.build/build.py` 已重新生成并推送最新 index.html
 - [ ] 卡片按 type 分组分行显示（1 组 → 2 组 → 3 组，不同类型不同行）
 - [ ] 首页分类按钮（点 Logo=全部）、站内搜索、标签筛选均正常
 - [ ] 本地收藏：点卡片星形按钮（描边金→填充金），点顶部金色方形「本地收藏」按钮（★→「本地/收藏」文字）只显示已收藏卡片
@@ -423,11 +425,11 @@ git push -u origin main
 
 ## 统计与广告（已接入真实代码）
 
-> 以下代码均写在 `build.py` 的 `PAGE_TEMPLATE` 中（改动后需重新 `python assets/py/build.py`），由生成器写入 `index.html` 的 `<head>`。
+> 以下代码均写在 `build.py` 的 `PAGE_TEMPLATE` 中（改动后需重新 `python assets/.build/build.py`），由生成器写入 `index.html` 的 `<head>`。
 
 ### 百度统计（双站点代码，已接入）
 
-两个站点代码（com.cn 主站 + info 站）合并注入，IDs 维护在 `build.py` 的 `PAGE_TEMPLATE` 百度统计脚本数组 `ids` 里（顺序：com.cn 站 `2f4df5057c929092e36a0d6357e35261` → info 站 `70e38224e5ebd850150b00a19835a25f`）。更换媒体资源时同步改该数组并重新 `python assets/py/build.py`。
+两个站点代码（com.cn 主站 + info 站）合并注入，IDs 维护在 `build.py` 的 `PAGE_TEMPLATE` 百度统计脚本数组 `ids` 里（顺序：com.cn 站 `2f4df5057c929092e36a0d6357e35261` → info 站 `70e38224e5ebd850150b00a19835a25f`）。更换媒体资源时同步改该数组并重新 `python assets/.build/build.py`。
 
 ### Google Analytics GA4（已接入 `G-B880S4NQVK`）
 
@@ -469,7 +471,7 @@ git push -u origin main
 
 **Q1：改了 xlsx 但页面没变化？**
   
-需重新运行 `python assets/py/build.py` 并推送，浏览器强刷（Ctrl+F5）。
+需重新运行 `python assets/.build/build.py` 并推送，浏览器强刷（Ctrl+F5）。
 
 **Q2：图片显示成红色底大字？**
   
@@ -493,7 +495,7 @@ git push -u origin main
 
 **Q7：想增删搜索引擎？**
   
-搜索引擎清单在 `assets/py/build.py` 顶部的 `ENGINES` 列表里（每项含 key / 显示名 / 搜索 URL / 是否主引擎）。增删或调序后，主引擎（百度/Google/必应）保持原位（搜索框上方），其余进下方引擎滑道。改完跑 `python assets/py/build.py` 重新生成即可。
+搜索引擎清单在 `assets/.build/build.py` 顶部的 `ENGINES` 列表里（每项含 key / 显示名 / 搜索 URL / 是否主引擎）。增删或调序后，主引擎（百度/Google/必应）保持原位（搜索框上方），其余进下方引擎滑道。改完跑 `python assets/.build/build.py` 重新生成即可。
 
 **Q8：本地收藏没了？**
   
@@ -516,8 +518,8 @@ git push -u origin main
 
 ### SEO 与元数据
 
-- 新增 `robots.txt`：`User-agent: *` + `Allow: /` + `Sitemap`；**仅** `Disallow: /assets/xlsx/`（数据源）与 `Disallow: /assets/py/`（构建脚本/内部报告），并保留根 `ads.txt` 可公开抓取（AdSense 授权必需）。
-  - **`assets/` 不整体禁爬**：`assets/{css,js,images}` 是公开静态资源（子页经 `../../assets/` 引用同一份根资源）——CSS/JS 被禁可能影响富媒体渲染，图片（logo/卡片图）被禁会丢失 Google 图片搜索与 `og:image` 社交预览；且 `<link>/<script>` 引用的资源本就不会进搜索结果，无需 `Disallow`。GitHub Pages 不支持 `X-Robots-Tag` 自定义响应头，故无法对资源文件做 `noindex`，维持现状即可。
+- `robots.txt` 策略：`User-agent: *` + `Sitemap`；**先 `Disallow: /assets/`（兜底屏蔽整个内部目录，含构建脚本 `.build/`、数据源 `xlsx/`、配置 `json/`、技能 `skills/`），再用 `Allow` 白名单放出站点运行必需的公开资源**：`Allow: /assets/css/`、`Allow: /assets/js/`、`Allow: /assets/images/`。**关键：robots.txt 中不出现任何具体内部目录名（如 `.build`），避免向外界指路**；根 `ads.txt` 在 `/assets/` 之外，仍可公开抓取（AdSense 授权必需）。
+  - **公开资源必须放行**：`assets/{css,js,images}` 是站点运行必需的公开静态资源（子页经 `../../assets/` 引用同一份根资源）。整体 `Disallow: /assets/` 后，必须用 `Allow` 白名单把它们放回来——CSS/JS 被禁会影响富媒体渲染，图片（logo/卡片图）被禁会丢失 Google 图片搜索与 `og:image` 社交预览；且 `<link>/<script>` 引用的资源本就不会进搜索结果。GitHub Pages 不支持 `X-Robots-Tag` 自定义响应头，故无法对资源文件做 `noindex`，维持"Disallow 兜底 + Allow 白名单"即可。
 - 新增 `sitemap.xml`（首页 + about + submit）
 - 新增 `manifest.json`（PWA 基础支持）
 - `<head>` 新增：`canonical`、`og:image`、`og:site_name`、`twitter:card`、`theme-color`（light/dark 双值）、`apple-touch-icon`、`preconnect`（GA / AdSense / 百度统计）
