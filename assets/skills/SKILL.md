@@ -5,7 +5,7 @@
 > 若需"换设备触发即自动执行"，请将本文件复制到 `{workspace}/.workbuddy/skills/<name>/SKILL.md` 并用 SkillManage 注册。
 > 本文件内容与 `README.md` 决策总章互为补充：README 管"决策/规范"，本文件管"可重复的操作步骤"。
 >
-> **🌐 跨设备权威源约定（AI 必守，用户 2026-08-23 指令）**：换设备对话时，**只有 `README.md` 与 `assets/skills/SKILL.md` 这两个 md 保证可读**。因此所有"AI 必须遵守的项目规范/约定"必须落在这两个 md 之一，**或落在代码里**（如 `assets/.build/build_homeplus.py` 顶部 docstring 已内置 `/directory/` 框架约定，即为跨设备权威源）。其它 `docs/*.md`（`docs/` 目录已删除，原 `SUBPAGE_BUILD_DESIGN.md` 内容已并入 build_homeplus.py docstring 与这两 md）**不算跨设备权威源**，不得作为任何规则的唯一出处；若在 docs/ 写过约定，须同步进这两 md 或代码。新增/修改项目级规则时先自问："这条在另台设备读得到吗？"读不到就别只放在 docs/ 里。
+> **🌐 跨设备权威源约定（AI 必守，用户 2026-08-23 指令）**：换设备对话时，**只有 `README.md` 与 `assets/skills/SKILL.md` 这两个 md 保证可读**。因此所有"AI 必须遵守的项目规范/约定"必须落在这两个 md 之一，**或落在代码里**（如 `assets/.build/build_homeplus.py` 顶部 docstring 已内置 `/directory/` 框架约定，即为跨设备权威源）。其它 `docs/*.md` **不算跨设备权威源**，不得作为任何规则的唯一出处（注：`docs/BAIDU_SEO_STRATEGY.md` 违反此规则，其内容应并入代码/技能、不应依赖）；**SEO 标准手册已固化为项目技能 `.workbuddy/skills/zhengxie-seo-standard/`，做 SEO 讨论前必读本技能**。新增/修改项目级规则时先自问："这条在另台设备读得到吗？"读不到就别只放在 docs/ 里。
 >
 > **🚫 专家转介纪律（AI 硬边界，任何设备/会话都必须遵守）**：本项目的法律合规文本、SEO 策略、视觉设计评审等**不属于 AI 擅长的确定性工程范畴**，AI 只做"如实陈述技术实现"的草稿，**不替代专业判断**。遇到下列任务，AI 必须**主动停止、明确告知用户应咨询对应专家/connector**，不得硬做、不得给看似专业实则未经验证的结论。具体清单见文末「专家转介纪律」段。
 

@@ -8,7 +8,7 @@
 
 > **⚠️ 操作铁律**：任何设备 / 任何会话对本项目做任何改动前，**必须先读完下方「决策与偏好总览」整章**，并严格遵守各条目的状态标记。改动若与该章冲突即视为错误——先回退、再与用户确认，绝不允许「凭感觉又加一个功能」导致用户重复纠正（此前已发生过：分类计数徽章、暗色偏蓝紫）。
 
-> **🌐 跨设备权威源约定（2026-08-23 指令）**：换设备对话时**只有本 `README.md` 与 `assets/skills/SKILL.md` 两个 md 保证可读**。因此所有"AI 必须遵守的项目规范"必须落在这两个 md 之一，或落在代码里（如 `assets/.build/build_homeplus.py` 顶部 docstring 已内置 `/directory/` 框架约定，即为跨设备权威源）。其它 `docs/*.md`（`docs/` 目录已删除，原 `SUBPAGE_BUILD_DESIGN.md` 内容已并入 build_homeplus.py docstring 与这两 md）**不算跨设备权威源**，不得作为规则的唯一出处。新增/修改项目级规则前先自问："这条在另台设备读得到吗？"读不到就别只放在 docs/ 里。详见 `assets/skills/SKILL.md` 顶部同款约定。
+> **🌐 跨设备权威源约定（2026-08-23 指令）**：换设备对话时**只有本 `README.md` 与 `assets/skills/SKILL.md` 两个 md 保证可读**。因此所有"AI 必须遵守的项目规范"必须落在这两个 md 之一，或落在代码里（如 `assets/.build/build_homeplus.py` 顶部 docstring 已内置 `/directory/` 框架约定，即为跨设备权威源）。其它 `docs/*.md` **不算跨设备权威源**，不得作为规则的唯一出处（注：`docs/BAIDU_SEO_STRATEGY.md` 违反此规则，其内容应并入代码/技能、不应依赖）；**SEO 标准手册已固化为项目技能 `.workbuddy/skills/zhengxie-seo-standard/`，做 SEO 讨论前必读本技能**。新增/修改项目级规则前先自问："这条在另台设备读得到吗？"读不到就别只放在 docs/ 里。详见 `assets/skills/SKILL.md` 顶部同款约定。
 
 > **📖 动手前必读 SKILL.md（2026-08-23 指令）**：本仓库内的 `assets/skills/SKILL.md` 是**项目内部 SOP（标准作业流程）**，集中了所有构建、目录约定、子页联动、SEO 规则等"AI 必须遵守的规范"。**任何设备 / 任何会话 / 任何维护者（含 AI 团队）开始改动本项目前，必须先打开并读完该 SKILL.md**，再动手。README 只作概览与入口，细节与操作步骤一律以 SKILL.md 为准——避免两处维护漂移、也避免规范随会话丢失。如果进项目时没被明确指向它，请主动寻找仓库内的 `SKILL.md` 先读，再开工。
 
