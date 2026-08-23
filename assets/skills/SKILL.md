@@ -18,11 +18,22 @@
 
 ---
 
+## 图片资源规范（AI 必守，2026-08-23 确立）
+
+> 本项目卡片 `media` 列图片的硬性约定，凡涉及图片增改 / 压图 / 生成 WebP 都必须遵守：
+
+1. **格式统一 WebP**：`media` 列图片一律用 `.webp`（体积远小于 PNG 且支持透明）；数据源 `self_links.xlsx` 的 media 列直接写 `.webp`，build 原样输出到 `<img src>`，**不要手改 `index.html`**（下次 build 会覆盖还原）。
+2. **透明通道必须保留（RGBA）**：本站卡片图多为「透明底 + 中心 logo」，PNG 源是 RGBA。压图时**必须用 `RGBA` 保留 alpha**，绝不可用 `RGB` 把透明填成黑底——否则 webp 与原图「完全不一样」（曾踩坑：原图透明占比 95%+，误转 RGB 整张变黑）。
+3. **`<picture>` 双源需两文件都在**：若用 `<picture>` 兜底老浏览器，必须同时保留 webp 与 png 两份；否则支持 webp 的浏览器在文件缺失时直接破图、不会回退 png。
+4. **权威规则以本条为准**：压图命令 / 工具 / 常见坑等操作细节见 `assets/skills/IMAGE_OPTIMIZATION.md`（本项目技术备忘，**非跨设备权威源**）；本条为 AI 必须遵守的项目规范。
+
+---
+
 ## 子页标准形态（手写静态页，必须与现有子页同构）
 
 每个 `pages/<name>/index.html` 必须满足：
 
-1. **资源相对（引用根目录共享 assets 真源）**：`<link rel="stylesheet" href="../../assets/css/style.css">`、`<link rel="icon" href="../../assets/images/logo.svg">`（子页不再自包含，统一 `../../assets/` 指向根目录唯一 assets）。
+1. **资源相对（引用根目录共享 assets 真源）**：`<link rel="stylesheet" href="../../assets/css/style.css">`、`<link rel="icon" href="../../assets/images/logo.svg">`（子页不再自包含，统一 `../../assets/` 指向根目录唯一 assets）。（注：根页 `index.html` 由 build.py 生成，其 CSS 以 `preload`+`onload`+`<noscript>` 注入，与子页普通 `<link rel=stylesheet>` 写法不同，属生成器行为，无需手改、也不要"修正"成普通 link。）
 2. **内链绝对 + `_self`**：站内跳转用 `https://zhengxie.com.cn/...` 且 `target="_self"`（如页脚导航、正文交叉链接）。
 3. **不设全局 referrer meta**：`<head>` 中**不要**写 `<meta name="referrer" content="no-referrer">`（全站已锁定"不设全局 referrer"规则）。
 4. **FOUC 仅本地 dark**：`<head>` 内联脚本仅当 `localStorage('zx_theme')==='dark'` 才设 `data-theme="dark"`，**不跟随系统偏好**。

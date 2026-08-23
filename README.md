@@ -154,6 +154,12 @@
 - [ ] **P2** 目录树补全：README「目录结构」补 `directory/`（含 `<name>/` 子目录、`assets/`、`index.html` 由 build.py 生成）与 `assets/json/`（self_meta.json + manifest.json）
 - [ ] **P2** 手写 `directory/index.html` 汇总/门户页（按决策属手写、非 build 任务，目前缺失）
 - [ ] **P2** 扩展 `check_links.py` 覆盖 `directory/*/self_links.xlsx` 死链检测（当前仅扫描根表）
+- [x] **P2** 首屏大图压图（2026-08-23）：3 张站内图 `12377-3-04/07/08.png` 转 WebP（**必须保留 RGBA 透明通道**，否则透明 logo 被填黑失真），合计 1998KB → ~37KB；数据源 `assets/xlsx/self_links.xlsx` 的 media 列三行已改 `.webp`（改在持久数据源，下次 build 不覆盖）
+- [x] **P2** 性能优化（2026-08-23）：`main.js` 搜索框 `input` 加 150ms 防抖 + 初始化预缓存卡片搜索串（不再每次按键 live 读 128 卡 textContent）；`build.py` `<head>` 改用 `preload` + `<noscript>` 加载 CSS
+- [ ] **P1** 替换 21 张 `picsum.photos` 随机占位图（CRITICAL：随机风景图替代真实 logo，不符「精选收录」定位；应改回真实 favicon 或文字占位）
+- [ ] **P1** `sitemap.xml` 补充 `directory/*` 子页条目（`directory/ai/` 已由 build 生成，但 sitemap 仍只收根页 + pages/*）
+- [ ] **P2** 死链检测 `link_report.txt` 已过期（停在 2026-08-20）；`check_links.py` 仅扫根表、漏检 `directory/` 与 `picsum.photos`，需定期跑 + 扩展扫描
+- [ ] **P2** 删除 `assets/images/12377-3-04/07/08.png` 原图（已转 WebP，原 png 占 ~2MB 且无人引用，破坏性操作需用户拍板）
 
 ---
 
@@ -164,6 +170,8 @@
 ├── index.html               站点主页/导航产品页（由 build.py 生成，静态渲染，SEO 友好，根域 /）
 ├── README.md                本手册
 ├── 404.html                 错误页（自包含、按来源动态返回、含 GA4+百度统计、无 AdSense）
+├── directory/               导航频道页（S1 实例，由 build.py 自动扫描各 `directory/<name>/` 生成 index.html；手写 `directory/index.html` 汇总页仍缺失）
+│   └── ai/index.html        示例频道页（AI智能，2026-08-23 跑通，6 张卡片）
 ├── pages/                   说明/合规/功能型子页（原 units/，2026-08-22 末迁移；S2/S3/S4/S5 均归此）
 │   ├── overview/index.html  网站全景（全站中枢页 S2，2026-08-22 末由根 overview/ 移入）
 │   ├── about/index.html      关于本站（S3 手写静态页，资源相对、内链绝对）
@@ -184,11 +192,16 @@
     │   ├── check_links.py   死链检测，输出 link_report.txt
     │   └── link_report.txt  死链检测报告（运行 check_links.py 后生成）
     ├── images/
-    │   └── logo.svg         站点 Logo（红底金字方形，正协/导航 两行）
+    │   ├── logo.svg         站点 Logo（红底金字方形，正协/导航 两行）
+    │   └── 12377-3-04/07/08.webp  卡片媒体图（原 png 已转 WebP 并保留透明通道；原 png 待删，见 BACKLOG）
+    ├── json/
+    │   ├── self_meta.json   根页页面级信息（title/description/keywords，仅 3 字段）
+    │   └── manifest.json    PWA 清单
     ├── xlsx/
     │   └── self_links.xlsx  根页独享数据源（前缀 self_ 表示独享；维护时只需编辑这个文件）
     └── skills/
-        └── SKILL.md         项目内 SOP：子页新增全流程 + 专家转介纪律（操作步骤类，与本章决策规范互补；换设备时读此文件照做）
+        ├── SKILL.md         项目内 SOP：子页新增全流程 + 专家转介纪律（操作步骤类，与本章决策规范互补；换设备时读此文件照做）
+        └── IMAGE_OPTIMIZATION.md  图片压图规范（技术备忘，非权威源；权威规则见 SKILL.md「图片资源规范」段）
 ```
 
 ---
@@ -265,6 +278,8 @@ python -m http.server 8080
 | links | 否  | 相关链接，**分号 `;` 分链接、逗号 `,` 分"名称与URL"**（如 `官网,https://x.com;知乎,https://www.zhihu.com/search?q=x`）。卡片第 4/5 行链接标签即由此生成。外链属性策略（target/rel）**不由本表决定**，而由 `build.py` 的 `LINK_ATTR_PRESET` 按**链接域名**自动匹配（见下方约定）                                                      |
 
 > ⚠️ 注意：单元格里一律使用**英文半角逗号 `,`** 与**英文分号 `;`** 作为分隔符，不要用中文全角符号。
+
+> ⚠️ **媒体图片格式**：`media` 列图片**统一用 WebP**（体积小、支持透明）；**必须保留透明通道（RGBA）**——透明 logo / 图标转图时若误用 `RGB` 会被填成黑底、与原图完全不同。压图步骤、命令与常见坑见 `assets/skills/IMAGE_OPTIMIZATION.md`（技术备忘）。
 
 ### 数据维护流程（三件事）
 

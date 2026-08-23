@@ -756,7 +756,8 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
   <link rel="preconnect" href="https://pagead2.googlesyndication.com">
   <link rel="preconnect" href="https://hm.baidu.com">
   <link rel="dns-prefetch" href="https://www.googletagmanager.com">
-  <link rel="stylesheet" href="{{ASSET_PREFIX}}assets/css/style.css">
+  <link rel="preload" href="{{ASSET_PREFIX}}assets/css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="{{ASSET_PREFIX}}assets/css/style.css"></noscript>
   <!-- 暗色模式：在 CSS 加载前同步设置，避免闪烁(FOUC)。默认明亮；仅当用户本地曾选暗色(localStorage='dark')才启用暗色 -->
   <script>
     (function(){try{var t=localStorage.getItem('zx_theme');if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();

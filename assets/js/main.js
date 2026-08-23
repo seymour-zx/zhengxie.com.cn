@@ -38,6 +38,22 @@
   var catBtns = Array.prototype.slice.call(document.querySelectorAll('.category-btn'));
   var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
 
+  /* 性能：预计算每张卡的可搜索文本（标题+描述+分类等纯文本），
+     避免 applyFilter 每次按键都 live 读取 128 张卡的 textContent。
+     卡片内容静态，init 时算一次即可。 */
+  cards.forEach(function (card) { card.__search = card.textContent; });
+
+  /* 防抖：最后一次触发后 wait 毫秒才执行 fn（用于搜索框逐键输入）。
+     只延迟"筛选动作"——输入框里的字不会丢，applyFilter 跑时读的是实时 value。 */
+  function debounce(fn, wait) {
+    var t;
+    return function () {
+      var ctx = this, args = arguments;
+      clearTimeout(t);
+      t = setTimeout(function () { fn.apply(ctx, args); }, wait);
+    };
+  }
+
   /* ── 状态：分类 / 关键词 / 本地收藏 三维度独立 ── */
   var activeCat = 'all';        // 分类维度（logo=全部 / 分类按钮，不生成标签）
   var filterTags = [];          // 关键词维度（搜索框/卡片标签生成，可清除）
@@ -74,7 +90,7 @@
     if (kw && activeKeywords.indexOf(kw) === -1) { activeKeywords.push(kw); }
     cards.forEach(function (card) {
       var catOk = activeCat === 'all' || card.getAttribute('data-cat') === activeCat;
-      var text = card.textContent;
+      var text = card.__search;
       var kwOk = true;
       var i;
       for (i = 0; i < filterTags.length; i++) {
@@ -169,7 +185,7 @@
   });
 
   /* ── 2. 站内搜索：实时筛选 + 回车固化标签 ── */
-  siteInput.addEventListener('input', applyFilter);
+  siteInput.addEventListener('input', debounce(applyFilter, 150));
   siteInput.addEventListener('keydown', function (e) {
     if (e.key === 'Enter') {
       e.preventDefault();
