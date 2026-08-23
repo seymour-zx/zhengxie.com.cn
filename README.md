@@ -8,7 +8,7 @@
 
 > **⚠️ 操作铁律**：任何设备 / 任何会话对本项目做任何改动前，**必须先读完下方「决策与偏好总览」整章**，并严格遵守各条目的状态标记。改动若与该章冲突即视为错误——先回退、再与用户确认，绝不允许「凭感觉又加一个功能」导致用户重复纠正（此前已发生过：分类计数徽章、暗色偏蓝紫）。
 
-> **🌐 跨设备权威源约定（2026-08-23 指令）**：换设备对话时**只有本 `README.md` 与 `assets/skills/SKILL.md` 两个 md 保证可读**。因此所有"AI 必须遵守的项目规范"必须落在这两个 md 之一，或落在代码里（如 `assets/.build/build.py` 顶部 docstring 已内置 `/directory/` 框架约定，即为跨设备权威源）。其它 `docs/*.md`（`docs/` 目录已删除，原 `SUBPAGE_BUILD_DESIGN.md` 内容已并入 build.py docstring 与这两 md）**不算跨设备权威源**，不得作为规则的唯一出处。新增/修改项目级规则前先自问："这条在另台设备读得到吗？"读不到就别只放在 docs/ 里。详见 `assets/skills/SKILL.md` 顶部同款约定。
+> **🌐 跨设备权威源约定（2026-08-23 指令）**：换设备对话时**只有本 `README.md` 与 `assets/skills/SKILL.md` 两个 md 保证可读**。因此所有"AI 必须遵守的项目规范"必须落在这两个 md 之一，或落在代码里（如 `assets/.build/build_homeplus.py` 顶部 docstring 已内置 `/directory/` 框架约定，即为跨设备权威源）。其它 `docs/*.md`（`docs/` 目录已删除，原 `SUBPAGE_BUILD_DESIGN.md` 内容已并入 build_homeplus.py docstring 与这两 md）**不算跨设备权威源**，不得作为规则的唯一出处。新增/修改项目级规则前先自问："这条在另台设备读得到吗？"读不到就别只放在 docs/ 里。详见 `assets/skills/SKILL.md` 顶部同款约定。
 
 > **📖 动手前必读 SKILL.md（2026-08-23 指令）**：本仓库内的 `assets/skills/SKILL.md` 是**项目内部 SOP（标准作业流程）**，集中了所有构建、目录约定、子页联动、SEO 规则等"AI 必须遵守的规范"。**任何设备 / 任何会话 / 任何维护者（含 AI 团队）开始改动本项目前，必须先打开并读完该 SKILL.md**，再动手。README 只作概览与入口，细节与操作步骤一律以 SKILL.md 为准——避免两处维护漂移、也避免规范随会话丢失。如果进项目时没被明确指向它，请主动寻找仓库内的 `SKILL.md` 先读，再开工。
 
@@ -34,14 +34,14 @@
 - **暗色模式必须复用同一套奢华语言延伸到暗色**，**禁止**偏蓝、偏紫、科技冷淡、廉价渐变。已定暗色配色（除非用户新指令否则不可改）：漆面黑 `#0D0C0E` / 暖炭灰 `#171519` / 亮金 `#E8CB84` / 象牙白 `#EDE8E0`。
 - 任何新增 / 改动 UI 都必须服从这套语言；**不得擅自引入新的主色或新的视觉调性**。
 - 字体跨浏览器一致基准（`html` 16px + `text-size-adjust:100%` + 表单控件 `font-family:inherit`）不得删除。
-- **默认明亮模式**：页面默认渲染为浅色；仅当浏览器本地存储 `zx_theme='dark'`（用户曾手动切换过暗色）时才启用暗色，**不跟随系统偏好**自动变暗。（实现见 build.py 的 FOUC 脚本）
+- **默认明亮模式**：页面默认渲染为浅色；仅当浏览器本地存储 `zx_theme='dark'`（用户曾手动切换过暗色）时才启用暗色，**不跟随系统偏好**自动变暗。（实现见 build_homeplus.py 的 FOUC 脚本）
 
 ### 2. 明确禁止清单（❌ FORBIDDEN — 做了即错）
 
 | 条目                                        | 为什么禁止                                                                   |
 | ----------------------------------------- | ----------------------------------------------------------------------- |
 | 分类按钮上的**数量 / 计数徽章**（category count badge） | 与结果计数行重复；用户**跨设备、多次**明确拒绝                                               |
-| 在 `self_links.xlsx` 数据表**新增「判断外链 rel / 属性」的列** | 链接行可含多个外链，逐行判断麻烦；外链属性统一由 `build.py` 的 `LINK_ATTR_PRESET` 域名白名单决定（见配置章节） |
+| 在 `self_links.xlsx` 数据表**新增「判断外链 rel / 属性」的列** | 链接行可含多个外链，逐行判断麻烦；外链属性统一由 `build_homeplus.py` 的 `LINK_ATTR_PRESET` 域名白名单决定（见配置章节） |
 | 空结果状态的「**清除所有筛选 / 一键清除**」按钮               | 与筛选栏「清除筛选」重复，且会误重置分类；空结果只显示提示文案                                         |
 | 暗色模式做成**偏蓝 / 偏紫调**（"科技感"廉价感）              | 已发生一次并重做为金系，禁止复现                                                        |
 | 暗色切换按钮**占用置顶吸顶区**                         | 会挤压小屏分类滑道、影响第一印象；切换按钮固定放页脚工具簇                                           |
@@ -68,11 +68,11 @@
 | 滚动自动判定（按 y vs alignTarget）：贴顶=3、贴底=1、y<alignTarget 上滑=2/下滑=3、y≈alignTarget 上滑=1/下滑=4、y>alignTarget 上滑=1/下滑=4 | 无 |
 | alignTarget = firstCard.offsetTop - stickyTop.offsetHeight（第一张可见卡片顶端对齐 sticky 整体块底部） | 无 |
 | 滚动期间点击锁：lockUserInput 阻止 wheel/touchmove/keydown，连续点击前 forceUnlock 清掉上一轮残留 handler 避免永久锁定 | 无 |
-| 同骨架导航频道页生成器 `assets/.build/build.py`：自动扫描 `directory/<name>/`（每个含独立 `assets/xlsx/self_links.xlsx` + 必填 `assets/json/self_meta.json`），套用 S1 骨架生成 `directory/<name>/index.html`；资源引用 `../../assets/`、canonical `/directory/<name>/`、统计代码复用根页；self_meta.json 仅 3 字段（title/description/keywords）+ 根页 ROOT_META 兜底（未自定义字段跟随根页）。示例 `directory/ai/` 已跑通（2026-08-23）。框架约定详见 `assets/.build/build.py` 顶部 docstring（跨设备可读） | 无此脚本（频道页需手写或拆根表子集） |
+| 同骨架导航频道页生成器 `assets/.build/build_homeplus.py`：自动扫描 `directory/<name>/`（每个含独立 `assets/xlsx/self_links.xlsx` + 必填 `assets/json/self_meta.json`），套用 S1 骨架生成 `directory/<name>/index.html`；资源引用 `../../assets/`、canonical `/directory/<name>/`、统计代码复用根页；self_meta.json 仅 3 字段（title/description/keywords）+ 根页 ROOT_META 兜底（未自定义字段跟随根页）。示例 `directory/ai/` 已跑通（2026-08-23）。框架约定详见 `assets/.build/build_homeplus.py` 顶部 docstring（跨设备可读） | 无此脚本（频道页需手写或拆根表子集） |
 
 > 子页 `pages/about`、`pages/submit` 为既有项目结构（资源相对、内链绝对），非本轮主动新增，仅在此标注其形态，不作改动即可。
 
-> **子页统一形态（目录已于 2026-08-22 末从 `units/` 迁移至 `pages/`）**：手写静态页，`<head>` **不设**全局 referrer meta（与主页/README「不设全局 referrer」规则一致）、FOUC **仅当 `localStorage('zx_theme')==='dark'` 才暗色**（不跟随系统偏好）；资源以相对路径 `../../assets/css/style.css`、`../../assets/images/logo.svg`、`../../assets/js/main.js` **引用根目录共享 assets**（根 assets 为唯一真源，子页不再复制自包含 assets——`build.py` 的 `UNIT_PAGES`/`sync_unit_assets` 已于 2026-08-22 移除）；内链绝对 `https://zhengxie.com.cn/...` 且 `target="_self"`。
+> **子页统一形态（目录已于 2026-08-22 末从 `units/` 迁移至 `pages/`）**：手写静态页，`<head>` **不设**全局 referrer meta（与主页/README「不设全局 referrer」规则一致）、FOUC **仅当 `localStorage('zx_theme')==='dark'` 才暗色**（不跟随系统偏好）；资源以相对路径 `../../assets/css/style.css`、`../../assets/images/logo.svg`、`../../assets/js/main.js` **引用根目录共享 assets**（根 assets 为唯一真源，子页不再复制自包含 assets——`build_homeplus.py` 的 `UNIT_PAGES`/`sync_unit_assets` 已于 2026-08-22 移除）；内链绝对 `https://zhengxie.com.cn/...` 且 `target="_self"`。
 > **子页新增/调整的具体操作步骤（标准形态 7 要点、页脚模板、全站联动清单、验证步骤、退回方案）已抽离至 `assets/skills/SKILL.md`**——任何会话要新增子页时，先读该 SKILL.md 照做，避免 README 与操作步骤两处维护漂移。
 
 > **隐私政策页（🔶 本次主动新增，可退回）**：`pages/privacy/index.html` 由我据站点真实技术实现起草（含免责声明「AI 辅助生成、非执业律师正式意见」）；内容如实陈述——本站为纯静态站、无后端/无注册、本地收藏存 localStorage 不上传、接入百度统计/GA4/AdSense、不设全局 referrer、外链按优先级规则打开。**改动前原状态**：站内无隐私政策页（页脚无隐私链接、sitemap 无隐私条目）。退回即删 `pages/privacy/`、撤 sitemap/页脚/README 相关行。
@@ -103,7 +103,7 @@
 > **六大骨架（当前版，S2 已升级）**：
 > | 骨架 | 名称 | 布局范式 | 生成方式 | 现有实例 | 未来可装 |
 > |------|------|---------|---------|---------|---------|
-> | **S1** | 导航产品页 | 卡片 Grid + 三维度筛选 + 集合搜索（sticky 吸顶） | build.py 生成根页 + 自动扫描 `directory/` 生成同骨架频道页 | `index.html`（根域 `/`，引流核心，不动） | 细分导航频道页（`/directory/ai/` 等，由 build.py 自动扫描生成） |
+> | **S1** | 导航产品页 | 卡片 Grid + 三维度筛选 + 集合搜索（sticky 吸顶） | build_homeplus.py 生成根页 + 自动扫描 `directory/` 生成同骨架频道页 | `index.html`（根域 `/`，引流核心，不动） | 细分导航频道页（`/directory/ai/` 等，由 build_homeplus.py 自动扫描生成） |
 > | **S2** | 全站中枢页（网站全景） | **中枢型**：架构总览 + 各板块活体切片（真实部分内容）+ 榜单区块 + 分发中枢 | 手写或 build | `pages/overview/`（页脚链接文本「网站全景」） | 全站大脑/心脏/脊柱式总览，用户"逛+发现"入口 |
 > | **S3** | 说明信息页 | 单栏静态说明，无长文排版 | 手写自包含 | about / contact / guide / sitemap / changelog | 帮助中心、FAQ、单页介绍 |
 > | **S4** | 合规页 | 同 S3 同构 + 「AI 辅助、非执业律师意见」声明 + 专家复核标记 | 手写自包含 | privacy / disclaimer | 服务条款、Cookie 政策 |
@@ -117,10 +117,10 @@
 > - **榜单 S7 预留（升级口）**：榜单**当前留在 S2 内**作区块；当维度增多、常更新、需分页/筛选/全量查看时，**升为独立骨架 S7「榜单/排行页」**（路径如 `/rank/`），从 S2 榜单块"更多"跳转看全量完整排行。触发条件达成前不新增，达成后写入本章并同步 SKILL.md。
 > - **数据来源（⏳ PENDING）**：架构总览/活体切片/榜单的数据从哪来（导航分类提取 `index.html` 的 `data-cat` / 博客未来从 S6 / 榜单需 build 扩展或手动维护），待用户拍板，不擅自决定。
 >
-> **骨架通用技术契约（全部骨架共用，不可违反）**：资源引用——根页用 `assets/...`，子页（`pages/*/`）用 `../../assets/...` **指向根目录唯一 assets 真源**（子页不再自包含、不再复制 assets，`build.py` 的 `UNIT_PAGES`/`sync_unit_assets` 已于 2026-08-22 移除）；内链绝对 `https://zhengxie.com.cn/...` 且 `target="_self"`；`<head>` **不设**全局 referrer meta；FOUC **仅当 `localStorage('zx_theme')==='dark'` 才暗色**（不跟随系统）；页脚导航统一 11 链接（含「网站全景」「频道导航」） + 备案号注释占位；`canonical` / `robots` / `description` 齐备；奢华红金白视觉语言（暗色金系，禁蓝紫）。
+> **骨架通用技术契约（全部骨架共用，不可违反）**：资源引用——根页用 `assets/...`，子页（`pages/*/`）用 `../../assets/...` **指向根目录唯一 assets 真源**（子页不再自包含、不再复制 assets，`build_homeplus.py` 的 `UNIT_PAGES`/`sync_unit_assets` 已于 2026-08-22 移除）；内链绝对 `https://zhengxie.com.cn/...` 且 `target="_self"`；`<head>` **不设**全局 referrer meta；FOUC **仅当 `localStorage('zx_theme')==='dark'` 才暗色**（不跟随系统）；页脚导航统一 11 链接（含「网站全景」「频道导航」） + 备案号注释占位；`canonical` / `robots` / `description` 齐备；奢华红金白视觉语言（暗色金系，禁蓝紫）。
 >
 > **各骨架差异点（骨架特有契约）**：
-> - **S1**：唯一由 build.py 生成（根 `index.html` + 自动扫描 `directory/<name>/index.html`）；页脚 11 链接（含「网站全景」「频道导航」）由 `build.py` 首页模板控制（非手写）；含统计/广告代码注入；卡片按 type 分组分行（见「页面与交互说明」章）。`directory/<name>/` 框架约定见 `assets/.build/build.py` 顶部 docstring（跨设备可读）。
+> - **S1**：唯一由 build_homeplus.py 生成（根 `index.html` + 自动扫描 `directory/<name>/index.html`）；页脚 11 链接（含「网站全景」「频道导航」）由 `build_homeplus.py` 首页模板控制（非手写）；含统计/广告代码注入；卡片按 type 分组分行（见「页面与交互说明」章）。`directory/<name>/` 框架约定见 `assets/.build/build_homeplus.py` 顶部 docstring（跨设备可读）。
 > - **S2 / S6 若由 build 生成**：需新增 build 模板定义骨架（目前 build 仅支持 S1，手写子页直接引用 `../../assets/` 即可）；**纯手写时**直接套 `assets/skills/SKILL.md` 中对应骨架模板。
 > - **S4**：正文置顶法律免责声明；内容涉及个保法/效力条款时**触发专家转介纪律**（不替代执业律师）。
 > - **S6**：详情页用 `<article>` 语义 + 阅读排版（行宽约 70ch、段落间距、`figure/figcaption` 插图）；列表页 `articles/index.html` 做索引（标题+摘要+日期+封面）；可选 RSS `feed.xml`、分页、标签归档；长文页仍沿用全局页脚 11 链接（含「频道导航」「网站全景」）与视觉语言。
@@ -136,7 +136,7 @@
 
 | 议题                                                               | 现状                                            |
 | ---------------------------------------------------------------- | --------------------------------------------- |
-| 换域名时 `pages/about`、`pages/submit` 的 canonical 与内链仍是**字面量**，需手动替换 | 是否把子页也纳入 `build.py` 模板统一管理？待用户拍板              |
+| 换域名时 `pages/about`、`pages/submit` 的 canonical 与内链仍是**字面量**，需手动替换 | 是否把子页也纳入 `build_homeplus.py` 模板统一管理？待用户拍板              |
 | 国内访问 GitHub Pages 不稳定                                            | 是否迁移到国内 CDN / Vercel / Netlify？待用户拍板（见可选部署方案） |
 | 分类在导航栏的默认排序 / 隐藏逻辑                                               | 暂无定论，维持「按数据自动生成」现状                            |
 
@@ -147,19 +147,19 @@
 - [x] **P0** 暗色模式重做为奢华金系（v6 已完成）
 - [x] **P0** 移除分类计数徽章、空结果清除按钮；暗色切换移页脚；随机漫步移页脚（已完成）
 - [x] **P1** 新增 5 个说明型子页：contact/disclaimer/guide/sitemap/changelog（2026-08-22 完成，sitemap/页脚/README 同步；子页统一引用根 `../../assets/`）
-- [ ] **P1** 将 `pages/about`、`pages/submit` 纳入 `build.py` 模板，消除换域名时手动替换字面量（依赖第 4 节待定项决策）
+- [ ] **P1** 将 `pages/about`、`pages/submit` 纳入 `build_homeplus.py` 模板，消除换域名时手动替换字面量（依赖第 4 节待定项决策）
 - [ ] **P1** 评估并决策 GitHub Pages 国内访问稳定性问题（是否迁移 CDN）
 - [x] **P1** 清理开发残留：`test.html`（根目录测试页，已删）、`units/`（旧过渡页+占位，已整体删除，2026-08-22 末）；全站 `/overview/` 已统一改 `/pages/overview/`、`units/` 引用清零
 - [ ] **P2** 用 `check_links.py` 定期跑死链检测，维护 `link_report.txt`
 - [ ] **P2** 移动端体验复核（一行 2 卡、滑道触屏左右滑、暗色切换可达性）
 - [ ] **P3** 视需要扩充 `self_links.xlsx` 分类与卡片数据
-- [ ] **P2** 目录树补全：README「目录结构」补 `directory/`（含 `<name>/` 子目录、`assets/`、`index.html` 由 build.py 生成）与 `assets/json/`（self_meta.json + manifest.json）
-- [ ] **P2** 手写 `directory/index.html` 汇总/门户页（按决策属手写、非 build 任务，目前缺失）
+- [x] **P2** 目录树补全：README「目录结构」补 `directory/`（含 `<name>/` 子目录、`assets/`、`index.html` 由 build_homeplus.py 生成）与 `assets/json/`（self_meta.json + manifest.json）
+- [x] **P2** 手写 `directory/index.html` 汇总/门户页（按决策属手写、非 build 任务，2026-08-23 已建，复用 .card 样式 + CollectionPage JSON-LD，两频道卡用绝对路径指向 /directory/ai/ 与 /directory/zhengxie/）
 - [ ] **P2** 扩展 `check_links.py` 覆盖 `directory/*/self_links.xlsx` 死链检测（当前仅扫描根表）
 - [x] **P2** 首屏大图压图（2026-08-23）：3 张站内图 `12377-3-04/07/08.png` 转 WebP（**必须保留 RGBA 透明通道**，否则透明 logo 被填黑失真），合计 1998KB → ~37KB；数据源 `assets/xlsx/self_links.xlsx` 的 media 列三行已改 `.webp`（改在持久数据源，下次 build 不覆盖）
-- [x] **P2** 性能优化（2026-08-23）：`main.js` 搜索框 `input` 加 150ms 防抖 + 初始化预缓存卡片搜索串（不再每次按键 live 读 128 卡 textContent）；`build.py` `<head>` 改用 `preload` + `<noscript>` 加载 CSS
+- [x] **P2** 性能优化（2026-08-23）：`main.js` 搜索框 `input` 加 150ms 防抖 + 初始化预缓存卡片搜索串（不再每次按键 live 读 128 卡 textContent）；`build_homeplus.py` `<head>` 改用 `preload` + `<noscript>` 加载 CSS
 - [ ] **P1** 替换 21 张 `picsum.photos` 随机占位图（CRITICAL：随机风景图替代真实 logo，不符「精选收录」定位；应改回真实 favicon 或文字占位）
-- [ ] **P1** `sitemap.xml` 补充 `directory/*` 子页条目（`directory/ai/` 已由 build 生成，但 sitemap 仍只收根页 + pages/*）
+- [x] **P1** `sitemap.xml` 补充 `directory/*` 子页条目（`directory/` 0.70、`directory/ai/` 0.60、`directory/zhengxie/` 0.70，共 3 条；`directory/ai/`、`directory/zhengxie/` 已由 build 生成，2026-08-23 完成）
 - [ ] **P2** 死链检测 `link_report.txt` 已过期（停在 2026-08-20）；`check_links.py` 仅扫根表、漏检 `directory/` 与 `picsum.photos`，需定期跑 + 扩展扫描
 - [ ] **P2** 删除 `assets/images/12377-3-04/07/08.png` 原图（已转 WebP，原 png 占 ~2MB 且无人引用，破坏性操作需用户拍板）
 
@@ -169,11 +169,16 @@
 
 ```
 正协导航/
-├── index.html               站点主页/导航产品页（由 build.py 生成，静态渲染，SEO 友好，根域 /）
+├── index.html               站点主页/导航产品页（由 build_homeplus.py 生成，静态渲染，SEO 友好，根域 /）
 ├── README.md                本手册
 ├── 404.html                 错误页（自包含、按来源动态返回、含 GA4+百度统计、无 AdSense）
-├── directory/               导航频道页（S1 实例，由 build.py 自动扫描各 `directory/<name>/` 生成 index.html；手写 `directory/index.html` 汇总页仍缺失）
-│   └── ai/index.html        示例频道页（AI智能，2026-08-23 跑通，6 张卡片）
+├── .gitignore               屏蔽构建产物（assets/*/__pycache__/、__pycache__/、*.pyc），防字节码泄露与仓库污染
+├── robots.txt               爬虫规则：Disallow 整个 /assets/ 后用 Allow 白名单放出 css/js/images（不暴露内部目录名）
+├── sitemap.xml              搜索引擎站点地图（首页 + pages/* + directory/*）
+├── directory/               导航频道页（S1 实例；`ai/`、`zhengxie/` 由 build_homeplus.py 自动扫描各 `directory/<name>/` 生成 index.html；`directory/index.html` 为手写汇总/门户页，非 build 生成）
+│   ├── index.html           手写汇总/门户页（频道导航入口，复用 .card 样式，CollectionPage JSON-LD）
+│   ├── ai/index.html        示例频道页（AI智能，2026-08-23 跑通，6 张卡片）
+│   └── zhengxie/index.html  政协专题频道页（2026-08-23 跑通，55 张卡片）
 ├── pages/                   说明/合规/功能型子页（原 units/，2026-08-22 末迁移；S2/S3/S4/S5 均归此）
 │   ├── overview/index.html  网站全景（全站中枢页 S2，2026-08-22 末由根 overview/ 移入）
 │   ├── about/index.html      关于本站（S3 手写静态页，资源相对、内链绝对）
@@ -189,8 +194,10 @@
     │   └── style.css        全站样式（奢华红金白、响应式 Grid）
     ├── js/
     │   └── main.js          交互增强（三维度筛选 / 本地收藏 / 引擎搜索 / 统一滑动）
-    ├── py/
-    │   ├── build.py         数据源 xlsx → index.html 生成器（核心，含 ENGINES 引擎清单）
+    ├── .build/
+    │   ├── build.py          构建编排入口（依次调用 build_homeplus.py + collect_meta.py）
+    │   ├── build_homeplus.py 导航产品页生成器（根 index.html + directory/<name>/index.html）
+    │   ├── collect_meta.py   SEO 元信息采集（全站 index.html 的 title/keywords/description → xlsx）
     │   ├── check_links.py   死链检测，输出 link_report.txt
     │   └── link_report.txt  死链检测报告（运行 check_links.py 后生成）
     ├── images/
@@ -216,7 +223,8 @@
 # 1. 安装依赖（只需一次）
 pip install openpyxl
 
-# 2. 生成站点（读 self_links.xlsx → 覆盖写 index.html）
+# 2. 构建全站（编排入口：依次运行 build_homeplus.py 生成导航页 + collect_meta.py 导出 SEO 报告）
+#    只想要生成页面、跳过 SEO 报告时，可直接跑：python assets/.build/build_homeplus.py
 python assets/.build/build.py
 
 # 3. 本地预览（任意静态服务器均可，如）
@@ -230,10 +238,10 @@ python -m http.server 8080
 
 ## 站点配置（换域名只改一处）
 
-`assets/.build/build.py` 顶部「站点配置」区集中了所有跨页一致的设置，改域名/外链策略**只动这一处**：
+`assets/.build/build_homeplus.py` 顶部「站点配置」区集中了所有跨页一致的设置，改域名/外链策略**只动这一处**：
 
 - `SITE_DOMAIN`：站点域名（末尾无斜杠）。`index.html` 的 `canonical` / `og:url` / `og:image` / JSON-LD / `SearchAction` 及页脚内链均由它生成。
-- **全链接属性规则**（集中配置，全项目通用含子页；手工增删只改 `build.py` 顶部常量）：按**优先级** `同域 > 同族 > 营销 > 评论 > 暴露 > 默认` 匹配链接主机名（主机 == 域名 或 以 `.域名` 结尾，含所有子域）：
+- **全链接属性规则**（集中配置，全项目通用含子页；手工增删只改 `build_homeplus.py` 顶部常量）：按**优先级** `同域 > 同族 > 营销 > 评论 > 暴露 > 默认` 匹配链接主机名（主机 == 域名 或 以 `.域名` 结尾，含所有子域）：
   - `SAME_DOMAIN_ATTR = 'target="_self"'`：同主域（`zhengxie.com.cn` 及其子域），**原地打开**，发 Referer、传权重。
   - `SAME_FAMILY_ATTR = 'target="_blank" rel="noopener"'`：同族（`zhengxie.info` 等），新标签 + 仅隔离 opener（发 Referer、传权重）。
   - `MARKETING_ATTR = 'target="_blank" rel="sponsored noopener noreferrer nofollow"'`：营销站点（**当前预设空集 `MARKETING = []`**，待后续按需要增删；未配置前相关域名走默认）。
@@ -276,8 +284,8 @@ python -m http.server 8080
 | title | 是  | 网站名称（英文首字母自动大写用于占位 logo）                                                                                                                                                                                                                                    |
 | desc  | 否  | 一句话描述                                                                                                                                                                                                                                                       |
 | media | 否  | 媒体区（**列内用英文逗号 `,` 分隔**，向后兼容旧数据）。语法：`URL`=仅图片（红底容器，失败移除露红底）；`URL,颜色`=图片容器内铺该背景色（给**矢量/透明 logo 衬底**，不改容器红底，解决 logo 与红容器不搭/看不清）；`颜色值`(#rgb / rgb() / rgba() / hsl() / transparent / 常见颜色名)=纯色块占位（无图模式）；`合法色,任何尾巴`=纯色块（忽略尾巴）；`字符,颜色`=文字占位+自定义底色；空/其它=标题首字符+红渐变底兜底。**颜色值示例**：`#FFFFFF`、`#3A7BD5`、`rgb(58,123,213)`、`rgba(0,0,0,.5)`、`hsl(210,80%,50%)`、`transparent`、`red`。<br>**降级原则（脏数据不崩站）**：① `URL,非法色/空` → **退化为纯图**（保留 URL，不丢图）；② `非法色 / 纯文本 / 缺参 rgb(1,2) / 非法 hex #ZZZ` → 兜底首字符+红底；③ 任何颜色语句非法都**不进 style**、不丢图、不报错。仅按**第一个逗号**分割，颜色值内自带逗号如 `rgba(0,0,0,.5)` 不受影响。合规 URL 定义：以 `http(s)://` 开头且主机名合法（域名/IP/localhost） |
-| tags  | 否  | 标签，**英文逗号 `,` 分隔**（如 `AI,免费`）。分类名会由 build.py **自动作为标签行第 1 个标签**，无需在此填写                                                                                                                                                                                      |
-| links | 否  | 相关链接，**分号 `;` 分链接、逗号 `,` 分"名称与URL"**（如 `官网,https://x.com;知乎,https://www.zhihu.com/search?q=x`）。卡片第 4/5 行链接标签即由此生成。外链属性策略（target/rel）**不由本表决定**，而由 `build.py` 的 `LINK_ATTR_PRESET` 按**链接域名**自动匹配（见下方约定）                                                      |
+| tags  | 否  | 标签，**英文逗号 `,` 分隔**（如 `AI,免费`）。分类名会由 build_homeplus.py **自动作为标签行第 1 个标签**，无需在此填写                                                                                                                                                                                      |
+| links | 否  | 相关链接，**分号 `;` 分链接、逗号 `,` 分"名称与URL"**（如 `官网,https://x.com;知乎,https://www.zhihu.com/search?q=x`）。卡片第 4/5 行链接标签即由此生成。外链属性策略（target/rel）**不由本表决定**，而由 `build_homeplus.py` 的 `LINK_ATTR_PRESET` 按**链接域名**自动匹配（见下方约定）                                                      |
 
 > ⚠️ 注意：单元格里一律使用**英文半角逗号 `,`** 与**英文分号 `;`** 作为分隔符，不要用中文全角符号。
 
@@ -330,7 +338,7 @@ python assets/.build/check_links.py --limit 5   # 只查前 5 条，快速测试
 | type 2 | **5 行 2 列**：第 1 行 = 封面（跨两列）/ 第 2 行 = 名称 + 收藏按钮 / 第 3 行 = 描述 / 第 4 行 = 标签按钮行 / 第 5 行 = 链接标签行                        | **横向，宽:高 = 1.618:1**（黄金比例） |
 | type 3 | **5 行 2 列**：同 type 2                                                                                               | **纵向，宽:高 = 1:1.618**（黄金比例） |
 
-> 三种类型在页面中**按 type 分组分行显示**（1 组 → 2 组 → 3 组，组间由 build.py 插入的隐形 `grid-break` 强制换行），不同类型的卡片绝不出现在同一行。
+> 三种类型在页面中**按 type 分组分行显示**（1 组 → 2 组 → 3 组，组间由 build_homeplus.py 插入的隐形 `grid-break` 强制换行），不同类型的卡片绝不出现在同一行。
 
 **通用约束（三类卡片一致）**：
 
@@ -339,7 +347,7 @@ python assets/.build/check_links.py --limit 5   # 只查前 5 条，快速测试
 - 名称、描述、标签、链接四类行内容超出时进入「可滚动」状态：**鼠标悬停该行 → 行高亮（金色描边提示），滚轮上下滑动被接管为左右滚动该行内容，页面不再上下滚动**；**触屏设备触摸该行时同样高亮激活**，手指左右滑动即可滚动。
 - **置顶区整体 sticky**：分类导航栏、站内搜索框、筛选标签区三块包在同一个 sticky 容器中，页面向下滚动时始终吸附在页面顶部。
 - 卡片内所有内容**不可被用户选择**（`user-select: none`），避免误框选文本；链接仍可正常点击跳转。
-- 标签行第 1 个标签固定为**该卡片的分类名**（build.py 自动添加）。
+- 标签行第 1 个标签固定为**该卡片的分类名**（build_homeplus.py 自动添加）。
 
 ### 交互逻辑
 
@@ -352,7 +360,7 @@ python assets/.build/check_links.py --limit 5   # 只查前 5 条，快速测试
 - **集合搜索（Hero）**：百度/Google/必应为主引擎按钮（原位），下方引擎滑道含淘宝/京东/知乎/B站/GitHub 等多类引擎；点任意引擎设为激活（红底高亮），输入关键词回车 → 新窗口打开该引擎结果页。
 - **统一滑动行为**：所有滑道（分类滑道 / 筛选滑道 / 引擎滑道）与卡片四类行（标题/描述/标签/链接）**同一套交互**——只在内容真溢出时接管滚轮为左右滑（页面暂停上下滚），触屏触摸同样激活。不溢出时滚轮照常滚页面。
 - **本地收藏持久化**：同浏览器 + 非无痕模式 + 未清站点数据 → 星标下次打开仍在；**不跨设备/浏览器同步**（静态站无后端）；无痕模式关闭即清；清"浏览痕迹"勾选站点数据会一并清掉。
-- **SEO 友好**：所有卡片、链接、分类按钮均静态渲染在 HTML 中（build.py 生成），不依赖 JS 注入；禁用 JS 时页面内容依然完整可读可点。
+- **SEO 友好**：所有卡片、链接、分类按钮均静态渲染在 HTML 中（build_homeplus.py 生成），不依赖 JS 注入；禁用 JS 时页面内容依然完整可读可点。
 
 ### 响应式
 
@@ -425,11 +433,11 @@ git push -u origin main
 
 ## 统计与广告（已接入真实代码）
 
-> 以下代码均写在 `build.py` 的 `PAGE_TEMPLATE` 中（改动后需重新 `python assets/.build/build.py`），由生成器写入 `index.html` 的 `<head>`。
+> 以下代码均写在 `build_homeplus.py` 的 `PAGE_TEMPLATE` 中（改动后需重新 `python assets/.build/build.py`），由生成器写入 `index.html` 的 `<head>`。
 
 ### 百度统计（双站点代码，已接入）
 
-两个站点代码（com.cn 主站 + info 站）合并注入，IDs 维护在 `build.py` 的 `PAGE_TEMPLATE` 百度统计脚本数组 `ids` 里（顺序：com.cn 站 `2f4df5057c929092e36a0d6357e35261` → info 站 `70e38224e5ebd850150b00a19835a25f`）。更换媒体资源时同步改该数组并重新 `python assets/.build/build.py`。
+两个站点代码（com.cn 主站 + info 站）合并注入，IDs 维护在 `build_homeplus.py` 的 `PAGE_TEMPLATE` 百度统计脚本数组 `ids` 里（顺序：com.cn 站 `2f4df5057c929092e36a0d6357e35261` → info 站 `70e38224e5ebd850150b00a19835a25f`）。更换媒体资源时同步改该数组并重新 `python assets/.build/build.py`。
 
 ### Google Analytics GA4（已接入 `G-B880S4NQVK`）
 
@@ -441,17 +449,17 @@ git push -u origin main
 
 **布局原则（重要）**：广告容器 `max-width: 1400px` 居中，**左右零 margin / 零 padding、无任何包裹样式**，撑满可用宽度给 Google 全宽响应式广告最大的尺寸选择空间（小屏 = 整个视口宽；Google 响应式展示广告单元最大宽 1200px，1400 上限留余量）。只保留上下间距（桌面 1.5rem / 手机 1rem）与右上「广告」小字标签（合规要求）。**不要给 `.ad` 加任何水平方向的 margin/padding/border**。
 
-**Slot 分位（已落实）**：顶部广告位 `ad--top` 使用 `data-ad-slot="5952548493"`，底部广告位 `ad--bottom` 使用 `data-ad-slot="4856101005"`——两个独立广告单元，AdSense 后台报告可分位查看各自的展示量与收益。更换单元时只改 `build.py` 模板中对应 `data-ad-slot` 的值并重新生成。
+**Slot 分位（已落实）**：顶部广告位 `ad--top` 使用 `data-ad-slot="5952548493"`，底部广告位 `ad--bottom` 使用 `data-ad-slot="4856101005"`——两个独立广告单元，AdSense 后台报告可分位查看各自的展示量与收益。更换单元时只改 `build_homeplus.py` 模板中对应 `data-ad-slot` 的值并重新生成。
 
 ### 隐私与 Referer 策略（已内置）
 
 - **不设**全局 `<meta name="referrer" content="no-referrer">`（会让百度统计后台显示"referer 被禁用"，收不到来源站）；仅卡片图片用 `referrerpolicy="no-referrer"` 单独压制。卡片外链 / 引擎跳转默认**发 Referer**。
-- 卡片链接按 `link_attr()` 优先级 `同域>同族>营销>评论>暴露>默认` 匹配属性：同域 `target="_self"`、同族 `noopener`、营销 `sponsored noopener noreferrer nofollow`、评论 `ugc noopener noreferrer nofollow`、暴露 `nofollow noopener noreferrer`、默认 `nofollow noopener`（见「站点配置」章节与汇总表）。
+- 卡片链接按 `link_attr()` 优先级 `同域>同族>营销>评论>暴露>默认` 匹配属性：同域 `target="_self"`、同族 `noopener`、营销 `sponsored noopener noreferrer nofollow`、评论 `ugc noopener noreferrer nofollow`、暴露 `noopener referrerpolicy="origin"`（**dofollow，传权重**，见「站点配置」章节与汇总表）、默认 `nofollow noopener noreferrer`。
 - 该策略对 GA4 / 百度统计 / AdSense **无影响**（一方统计不走 Referer 头；AdSense 靠脚本读取页面 URL 投放；默认外链发 Referer 反而利于百度统计来源归因）。
 
 ### 404 页面统计接入（与主页一致，不含广告）
 
-`404.html` 为手写自包含静态页（内联 CSS/JS，不依赖 `build.py` 生成）。其 `<head>` 已注入与主页**完全相同**的 GA4（`G-B880S4NQVK`）与百度统计（双 id `2f4df5057c929092e36a0d6357e35261` + `70e38224e5ebd850150b00a19835a25f`）脚本，**但刻意不放 AdSense 广告位**（404 为错误页，不应展示广告）。改统计 ID 时，需**手动同步** `404.html` 与 `build.py` 模板两处（子页手写、非 build 生成，故无自动同步）。
+`404.html` 为手写自包含静态页（内联 CSS/JS，不依赖 `build_homeplus.py` 生成）。其 `<head>` 已注入与主页**完全相同**的 GA4（`G-B880S4NQVK`）与百度统计（双 id `2f4df5057c929092e36a0d6357e35261` + `70e38224e5ebd850150b00a19835a25f`）脚本，**但刻意不放 AdSense 广告位**（404 为错误页，不应展示广告）。改统计 ID 时，需**手动同步** `404.html` 与 `build_homeplus.py` 模板两处（子页手写、非 build 生成，故无自动同步）。
 
 ---
 
@@ -495,7 +503,7 @@ git push -u origin main
 
 **Q7：想增删搜索引擎？**
   
-搜索引擎清单在 `assets/.build/build.py` 顶部的 `ENGINES` 列表里（每项含 key / 显示名 / 搜索 URL / 是否主引擎）。增删或调序后，主引擎（百度/Google/必应）保持原位（搜索框上方），其余进下方引擎滑道。改完跑 `python assets/.build/build.py` 重新生成即可。
+搜索引擎清单在 `assets/.build/build_homeplus.py` 顶部的 `ENGINES` 列表里（每项含 key / 显示名 / 搜索 URL / 是否主引擎）。增删或调序后，主引擎（百度/Google/必应）保持原位（搜索框上方），其余进下方引擎滑道。改完跑 `python assets/.build/build.py` 重新生成即可。
 
 **Q8：本地收藏没了？**
   
@@ -505,7 +513,7 @@ git push -u origin main
 
 ## 技术要点备忘
 
-- 生成器 `build.py`：`openpyxl` 读取 → 排序（**先 type 1→2→3，再站序**）→ 分类去重生成按钮 → 三类卡片模板渲染（type 变化处插入 `grid-break` 强制换行）→ 全部内容内联进静态 HTML（HTML 实体转义，防注入）。media 列经**合规 URL 校验**（`urllib.parse` 解析 scheme + 主机名正则），不合规视为空值走文字占位。
+- 生成器 `build_homeplus.py`：`openpyxl` 读取 → 排序（**先 type 1→2→3，再站序**）→ 分类去重生成按钮 → 三类卡片模板渲染（type 变化处插入 `grid-break` 强制换行）→ 全部内容内联进静态 HTML（HTML 实体转义，防注入）。media 列经**合规 URL 校验**（`urllib.parse` 解析 scheme + 主机名正则），不合规视为空值走文字占位。
 - 样式 `style.css`：CSS 变量定义红金白配色（含 `--red-soft` 淡红 / `--gold-deep` 深金）；`grid-template-columns: repeat(2/3/4, 1fr)` 实现响应式；type1 为 4 行 3 列、type2/3 为 5 行 2 列的 `grid-template-areas` 布局（收藏按钮为 grid 成员固定在名称行右端）；`aspect-ratio: 1.618/1` 与 `1/1.618` 实现黄金比例封面；`user-select:none` 防误选；`overflow-x:auto` 实现横向滚动；卡片收藏星为内联 SVG（CSS 按 `aria-pressed` 切换描边/填充）。
 - 交互 `main.js`：**三维度筛选**（`activeCat` 分类 / `filterTags` 关键词 / `showFav` 本地收藏）AND 叠加，相互独立；事件委托（星标按钮用 `closest` 命中，兼容内嵌 SVG 点击目标）；`hidden` 属性控制显隐；本地收藏存 `localStorage('zx_favs')`；引擎按钮带 `data-url`，单选激活后提交跳转；**结果计数**（`applyFilter` 统计可见数，更新 `#result-count`）；**顶部收藏星**（按 `favs` 键数切换 ☆/★）。
 - **CSS 优先级注意**：左 Logo 按钮同时带 `category-nav__logo` 与 `category-btn` 两个类，`.category-btn` 的 `border-radius:999px`、`background:transparent` 若声明在后会覆盖 logo 样式（曾导致 logo 显示为圆形白底）。logo 样式块必须放在 `.category-btn` 系列**之后**。
@@ -520,7 +528,7 @@ git push -u origin main
 
 - `robots.txt` 策略：`User-agent: *` + `Sitemap`；**先 `Disallow: /assets/`（兜底屏蔽整个内部目录，含构建脚本 `.build/`、数据源 `xlsx/`、配置 `json/`、技能 `skills/`），再用 `Allow` 白名单放出站点运行必需的公开资源**：`Allow: /assets/css/`、`Allow: /assets/js/`、`Allow: /assets/images/`。**关键：robots.txt 中不出现任何具体内部目录名（如 `.build`），避免向外界指路**；根 `ads.txt` 在 `/assets/` 之外，仍可公开抓取（AdSense 授权必需）。
   - **公开资源必须放行**：`assets/{css,js,images}` 是站点运行必需的公开静态资源（子页经 `../../assets/` 引用同一份根资源）。整体 `Disallow: /assets/` 后，必须用 `Allow` 白名单把它们放回来——CSS/JS 被禁会影响富媒体渲染，图片（logo/卡片图）被禁会丢失 Google 图片搜索与 `og:image` 社交预览；且 `<link>/<script>` 引用的资源本就不会进搜索结果。GitHub Pages 不支持 `X-Robots-Tag` 自定义响应头，故无法对资源文件做 `noindex`，维持"Disallow 兜底 + Allow 白名单"即可。
-- 新增 `sitemap.xml`（首页 + about + submit）
+- 新增 `sitemap.xml`（首页 + about + submit；**现状（2026-08-23）已扩展为 13 条**：首页 + 9 个 pages/* + 3 个 directory/*，详见仓库内 `sitemap.xml`）
 - 新增 `manifest.json`（PWA 基础支持）
 - `<head>` 新增：`canonical`、`og:image`、`og:site_name`、`twitter:card`、`theme-color`（light/dark 双值）、`apple-touch-icon`、`preconnect`（GA / AdSense / 百度统计）
 - 新增 JSON-LD 结构化数据（`WebSite` + `SearchAction`，帮助搜索引擎理解站点搜索功能）

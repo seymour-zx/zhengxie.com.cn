@@ -5,7 +5,7 @@
 > 若需"换设备触发即自动执行"，请将本文件复制到 `{workspace}/.workbuddy/skills/<name>/SKILL.md` 并用 SkillManage 注册。
 > 本文件内容与 `README.md` 决策总章互为补充：README 管"决策/规范"，本文件管"可重复的操作步骤"。
 >
-> **🌐 跨设备权威源约定（AI 必守，用户 2026-08-23 指令）**：换设备对话时，**只有 `README.md` 与 `assets/skills/SKILL.md` 这两个 md 保证可读**。因此所有"AI 必须遵守的项目规范/约定"必须落在这两个 md 之一，**或落在代码里**（如 `assets/.build/build.py` 顶部 docstring 已内置 `/directory/` 框架约定，即为跨设备权威源）。其它 `docs/*.md`（`docs/` 目录已删除，原 `SUBPAGE_BUILD_DESIGN.md` 内容已并入 build.py docstring 与这两 md）**不算跨设备权威源**，不得作为任何规则的唯一出处；若在 docs/ 写过约定，须同步进这两 md 或代码。新增/修改项目级规则时先自问："这条在另台设备读得到吗？"读不到就别只放在 docs/ 里。
+> **🌐 跨设备权威源约定（AI 必守，用户 2026-08-23 指令）**：换设备对话时，**只有 `README.md` 与 `assets/skills/SKILL.md` 这两个 md 保证可读**。因此所有"AI 必须遵守的项目规范/约定"必须落在这两个 md 之一，**或落在代码里**（如 `assets/.build/build_homeplus.py` 顶部 docstring 已内置 `/directory/` 框架约定，即为跨设备权威源）。其它 `docs/*.md`（`docs/` 目录已删除，原 `SUBPAGE_BUILD_DESIGN.md` 内容已并入 build_homeplus.py docstring 与这两 md）**不算跨设备权威源**，不得作为任何规则的唯一出处；若在 docs/ 写过约定，须同步进这两 md 或代码。新增/修改项目级规则时先自问："这条在另台设备读得到吗？"读不到就别只放在 docs/ 里。
 >
 > **🚫 专家转介纪律（AI 硬边界，任何设备/会话都必须遵守）**：本项目的法律合规文本、SEO 策略、视觉设计评审等**不属于 AI 擅长的确定性工程范畴**，AI 只做"如实陈述技术实现"的草稿，**不替代专业判断**。遇到下列任务，AI 必须**主动停止、明确告知用户应咨询对应专家/connector**，不得硬做、不得给看似专业实则未经验证的结论。具体清单见文末「专家转介纪律」段。
 
@@ -33,7 +33,7 @@
 
 每个 `pages/<name>/index.html` 必须满足：
 
-1. **资源相对（引用根目录共享 assets 真源）**：`<link rel="stylesheet" href="../../assets/css/style.css">`、`<link rel="icon" href="../../assets/images/logo.svg">`（子页不再自包含，统一 `../../assets/` 指向根目录唯一 assets）。（注：根页 `index.html` 由 build.py 生成，其 CSS 以 `preload`+`onload`+`<noscript>` 注入，与子页普通 `<link rel=stylesheet>` 写法不同，属生成器行为，无需手改、也不要"修正"成普通 link。）
+1. **资源相对（引用根目录共享 assets 真源）**：`<link rel="stylesheet" href="../../assets/css/style.css">`、`<link rel="icon" href="../../assets/images/logo.svg">`（子页不再自包含，统一 `../../assets/` 指向根目录唯一 assets）。（注：根页 `index.html` 由 build_homeplus.py 生成，其 CSS 以 `preload`+`onload`+`<noscript>` 注入，与子页普通 `<link rel=stylesheet>` 写法不同，属生成器行为，无需手改、也不要"修正"成普通 link。）
 2. **内链绝对 + `_self`**：站内跳转用 `https://zhengxie.com.cn/...` 且 `target="_self"`（如页脚导航、正文交叉链接）。
 3. **不设全局 referrer meta**：`<head>` 中**不要**写 `<meta name="referrer" content="no-referrer">`（全站已锁定"不设全局 referrer"规则）。
 4. **FOUC 仅本地 dark**：`<head>` 内联脚本仅当 `localStorage('zx_theme')==='dark'` 才设 `data-theme="dark"`，**不跟随系统偏好**。
@@ -88,10 +88,10 @@
 
 ## 全站联动清单（新增子页后必须同步，缺一不可）
 
-> 目录约定（2026-08-22 末生效，2026-08-23 更新）：说明/合规/功能型子页 + 全站中枢页**统一放 `pages/<name>/`**（`units/` 已整体删除、`test.html` 已删；中枢页 `pages/overview/` 由根 `overview/` 移入）。导航频道（S1 实例）放 `directory/<name>/`，由 `assets/.build/build.py` 自动扫描各目录专属 `assets/xlsx/self_links.xlsx` 生成 `index.html`（非根表子集；原 `nav/<name>/` 草稿约定作废，2026-08-22 用户指定为 `directory/`）。框架约定详见 `assets/.build/build.py` 顶部 docstring（跨设备可读）。
+> 目录约定（2026-08-22 末生效，2026-08-23 更新）：说明/合规/功能型子页 + 全站中枢页**统一放 `pages/<name>/`**（`units/` 已整体删除、`test.html` 已删；中枢页 `pages/overview/` 由根 `overview/` 移入）。导航频道（S1 实例）放 `directory/<name>/`，由 `assets/.build/build_homeplus.py` 自动扫描各目录专属 `assets/xlsx/self_links.xlsx` 生成 `index.html`（非根表子集；原 `nav/<name>/` 草稿约定作废，2026-08-22 用户指定为 `directory/`）。框架约定详见 `assets/.build/build_homeplus.py` 顶部 docstring（跨设备可读）。
 
-1. **子页资源引用（2026-08-22 调整）**：子页 `pages/<name>/index.html` **不再复制 assets、不再自包含**，直接以相对路径 `../../assets/css/style.css`、`../../assets/images/logo.svg`、`../../assets/js/main.js` 引用**根目录**共享 assets（根 assets 为唯一真源，`build.py` 已移除 `UNIT_PAGES`/`sync_unit_assets` 复制逻辑）。新增子页时照此写引用即可，无需改 `build.py`。
-2. **`assets/.build/build.py` 首页模板页脚**：若新子页需在首页页脚出现，在 footer `<nav>` 内加 `<a href="{{SITE_DOMAIN}}/pages/<name>/">名称</a>`（中枢页用 `{{SITE_DOMAIN}}/pages/overview/` 文本「网站全景」；注意用 `{{SITE_DOMAIN}}` 占位，build 会替换；首页模板页脚已含 11 链接，含新增「频道导航」指向 `/directory/`）。
+1. **子页资源引用（2026-08-22 调整）**：子页 `pages/<name>/index.html` **不再复制 assets、不再自包含**，直接以相对路径 `../../assets/css/style.css`、`../../assets/images/logo.svg`、`../../assets/js/main.js` 引用**根目录**共享 assets（根 assets 为唯一真源，`build_homeplus.py` 已移除 `UNIT_PAGES`/`sync_unit_assets` 复制逻辑）。新增子页时照此写引用即可，无需改 `build_homeplus.py`。
+2. **`assets/.build/build_homeplus.py` 首页模板页脚**：若新子页需在首页页脚出现，在 footer `<nav>` 内加 `<a href="{{SITE_DOMAIN}}/pages/<name>/">名称</a>`（中枢页用 `{{SITE_DOMAIN}}/pages/overview/` 文本「网站全景」；注意用 `{{SITE_DOMAIN}}` 占位，build 会替换；首页模板页脚已含 11 链接，含新增「频道导航」指向 `/directory/`）。
 3. **手写子页页脚**：pages 下 9 个手写页（含 overview）页脚 nav 需与新子页互链（保持 11 链接一致，含「网站全景」与「频道导航」）。可用统一模板批量替换 nav 块。
 4. **`sitemap.xml`**：在 `</urlset>` 前加 `<url>` 条目，`<loc>https://zhengxie.com.cn/pages/<name>/</loc>`、`<changefreq>monthly</changefreq>`、`<priority>0.50</priority>`（中枢页 `pages/overview` 用 priority 0.70）。
 5. **`README.md`**：决策总章第 3 节补该子页的 🔶 状态标注（附原状态=无此页，可退回）；BACKLOG 标记完成情况。
@@ -113,7 +113,7 @@
 
 ## 验证步骤（完成后必跑）
 
-1. 运行 build：`python assets/.build/build.py`（路径用本项目 managed python）。确认读记录数正常、生成 index.html 无报错。
+1. 运行构建（编排入口，会依次跑 build_homeplus.py 生成导航页 + collect_meta.py 导出 SEO 报告）：`python assets/.build/build.py`（路径用本项目 managed python）。确认读记录数正常、生成 index.html 无报错；如需仅生成页面，可直跑 `python assets/.build/build_homeplus.py`。
 2. 校验新子页资源引用：`grep '\.\./\.\./assets/' pages/<name>/index.html` 应有 style.css / logo.svg / main.js 三项（中枢页同）；并确认根 `assets/` 下对应文件存在（子页不再有独立 assets 目录）。
 3. 校验首页页脚：grep `pages/<name>/` 与 `pages/overview/` 在 index.html 出现；grep `units/` 应为 0（旧目录已整体删除，2026-08-22 末）。
 4. 校验 sitemap.xml：含新 `<loc>` 条目（均为 `pages/` 路径），总数 = 1（首页）+ 1（pages/overview）+ N（pages 子页）。
@@ -129,7 +129,7 @@
 
 ## 页面骨架模板规范（S1–S6+，与 README 3.2 节对应）
 
-> 本站页面按骨架契约分类（详见 README 3.2 节）。**骨架可演进原则**：新页面优先归集已有骨架；确无法覆盖且对长远有利时新增骨架（S7+）；骨架可升级改版。以下补 **S2（全站中枢页·网站全景，已升级）** 与 **S6（文章/内容页）** 的模板规范（目前站点暂无这两类实例，先沉淀规范，未来套用）。S1 规范见 README「页面与交互说明」章（build.py 生成，非手写模板）。
+> 本站页面按骨架契约分类（详见 README 3.2 节）。**骨架可演进原则**：新页面优先归集已有骨架；确无法覆盖且对长远有利时新增骨架（S7+）；骨架可升级改版。以下补 **S2（全站中枢页·网站全景，已升级）** 与 **S6（文章/内容页）** 的模板规范（目前站点暂无这两类实例，先沉淀规范，未来套用）。S1 规范见 README「页面与交互说明」章（build_homeplus.py 生成，非手写模板）。
 
 ### S2 — 全站中枢页（网站全景）【已升级，非普通入口页】
 
@@ -149,7 +149,7 @@
 - SEO：`canonical` 指向 `https://zhengxie.com.cn/pages/overview/`；`og:type=website`；补 description/keywords（强调"全站总览"）。
 - 数据来源（⏳ PENDING，不擅自决定）：架构/切片/榜单数据从哪来待用户拍板。
 
-**联动**：手写子页直接引用 `../../assets/`（无需改 `build.py`）；建 `pages/overview/` 同样引用根 assets；sitemap.xml 加 `<url>`（priority 0.70）；README 3.2 补 🔶 标注（如"网站全景中枢页，2026-08-22 末立项"）。
+**联动**：手写子页直接引用 `../../assets/`（无需改 `build_homeplus.py`）；建 `pages/overview/` 同样引用根 assets；sitemap.xml 加 `<url>`（priority 0.70）；README 3.2 补 🔶 标注（如"网站全景中枢页，2026-08-22 末立项"）。
 
 ### S6 — 文章 / 内容页（列表索引 + 详情）
 
@@ -168,7 +168,7 @@
 **插图规范**：图片用合规 URL（同 README「数据维护」合规 URL 定义）或相对 `assets/images/`；防盗链用 `referrerpolicy="no-referrer"`（仅图片，不全局）；`figure` 包裹保证排版语义。
 
 **联动清单（新增一个文章/内容板块时）**：
-1. 若走 build 生成：在 `build.py` 新增数据源与模板（新增 ARTICLE 模板）；若纯手写：直接建 `articles/<slug>/index.html`，资源引用 `../../assets/`。
+1. 若走 build 生成：在 `build_homeplus.py` 新增数据源与模板（新增 ARTICLE 模板）；若纯手写：直接建 `articles/<slug>/index.html`，资源引用 `../../assets/`。
 2. `sitemap.xml`：列表页 + 每篇详情页各加 `<url>`（详情页 priority 0.40，列表页 0.50）。
 3. 全局页脚 11 链接：文章页页脚 nav 与其他页一致（保持全站统一，含「网站全景」「频道导航」）。
 4. `README.md` 3.2 节：补该板块的 🔶 状态标注（如"博客板块，2026-XX 新增"）。

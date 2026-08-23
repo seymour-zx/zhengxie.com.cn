@@ -45,7 +45,7 @@ WebP 原生支持 alpha，透明背景在任意底色（如卡片红渐变）上
 ## 常见坑（逐一验证，不要想当然）
 
 - **引用改了但文件没生成**：浏览器 404；若带 `onerror="this.remove()"` 会把 `<img>` 直接删掉变空图。务必先生成 webp 再改引用。
-- **手改生成产物**：`index.html` 由 `assets/.build/build.py` 扫描各目录 `assets/xlsx/self_links.xlsx` 生成，图片 `src` 来自数据源 `media` 字段。**手改 index.html 会被下次 build 覆盖还原**。要持久生效就改 xlsx 的 `media` 字段（如 `…/12377-3-0X.png` → `…webp`），或改 `build_media()` 模板（一劳永逸）。
+- **手改生成产物**：`index.html` 由 `assets/.build/build_homeplus.py` 扫描各目录 `assets/xlsx/self_links.xlsx` 生成，图片 `src` 来自数据源 `media` 字段。**手改 index.html 会被下次 build 覆盖还原**。要持久生效就改 xlsx 的 `media` 字段（如 `…/12377-3-0X.png` → `…webp`），或改 `build_media()` 模板（一劳永逸）。
 - **`<picture>` 双源需两文件都在**：`<source webp>` + `<img png>` 兜底时，若 webp 缺失，现代浏览器「匹配格式成功」后**不会回退** png，直接破图。只引 webp 时，png 冗余可删。
 
 ---

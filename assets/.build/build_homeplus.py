@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-build.py —— 正协导航 · 站点生成器
-====================================
-读取 assets/xlsx/self_links.xlsx（根页独享数据源，前缀 self_ 表示独享），生成完整的 index.html。
+build_homeplus.py —— 正协导航 · 导航产品页生成器（home + 同类页）
+==============================================================
+读取 assets/xlsx/self_links.xlsx（根页独享数据源，前缀 self_ 表示独享），生成完整的 index.html；
+并自动扫描 directory/<name>/（各含独立 self_links.xlsx + self_meta.json）生成同骨架频道页。
 
 设计原则（SEO 友好）：
 - 所有导航卡片、分类按钮、链接全部内联在静态 HTML 中，不使用 JS 注入；
@@ -10,9 +11,13 @@ build.py —— 正协导航 · 站点生成器
 - JS(main.js) 只做交互增强，禁用 JS 时页面内容完整可读可点。
 
 用法：
-    python assets/.build/build.py
+    python assets/.build/build_homeplus.py
 输出：
     index.html（站点根目录，覆盖更新）
+    directory/<name>/index.html（各频道页，覆盖更新）
+
+注：本脚本是「生成器核心」。统一入口为 assets/.build/build.py（编排脚本，会依次调用
+build_homeplus.py 与 collect_meta.py）。直接跑本脚本可只重新生成导航产品页、跳过 SEO 报告。
 
 数据表列（self_links.xlsx 第一行为表头）：
     站序 | 分类 | type | title | desc | media | tags | links
@@ -55,10 +60,10 @@ v4.1 修订：
 ================================================================================
 > 跨设备说明：本约定**内置此 docstring**，而非独立 `docs/*.md`。原因——换设备对话时
 > 只能保证读到 `README.md` 与 `assets/skills/SKILL.md` 两个 md；若在其他设备读到本
-> `build.py`，以此 docstring 为唯一权威源（独立的 `docs/SUBPAGE_BUILD_DESIGN.md`
+> `build_homeplus.py`，以此 docstring 为唯一权威源（独立的 `docs/SUBPAGE_BUILD_DESIGN.md`
 > 已删除，其内容已并入此处，不可再引用该路径）。
 
-build.py 一次运行**同时生成两类 S1 导航产品页**：
+build_homeplus.py 一次运行**同时生成两类 S1 导航产品页**：
   (1) 根 `index.html`           —— 读 `assets/xlsx/self_links.xlsx`
   (2) 各 `directory/<name>/index.html` —— 自动扫描 `directory/` 下含
        `assets/xlsx/self_links.xlsx` 的子目录逐个生成，**无需手工登记目录清单**。
@@ -70,7 +75,7 @@ build.py 一次运行**同时生成两类 S1 导航产品页**：
    本文件不生成也不触碰。
 4. 自动扫描：在 `directory/` 下建 `<name>/` 并放入 `self_links.xlsx` + `self_meta.json`，
    重跑 build 即生成；无 `DIRECTORY_PAGES` 清单。
-5. `directory/index.html` **不在 build.py 任务内**：它是手写静态页（非 S1、汇总/门户性质），
+5. `directory/index.html` **不在 build_homeplus.py 任务内**：它是手写静态页（非 S1、汇总/门户性质），
    与 `pages/` 子页同级，py 不碰、绝不生成。
 6. directory 频道页 hero 下半部 = **专题介绍块（无搜索框）**：`build_channel_intro()`
    直接复制该页 `self_meta.json` 的 `description`（`<section>` + `<p>`，一段），不自动生成
@@ -160,6 +165,13 @@ ROOT_META = {
 # directory 子页相对资源前缀（子页在 /directory/<name>/ 下，回退两级到根 assets）
 DIR_ASSET_PREFIX = "../../"
 DIRECTORY_ROOT = os.path.join(BASE_DIR, "directory")
+
+def _merge_meta(meta):
+    """以 ROOT_META 为兜底，叠加页面自身 meta（过滤空值），返回最终 meta dict。"""
+    m = dict(ROOT_META)
+    if meta:
+        m.update({k: v for k, v in meta.items() if v})
+    return m
 
 # ── 搜索引擎清单（key, 显示名, 搜索URL, 是否主引擎） ──
 # 主引擎（百度/Google/必应）原位不变（搜索框上方按钮）；其余进下方引擎滑道。
@@ -700,9 +712,7 @@ def build_page(category_buttons, cards_html, engine_primary, engine_track, total
     canonical_path: 相对站点根的路径（"/" 或 "/directory/<name>/"），由调用方按 SITE_DOMAIN 自动拼，不来自 meta
     hero_search:    hero 下半部 HTML：根页=集合搜索框；directory 页=专题介绍块
     """
-    m = dict(ROOT_META)
-    if meta:
-        m.update({k: v for k, v in meta.items() if v})
+    m = _merge_meta(meta)
     return (
         PAGE_TEMPLATE.replace("{{CATEGORY_BUTTONS}}", category_buttons)
         .replace("{{HERO_SEARCH}}", hero_search)
@@ -883,7 +893,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 
   </div><!-- /sticky-top -->
 
-  <!-- ═══ 第6行块：导航卡片容器（build.py 生成，全部静态渲染，Grid 响应式） ═══ -->
+  <!-- ═══ 第6行块：导航卡片容器（build_homeplus.py 生成，全部静态渲染，Grid 响应式） ═══ -->
   <main class="cards-container wrap" id="cards-container">
     {{CARDS}}
   </main>
@@ -992,9 +1002,7 @@ def build_channel_intro(meta):
     - 内容 = 直接复制 self_meta.json 的 description，不额外自动生成概览段落。
     - 标签：<section> 专题分组；内仅一段 <p> 承载 description。
     """
-    m = dict(ROOT_META)
-    if meta:
-        m.update({k: v for k, v in meta.items() if v})
+    m = _merge_meta(meta)
     desc = html.escape(m["description"])
     return (
         "    <section class=\"channel-intro\" aria-label=\"专题介绍\">\n"
@@ -1049,12 +1057,23 @@ def main():
 
     # 2) directory/ 子页：先清残留，再按要求生成
     if os.path.isdir(DIRECTORY_ROOT):
-        # 2a) 删除所有 py 生成的 directory/<name>/index.html，避免旧页残留
+        # 2a) 删除 py 生成的 directory/<name>/index.html，避免旧页残留
+        #     只处理「子目录」下的 index.html，显式跳过门户页 directory/index.html
+        #     （它是手写汇总页，不在生成范围内，误删会永久丢失且无人重建）。
         for name in sorted(os.listdir(DIRECTORY_ROOT)):
-            old = os.path.join(DIRECTORY_ROOT, name, "index.html")
+            child = os.path.join(DIRECTORY_ROOT, name)
+            if not os.path.isdir(child):
+                continue  # 跳过文件（如 directory/index.html 门户页）
+            old = os.path.join(child, "index.html")
             if os.path.isfile(old):
-                os.remove(old)
-                print(f"清理: 删除旧 {old}")
+                try:
+                    os.remove(old)
+                    print(f"清理: 删除旧 {old}")
+                except OSError as e:
+                    # 删除失败（如受限环境的 safe-delete 拦截）不致命：
+                    # 下方 render_and_write 会用新内容覆盖写该 index.html，效果等价。
+                    # 仅打印警告，不中断构建。
+                    print(f"警告: 删除旧 {old} 失败（{e}），将由重新生成覆盖。")
 
         # 2b) 遍历子目录：清理空数据文件 + 生成
         #     规则：self_links.xlsx 与 self_meta.json 都齐备才生成；缺一个或都缺 → 不生成

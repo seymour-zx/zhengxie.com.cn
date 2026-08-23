@@ -560,13 +560,6 @@ input, textarea, select { font-family: inherit; }
   color: var(--text-sub); font-size: 13px;
 }
 .footer__copyright { letter-spacing: .06em; }
-.footer__links {
-  list-style: none;
-  display: flex; justify-content: center; flex-wrap: wrap;
-  gap: 6px 18px; margin-top: 10px;
-}
-.footer__links a { color: var(--text-sub); text-decoration: none; }
-.footer__links a:hover { color: var(--red); }
 
 /* ═══════════ 移动端微调 ═══════════ */
 @media (max-width: 639px) {

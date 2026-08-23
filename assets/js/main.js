@@ -1,7 +1,7 @@
 /* ============================================================
    正协导航 main.js —— 交互增强（渐进增强原则）  v4.1
    ------------------------------------------------------------
-   页面所有卡片/链接/分类/引擎均为静态 HTML（build.py 生成，SEO 友好）；
+   页面所有卡片/链接/分类/引擎均为静态 HTML（build_homeplus.py 生成，SEO 友好）；
    本脚本只做交互，禁用 JS 时页面内容依然完整可读可点。
 
    功能：
@@ -31,7 +31,6 @@
   var resultCount = document.getElementById('result-count');
   var favToggleStar = favToggle ? favToggle.querySelector('.category-nav__fav-star') : null;
   var themeToggle = document.getElementById('theme-toggle');
-  var backToTop = document.getElementById('back-to-top');
   var emptyState = document.getElementById('empty-state');
   var randomBtn = document.getElementById('random-site');
 
