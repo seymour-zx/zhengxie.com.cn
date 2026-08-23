@@ -58,10 +58,11 @@ v4.1 修订：
 ================================================================================
 ## 同骨架导航产品页（/directory/）· 框架约定（本文件即权威源）
 ================================================================================
-> 跨设备说明：本约定**内置此 docstring**，而非独立 `docs/*.md`。原因——换设备对话时
-> 只能保证读到 `README.md` 与 `assets/skills/SKILL.md` 两个 md；若在其他设备读到本
-> `build_homeplus.py`，以此 docstring 为唯一权威源（不再有独立的 `docs/*.md` 设计文档，
-> 所有约定内联于此；换设备读到本文件即读到全部规则）。
+> 跨设备说明：本约定**内置此 docstring**，而非独立 `docs/*.md`。原因——项目权威源随仓库
+> 同步，包括 `README.md`、`.workbuddy/skills/*/SKILL.md`（已注册技能）、`.workbuddy/docs/*`
+> （约定文档，如 `CONVENTIONS.md`）；换设备读到本 `build_homeplus.py` 时，以此 docstring
+> 为框架约定权威源（所有约定内联于此；换设备读到本文件即读到全部规则）。跨设备总约定见
+> `.workbuddy/docs/CONVENTIONS.md`。
 
 build_homeplus.py 一次运行**同时生成两类 S1 导航产品页**：
   (1) 根 `index.html`           —— 读 `assets/xlsx/self_links.xlsx`

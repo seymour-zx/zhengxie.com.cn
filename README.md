@@ -8,9 +8,9 @@
 
 > **⚠️ 操作铁律**：任何设备 / 任何会话对本项目做任何改动前，**必须先读完下方「决策与偏好总览」整章**，并严格遵守各条目的状态标记。改动若与该章冲突即视为错误——先回退、再与用户确认，绝不允许「凭感觉又加一个功能」导致用户重复纠正（此前已发生过：分类计数徽章、暗色偏蓝紫）。
 
-> **🌐 跨设备权威源约定（2026-08-23 指令）**：换设备对话时**只有本 `README.md` 与 `assets/skills/SKILL.md` 两个 md 保证可读**。因此所有"AI 必须遵守的项目规范"必须落在这两个 md 之一，或落在代码里（如 `assets/.build/build_homeplus.py` 顶部 docstring 已内置 `/directory/` 框架约定，即为跨设备权威源）。其它 `docs/*.md` **不算跨设备权威源**，不得作为规则的唯一出处（注：`docs/BAIDU_SEO_STRATEGY.md` 违反此规则，其内容应并入代码/技能、不应依赖）；**SEO 标准手册已固化为项目技能 `.workbuddy/skills/zhengxie-seo-standard/`，做 SEO 讨论前必读本技能**。新增/修改项目级规则前先自问："这条在另台设备读得到吗？"读不到就别只放在 docs/ 里。详见 `assets/skills/SKILL.md` 顶部同款约定。
+> **🌐 跨设备权威源约定（2026-08-23 确立，2026-08-24 重整）**：换设备对话时，所有"AI 必须遵守的项目规范"必须落在**随仓库同步的权威源**——`README.md`、`.workbuddy/skills/*/SKILL.md`（已注册技能）、`.workbuddy/docs/*`（约定文档）、或代码内置约定（如 `assets/.build/build_homeplus.py` 顶部 docstring）。完整约定见 `.workbuddy/docs/CONVENTIONS.md`「一、跨设备权威源约定」，**以该文件为准**。SEO 标准手册已固化为项目技能 `.workbuddy/skills/zhengxie-seo-standard/`，做 SEO 讨论前必读本技能。
 
-> **📖 动手前必读 SKILL.md（2026-08-23 指令）**：本仓库内的 `assets/skills/SKILL.md` 是**项目内部 SOP（标准作业流程）**，集中了所有构建、目录约定、子页联动、SEO 规则等"AI 必须遵守的规范"。**任何设备 / 任何会话 / 任何维护者（含 AI 团队）开始改动本项目前，必须先打开并读完该 SKILL.md**，再动手。README 只作概览与入口，细节与操作步骤一律以 SKILL.md 为准——避免两处维护漂移、也避免规范随会话丢失。如果进项目时没被明确指向它，请主动寻找仓库内的 `SKILL.md` 先读，再开工。
+> **📖 动手前必读 SKILL.md（2026-08-23 指令）**：本仓库内的 `.workbuddy/skills/zhengxie-subpage-sop/SKILL.md` 是**项目内部 SOP（标准作业流程）**，集中了所有构建、目录约定、子页联动、SEO 规则等"AI 必须遵守的规范"。**任何设备 / 任何会话 / 任何维护者（含 AI 团队）开始改动本项目前，必须先打开并读完该 SKILL.md**，再动手。README 只作概览与入口，细节与操作步骤一律以 SKILL.md 为准——避免两处维护漂移、也避免规范随会话丢失。如果进项目时没被明确指向它，请主动寻找仓库内的 `SKILL.md` 先读，再开工。
 
 ---
 
@@ -73,32 +73,25 @@
 > 子页 `pages/about`、`pages/submit` 为既有项目结构（资源相对、内链绝对），非本轮主动新增，仅在此标注其形态，不作改动即可。
 
 > **子页统一形态（目录已于 2026-08-22 末从 `units/` 迁移至 `pages/`）**：手写静态页，`<head>` **不设**全局 referrer meta（与主页/README「不设全局 referrer」规则一致）、FOUC **仅当 `localStorage('zx_theme')==='dark'` 才暗色**（不跟随系统偏好）；资源以相对路径 `../../assets/css/style.css`、`../../assets/images/logo.svg`、`../../assets/js/main.js` **引用根目录共享 assets**（根 assets 为唯一真源，子页不再复制自包含 assets——`build_homeplus.py` 的 `UNIT_PAGES`/`sync_unit_assets` 已于 2026-08-22 移除）；内链绝对 `https://zhengxie.com.cn/...` 且 `target="_self"`。
-> **子页新增/调整的具体操作步骤（标准形态 7 要点、页脚模板、全站联动清单、验证步骤、退回方案）已抽离至 `assets/skills/SKILL.md`**——任何会话要新增子页时，先读该 SKILL.md 照做，避免 README 与操作步骤两处维护漂移。
+> **子页新增/调整的具体操作步骤（标准形态 7 要点、页脚模板、全站联动清单、验证步骤、退回方案）已抽离至 `.workbuddy/skills/zhengxie-subpage-sop/SKILL.md`**——任何会话要新增子页时，先读该 SKILL.md 照做，避免 README 与操作步骤两处维护漂移。
 
 > **隐私政策页（🔶 本次主动新增，可退回）**：`pages/privacy/index.html` 由我据站点真实技术实现起草（含免责声明「AI 辅助生成、非执业律师正式意见」）；内容如实陈述——本站为纯静态站、无后端/无注册、本地收藏存 localStorage 不上传、接入百度统计/GA4/AdSense、不设全局 referrer、外链按优先级规则打开。**改动前原状态**：站内无隐私政策页（页脚无隐私链接、sitemap 无隐私条目）。退回即删 `pages/privacy/`、撤 sitemap/页脚/README 相关行。
 
-> **5 个说明型子页（🔶 2026-08-22 主动新增，可整体退回）**：`pages/contact`（联系我们，含收录/反馈/合作邮箱 seymour.zx@foxmail.com）、`pages/disclaimer`（免责声明，含 AI 辅助生成免责声明）、`pages/guide`（使用指南，讲本地收藏/三维度筛选/集合搜索/URL分享/随机漫步/暗色快捷键）、`pages/sitemap`（站点地图，可视化分类索引+功能页+机器可读 sitemap.xml 入口，分类锚点回首页 `#cat=分类`）、`pages/changelog`（更新日志，按时间倒序记录站点迭代）。形态同隐私页（资源 `../../assets/` 引用根、内链绝对 `_self`、无全局 referrer meta、FOUC 仅本地 dark）；写入 `sitemap.xml`（priority 0.50）、页脚导航统一 11 链接（含「网站全景」「频道导航」）。退回即删对应 5 个 `pages/*/` 目录、撤 sitemap/页脚/README 相关行（具体步骤见 `assets/skills/SKILL.md` 退回方案段）。
+> **5 个说明型子页（🔶 2026-08-22 主动新增，可整体退回）**：`pages/contact`（联系我们，含收录/反馈/合作邮箱 seymour.zx@foxmail.com）、`pages/disclaimer`（免责声明，含 AI 辅助生成免责声明）、`pages/guide`（使用指南，讲本地收藏/三维度筛选/集合搜索/URL分享/随机漫步/暗色快捷键）、`pages/sitemap`（站点地图，可视化分类索引+功能页+机器可读 sitemap.xml 入口，分类锚点回首页 `#cat=分类`）、`pages/changelog`（更新日志，按时间倒序记录站点迭代）。形态同隐私页（资源 `../../assets/` 引用根、内链绝对 `_self`、无全局 referrer meta、FOUC 仅本地 dark）；写入 `sitemap.xml`（priority 0.50）、页脚导航统一 11 链接（含「网站全景」「频道导航」）。退回即删对应 5 个 `pages/*/` 目录、撤 sitemap/页脚/README 相关行（具体步骤见 `.workbuddy/skills/zhengxie-subpage-sop/SKILL.md` 退回方案段）。
 
 > **全站中枢页（🔶 2026-08-22 末主动新增，可退回）**：`pages/overview/index.html`「网站全景」= S2 骨架升级版（全站中枢：架构总览 + 各板块活体切片 + 榜单区块 + 分发中枢）。路径 `/pages/overview/`，页脚链接文本「网站全景」。手动同步 GA4+百度统计双 id（无 AdSense，同 404 策略）；资源 `../../assets/` 引用根、写入 `sitemap.xml`（priority 0.70）。退回即删 `pages/overview/`、撤 sitemap/页脚/README 相关行。旧 `units/` 目录已整体删除（2026-08-22 末）。
 
 ### 3.1 专家转介纪律（🚫 任何会话必守，AI 硬边界）
 
-> **用户明示原则**：专业的事找专业的专家，不要浪费时间/资源消耗却结果不达预期。AI 在**工程实现**（静态站结构、build 流程、README/SKILL 维护、统计代码接入）上擅长；在需要**执业资质、第三方平台策略、专业评审**的任务上不擅长且不应越界。
+> **原则（用户明示）**：专业的事找专业的专家。AI 在工程实现上擅长，在需执业资质、第三方平台策略、专业评审的任务上不擅长且不应越界。
 >
-> **落入以下任一类任务时，AI 必须主动停止、明确告知用户应咨询对应专家/connector，不得硬做、不得给未经验证的"专业结论"**：
-> - **法律合规文本**（隐私政策/免责声明/个保法条文是否达标）→ 执业律师；WorkBuddy 内可询 `同花顺法律AI助手` / `北大法宝·法律智能检索` / `fazhi-law` / `yuandian-mcp 华宇元典` / `pkulaw 北大法宝`
-> - **SEO 收录策略 / 统计归因配置**（百度统计 referer、sitemap 优先级对收录影响）→ SEO 实务专家；或百度搜索资源平台 / Google Search Central 官方文档
-> - **视觉设计评审**（奢华风是否到位、暗色对比度无障碍 WCAG）→ UI/UX 专家（`ui-ux-pro-max`）或人工设计师
-> - **ICP 备案实操 / 国内服务器迁移合规** → 域名服务商（阿里云/腾讯云）官方备案通道 / `腾讯云 CloudBase`
-> - **广告收益优化**（AdSense 布局/单价策略）→ Google AdSense 官方帮助中心
->
-> AI 仅提供"如实陈述技术实现"的草稿（隐私/免责页已置顶"AI 辅助、非执业律师意见"声明），不自行定稿、不替代专业判断。完整纪律与专家清单见 `assets/skills/SKILL.md`「专家转介纪律」段。
+> 完整纪律与专家清单（任务类型表、AI 职责边界、触发即停规则）已收敛到 `.workbuddy/docs/CONVENTIONS.md`「二、专家转介纪律」，**以该文件为准，本决策手册不再重复全文**。落入法律合规 / SEO 收录策略 / 视觉设计评审 / ICP 备案 / 广告收益优化 任一类时，AI 主动停止并引导用户咨询对应专家/connector，只出技术实现草稿、不替用户定论。
 
 ### 3.2 页面骨架总分类（S1–S6，任何内容先归骨架再套模板）
 
 > **分类原则（重要）**：本站是"以导航为主、但会包罗所有静态页面形态的综合站"。因此**不按内容主题分类**（那样无穷无尽），而按**页面骨架契约**分类——由「生成方式 × 布局范式 × 资源引用 × SEO 角色」四维决定。
 >
-> **骨架可演进原则（用户 2026-08-22 明示）**：新页面**优先归集**已有骨架；但当某类内容在形态/契约/SEO 角色上确实无法被现有骨架覆盖、且对网站长远发展有利时，**应新增骨架（S7、S8…）**。骨架本身可随产品演进而**升级改版**（如本站立项即把 S2 从"门户首页"升级为"全站中枢页·网站全景"）。不预设骨架数量上限，但每次新增/升级都须写入本章并同步 `assets/skills/SKILL.md`。
+> **骨架可演进原则（用户 2026-08-22 明示）**：新页面**优先归集**已有骨架；但当某类内容在形态/契约/SEO 角色上确实无法被现有骨架覆盖、且对网站长远发展有利时，**应新增骨架（S7、S8…）**。骨架本身可随产品演进而**升级改版**（如本站立项即把 S2 从"门户首页"升级为"全站中枢页·网站全景"）。不预设骨架数量上限，但每次新增/升级都须写入本章并同步 `.workbuddy/skills/zhengxie-subpage-sop/SKILL.md`。
 >
 > **六大骨架（当前版，S2 已升级）**：
 > | 骨架 | 名称 | 布局范式 | 生成方式 | 现有实例 | 未来可装 |
@@ -121,7 +114,7 @@
 >
 > **各骨架差异点（骨架特有契约）**：
 > - **S1**：唯一由 build_homeplus.py 生成（根 `index.html` + 自动扫描 `directory/<name>/index.html`）；页脚 11 链接（含「网站全景」「频道导航」）由 `build_homeplus.py` 首页模板控制（非手写）；含统计/广告代码注入；卡片按 type 分组分行（见「页面与交互说明」章）。`directory/<name>/` 框架约定见 `assets/.build/build_homeplus.py` 顶部 docstring（跨设备可读）。
-> - **S2 / S6 若由 build 生成**：需新增 build 模板定义骨架（目前 build 仅支持 S1，手写子页直接引用 `../../assets/` 即可）；**纯手写时**直接套 `assets/skills/SKILL.md` 中对应骨架模板。
+> - **S2 / S6 若由 build 生成**：需新增 build 模板定义骨架（目前 build 仅支持 S1，手写子页直接引用 `../../assets/` 即可）；**纯手写时**直接套 `.workbuddy/skills/zhengxie-subpage-sop/SKILL.md` 中对应骨架模板。
 > - **S4**：正文置顶法律免责声明；内容涉及个保法/效力条款时**触发专家转介纪律**（不替代执业律师）。
 > - **S6**：详情页用 `<article>` 语义 + 阅读排版（行宽约 70ch、段落间距、`figure/figcaption` 插图）；列表页 `articles/index.html` 做索引（标题+摘要+日期+封面）；可选 RSS `feed.xml`、分页、标签归档；长文页仍沿用全局页脚 11 链接（含「频道导航」「网站全景」）与视觉语言。
 > - **S6 内容属性规范（2026-08-22 拍板，锁死）**：
@@ -130,7 +123,7 @@
 >   - **原创 / 转载标识**：每篇详情页头部显式标注「原创 / 转载」徽标（如 `<span class="badge badge--original">原创</span>` / `<span class="badge badge--repost">转载</span>`）。**转载必做**：正文内文首或文末注明原作者、出处链接、转载日期；版权合规属专家转介范畴（见 3.1 节），AI 只出草稿不替用户定论。
 >   - **参考来源区**：长文文末统一用 `<section class="references"><ol><li><a href="..." target="_blank" rel="noopener">来源标题</a></li></ol></section>` 列出引用/参考链接（外链 `noopener`，不发权重）；无来源可不显此区。
 >
-> **新增内容决策流**：用户提出新页面 → 先判「属哪一已有骨架」→ 套该骨架模板 → 走 `assets/skills/SKILL.md` 对应联动清单。**若现有骨架都无法覆盖且对长远有利** → 与用户确认后**新增骨架编号（S7+）**并写入本章与 SKILL.md，不得私自套错骨架或擅自锁死"不新增"。
+> **新增内容决策流**：用户提出新页面 → 先判「属哪一已有骨架」→ 套该骨架模板 → 走 `.workbuddy/skills/zhengxie-subpage-sop/SKILL.md` 对应联动清单。**若现有骨架都无法覆盖且对长远有利** → 与用户确认后**新增骨架编号（S7+）**并写入本章与该 SKILL，不得私自套错骨架或擅自锁死"不新增"。
 
 ### 4. 讨论过无结论清单（⏳ PENDING — 动手前先问）
 
@@ -189,7 +182,7 @@
 │   ├── guide/index.html      使用指南（S3，2026-08-22 新增）
 │   ├── sitemap/index.html    站点地图（S3，2026-08-22 新增）
 │   └── changelog/index.html  更新日志（S3，2026-08-22 新增）
-└── assets/
+├── assets/
     ├── css/
     │   └── style.css        全站样式（奢华红金白、响应式 Grid）
     ├── js/
@@ -206,11 +199,16 @@
     ├── json/
     │   ├── self_meta.json   根页页面级信息（title/description/keywords，仅 3 字段）
     │   └── manifest.json    PWA 清单
-    ├── xlsx/
-    │   └── self_links.xlsx  根页独享数据源（前缀 self_ 表示独享；维护时只需编辑这个文件）
-    └── skills/
-        ├── SKILL.md         项目内 SOP：子页新增全流程 + 专家转介纪律（操作步骤类，与本章决策规范互补；换设备时读此文件照做）
-        └── IMAGE_OPTIMIZATION.md  图片压图规范（技术备忘，非权威源；权威规则见 SKILL.md「图片资源规范」段）
+    └── xlsx/
+        └── self_links.xlsx  根页独享数据源（前缀 self_ 表示独享；维护时只需编辑这个文件）
+└── .workbuddy/              项目级同步数据（随仓库，跨设备一致）
+    ├── skills/
+    │   ├── zhengxie-seo-standard/SKILL.md   SEO 标准手册（已注册技能，SEO 唯一权威源）
+    │   └── zhengxie-subpage-sop/
+    │       ├── SKILL.md                     子页新增全流程 SOP（操作步骤类，与 README 决策规范互补）
+    │       └── IMAGE_OPTIMIZATION.md        图片压图规范（技术备忘；权威规则见 SKILL.md「图片资源规范」段）
+    └── docs/
+        └── CONVENTIONS.md                  跨设备权威源约定 + 专家转介纪律（单一权威源，去重后收敛于此）
 ```
 
 ---
@@ -249,7 +247,7 @@ python -m http.server 8080
   - `EXPOSED_ATTR = 'target="_blank" rel="noopener" referrerpolicy="origin"'`：暴露/公开（备案号 `beian.miit.gov.cn`、政务官方 `.gov.cn` 等需暴露来源；**dofollow（无 `nofollow`，传权重）**；`referrerpolicy="origin"` 仅发送源站 origin，不暴露完整路径）。
   - `DEFAULT_LINK_ATTR = 'target="_blank" rel="nofollow noopener noreferrer"'`：其余一切外链（新标签 + 不传权重 + **不暴露来源**；因带 `noreferrer`，百度统计/GA4 对这类外跳收不到 Referer，但站内统计与卡片图片不受影响）。
   - 命中逻辑在 `link_attr(url)` 中按上述优先级短路；`EXT_LINK = EXPOSED_ATTR` 供备案号等固定外链复用。手工增删：改对应常量域名列表即可，无需动 xlsx。
-- ~~`UNIT_PAGES` / `UNIT_ASSET_DIRS`~~：**已于 2026-08-22 移除**。原用途是 build 时把根 `assets/{css,js,images}` 同步进各子页独立 `assets/` 使其自包含；现改为子页以 `../../assets/...` 直接引用根目录共享 assets，根 assets 为唯一真源，不再复制（详见骨架通用技术契约与 `assets/skills/SKILL.md`）。
+- ~~`UNIT_PAGES` / `UNIT_ASSET_DIRS`~~：**已于 2026-08-22 移除**。原用途是 build 时把根 `assets/{css,js,images}` 同步进各子页独立 `assets/` 使其自包含；现改为子页以 `../../assets/...` 直接引用根目录共享 assets，根 assets 为唯一真源，不再复制（详见骨架通用技术契约与 `.workbuddy/skills/zhengxie-subpage-sop/SKILL.md`）。
 
 > **Referer 策略（重要）**：**不设**全局 `<meta name="referrer" content="no-referrer">`（它会让百度统计后台显示"referer 被禁用"，收不到来源站）。仅在**卡片图片**上用 `referrerpolicy="no-referrer"` 单独压制（防图片防盗链）；卡片外链 / 引擎跳转默认**发 Referer**。
 > 约定：站内**资源**（css/js/images）——根页用 `assets/...`、子页用 `../../assets/...`（均指向根目录唯一 assets 真源，子页不再有独立 assets 目录）；**内链**（页与页之间）一律用 `SITE_DOMAIN` 生成的完整绝对路径，且按 `SAME_DOMAIN_ATTR` 原地打开（`target="_self"`）；**外链**按上表优先级匹配属性（注：政务官方 `.gov.cn` 经 EXPOSED 桶输出 **dofollow**，传权重，强化政协/政务垂类主题信号；其余外链仍默认 `nofollow`）。
@@ -289,7 +287,7 @@ python -m http.server 8080
 
 > ⚠️ 注意：单元格里一律使用**英文半角逗号 `,`** 与**英文分号 `;`** 作为分隔符，不要用中文全角符号。
 
-> ⚠️ **媒体图片格式**：`media` 列图片**统一用 WebP**（体积小、支持透明）；**必须保留透明通道（RGBA）**——透明 logo / 图标转图时若误用 `RGB` 会被填成黑底、与原图完全不同。压图步骤、命令与常见坑见 `assets/skills/IMAGE_OPTIMIZATION.md`（技术备忘）。
+> ⚠️ **媒体图片格式**：`media` 列图片**统一用 WebP**（体积小、支持透明）；**必须保留透明通道（RGBA）**——透明 logo / 图标转图时若误用 `RGB` 会被填成黑底、与原图完全不同。压图步骤、命令与常见坑见 `.workbuddy/skills/zhengxie-subpage-sop/IMAGE_OPTIMIZATION.md`（技术备忘）。
 
 ### 数据维护流程（三件事）
 

@@ -23,10 +23,7 @@ description: >-
 - **矛盾**于已拍板决策（如提议删掉 AI/工具类目，违背"垂类为主、通用为辅"）；
 - **臆造**数据（未查 xlsx 就断言"民主党派=0"）。
 
-> 本手册是**可移植的权威摘要**。三份详细策略文档（`zhengxie_seo_review.md`、
-> `zhengxie_vertical_plan.md`、`docs/BAIDU_SEO_STRATEGY.md`）是完整底稿，但**不保证在
-> 其他设备可读**，且 `docs/` 违反项目跨设备规则。若底稿与本手册冲突，**以本手册 + 用户
-> 最新指令为准**。
+> 本手册是**项目内 SEO 唯一权威源**，随仓库同步（位于 `.workbuddy/skills/zhengxie-seo-standard/`），系统可自动加载。历史上曾有三份详细底稿（`zhengxie_seo_review.md`、`zhengxie_vertical_plan.md`、`docs/BAIDU_SEO_STRATEGY.md`），曾置于仓库根目录但为**未跟踪临时稿**、跨设备不可读且违反项目约定，**现已删除、不再依赖**——所有 SEO 规则以本手册 + 用户最新指令为准。
 
 ## Authoritative source index（按优先级加载）
 
@@ -37,9 +34,7 @@ description: >-
    生成框架（self_meta 注入、canonical 自动、资源/页脚前缀、清理优先生成、品牌常量）。
 3. `assets/json/self_meta.json` + 各 `directory/<name>/assets/json/self_meta.json` ——
    页面级 title/description/keywords（唯一真实改动点）。
-4. `README.md` 与 `assets/skills/SKILL.md` 顶部「🌐 跨设备权威源约定」—— 项目总规则。
-5. （完整底稿，非保证可读）`zhengxie_vertical_plan.md`（定位方案）、
-   `zhengxie_seo_review.md`（P0/P1 评审）、`docs/BAIDU_SEO_STRATEGY.md`（百度地基策略）。
+4. `README.md` 顶部与 `.workbuddy/docs/CONVENTIONS.md`「一、跨设备权威源约定」—— 项目总规则（跨设备权威源见该约定）。
 
 ## LOCKED decisions（已拍板，禁止在无用户重新拍板下违背）
 
@@ -72,12 +67,32 @@ description: >-
 
 - **可信站 dofollow**：计划经 build.py 新增 `TRUSTED` 档（匹配 `gov.cn`/`cppcc.gov.cn`…），
   让 50+ 政协官网外链从默认 nofollow 变 dofollow（最强主题信号，零内容成本）。
-  **状态：未实现**（当前所有外链默认 nofollow）。
+  **状态：未实现**（当前所有外链默认 nofollow）。实施线索见下方「参考草稿」段。
 - **sitemap 由 build.py 自动生成**（根 + `directory/*` + `pages/*`）：修复 P0 频道页孤儿。
   **状态：未授权/未实现**——build.py docstring 明写"本期不做 sitemap"，`sitemap.xml` 仍手工维护。
   故新增频道时必须**手动补 sitemap.xml**，直到此方向被授权。
 - **Phase 2 独立 `directory/zhengxie/` 频道**：已建（55 卡），但现已与根页政协(55) **97% 重复**
   ——见 Backlog（最紧迫内容问题，待裁决）。
+
+## 参考草稿（未实施，源自早期 vertical_plan，供 Phase 1 落地时采用）
+
+> 以下为早期方案的**具体草稿值 / 实现线索**，尚未实施。落地前按 xlsx 实际核验、以用户最新指令为准；不替代 LOCKED 决策。
+
+### meta 建议值（Layer 1，改 `self_meta.json` 三字段）
+| 字段 | 建议改为 |
+| --- | --- |
+| `title` | `正协导航 - 政协委员与政务工作一站式资源导航` |
+| `description` | `专注政协与政务垂类，全量收录全国政协及各省市委官网、民主党派、政务服务平台与常用工具，为政协委员和政务工作者提供一站式入口。` |
+| `keywords` | `政协,政协委员,人民政协,协商民主,政协会议,各省市政协,民主党派,政务服务平台,正协导航,政协官网导航,AI工具,效率工具` |
+
+> 注意：`BRAND`/`SLOGAN` 保留；`canonical` 不进 meta（build 自动拼）；改 `build.py` 常量不生效，真实改动只在 `self_meta.json`。
+
+### dofollow 实施线索（Layer 4，TRUSTED 档）
+- `build.py` 的 `link_attr()`（约 474–505 行）按 `同域>同族>营销>评论>暴露>默认` 匹配；默认 `DEFAULT_LINK_ATTR = 'target="_blank" rel="nofollow noopener noreferrer"'`。
+- 当前无任何分类输出 dofollow（`EXPOSED` 政务备案仍是 nofollow）。
+- 方案：新增 `TRUSTED_ATTR = 'target="_blank" rel="noopener"'`（传权重、无 nofollow），名单 `TRUSTED = ["gov.cn", "cppcc.gov.cn", …]`；在 `link_attr()` 的 `# 6) 默认` 分支前插入匹配。
+- 效果：50+ 政协/政务官网外链自动变 dofollow → 最强主题信号，零额外内容成本。
+- ⚠️ `assets/py/link-policy.json` 是死配置（`link_attr()` 不读它），真实改动在 `build.py` 代码。
 
 ## Known issues / backlog（当前真实状态，避免重新发现）
 
@@ -131,13 +146,10 @@ description: >-
 - ❌ 改 build.py `ROOT_META`/`SLOGAN` 常量期望改 meta —— self_meta.json 会覆盖它们。
 - ❌ 手改每页 canonical —— 它由 build.py 自动生成。
 - ❌ 暗示官方政协背景或使用官方视觉 —— 合规红线。
-- ⚠️ 注意底稿间张力：`docs/BAIDU_SEO_STRATEGY.md` P1#5 建议关键词聚焦垂类、弃泛词，与已定
-  「垂类为主通用为辅」冲突；用户已重申保留通用，故**跟决策、不跟该文档那一条**。
+- ⚠️ 注意历史底稿张力：早期 `docs/BAIDU_SEO_STRATEGY.md` P1#5 曾建议关键词聚焦垂类、弃泛词，与已定「垂类为主通用为辅」冲突；用户已重申保留通用，故**跟决策、不跟该历史文档那一条**（该文档已弃用，不再依赖）。
 
 ## 跨设备说明
 
-- 本手册是 SEO 事项的**可移植权威源**，随仓库走、系统可自动加载。
-- 三份详细底稿不保证跨设备可读，且 `docs/` 违反项目"仅 README.md / assets/skills/SKILL.md
-  保证可读"的规则；若底稿与本手册冲突，以本手册 + 用户最新指令为准。
-- 已在 `README.md` 与 `assets/skills/SKILL.md` 的跨设备约定段加入指向本技能的指针：
-  做 SEO 讨论前必读本手册。
+- 本手册是 SEO 事项的**项目内唯一权威源**，位于 `.workbuddy/skills/zhengxie-seo-standard/`、随仓库同步、系统可自动加载。
+- 跨设备权威源约定见 `.workbuddy/docs/CONVENTIONS.md`「一、跨设备权威源约定」（README 与各技能均指向它）。
+- 做 SEO 讨论前必读本手册。
