@@ -6,6 +6,21 @@
     <priority>1.00</priority>
   </url>
   <url>
+    <loc>https://zhengxie.com.cn/directory/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://zhengxie.com.cn/directory/ai/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.60</priority>
+  </url>
+  <url>
+    <loc>https://zhengxie.com.cn/directory/zhengxie/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
     <loc>https://zhengxie.com.cn/pages/overview/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.70</priority>

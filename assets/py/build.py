@@ -193,13 +193,13 @@ ENGINES = [
 SITE_DOMAIN = "https://zhengxie.com.cn"
 # ───────────────────────────────────────────────────────────────
 # 全链接属性规则（build 与子页通用，集中配置，手工增删只改这里）
-# 优先级：同域 > 同族 > 营销 > 评论 > 暴露 > 默认
+# 优先级：同域 > 同族 > 营销 > 评论 > 公开 > 默认
 #   同域 (SAME_DOMAIN) ：同主域站点，原地打开（target=_self，发 Referer、传递权重）
 #   同族 (SAME_FAMILY) ：品牌/姊妹站，新标签 + 仅隔离 opener（发 Referer、传递权重）
 #   营销 (MARKETING)   ：广告/推广/媒体稿，新标签 + sponsored（不传递权重）
 #   评论 (UGCCOMMENT)  ：论坛/社媒/评论区，新标签 + ugc（不传递权重）
-#   暴露 (EXPOSED)     ：备案号/官方政务等需暴露来源，新标签 + nofollow/noopener + referrerpolicy=origin（暴露来源）
-#   默认 (DEFAULT)     ：其余一切外链，新标签 + 全 nofollow/noopener/noreferrer（不传权重、不暴露来源）
+#   公开 (EXPOSED)     ：备案号/官方政务(.gov.cn)等需公开来源，新标签 + dofollow(noopener) + referrerpolicy=origin（公开来源、传递权重）
+#   默认 (DEFAULT)     ：其余一切外链，新标签 + 全 nofollow/noopener/noreferrer（不传权重、不公开来源）
 # 命中逻辑：链接主机 == 域名 或 以 ".域名" 结尾（含所有子域，如 a.b.x.com 命中 x.com）。
 # 增删：复制一行元组、改属性串与域名即可；要增减域名直接改对应列表。
 # ───────────────────────────────────────────────────────────────
@@ -207,7 +207,7 @@ SAME_DOMAIN_ATTR = 'target="_self"'  # 同主域站点：原地打开，发 Refe
 SAME_FAMILY_ATTR = 'target="_blank" rel="noopener"'
 MARKETING_ATTR = 'target="_blank" rel="sponsored noopener noreferrer nofollow"'  # 当前预设空集
 UGCCOMMENT_ATTR = 'target="_blank" rel="ugc noopener noreferrer nofollow"'        # 当前预设空集
-EXPOSED_ATTR = 'target="_blank" rel="nofollow noopener" referrerpolicy="origin"'  # 备案号等：暴露来源
+EXPOSED_ATTR = 'target="_blank" rel="noopener" referrerpolicy="origin"'  # 备案号/政务官方：公开来源、传递权重（dofollow）
 DEFAULT_LINK_ATTR = 'target="_blank" rel="nofollow noopener noreferrer"'
 # 同族站点（与 SITE_DOMAIN 同主域的品牌/姊妹站）
 SAME_FAMILY = ["zhengxie.info", "zhengxie.com.cn"]
@@ -215,9 +215,13 @@ SAME_FAMILY = ["zhengxie.info", "zhengxie.com.cn"]
 MARKETING = []
 # 评论站点（论坛/社媒/评论区）—— 预设空集，待后续按需要增删
 UGCCOMMENT = []
-# 暴露站点（备案号/官方政务等需暴露来源）
-EXPOSED = ["beian.miit.gov.cn"]
-EXT_LINK = EXPOSED_ATTR  # 页脚备案号等固定外链复用暴露策略
+# 公开站点（备案号/官方政务等需公开来源）
+EXPOSED = ["beian.miit.gov.cn", "gov.cn"]  # gov.cn 经 host.endswith(".gov.cn") 覆盖所有 .gov.cn 子域（含 www.gov.cn、各省市 *.zx.gov.cn、cppcc.gov.cn 等）
+#   注意：匹配必须用 host.endswith("." + 域名)（整串后缀），不可用 "域名" in host（子串）。
+#   用 endswith 时 good.gov.cn.example.com 因结尾是 .example.com 而不命中；
+#   若误写成 if ".gov.cn" in host，则 good.gov.cn.example.com 会被当成政务站误放行（注入风险）。
+#   .gov.cn 为受管制公共后缀，仅党政机构可注册，通配放行风险可控；如需严格审计可改为精确域名名单。
+EXT_LINK = EXPOSED_ATTR  # 页脚备案号等固定外链复用公开策略
 
 # ── 解析函数 ──────────────────────────────────────────
 
@@ -472,7 +476,7 @@ def host_of(url):
 
 
 def link_attr(url):
-    """卡片/正文外链属性（优先级：同域 > 同族 > 营销 > 评论 > 暴露 > 默认）。
+    """卡片/正文外链属性（优先级：同域 > 同族 > 营销 > 评论 > 公开 > 默认）。
     同主域 → 原地打开；命中预设域名 → 对应属性；均未命中 → DEFAULT_LINK_ATTR。"""
     host = host_of(url)
     if not host:
@@ -496,7 +500,7 @@ def link_attr(url):
         d = d.lower().strip()
         if d and (host == d or host.endswith("." + d)):
             return UGCCOMMENT_ATTR
-    # 5) 暴露
+    # 5) 公开
     for d in EXPOSED:
         d = d.lower().strip()
         if d and (host == d or host.endswith("." + d)):
@@ -506,7 +510,7 @@ def link_attr(url):
 
 
 def link_attr_footer(url):
-    """页脚/导航链接属性（与卡片同源，但内链同域走 _self、备案号等暴露走 EXPOSED）。
+    """页脚/导航链接属性（与卡片同源，但内链同域走 _self、备案号等公开走 EXPOSED）。
     友情链接区(同域站)应直接用 SAME_DOMAIN_ATTR，不进此函数。"""
     return link_attr(url)
 
@@ -775,7 +779,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
       "@type": "SearchAction",
       "target": {
         "@type": "EntryPoint",
-        "urlTemplate": "{{SITE_DOMAIN}}/?q={search_term_string}"
+        "urlTemplate": "{{SITE_DOMAIN}}{{CANONICAL_PATH}}#q={search_term_string}"
       },
       "query-input": "required name=search_term_string"
     }
@@ -908,16 +912,17 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
     <div class="footer__inner wrap">
       <p class="footer__copyright">© 2026 {{BRAND}} · {{SLOGAN}}</p>
       <nav class="footer__nav" aria-label="页脚导航">
-        <a href="{{ASSET_PREFIX}}">首页</a>
-        <a href="{{ASSET_PREFIX}}pages/about/">关于本站</a>
-        <a href="{{ASSET_PREFIX}}pages/submit/">收录申请</a>
-        <a href="{{ASSET_PREFIX}}pages/contact/">联系我们</a>
-        <a href="{{ASSET_PREFIX}}pages/disclaimer/">免责声明</a>
-        <a href="{{ASSET_PREFIX}}pages/guide/">使用指南</a>
-        <a href="{{ASSET_PREFIX}}pages/sitemap/">站点地图</a>
-        <a href="{{ASSET_PREFIX}}pages/changelog/">更新日志</a>
-        <a href="{{ASSET_PREFIX}}pages/privacy/">隐私政策</a>
-        <a href="{{ASSET_PREFIX}}pages/overview/">网站全景</a>
+        <a target="_self" href="{{SITE_DOMAIN}}/">首页</a>
+        <a target="_self" href="{{SITE_DOMAIN}}/directory/">频道导航</a>
+        <a target="_self" href="{{SITE_DOMAIN}}/pages/about/">关于本站</a>
+        <a target="_self" href="{{SITE_DOMAIN}}/pages/submit/">收录申请</a>
+        <a target="_self" href="{{SITE_DOMAIN}}/pages/contact/">联系我们</a>
+        <a target="_self" href="{{SITE_DOMAIN}}/pages/disclaimer/">免责声明</a>
+        <a target="_self" href="{{SITE_DOMAIN}}/pages/guide/">使用指南</a>
+        <a target="_self" href="{{SITE_DOMAIN}}/pages/sitemap/">站点地图</a>
+        <a target="_self" href="{{SITE_DOMAIN}}/pages/changelog/">更新日志</a>
+        <a target="_self" href="{{SITE_DOMAIN}}/pages/privacy/">隐私政策</a>
+        <a target="_self" href="{{SITE_DOMAIN}}/pages/overview/">网站全景</a>
         <!-- 备案号占位：当前项目托管于 GitHub Pages，无 ICP 备案，故不渲染备案链接；待迁移国内服务器完成备案后，替换粤ICP备XXXXXXXX号并取消本注释、改用以下形式：
         <a href="https://beian.miit.gov.cn/" {{EXT_LINK}}>粤ICP备XXXXXXXX号</a>
         -->

@@ -75,7 +75,7 @@
 
 > **隐私政策页（🔶 本次主动新增，可退回）**：`pages/privacy/index.html` 由我据站点真实技术实现起草（含免责声明「AI 辅助生成、非执业律师正式意见」）；内容如实陈述——本站为纯静态站、无后端/无注册、本地收藏存 localStorage 不上传、接入百度统计/GA4/AdSense、不设全局 referrer、外链按优先级规则打开。**改动前原状态**：站内无隐私政策页（页脚无隐私链接、sitemap 无隐私条目）。退回即删 `pages/privacy/`、撤 sitemap/页脚/README 相关行。
 
-> **5 个说明型子页（🔶 2026-08-22 主动新增，可整体退回）**：`pages/contact`（联系我们，含收录/反馈/合作邮箱 seymour.zx@foxmail.com）、`pages/disclaimer`（免责声明，含 AI 辅助生成免责声明）、`pages/guide`（使用指南，讲本地收藏/三维度筛选/集合搜索/URL分享/随机漫步/暗色快捷键）、`pages/sitemap`（站点地图，可视化分类索引+功能页+机器可读 sitemap.xml 入口，分类锚点回首页 `#cat=分类`）、`pages/changelog`（更新日志，按时间倒序记录站点迭代）。形态同隐私页（资源 `../../assets/` 引用根、内链绝对 `_self`、无全局 referrer meta、FOUC 仅本地 dark）；写入 `sitemap.xml`（priority 0.50）、页脚导航统一 10 链接（含「网站全景」）。退回即删对应 5 个 `pages/*/` 目录、撤 sitemap/页脚/README 相关行（具体步骤见 `assets/skills/SKILL.md` 退回方案段）。
+> **5 个说明型子页（🔶 2026-08-22 主动新增，可整体退回）**：`pages/contact`（联系我们，含收录/反馈/合作邮箱 seymour.zx@foxmail.com）、`pages/disclaimer`（免责声明，含 AI 辅助生成免责声明）、`pages/guide`（使用指南，讲本地收藏/三维度筛选/集合搜索/URL分享/随机漫步/暗色快捷键）、`pages/sitemap`（站点地图，可视化分类索引+功能页+机器可读 sitemap.xml 入口，分类锚点回首页 `#cat=分类`）、`pages/changelog`（更新日志，按时间倒序记录站点迭代）。形态同隐私页（资源 `../../assets/` 引用根、内链绝对 `_self`、无全局 referrer meta、FOUC 仅本地 dark）；写入 `sitemap.xml`（priority 0.50）、页脚导航统一 11 链接（含「网站全景」「频道导航」）。退回即删对应 5 个 `pages/*/` 目录、撤 sitemap/页脚/README 相关行（具体步骤见 `assets/skills/SKILL.md` 退回方案段）。
 
 > **全站中枢页（🔶 2026-08-22 末主动新增，可退回）**：`pages/overview/index.html`「网站全景」= S2 骨架升级版（全站中枢：架构总览 + 各板块活体切片 + 榜单区块 + 分发中枢）。路径 `/pages/overview/`，页脚链接文本「网站全景」。手动同步 GA4+百度统计双 id（无 AdSense，同 404 策略）；资源 `../../assets/` 引用根、写入 `sitemap.xml`（priority 0.70）。退回即删 `pages/overview/`、撤 sitemap/页脚/README 相关行。旧 `units/` 目录已整体删除（2026-08-22 末）。
 
@@ -115,13 +115,13 @@
 > - **榜单 S7 预留（升级口）**：榜单**当前留在 S2 内**作区块；当维度增多、常更新、需分页/筛选/全量查看时，**升为独立骨架 S7「榜单/排行页」**（路径如 `/rank/`），从 S2 榜单块"更多"跳转看全量完整排行。触发条件达成前不新增，达成后写入本章并同步 SKILL.md。
 > - **数据来源（⏳ PENDING）**：架构总览/活体切片/榜单的数据从哪来（导航分类提取 `index.html` 的 `data-cat` / 博客未来从 S6 / 榜单需 build 扩展或手动维护），待用户拍板，不擅自决定。
 >
-> **骨架通用技术契约（全部骨架共用，不可违反）**：资源引用——根页用 `assets/...`，子页（`pages/*/`）用 `../../assets/...` **指向根目录唯一 assets 真源**（子页不再自包含、不再复制 assets，`build.py` 的 `UNIT_PAGES`/`sync_unit_assets` 已于 2026-08-22 移除）；内链绝对 `https://zhengxie.com.cn/...` 且 `target="_self"`；`<head>` **不设**全局 referrer meta；FOUC **仅当 `localStorage('zx_theme')==='dark'` 才暗色**（不跟随系统）；页脚导航统一 10 链接 + 备案号注释占位；`canonical` / `robots` / `description` 齐备；奢华红金白视觉语言（暗色金系，禁蓝紫）。
+> **骨架通用技术契约（全部骨架共用，不可违反）**：资源引用——根页用 `assets/...`，子页（`pages/*/`）用 `../../assets/...` **指向根目录唯一 assets 真源**（子页不再自包含、不再复制 assets，`build.py` 的 `UNIT_PAGES`/`sync_unit_assets` 已于 2026-08-22 移除）；内链绝对 `https://zhengxie.com.cn/...` 且 `target="_self"`；`<head>` **不设**全局 referrer meta；FOUC **仅当 `localStorage('zx_theme')==='dark'` 才暗色**（不跟随系统）；页脚导航统一 11 链接（含「网站全景」「频道导航」） + 备案号注释占位；`canonical` / `robots` / `description` 齐备；奢华红金白视觉语言（暗色金系，禁蓝紫）。
 >
 > **各骨架差异点（骨架特有契约）**：
-> - **S1**：唯一由 build.py 生成（根 `index.html` + 自动扫描 `directory/<name>/index.html`）；页脚 10 链接（含「网站全景」）由 `build.py` 首页模板控制（非手写）；含统计/广告代码注入；卡片按 type 分组分行（见「页面与交互说明」章）。`directory/<name>/` 框架约定见 `assets/py/build.py` 顶部 docstring（跨设备可读）。
+> - **S1**：唯一由 build.py 生成（根 `index.html` + 自动扫描 `directory/<name>/index.html`）；页脚 11 链接（含「网站全景」「频道导航」）由 `build.py` 首页模板控制（非手写）；含统计/广告代码注入；卡片按 type 分组分行（见「页面与交互说明」章）。`directory/<name>/` 框架约定见 `assets/py/build.py` 顶部 docstring（跨设备可读）。
 > - **S2 / S6 若由 build 生成**：需新增 build 模板定义骨架（目前 build 仅支持 S1，手写子页直接引用 `../../assets/` 即可）；**纯手写时**直接套 `assets/skills/SKILL.md` 中对应骨架模板。
 > - **S4**：正文置顶法律免责声明；内容涉及个保法/效力条款时**触发专家转介纪律**（不替代执业律师）。
-> - **S6**：详情页用 `<article>` 语义 + 阅读排版（行宽约 70ch、段落间距、`figure/figcaption` 插图）；列表页 `articles/index.html` 做索引（标题+摘要+日期+封面）；可选 RSS `feed.xml`、分页、标签归档；长文页仍沿用全局页脚 10 链接与视觉语言。
+> - **S6**：详情页用 `<article>` 语义 + 阅读排版（行宽约 70ch、段落间距、`figure/figcaption` 插图）；列表页 `articles/index.html` 做索引（标题+摘要+日期+封面）；可选 RSS `feed.xml`、分页、标签归档；长文页仍沿用全局页脚 11 链接（含「频道导航」「网站全景」）与视觉语言。
 > - **S6 内容属性规范（2026-08-22 拍板，锁死）**：
 >   - **目录语义边界**：`blog/` = 本站原创 + 转载正文（长文入此）；`news/` = 挂**别人网站文章链接**的索引页（**不放正文**，feed 并入 news）；`journal/` = 日记；`units/` 已弃用、**禁用于内容集合**。三者均与导航产品目录（`pages/`、`directory/`）语义隔离，不混淆。`directory/` = 同骨架导航产品频道页（S1 实例，由 build 从各目录专属 `self_links.xlsx` 生成，非根表子集）。
 >   - **文件命名约定**：`self_` 前缀 = 某页面/功能**独享**的数据文件（不与其他页面共享）。当前独享文件：`assets/xlsx/self_links.xlsx`（根页数据源）、`directory/<name>/assets/xlsx/self_links.xlsx`（目录页数据源）、`assets/json/self_meta.json`（根页页面级信息）、`directory/<name>/assets/json/self_meta.json`（目录页页面级信息，3 字段 title/description/keywords）。全站共享文件不加 `self_`（如 `assets/json/manifest.json`、`assets/xlsx/link-policy.json`）。
@@ -236,13 +236,13 @@ python -m http.server 8080
   - `SAME_FAMILY_ATTR = 'target="_blank" rel="noopener"'`：同族（`zhengxie.info` 等），新标签 + 仅隔离 opener（发 Referer、传权重）。
   - `MARKETING_ATTR = 'target="_blank" rel="sponsored noopener noreferrer nofollow"'`：营销站点（**当前预设空集 `MARKETING = []`**，待后续按需要增删；未配置前相关域名走默认）。
   - `UGCCOMMENT_ATTR = 'target="_blank" rel="ugc noopener noreferrer nofollow"'`：评论社媒（**当前预设空集 `UGCCOMMENT = []`**，待后续按需要增删；未配置前相关域名走默认）。
-  - `EXPOSED_ATTR = 'target="_blank" rel="nofollow noopener" referrerpolicy="origin"'`：暴露（备案号 `beian.miit.gov.cn` 等需暴露来源；`referrerpolicy="origin"` 仅发送源站 origin，不暴露完整路径）。
+  - `EXPOSED_ATTR = 'target="_blank" rel="noopener" referrerpolicy="origin"'`：暴露/公开（备案号 `beian.miit.gov.cn`、政务官方 `.gov.cn` 等需暴露来源；**dofollow（无 `nofollow`，传权重）**；`referrerpolicy="origin"` 仅发送源站 origin，不暴露完整路径）。
   - `DEFAULT_LINK_ATTR = 'target="_blank" rel="nofollow noopener noreferrer"'`：其余一切外链（新标签 + 不传权重 + **不暴露来源**；因带 `noreferrer`，百度统计/GA4 对这类外跳收不到 Referer，但站内统计与卡片图片不受影响）。
   - 命中逻辑在 `link_attr(url)` 中按上述优先级短路；`EXT_LINK = EXPOSED_ATTR` 供备案号等固定外链复用。手工增删：改对应常量域名列表即可，无需动 xlsx。
 - ~~`UNIT_PAGES` / `UNIT_ASSET_DIRS`~~：**已于 2026-08-22 移除**。原用途是 build 时把根 `assets/{css,js,images}` 同步进各子页独立 `assets/` 使其自包含；现改为子页以 `../../assets/...` 直接引用根目录共享 assets，根 assets 为唯一真源，不再复制（详见骨架通用技术契约与 `assets/skills/SKILL.md`）。
 
 > **Referer 策略（重要）**：**不设**全局 `<meta name="referrer" content="no-referrer">`（它会让百度统计后台显示"referer 被禁用"，收不到来源站）。仅在**卡片图片**上用 `referrerpolicy="no-referrer"` 单独压制（防图片防盗链）；卡片外链 / 引擎跳转默认**发 Referer**。
-> 约定：站内**资源**（css/js/images）——根页用 `assets/...`、子页用 `../../assets/...`（均指向根目录唯一 assets 真源，子页不再有独立 assets 目录）；**内链**（页与页之间）一律用 `SITE_DOMAIN` 生成的完整绝对路径，且按 `SAME_DOMAIN_ATTR` 原地打开（`target="_self"`）；**外链**按上表优先级匹配属性。
+> 约定：站内**资源**（css/js/images）——根页用 `assets/...`、子页用 `../../assets/...`（均指向根目录唯一 assets 真源，子页不再有独立 assets 目录）；**内链**（页与页之间）一律用 `SITE_DOMAIN` 生成的完整绝对路径，且按 `SAME_DOMAIN_ATTR` 原地打开（`target="_self"`）；**外链**按上表优先级匹配属性（注：政务官方 `.gov.cn` 经 EXPOSED 桶输出 **dofollow**，传权重，强化政协/政务垂类主题信号；其余外链仍默认 `nofollow`）。
 > 注意：`pages/about`、`pages/submit` 是手写静态页（非 build 生成），其 canonical 与内链里的域名是字面量；换域名时这两处需另行替换（或直接把子页也纳入 build 模板，后续可议）。原 `units/` 目录已于 2026-08-22 末整体删除并迁移至 `pages/`，相关旧路径描述见 v5 变更记录已标注。
 
 ### 全链接规则使用情况汇总（搜索框 / 引擎跳转 / assets 引用 / 卡片链接 / 卡片外链接 / 备案号 / 子页）
@@ -253,9 +253,9 @@ python -m http.server 8080
 | 集合搜索（Hero 引擎跳转，如百度/Google/微博） | 外跳到搜索引擎结果页 | **定死、不走 `link_attr()` 全套规则**：JS 用 `window.open(url, '_blank', 'noopener')` 打开（仅 `noopener`，不带 `noreferrer`/`nofollow`/`sponsored`/`ugc`/`referrerpolicy`），所有引擎行为一致且**会发送 Referer**。此为有意保留的现态（用户确认不改 py） | 与卡片外链规则**不同源**，属独立硬编码路径 |
 | assets 引用（css/js/images 静态资源） | 站内资源 | 相对路径 `assets/...`，无 target/rel | 同域加载，不涉及外链策略 |
 | 卡片图片（`<img>` 媒体） | 外站图片 | `referrerpolicy="no-referrer"`（仅此项压制 Referer） | 防图片防盗链；其余外链不发此属性 |
-| 卡片外链接（links 列逐条） | 外链 | 按优先级 `同域>同族>营销>评论>暴露>默认` 命中；同域 `_self`、同族 `noopener`、营销 `sponsored…`（空集暂未启用）、评论 `ugc…`（空集暂未启用）、暴露 `nofollow noopener` + `referrerpolicy="origin"`、默认 `nofollow noopener noreferrer` | 全项目统一，含子页（子页无卡片，但规则通用） |
-| 页脚备案号（beian.miit.gov.cn） | 外链（暴露） | **当前为注释占位、不渲染**：项目托管于 GitHub Pages，无 ICP 备案，故首页模板与子页（about/submit/privacy）**均不显示**备案链接；代码保留 `粤ICP备XXXXXXXX号` 占位与暴露属性，待迁移国内服务器完成备案后取消注释即可（届时属性为 `target="_blank" rel="nofollow noopener" referrerpolicy="origin"`，暴露来源 origin） | 迁移前不可点击、不可见 |
-| 页脚/导航内链（首页/关于/收录申请） | 内链（同域） | `target="_self"`（原地打开，发 Referer、传权重） | 由 `SITE_DOMAIN` 生成绝对路径 |
+| 卡片外链接（links 列逐条） | 外链 | 按优先级 `同域>同族>营销>评论>暴露>默认` 命中；同域 `_self`、同族 `noopener`、营销 `sponsored…`（空集暂未启用）、评论 `ugc…`（空集暂未启用）、暴露 `noopener` + `referrerpolicy="origin"`（**dofollow，传权重**）、默认 `nofollow noopener noreferrer` | 全项目统一，含子页（子页无卡片，但规则通用） |
+| 页脚备案号（beian.miit.gov.cn） | 外链（暴露） | **当前为注释占位、不渲染**：项目托管于 GitHub Pages，无 ICP 备案，故首页模板与子页（about/submit/privacy）**均不显示**备案链接；代码保留 `粤ICP备XXXXXXXX号` 占位与暴露属性，待迁移国内服务器完成备案后取消注释即可（届时属性为 `target="_blank" rel="noopener" referrerpolicy="origin"`，**dofollow**，暴露来源 origin） | 迁移前不可点击、不可见 |
+| 页脚/导航内链（首页/频道导航/关于/收录申请等） | 内链（同域） | `target="_self"`（原地打开，发 Referer、传权重） | 由 `SITE_DOMAIN` 生成绝对路径（如「频道导航」指向 `/directory/`）；全站页脚现含 **11 条**统一导航链接（含新增「频道导航」与「网站全景」） |
 | 子页 about/submit/privacy 内链与正文链接 | 内链（同域） | `target="_self"` | 手写静态页已显式标注，与首页一致；隐私页为标准合规文本、含 AI 免责声明 |
 
 ---

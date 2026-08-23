@@ -37,17 +37,17 @@
 2. **内链绝对 + `_self`**：站内跳转用 `https://zhengxie.com.cn/...` 且 `target="_self"`（如页脚导航、正文交叉链接）。
 3. **不设全局 referrer meta**：`<head>` 中**不要**写 `<meta name="referrer" content="no-referrer">`（全站已锁定"不设全局 referrer"规则）。
 4. **FOUC 仅本地 dark**：`<head>` 内联脚本仅当 `localStorage('zx_theme')==='dark'` 才设 `data-theme="dark"`，**不跟随系统偏好**。
-5. **页脚导航统一 10 链接**（顺序固定，含「网站全景」）+ 备案号注释占位：
+5. **页脚导航统一 11 链接**（顺序固定，含「网站全景」「频道导航」）+ 备案号注释占位：
 
    ```
-   首页 | 关于本站 | 收录申请 | 联系我们 | 免责声明 | 使用指南 | 站点地图 | 更新日志 | 隐私政策
+   首页 | 频道导航 | 关于本站 | 收录申请 | 联系我们 | 免责声明 | 使用指南 | 站点地图 | 更新日志 | 隐私政策 | 网站全景
    ```
 
    备案号占位（每个子页页脚 nav 内、隐私政策链接之后，HTML 注释，不渲染）：
 
    ```html
    <!-- 备案号占位：当前项目托管于 GitHub Pages，无 ICP 备案，故不渲染备案链接；待迁移国内服务器完成备案后，替换粤ICP备XXXXXXXX号并取消本注释、改用以下形式：
-   <a target="_blank" rel="nofollow noopener" referrerpolicy="origin" href="https://beian.miit.gov.cn/">粤ICP备XXXXXXXX号</a>
+   <a target="_blank" rel="noopener" referrerpolicy="origin" href="https://beian.miit.gov.cn/">粤ICP备XXXXXXXX号</a>
    -->
    ```
 
@@ -62,6 +62,7 @@
     <p class="footer__copyright">© 2026 正协导航 · 让每一次寻找，都不止于找到</p>
     <nav class="footer__nav" aria-label="页脚导航">
       <a target="_self" href="https://zhengxie.com.cn/">首页</a>
+      <a target="_self" href="https://zhengxie.com.cn/directory/">频道导航</a>
       <a target="_self" href="https://zhengxie.com.cn/pages/about/">关于本站</a>
       <a target="_self" href="https://zhengxie.com.cn/pages/submit/">收录申请</a>
       <a target="_self" href="https://zhengxie.com.cn/pages/contact/">联系我们</a>
@@ -70,6 +71,7 @@
       <a target="_self" href="https://zhengxie.com.cn/pages/sitemap/">站点地图</a>
       <a target="_self" href="https://zhengxie.com.cn/pages/changelog/">更新日志</a>
       <a target="_self" href="https://zhengxie.com.cn/pages/privacy/">隐私政策</a>
+      <a target="_self" href="https://zhengxie.com.cn/pages/overview/">网站全景</a>
       <!-- 备案号占位：...（见上） -->
     </nav>
     <div class="footer__tools">
@@ -89,11 +91,11 @@
 > 目录约定（2026-08-22 末生效，2026-08-23 更新）：说明/合规/功能型子页 + 全站中枢页**统一放 `pages/<name>/`**（`units/` 已整体删除、`test.html` 已删；中枢页 `pages/overview/` 由根 `overview/` 移入）。导航频道（S1 实例）放 `directory/<name>/`，由 `assets/py/build.py` 自动扫描各目录专属 `assets/xlsx/self_links.xlsx` 生成 `index.html`（非根表子集；原 `nav/<name>/` 草稿约定作废，2026-08-22 用户指定为 `directory/`）。框架约定详见 `assets/py/build.py` 顶部 docstring（跨设备可读）。
 
 1. **子页资源引用（2026-08-22 调整）**：子页 `pages/<name>/index.html` **不再复制 assets、不再自包含**，直接以相对路径 `../../assets/css/style.css`、`../../assets/images/logo.svg`、`../../assets/js/main.js` 引用**根目录**共享 assets（根 assets 为唯一真源，`build.py` 已移除 `UNIT_PAGES`/`sync_unit_assets` 复制逻辑）。新增子页时照此写引用即可，无需改 `build.py`。
-2. **`assets/py/build.py` 首页模板页脚**：若新子页需在首页页脚出现，在 footer `<nav>` 内加 `<a href="{{SITE_DOMAIN}}/pages/<name>/">名称</a>`（中枢页用 `{{SITE_DOMAIN}}/pages/overview/` 文本「网站全景」；注意用 `{{SITE_DOMAIN}}` 占位，build 会替换；首页模板页脚已含 10 链接）。
-3. **手写子页页脚**：pages 下 9 个手写页（含 overview）页脚 nav 需与新子页互链（保持 10 链接一致，含「网站全景」）。可用统一模板批量替换 nav 块。
+2. **`assets/py/build.py` 首页模板页脚**：若新子页需在首页页脚出现，在 footer `<nav>` 内加 `<a href="{{SITE_DOMAIN}}/pages/<name>/">名称</a>`（中枢页用 `{{SITE_DOMAIN}}/pages/overview/` 文本「网站全景」；注意用 `{{SITE_DOMAIN}}` 占位，build 会替换；首页模板页脚已含 11 链接，含新增「频道导航」指向 `/directory/`）。
+3. **手写子页页脚**：pages 下 9 个手写页（含 overview）页脚 nav 需与新子页互链（保持 11 链接一致，含「网站全景」与「频道导航」）。可用统一模板批量替换 nav 块。
 4. **`sitemap.xml`**：在 `</urlset>` 前加 `<url>` 条目，`<loc>https://zhengxie.com.cn/pages/<name>/</loc>`、`<changefreq>monthly</changefreq>`、`<priority>0.50</priority>`（中枢页 `pages/overview` 用 priority 0.70）。
 5. **`README.md`**：决策总章第 3 节补该子页的 🔶 状态标注（附原状态=无此页，可退回）；BACKLOG 标记完成情况。
-6. **`index.html`**：若是 build 重新生成，确认页脚 10 链接完整（含「网站全景」）、路径为 `pages/<name>/` 与 `pages/overview/`。
+6. **`index.html`**：若是 build 重新生成，确认页脚 11 链接完整（含「网站全景」「频道导航」）、路径为 `pages/<name>/`、`pages/overview/` 与 `directory/`。
 
 ---
 
@@ -115,7 +117,7 @@
 2. 校验新子页资源引用：`grep '\.\./\.\./assets/' pages/<name>/index.html` 应有 style.css / logo.svg / main.js 三项（中枢页同）；并确认根 `assets/` 下对应文件存在（子页不再有独立 assets 目录）。
 3. 校验首页页脚：grep `pages/<name>/` 与 `pages/overview/` 在 index.html 出现；grep `units/` 应为 0（旧目录已整体删除，2026-08-22 末）。
 4. 校验 sitemap.xml：含新 `<loc>` 条目（均为 `pages/` 路径），总数 = 1（首页）+ 1（pages/overview）+ N（pages 子页）。
-5. 抽查子页：无全局 referrer meta、FOUC 脚本仅本地 dark、内链 `_self`、页脚 10 链接齐全（含「网站全景」）。
+5. 抽查子页：无全局 referrer meta、FOUC 脚本仅本地 dark、内链 `_self`、页脚 11 链接齐全（含「网站全景」「频道导航」）。
 
 ---
 
@@ -142,7 +144,7 @@
 4. **分发中枢**：每切片/榜单均有去向，中枢本身可停留消费概览。
 
 **技术契约**：
-- 生成方式：手写静态页（或未来 build 扩展）；资源相对 `assets/`、内链绝对 `_self`、无全局 referrer、FOUC 仅本地 dark、页脚 10 链接 + 备案占位（同通用契约）。
+- 生成方式：手写静态页（或未来 build 扩展）；资源相对 `assets/`、内链绝对 `_self`、无全局 referrer、FOUC 仅本地 dark、页脚 11 链接（含「频道导航」「网站全景」） + 备案占位（同通用契约）。
 - 统计：手写页**手动同步** GA4 + 百度统计双 id（同 `404.html` 做法，不含 AdSense）。
 - SEO：`canonical` 指向 `https://zhengxie.com.cn/pages/overview/`；`og:type=website`；补 description/keywords（强调"全站总览"）。
 - 数据来源（⏳ PENDING，不擅自决定）：架构/切片/榜单数据从哪来待用户拍板。
@@ -159,7 +161,7 @@
 
 **技术契约（详情页）**：
 - 资源相对 `assets/`（每篇自带或共享 `articles/assets/`）、内链绝对 `_self`、无全局 referrer、FOUC 仅本地 dark。
-- 页脚：沿用全局 10 链接 + 备案占位（与 S3 一致，不可省略）。
+- 页脚：沿用全局 11 链接（含「频道导航」「网站全景」） + 备案占位（与 S3 一致，不可省略）。
 - 统计：手写详情页**手动同步** GA4 + 百度统计双 id（同 S2/404 做法）。
 - SEO：`<link rel="canonical" href="https://zhengxie.com.cn/articles/<slug>/">`；`og:type=article`、`article:published_time`；结构化数据可用 `BlogPosting` JSON-LD（可选）。
 
@@ -168,7 +170,7 @@
 **联动清单（新增一个文章/内容板块时）**：
 1. 若走 build 生成：在 `build.py` 新增数据源与模板（新增 ARTICLE 模板）；若纯手写：直接建 `articles/<slug>/index.html`，资源引用 `../../assets/`。
 2. `sitemap.xml`：列表页 + 每篇详情页各加 `<url>`（详情页 priority 0.40，列表页 0.50）。
-3. 全局页脚 10 链接：文章页页脚 nav 与其他页一致（保持全站统一，含「网站全景」）。
+3. 全局页脚 11 链接：文章页页脚 nav 与其他页一致（保持全站统一，含「网站全景」「频道导航」）。
 4. `README.md` 3.2 节：补该板块的 🔶 状态标注（如"博客板块，2026-XX 新增"）。
 5. 若内容涉及法律/个保条款：触发专家转介纪律（S4 同理，不替代执业律师）。
 
