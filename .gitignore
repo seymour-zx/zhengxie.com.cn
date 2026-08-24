@@ -10,4 +10,8 @@ __pycache__/
 *.verify.tmp.py
 
 # 注意：.workbuddy/memory/、.workbuddy/docs/、.workbuddy/skills/ 等"强制同步文件"
-# 必须进 Git（跨设备可读）。不要在此忽略它们。详见 .workbuddy/docs/execution-rules.md 规则 1。
+# 必须进 Git（跨设备可读）。不要在此忽略它们。详见 .workbuddy/docs/CONVENTIONS.md 第五节「流程与执行」。
+#
+# 站点 build 产物（index.html、directory/<name>/index.html 等由 build_homeplus.py 生成）
+# 是否进 Git 尚无成文裁决：README 要求"有 README 即可复现整站"暗示产物须随仓库同步，
+# 但其本质是可重建产物。该歧义待用户在 CONVENTIONS 第五节补充"产物同步策略"后定稿。
