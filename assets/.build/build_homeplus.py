@@ -9,6 +9,10 @@ build_homeplus.py —— 正协导航 · 导航产品页生成器（home + 同�
 - 所有导航卡片、分类按钮、链接全部内联在静态 HTML 中，不使用 JS 注入；
 - 搜索引擎（百度/Google）可直接抓取全部链接与 anchor text；
 - JS(main.js) 只做交互增强，禁用 JS 时页面内容完整可读可点。
+- JSON-LD 结构化数据由 build_jsonld() 自动生成（非写死模板）：
+  根页=WebSite（带站内 SearchAction）；频道页=WebPage + isPartOf(回链总站)
+  + mainEntity(ItemList，含本页全部卡片首个外链 url)。每次 build 随卡片数据刷新，
+  无需手工维护（详见 build_jsonld 文档串与 2026-08-24 用户语义确认）。
 
 用法：
     python assets/.build/build_homeplus.py
@@ -704,8 +708,143 @@ def is_empty_meta(path):
     return _file_empty(path) or not load_meta(path)
 
 
+def build_jsonld(rows, meta=None, canonical_path="/", prefix=""):
+    """生成页面 JSON-LD 结构化数据（自动随卡片数据更新，无需手工维护）。
+
+    语义（与用户 2026-08-24 确认一致）：
+    - 根页（prefix==""）：整站入口 → @type=WebSite，带站内 SearchAction。
+    - 频道页（prefix!=""）：与首页同类的「主题网址导航产品」→ @type=WebPage，
+      用 isPartOf 回链总站（WebSite），用 mainEntity(ItemList) 声明本页核心
+      内容是全部网址卡片清单（position 升序、url 取每张卡片首个外链）。
+
+    rows: 本页卡片数据（list of dict）；从 links 列取首个 URL 作为 ListItem.url。
+          无链接的卡片（如纯展示）不进 ItemList，但不影响其余条目序号连续。
+    """
+    m = _merge_meta(meta)
+    page_url = SITE_DOMAIN + canonical_path
+    name = m["title"]
+    desc = m["description"]
+
+    if prefix == "":
+        # —— 根页：WebSite ——
+        data = {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": name,
+            "alternateName": name,
+            "url": page_url,
+            "description": desc,
+            "potentialAction": {
+                "@type": "SearchAction",
+                "target": {
+                    "@type": "EntryPoint",
+                    "urlTemplate": page_url + "#q={search_term_string}"
+                },
+                "query-input": "required name=search_term_string"
+            }
+        }
+    else:
+        # —— 频道页：WebPage + isPartOf + mainEntity(ItemList) ——
+        # 提取每张卡片的首个外链 URL（最稳定，与卡片收藏 key 同源）
+        item_list = []
+        pos = 0
+        for r in rows:
+            parsed = parse_links(r.get("links"))
+            if not parsed:
+                continue
+            url = parsed[0][1]
+            if not is_url(url):
+                continue
+            pos += 1
+            item_list.append({
+                "@type": "ListItem",
+                "position": pos,
+                "url": url
+            })
+        data = {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": name,
+            "url": page_url,
+            "description": desc,
+            "isPartOf": {
+                "@type": "WebSite",
+                "name": BRAND,
+                "url": SITE_DOMAIN + "/"
+            },
+            "mainEntity": {
+                "@type": "ItemList",
+                "numberOfItems": pos,
+                "itemListElement": item_list
+            }
+        }
+
+    json_str = json.dumps(data, ensure_ascii=False, indent=2)
+    return (
+        '<script type="application/ld+json">\n'
+        f'{json_str}\n'
+        '</script>'
+    )
+
+
+def build_breadcrumb(prefix, channel_name, channel_url=""):
+    """生成可见面包屑 <nav> + 内联 BreadcrumbList JSON-LD。
+
+    面包屑层级约定（见 CONVENTIONS.md 第四节）：
+    - 根页（prefix==""）：自身即大门，不加面包屑（返回空串）。
+    - 频道页（prefix!=""）：首页 › 频道导航 › 频道名。
+      首页=站点根(/)；频道导航=门户页(/directory/)；频道名=本频道标题，
+      其 item 指向本频道页自身 URL（channel_url）。
+    可见导航文字须与首页真实按钮文案（频道导航/网站全景）一致。
+    """
+    if prefix == "":
+        return ""
+    name = channel_name or "频道"
+    crumb_url = channel_url or (SITE_DOMAIN + "/directory/")
+    # 可见面包屑（带微数据语义的 <nav>）
+    nav_html = (
+        f'<nav class="breadcrumb" aria-label="面包屑导航">\n'
+        f'  <ol class="breadcrumb__list" itemscope itemtype="https://schema.org/BreadcrumbList">\n'
+        f'    <li class="breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">\n'
+        f'      <a class="breadcrumb__link" href="{SITE_DOMAIN}/" itemprop="item"><span itemprop="name">首页</span></a>\n'
+        f'      <meta itemprop="position" content="1">\n'
+        f'    </li>\n'
+        f'    <li class="breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">\n'
+        f'      <a class="breadcrumb__link" href="{SITE_DOMAIN}/directory/" itemprop="item"><span itemprop="name">频道导航</span></a>\n'
+        f'      <meta itemprop="position" content="2">\n'
+        f'    </li>\n'
+        f'    <li class="breadcrumb__item breadcrumb__item--current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">\n'
+        f'      <span itemprop="item" itemid="{crumb_url}"><span itemprop="name">{name}</span></span>\n'
+        f'      <meta itemprop="position" content="3">\n'
+        f'    </li>\n'
+        f'  </ol>\n'
+        f'</nav>'
+    )
+    # 独立的 BreadcrumbList JSON-LD（与可见导航一一对应，满足 Google 要求）
+    crumb_data = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1,
+             "name": "首页", "item": SITE_DOMAIN + "/"},
+            {"@type": "ListItem", "position": 2,
+             "name": "频道导航", "item": SITE_DOMAIN + "/directory/"},
+            {"@type": "ListItem", "position": 3,
+             "name": name, "item": crumb_url}
+        ]
+    }
+    crumb_json = json.dumps(crumb_data, ensure_ascii=False, indent=2)
+    crumb_script = (
+        '<script type="application/ld+json">\n'
+        f'{crumb_json}\n'
+        '</script>'
+    )
+    return nav_html + "\n" + crumb_script
+
+
 def build_page(category_buttons, cards_html, engine_primary, engine_track, total_cards,
-               prefix="", meta=None, canonical_path="/", hero_search=""):
+               prefix="", meta=None, canonical_path="/", hero_search="", rows=None,
+               channel_name="", channel_url=""):
     """组装完整 index.html（静态模板，占位符替换）。
 
     prefix:         资源/链接路径前缀。根页=""；directory 页="../../"
@@ -714,6 +853,8 @@ def build_page(category_buttons, cards_html, engine_primary, engine_track, total
     hero_search:    hero 下半部 HTML：根页=集合搜索框；directory 页=专题介绍块
     """
     m = _merge_meta(meta)
+    json_ld = build_jsonld(rows or [], meta=meta, canonical_path=canonical_path, prefix=prefix)
+    breadcrumb = build_breadcrumb(prefix, channel_name, channel_url=SITE_DOMAIN + canonical_path)
     return (
         PAGE_TEMPLATE.replace("{{CATEGORY_BUTTONS}}", category_buttons)
         .replace("{{HERO_SEARCH}}", hero_search)
@@ -732,6 +873,8 @@ def build_page(category_buttons, cards_html, engine_primary, engine_track, total
         .replace("{{BRAND_A}}", BRAND_A)
         .replace("{{BRAND_B}}", BRAND_B)
         .replace("{{SLOGAN}}", SLOGAN)
+        .replace("{{JSON_LD}}", json_ld)
+        .replace("{{BREADCRUMB}}", breadcrumb)
     )
 
 
@@ -778,24 +921,8 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
     (function(){try{var t=localStorage.getItem('zx_theme');if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();
   </script>
   <!-- JSON-LD 结构化数据：帮助搜索引擎理解站点类型与搜索功能 -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "{{META_TITLE}}",
-    "alternateName": "{{META_TITLE}}",
-    "url": "{{SITE_DOMAIN}}{{CANONICAL_PATH}}",
-    "description": "{{META_DESC}}",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": {
-        "@type": "EntryPoint",
-        "urlTemplate": "{{SITE_DOMAIN}}{{CANONICAL_PATH}}#q={search_term_string}"
-      },
-      "query-input": "required name=search_term_string"
-    }
-  }
-  </script>
+  <!-- 根页=WebSite；频道页=WebPage + isPartOf + mainEntity(ItemList)，详见 build_jsonld() -->
+  {{JSON_LD}}
 
   <!-- ═══ 统计（GA4 + 百度统计×2，双域名各一份） ═══ -->
   <!-- Google Analytics GA4 -->
@@ -823,7 +950,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6434243103158481"
           crossorigin="anonymous"></script>
 </head>
-<body>
+  <body>
   <!-- 无障碍：跳到主内容 -->
   <a href="#cards-container" class="skip-link">跳到主内容</a>
 
@@ -898,6 +1025,9 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
   <main class="cards-container wrap" id="cards-container">
     {{CARDS}}
   </main>
+
+  <!-- 面包屑导航（位置A：底部广告位②上方；根页为空，频道页=首页 › 频道导航 › 频道名，由 build_breadcrumb 注入） -->
+  {{BREADCRUMB}}
 
   <!-- 空结果状态（JS 控制显隐） -->
   <div class="empty-state" id="empty-state" hidden>
@@ -1038,10 +1168,15 @@ def render_and_write(xlsx_path, out_path, prefix="", meta=None, canonical_path="
     # hero 下半部：根页保留集合搜索框；directory 频道页替换为专题介绍块
     if prefix == "":
         hero_search = HERO_SEARCH_BLOCK
+        channel_name = ""
     else:
         hero_search = build_channel_intro(meta)
+        # 频道名：从标题去掉 " - 正协导航" 后缀（如 "银行导航 - 正协导航" → "银行导航"）
+        channel_name = (meta or {}).get("title", "") or ""
+        channel_name = channel_name.replace(" - 正协导航", "").replace(" -正协导航", "").strip()
     page = build_page(category_buttons, cards, engine_primary, engine_track, len(rows),
-                      prefix=prefix, meta=meta, canonical_path=canonical_path, hero_search=hero_search)
+                      prefix=prefix, meta=meta, canonical_path=canonical_path,
+                      hero_search=hero_search, rows=rows, channel_name=channel_name)
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(page)
     cats = [str(r.get("分类") or "").strip() for r in rows]

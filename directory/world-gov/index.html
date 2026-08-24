@@ -40,24 +40,212 @@
     (function(){try{var t=localStorage.getItem('zx_theme');if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();
   </script>
   <!-- JSON-LD 结构化数据：帮助搜索引擎理解站点类型与搜索功能 -->
+  <!-- 根页=WebSite；频道页=WebPage + isPartOf + mainEntity(ItemList)，详见 build_jsonld() -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "外国政府官网导航 - 正协导航",
+  "url": "https://zhengxie.com.cn/directory/world-gov/",
+  "description": "正协导航收录世界各国政府官方网站：美国白宫、英国、德国、法国、日本、韩国、印度、加拿大、澳大利亚等，总统府、政府门户、联邦机构一站直达。正协导航 - 让每一次寻找，都不止于找到。",
+  "isPartOf": {
     "@type": "WebSite",
-    "name": "外国政府官网导航 - 正协导航",
-    "alternateName": "外国政府官网导航 - 正协导航",
-    "url": "https://zhengxie.com.cn/directory/world-gov/",
-    "description": "正协导航收录世界各国政府官方网站：美国白宫、英国、德国、法国、日本、韩国、印度、加拿大、澳大利亚等，总统府、政府门户、联邦机构一站直达。正协导航 - 让每一次寻找，都不止于找到。",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": {
-        "@type": "EntryPoint",
-        "urlTemplate": "https://zhengxie.com.cn/directory/world-gov/#q={search_term_string}"
+    "name": "正协导航",
+    "url": "https://zhengxie.com.cn/"
+  },
+  "mainEntity": {
+    "@type": "ItemList",
+    "numberOfItems": 37,
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "url": "https://www.whitehouse.gov/"
       },
-      "query-input": "required name=search_term_string"
-    }
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "url": "https://www.usa.gov/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "url": "https://www.canada.ca/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "url": "https://www.gob.mx/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 5,
+        "url": "https://www.gov.br/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 6,
+        "url": "https://www.argentina.gob.ar/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 7,
+        "url": "https://www.gob.cl/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 8,
+        "url": "https://www.gov.uk/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 9,
+        "url": "https://www.bundesregierung.de/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 10,
+        "url": "https://www.gouvernement.fr/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 11,
+        "url": "https://www.elysee.fr/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 12,
+        "url": "https://www.governo.it/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 13,
+        "url": "https://www.lamoncloa.es/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 14,
+        "url": "https://www.overheid.nl/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 15,
+        "url": "http://www.gov.ru/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 16,
+        "url": "https://www.admin.ch/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 17,
+        "url": "https://www.government.se/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 18,
+        "url": "https://www.japan.go.jp/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 19,
+        "url": "https://www.gov.kr/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 20,
+        "url": "https://india.gov.in/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 21,
+        "url": "https://www.gov.sg/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 22,
+        "url": "https://www.thaigov.go.th/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 23,
+        "url": "https://www.malaysia.gov.my/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 24,
+        "url": "http://indonesia.go.id/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 25,
+        "url": "https://www.chinhphu.vn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 26,
+        "url": "https://www.gov.ph/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 27,
+        "url": "https://www.gov.il/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 28,
+        "url": "https://www.turkiye.gov.tr/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 29,
+        "url": "https://www.australia.gov.au/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 30,
+        "url": "https://www.govt.nz/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 31,
+        "url": "https://www.gov.za/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 32,
+        "url": "https://www.eg.gov.eg/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 33,
+        "url": "https://www.nigeria.gov.ng/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 34,
+        "url": "https://www.saudi.gov.sa/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 35,
+        "url": "https://u.ae/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 36,
+        "url": "https://www.cia.gov/the-world-factbook/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 37,
+        "url": "https://www.un.org/"
+      }
+    ]
   }
-  </script>
+}
+</script>
 
   <!-- ═══ 统计（GA4 + 百度统计×2，双域名各一份） ═══ -->
   <!-- Google Analytics GA4 -->
@@ -85,7 +273,7 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6434243103158481"
           crossorigin="anonymous"></script>
 </head>
-<body>
+  <body>
   <!-- 无障碍：跳到主内容 -->
   <a href="#cards-container" class="skip-link">跳到主内容</a>
 
@@ -162,6 +350,50 @@
   <main class="cards-container wrap" id="cards-container">
     <article class="card card--t1" data-cat="北美"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">美</span></div><h3 class="card__title">美国白宫</h3><button type="button" class="card__fav" data-key="https://www.whitehouse.gov/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="北美">北美</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://www.whitehouse.gov/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="北美"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">美</span></div><h3 class="card__title">美国政府门户</h3><button type="button" class="card__fav" data-key="https://www.usa.gov/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="北美">北美</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://www.usa.gov/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="北美"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">加</span></div><h3 class="card__title">加拿大政府</h3><button type="button" class="card__fav" data-key="https://www.canada.ca/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="北美">北美</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://www.canada.ca/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="北美"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">墨</span></div><h3 class="card__title">墨西哥政府</h3><button type="button" class="card__fav" data-key="https://www.gob.mx/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="北美">北美</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://www.gob.mx/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="南美"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">巴</span></div><h3 class="card__title">巴西政府</h3><button type="button" class="card__fav" data-key="https://www.gov.br/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="南美">南美</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://www.gov.br/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="南美"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">阿</span></div><h3 class="card__title">阿根廷政府</h3><button type="button" class="card__fav" data-key="https://www.argentina.gob.ar/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="南美">南美</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://www.argentina.gob.ar/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="南美"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">智</span></div><h3 class="card__title">智利政府</h3><button type="button" class="card__fav" data-key="https://www.gob.cl/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="南美">南美</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://www.gob.cl/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="欧洲"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">英</span></div><h3 class="card__title">英国政府</h3><button type="button" class="card__fav" data-key="https://www.gov.uk/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="欧洲">欧洲</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://www.gov.uk/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="欧洲"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">德</span></div><h3 class="card__title">德国联邦政府</h3><button type="button" class="card__fav" data-key="https://www.bundesregierung.de/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="欧洲">欧洲</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://www.bundesregierung.de/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="欧洲"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">法</span></div><h3 class="card__title">法国政府</h3><button type="button" class="card__fav" data-key="https://www.gouvernement.fr/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="欧洲">欧洲</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://www.gouvernement.fr/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="欧洲"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">法</span></div><h3 class="card__title">法国总统府</h3><button type="button" class="card__fav" data-key="https://www.elysee.fr/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="欧洲">欧洲</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://www.elysee.fr/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="欧洲"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">意</span></div><h3 class="card__title">意大利政府</h3><button type="button" class="card__fav" data-key="https://www.governo.it/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="欧洲">欧洲</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://www.governo.it/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="欧洲"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">西</span></div><h3 class="card__title">西班牙政府</h3><button type="button" class="card__fav" data-key="https://www.lamoncloa.es/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="欧洲">欧洲</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://www.lamoncloa.es/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="欧洲"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">荷</span></div><h3 class="card__title">荷兰政府</h3><button type="button" class="card__fav" data-key="https://www.overheid.nl/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="欧洲">欧洲</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://www.overheid.nl/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="欧洲"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">俄</span></div><h3 class="card__title">俄罗斯政府</h3><button type="button" class="card__fav" data-key="http://www.gov.ru/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="欧洲">欧洲</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="http://www.gov.ru/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="欧洲"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">瑞</span></div><h3 class="card__title">瑞士政府</h3><button type="button" class="card__fav" data-key="https://www.admin.ch/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="欧洲">欧洲</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://www.admin.ch/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="欧洲"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">瑞</span></div><h3 class="card__title">瑞典政府</h3><button type="button" class="card__fav" data-key="https://www.government.se/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="欧洲">欧洲</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://www.government.se/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="亚洲"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">日</span></div><h3 class="card__title">日本内阁府</h3><button type="button" class="card__fav" data-key="https://www.japan.go.jp/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="亚洲">亚洲</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://www.japan.go.jp/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="亚洲"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">韩</span></div><h3 class="card__title">韩国政府</h3><button type="button" class="card__fav" data-key="https://www.gov.kr/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="亚洲">亚洲</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://www.gov.kr/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="亚洲"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">印</span></div><h3 class="card__title">印度政府</h3><button type="button" class="card__fav" data-key="https://india.gov.in/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="亚洲">亚洲</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://india.gov.in/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="亚洲"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">新</span></div><h3 class="card__title">新加坡政府</h3><button type="button" class="card__fav" data-key="https://www.gov.sg/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="亚洲">亚洲</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://www.gov.sg/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="亚洲"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">泰</span></div><h3 class="card__title">泰国政府</h3><button type="button" class="card__fav" data-key="https://www.thaigov.go.th/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="亚洲">亚洲</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://www.thaigov.go.th/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="亚洲"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">马</span></div><h3 class="card__title">马来西亚政府</h3><button type="button" class="card__fav" data-key="https://www.malaysia.gov.my/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="亚洲">亚洲</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://www.malaysia.gov.my/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="亚洲"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">印</span></div><h3 class="card__title">印度尼西亚政府</h3><button type="button" class="card__fav" data-key="http://indonesia.go.id/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="亚洲">亚洲</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="http://indonesia.go.id/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="亚洲"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">越</span></div><h3 class="card__title">越南政府</h3><button type="button" class="card__fav" data-key="https://www.chinhphu.vn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="亚洲">亚洲</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://www.chinhphu.vn/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="亚洲"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">菲</span></div><h3 class="card__title">菲律宾政府</h3><button type="button" class="card__fav" data-key="https://www.gov.ph/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="亚洲">亚洲</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://www.gov.ph/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="亚洲"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">以</span></div><h3 class="card__title">以色列政府</h3><button type="button" class="card__fav" data-key="https://www.gov.il/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="亚洲">亚洲</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://www.gov.il/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="亚洲"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">土</span></div><h3 class="card__title">土耳其政府</h3><button type="button" class="card__fav" data-key="https://www.turkiye.gov.tr/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="亚洲">亚洲</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://www.turkiye.gov.tr/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="大洋洲"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">澳</span></div><h3 class="card__title">澳大利亚政府</h3><button type="button" class="card__fav" data-key="https://www.australia.gov.au/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="大洋洲">大洋洲</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://www.australia.gov.au/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="大洋洲"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">新</span></div><h3 class="card__title">新西兰政府</h3><button type="button" class="card__fav" data-key="https://www.govt.nz/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="大洋洲">大洋洲</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://www.govt.nz/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="非洲"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">南</span></div><h3 class="card__title">南非政府</h3><button type="button" class="card__fav" data-key="https://www.gov.za/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="非洲">非洲</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://www.gov.za/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="非洲"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">埃</span></div><h3 class="card__title">埃及政府</h3><button type="button" class="card__fav" data-key="https://www.eg.gov.eg/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="非洲">非洲</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://www.eg.gov.eg/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="非洲"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">尼</span></div><h3 class="card__title">尼日利亚政府</h3><button type="button" class="card__fav" data-key="https://www.nigeria.gov.ng/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="非洲">非洲</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://www.nigeria.gov.ng/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="中东"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">沙</span></div><h3 class="card__title">沙特政府</h3><button type="button" class="card__fav" data-key="https://www.saudi.gov.sa/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="中东">中东</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://www.saudi.gov.sa/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="中东"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">阿</span></div><h3 class="card__title">阿联酋政府</h3><button type="button" class="card__fav" data-key="https://u.ae/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">外国政府官方网站入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="中东">中东</button><button type="button" class="card__tag" data-tag="外国政府">外国政府</button><button type="button" class="card__tag" data-tag="政府官网">政府官网</button></div><div class="card__links"><a class="card__link" href="https://u.ae/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><div class="grid-break" aria-hidden="true"></div><article class="card card--t3" data-cat="参考"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">C</span></div><h3 class="card__title">CIA World Factbook</h3><button type="button" class="card__fav" data-key="https://www.cia.gov/the-world-factbook/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">各国政府体制与官方门户的国际参考索引</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="参考">参考</button></div><div class="card__links"><a class="card__link" href="https://www.cia.gov/the-world-factbook/" target="_blank" rel="nofollow noopener noreferrer">来源<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t3" data-cat="参考"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">联</span></div><h3 class="card__title">联合国</h3><button type="button" class="card__fav" data-key="https://www.un.org/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">主权国家与政府承认的权威参考</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="参考">参考</button></div><div class="card__links"><a class="card__link" href="https://www.un.org/" target="_blank" rel="nofollow noopener noreferrer">来源<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article>
   </main>
+
+  <!-- 面包屑导航（位置A：底部广告位②上方；根页为空，频道页=首页 › 频道导航 › 频道名，由 build_breadcrumb 注入） -->
+  <nav class="breadcrumb" aria-label="面包屑导航">
+  <ol class="breadcrumb__list" itemscope itemtype="https://schema.org/BreadcrumbList">
+    <li class="breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <a class="breadcrumb__link" href="https://zhengxie.com.cn/" itemprop="item"><span itemprop="name">首页</span></a>
+      <meta itemprop="position" content="1">
+    </li>
+    <li class="breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <a class="breadcrumb__link" href="https://zhengxie.com.cn/directory/" itemprop="item"><span itemprop="name">频道导航</span></a>
+      <meta itemprop="position" content="2">
+    </li>
+    <li class="breadcrumb__item breadcrumb__item--current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <span itemprop="item" itemid="https://zhengxie.com.cn/directory/world-gov/"><span itemprop="name">外国政府官网导航</span></span>
+      <meta itemprop="position" content="3">
+    </li>
+  </ol>
+</nav>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "首页",
+      "item": "https://zhengxie.com.cn/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "频道导航",
+      "item": "https://zhengxie.com.cn/directory/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "外国政府官网导航",
+      "item": "https://zhengxie.com.cn/directory/world-gov/"
+    }
+  ]
+}
+</script>
 
   <!-- 空结果状态（JS 控制显隐） -->
   <div class="empty-state" id="empty-state" hidden>

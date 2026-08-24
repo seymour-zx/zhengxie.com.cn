@@ -40,24 +40,72 @@
     (function(){try{var t=localStorage.getItem('zx_theme');if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();
   </script>
   <!-- JSON-LD 结构化数据：帮助搜索引擎理解站点类型与搜索功能 -->
+  <!-- 根页=WebSite；频道页=WebPage + isPartOf + mainEntity(ItemList)，详见 build_jsonld() -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "保险导航 - 正协导航",
+  "url": "https://zhengxie.com.cn/directory/insurance/",
+  "description": "收录国内主要保险公司与保险平台官网入口，涵盖人寿、财险、健康险等领域，便于快速访问官方投保与理赔服务。",
+  "isPartOf": {
     "@type": "WebSite",
-    "name": "保险导航 - 正协导航",
-    "alternateName": "保险导航 - 正协导航",
-    "url": "https://zhengxie.com.cn/directory/insurance/",
-    "description": "收录国内主要保险公司与保险平台官网入口，涵盖人寿、财险、健康险等领域，便于快速访问官方投保与理赔服务。",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": {
-        "@type": "EntryPoint",
-        "urlTemplate": "https://zhengxie.com.cn/directory/insurance/#q={search_term_string}"
+    "name": "正协导航",
+    "url": "https://zhengxie.com.cn/"
+  },
+  "mainEntity": {
+    "@type": "ItemList",
+    "numberOfItems": 9,
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "url": "http://www.cpic.com.cn/"
       },
-      "query-input": "required name=search_term_string"
-    }
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "url": "https://www.e-chinalife.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "url": "https://www.pingan.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "url": "http://www.taikang.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 5,
+        "url": "https://www.picc.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 6,
+        "url": "https://www.newchinalife.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 7,
+        "url": "https://www.aia.com.cn/zh-cn/index.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 8,
+        "url": "https://www.cbirc.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 9,
+        "url": "https://www.iachina.cn/"
+      }
+    ]
   }
-  </script>
+}
+</script>
 
   <!-- ═══ 统计（GA4 + 百度统计×2，双域名各一份） ═══ -->
   <!-- Google Analytics GA4 -->
@@ -85,7 +133,7 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6434243103158481"
           crossorigin="anonymous"></script>
 </head>
-<body>
+  <body>
   <!-- 无障碍：跳到主内容 -->
   <a href="#cards-container" class="skip-link">跳到主内容</a>
 
@@ -162,6 +210,50 @@
   <main class="cards-container wrap" id="cards-container">
     <article class="card card--t1" data-cat="保险公司"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">太</span></div><h3 class="card__title">太平洋保险</h3><button type="button" class="card__fav" data-key="http://www.cpic.com.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="保险公司">保险公司</button></div><div class="card__links"><a class="card__link" href="http://www.cpic.com.cn/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="保险公司"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">中</span></div><h3 class="card__title">中国人寿</h3><button type="button" class="card__fav" data-key="https://www.e-chinalife.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="保险公司">保险公司</button></div><div class="card__links"><a class="card__link" href="https://www.e-chinalife.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="保险公司"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">中</span></div><h3 class="card__title">中国平安</h3><button type="button" class="card__fav" data-key="https://www.pingan.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="保险公司">保险公司</button></div><div class="card__links"><a class="card__link" href="https://www.pingan.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="保险公司"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">泰</span></div><h3 class="card__title">泰康保险</h3><button type="button" class="card__fav" data-key="http://www.taikang.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="保险公司">保险公司</button></div><div class="card__links"><a class="card__link" href="http://www.taikang.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="保险公司"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">中</span></div><h3 class="card__title">中国人民保险</h3><button type="button" class="card__fav" data-key="https://www.picc.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="保险公司">保险公司</button></div><div class="card__links"><a class="card__link" href="https://www.picc.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="保险公司"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">新</span></div><h3 class="card__title">新华保险</h3><button type="button" class="card__fav" data-key="https://www.newchinalife.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="保险公司">保险公司</button></div><div class="card__links"><a class="card__link" href="https://www.newchinalife.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="保险公司"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">友</span></div><h3 class="card__title">友邦保险</h3><button type="button" class="card__fav" data-key="https://www.aia.com.cn/zh-cn/index.html" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="保险公司">保险公司</button></div><div class="card__links"><a class="card__link" href="https://www.aia.com.cn/zh-cn/index.html" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><div class="grid-break" aria-hidden="true"></div><article class="card card--t3" data-cat="参考"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">中</span></div><h3 class="card__title">中国银行保险监督管理委员会</h3><button type="button" class="card__fav" data-key="https://www.cbirc.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">保险监管与机构准入权威信息</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="参考">参考</button></div><div class="card__links"><a class="card__link" href="https://www.cbirc.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">来源<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t3" data-cat="参考"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">中</span></div><h3 class="card__title">中国保险行业协会</h3><button type="button" class="card__fav" data-key="https://www.iachina.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">保险行业自律与机构名录</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="参考">参考</button></div><div class="card__links"><a class="card__link" href="https://www.iachina.cn/" target="_blank" rel="nofollow noopener noreferrer">来源<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article>
   </main>
+
+  <!-- 面包屑导航（位置A：底部广告位②上方；根页为空，频道页=首页 › 频道导航 › 频道名，由 build_breadcrumb 注入） -->
+  <nav class="breadcrumb" aria-label="面包屑导航">
+  <ol class="breadcrumb__list" itemscope itemtype="https://schema.org/BreadcrumbList">
+    <li class="breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <a class="breadcrumb__link" href="https://zhengxie.com.cn/" itemprop="item"><span itemprop="name">首页</span></a>
+      <meta itemprop="position" content="1">
+    </li>
+    <li class="breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <a class="breadcrumb__link" href="https://zhengxie.com.cn/directory/" itemprop="item"><span itemprop="name">频道导航</span></a>
+      <meta itemprop="position" content="2">
+    </li>
+    <li class="breadcrumb__item breadcrumb__item--current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <span itemprop="item" itemid="https://zhengxie.com.cn/directory/insurance/"><span itemprop="name">保险导航</span></span>
+      <meta itemprop="position" content="3">
+    </li>
+  </ol>
+</nav>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "首页",
+      "item": "https://zhengxie.com.cn/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "频道导航",
+      "item": "https://zhengxie.com.cn/directory/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "保险导航",
+      "item": "https://zhengxie.com.cn/directory/insurance/"
+    }
+  ]
+}
+</script>
 
   <!-- 空结果状态（JS 控制显隐） -->
   <div class="empty-state" id="empty-state" hidden>

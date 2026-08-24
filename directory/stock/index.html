@@ -40,24 +40,112 @@
     (function(){try{var t=localStorage.getItem('zx_theme');if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();
   </script>
   <!-- JSON-LD 结构化数据：帮助搜索引擎理解站点类型与搜索功能 -->
+  <!-- 根页=WebSite；频道页=WebPage + isPartOf + mainEntity(ItemList)，详见 build_jsonld() -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "证券导航 - 正协导航",
+  "url": "https://zhengxie.com.cn/directory/stock/",
+  "description": "收录证券公司、证券交易所与资产管理公司官网入口，覆盖证券开户、交易与研究服务，为投资者提供一站式导航。",
+  "isPartOf": {
     "@type": "WebSite",
-    "name": "证券导航 - 正协导航",
-    "alternateName": "证券导航 - 正协导航",
-    "url": "https://zhengxie.com.cn/directory/stock/",
-    "description": "收录证券公司、证券交易所与资产管理公司官网入口，覆盖证券开户、交易与研究服务，为投资者提供一站式导航。",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": {
-        "@type": "EntryPoint",
-        "urlTemplate": "https://zhengxie.com.cn/directory/stock/#q={search_term_string}"
+    "name": "正协导航",
+    "url": "https://zhengxie.com.cn/"
+  },
+  "mainEntity": {
+    "@type": "ItemList",
+    "numberOfItems": 17,
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "url": "https://www.guosen.com.cn/gs/index.html"
       },
-      "query-input": "required name=search_term_string"
-    }
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "url": "https://www.gtja.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "url": "http://www.gf.com.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "url": "http://www.chinastock.com.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 5,
+        "url": "https://www.foundersc.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 6,
+        "url": "http://www.ebscn.com/main/index/index.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 7,
+        "url": "https://www.htsc.com.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 8,
+        "url": "http://www.essence.com.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 9,
+        "url": "http://www.west95582.com/jdw/index.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 10,
+        "url": "http://www.cs.ecitic.com/newsite/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 11,
+        "url": "http://www.ghzq.com.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 12,
+        "url": "http://www.coamc.com.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 13,
+        "url": "http://www.cinda.com.cn/xdjt/xdjtpd/index.shtml"
+      },
+      {
+        "@type": "ListItem",
+        "position": 14,
+        "url": "http://www.gwamcc.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 15,
+        "url": "http://www.chamc.com.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 16,
+        "url": "http://www.csrc.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 17,
+        "url": "https://www.sac.net.cn/"
+      }
+    ]
   }
-  </script>
+}
+</script>
 
   <!-- ═══ 统计（GA4 + 百度统计×2，双域名各一份） ═══ -->
   <!-- Google Analytics GA4 -->
@@ -85,7 +173,7 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6434243103158481"
           crossorigin="anonymous"></script>
 </head>
-<body>
+  <body>
   <!-- 无障碍：跳到主内容 -->
   <a href="#cards-container" class="skip-link">跳到主内容</a>
 
@@ -162,6 +250,50 @@
   <main class="cards-container wrap" id="cards-container">
     <article class="card card--t1" data-cat="证券"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国信证券</h3><button type="button" class="card__fav" data-key="https://www.guosen.com.cn/gs/index.html" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="证券">证券</button></div><div class="card__links"><a class="card__link" href="https://www.guosen.com.cn/gs/index.html" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="证券"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国泰君安证券</h3><button type="button" class="card__fav" data-key="https://www.gtja.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="证券">证券</button></div><div class="card__links"><a class="card__link" href="https://www.gtja.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="证券"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">广</span></div><h3 class="card__title">广发证券</h3><button type="button" class="card__fav" data-key="http://www.gf.com.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="证券">证券</button></div><div class="card__links"><a class="card__link" href="http://www.gf.com.cn/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="证券"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">中</span></div><h3 class="card__title">中国银河证券</h3><button type="button" class="card__fav" data-key="http://www.chinastock.com.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="证券">证券</button></div><div class="card__links"><a class="card__link" href="http://www.chinastock.com.cn/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="证券"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">方</span></div><h3 class="card__title">方正证券</h3><button type="button" class="card__fav" data-key="https://www.foundersc.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="证券">证券</button></div><div class="card__links"><a class="card__link" href="https://www.foundersc.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="证券"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">光</span></div><h3 class="card__title">光大证券</h3><button type="button" class="card__fav" data-key="http://www.ebscn.com/main/index/index.html" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="证券">证券</button></div><div class="card__links"><a class="card__link" href="http://www.ebscn.com/main/index/index.html" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="证券"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">华</span></div><h3 class="card__title">华泰证券</h3><button type="button" class="card__fav" data-key="https://www.htsc.com.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="证券">证券</button></div><div class="card__links"><a class="card__link" href="https://www.htsc.com.cn/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="证券"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">安</span></div><h3 class="card__title">安信证券</h3><button type="button" class="card__fav" data-key="http://www.essence.com.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="证券">证券</button></div><div class="card__links"><a class="card__link" href="http://www.essence.com.cn/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="证券"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">西</span></div><h3 class="card__title">西部证券</h3><button type="button" class="card__fav" data-key="http://www.west95582.com/jdw/index.html" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="证券">证券</button></div><div class="card__links"><a class="card__link" href="http://www.west95582.com/jdw/index.html" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="证券"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">中</span></div><h3 class="card__title">中信证券</h3><button type="button" class="card__fav" data-key="http://www.cs.ecitic.com/newsite/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="证券">证券</button></div><div class="card__links"><a class="card__link" href="http://www.cs.ecitic.com/newsite/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="证券"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国海证券</h3><button type="button" class="card__fav" data-key="http://www.ghzq.com.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="证券">证券</button></div><div class="card__links"><a class="card__link" href="http://www.ghzq.com.cn/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="资管"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">中</span></div><h3 class="card__title">中国东方资产管理股份有限公司</h3><button type="button" class="card__fav" data-key="http://www.coamc.com.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="资管">资管</button></div><div class="card__links"><a class="card__link" href="http://www.coamc.com.cn/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="资管"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">中</span></div><h3 class="card__title">中国信达资产管理股份有限公司</h3><button type="button" class="card__fav" data-key="http://www.cinda.com.cn/xdjt/xdjtpd/index.shtml" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="资管">资管</button></div><div class="card__links"><a class="card__link" href="http://www.cinda.com.cn/xdjt/xdjtpd/index.shtml" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="资管"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">中</span></div><h3 class="card__title">中国长城资产管理股份有限公司</h3><button type="button" class="card__fav" data-key="http://www.gwamcc.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="资管">资管</button></div><div class="card__links"><a class="card__link" href="http://www.gwamcc.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="资管"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">中</span></div><h3 class="card__title">中国华融资产管理股份有限公司</h3><button type="button" class="card__fav" data-key="http://www.chamc.com.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="资管">资管</button></div><div class="card__links"><a class="card__link" href="http://www.chamc.com.cn/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><div class="grid-break" aria-hidden="true"></div><article class="card card--t3" data-cat="参考"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">中</span></div><h3 class="card__title">中国证监会</h3><button type="button" class="card__fav" data-key="http://www.csrc.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">证券期货监管与机构名录</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="参考">参考</button></div><div class="card__links"><a class="card__link" href="http://www.csrc.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">来源<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t3" data-cat="参考"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">中</span></div><h3 class="card__title">中国证券业协会</h3><button type="button" class="card__fav" data-key="https://www.sac.net.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">证券公司自律管理与会员信息</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="参考">参考</button></div><div class="card__links"><a class="card__link" href="https://www.sac.net.cn/" target="_blank" rel="nofollow noopener noreferrer">来源<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article>
   </main>
+
+  <!-- 面包屑导航（位置A：底部广告位②上方；根页为空，频道页=首页 › 频道导航 › 频道名，由 build_breadcrumb 注入） -->
+  <nav class="breadcrumb" aria-label="面包屑导航">
+  <ol class="breadcrumb__list" itemscope itemtype="https://schema.org/BreadcrumbList">
+    <li class="breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <a class="breadcrumb__link" href="https://zhengxie.com.cn/" itemprop="item"><span itemprop="name">首页</span></a>
+      <meta itemprop="position" content="1">
+    </li>
+    <li class="breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <a class="breadcrumb__link" href="https://zhengxie.com.cn/directory/" itemprop="item"><span itemprop="name">频道导航</span></a>
+      <meta itemprop="position" content="2">
+    </li>
+    <li class="breadcrumb__item breadcrumb__item--current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <span itemprop="item" itemid="https://zhengxie.com.cn/directory/stock/"><span itemprop="name">证券导航</span></span>
+      <meta itemprop="position" content="3">
+    </li>
+  </ol>
+</nav>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "首页",
+      "item": "https://zhengxie.com.cn/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "频道导航",
+      "item": "https://zhengxie.com.cn/directory/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "证券导航",
+      "item": "https://zhengxie.com.cn/directory/stock/"
+    }
+  ]
+}
+</script>
 
   <!-- 空结果状态（JS 控制显隐） -->
   <div class="empty-state" id="empty-state" hidden>

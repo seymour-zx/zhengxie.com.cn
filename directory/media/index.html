@@ -40,24 +40,157 @@
     (function(){try{var t=localStorage.getItem('zx_theme');if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();
   </script>
   <!-- JSON-LD 结构化数据：帮助搜索引擎理解站点类型与搜索功能 -->
+  <!-- 根页=WebSite；频道页=WebPage + isPartOf + mainEntity(ItemList)，详见 build_jsonld() -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "音视频媒体导航 - 正协导航",
+  "url": "https://zhengxie.com.cn/directory/media/",
+  "description": "收录直播、长视频、短视频与音乐类主流平台，覆盖国内外音视频内容站点，方便一站式观看与收听。",
+  "isPartOf": {
     "@type": "WebSite",
-    "name": "音视频媒体导航 - 正协导航",
-    "alternateName": "音视频媒体导航 - 正协导航",
-    "url": "https://zhengxie.com.cn/directory/media/",
-    "description": "收录直播、长视频、短视频与音乐类主流平台，覆盖国内外音视频内容站点，方便一站式观看与收听。",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": {
-        "@type": "EntryPoint",
-        "urlTemplate": "https://zhengxie.com.cn/directory/media/#q={search_term_string}"
+    "name": "正协导航",
+    "url": "https://zhengxie.com.cn/"
+  },
+  "mainEntity": {
+    "@type": "ItemList",
+    "numberOfItems": 26,
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "url": "https://www.douyu.com/"
       },
-      "query-input": "required name=search_term_string"
-    }
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "url": "https://www.mgtv.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "url": "https://www.youku.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "url": "https://v.qq.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 5,
+        "url": "https://www.iq.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 6,
+        "url": "https://www.tudou.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 7,
+        "url": "https://movie.douban.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 8,
+        "url": "http://www.fun.tv/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 9,
+        "url": "http://www.360kan.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 10,
+        "url": "https://www.acfun.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 11,
+        "url": "https://www.miguvideo.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 12,
+        "url": "http://www.le.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 13,
+        "url": "https://www.bilibili.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 14,
+        "url": "http://v.baidu.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 15,
+        "url": "https://tv.sohu.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 16,
+        "url": "https://www.pptv.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 17,
+        "url": "https://v.sogou.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 18,
+        "url": "https://www.douyin.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 19,
+        "url": "https://music.163.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 20,
+        "url": "https://music.taihe.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 21,
+        "url": "https://y.qq.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 22,
+        "url": "https://www.yinyuetai.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 23,
+        "url": "https://www.douyin.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 24,
+        "url": "https://www.eggvod.cn/music/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 25,
+        "url": "https://www.nrta.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 26,
+        "url": "https://www.cnsav.com/"
+      }
+    ]
   }
-  </script>
+}
+</script>
 
   <!-- ═══ 统计（GA4 + 百度统计×2，双域名各一份） ═══ -->
   <!-- Google Analytics GA4 -->
@@ -85,7 +218,7 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6434243103158481"
           crossorigin="anonymous"></script>
 </head>
-<body>
+  <body>
   <!-- 无障碍：跳到主内容 -->
   <a href="#cards-container" class="skip-link">跳到主内容</a>
 
@@ -162,6 +295,50 @@
   <main class="cards-container wrap" id="cards-container">
     <article class="card card--t1" data-cat="直播"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">斗</span></div><h3 class="card__title">斗鱼</h3><button type="button" class="card__fav" data-key="https://www.douyu.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="直播">直播</button></div><div class="card__links"><a class="card__link" href="https://www.douyu.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="视频"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">芒</span></div><h3 class="card__title">芒果TV</h3><button type="button" class="card__fav" data-key="https://www.mgtv.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="视频">视频</button></div><div class="card__links"><a class="card__link" href="https://www.mgtv.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="视频"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">优</span></div><h3 class="card__title">优酷</h3><button type="button" class="card__fav" data-key="https://www.youku.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="视频">视频</button></div><div class="card__links"><a class="card__link" href="https://www.youku.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="视频"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">腾</span></div><h3 class="card__title">腾讯视频</h3><button type="button" class="card__fav" data-key="https://v.qq.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="视频">视频</button></div><div class="card__links"><a class="card__link" href="https://v.qq.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="视频"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">I</span></div><h3 class="card__title">iQIYI</h3><button type="button" class="card__fav" data-key="https://www.iq.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="视频">视频</button></div><div class="card__links"><a class="card__link" href="https://www.iq.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="视频"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">土</span></div><h3 class="card__title">土豆</h3><button type="button" class="card__fav" data-key="https://www.tudou.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="视频">视频</button></div><div class="card__links"><a class="card__link" href="https://www.tudou.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="视频"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">豆</span></div><h3 class="card__title">豆瓣电影</h3><button type="button" class="card__fav" data-key="https://movie.douban.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="视频">视频</button></div><div class="card__links"><a class="card__link" href="https://movie.douban.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="视频"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">风</span></div><h3 class="card__title">风行网</h3><button type="button" class="card__fav" data-key="http://www.fun.tv/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="视频">视频</button></div><div class="card__links"><a class="card__link" href="http://www.fun.tv/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="视频"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">3</span></div><h3 class="card__title">360影视</h3><button type="button" class="card__fav" data-key="http://www.360kan.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="视频">视频</button></div><div class="card__links"><a class="card__link" href="http://www.360kan.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="视频"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">A</span></div><h3 class="card__title">AcFun</h3><button type="button" class="card__fav" data-key="https://www.acfun.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="视频">视频</button></div><div class="card__links"><a class="card__link" href="https://www.acfun.cn/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="视频"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">咪</span></div><h3 class="card__title">咪咕视频</h3><button type="button" class="card__fav" data-key="https://www.miguvideo.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="视频">视频</button></div><div class="card__links"><a class="card__link" href="https://www.miguvideo.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="视频"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">乐</span></div><h3 class="card__title">乐视视频</h3><button type="button" class="card__fav" data-key="http://www.le.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="视频">视频</button></div><div class="card__links"><a class="card__link" href="http://www.le.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="视频"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">哔</span></div><h3 class="card__title">哔哩哔哩</h3><button type="button" class="card__fav" data-key="https://www.bilibili.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="视频">视频</button></div><div class="card__links"><a class="card__link" href="https://www.bilibili.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="视频"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">百</span></div><h3 class="card__title">百度视频</h3><button type="button" class="card__fav" data-key="http://v.baidu.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="视频">视频</button></div><div class="card__links"><a class="card__link" href="http://v.baidu.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="视频"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">搜</span></div><h3 class="card__title">搜狐视频</h3><button type="button" class="card__fav" data-key="https://tv.sohu.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="视频">视频</button></div><div class="card__links"><a class="card__link" href="https://tv.sohu.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="视频"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">P</span></div><h3 class="card__title">PPTV</h3><button type="button" class="card__fav" data-key="https://www.pptv.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="视频">视频</button></div><div class="card__links"><a class="card__link" href="https://www.pptv.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="视频"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">搜</span></div><h3 class="card__title">搜狗视频</h3><button type="button" class="card__fav" data-key="https://v.sogou.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="视频">视频</button></div><div class="card__links"><a class="card__link" href="https://v.sogou.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="短视频"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">抖</span></div><h3 class="card__title">抖音短视频</h3><button type="button" class="card__fav" data-key="https://www.douyin.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="短视频">短视频</button></div><div class="card__links"><a class="card__link" href="https://www.douyin.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="音乐"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">网</span></div><h3 class="card__title">网易云音乐</h3><button type="button" class="card__fav" data-key="https://music.163.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="音乐">音乐</button></div><div class="card__links"><a class="card__link" href="https://music.163.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="音乐"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">千</span></div><h3 class="card__title">千千音乐</h3><button type="button" class="card__fav" data-key="https://music.taihe.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="音乐">音乐</button></div><div class="card__links"><a class="card__link" href="https://music.taihe.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="音乐"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">Q</span></div><h3 class="card__title">QQ音乐</h3><button type="button" class="card__fav" data-key="https://y.qq.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="音乐">音乐</button></div><div class="card__links"><a class="card__link" href="https://y.qq.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="音乐"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">音</span></div><h3 class="card__title">音乐Tai</h3><button type="button" class="card__fav" data-key="https://www.yinyuetai.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="音乐">音乐</button></div><div class="card__links"><a class="card__link" href="https://www.yinyuetai.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="短视频"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">抖</span></div><h3 class="card__title">抖音短视频</h3><button type="button" class="card__fav" data-key="https://www.douyin.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="短视频">短视频</button></div><div class="card__links"><a class="card__link" href="https://www.douyin.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="音乐"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">懒</span></div><h3 class="card__title">懒人全网音乐下载</h3><button type="button" class="card__fav" data-key="https://www.eggvod.cn/music/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc"></p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="音乐">音乐</button></div><div class="card__links"><a class="card__link" href="https://www.eggvod.cn/music/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><div class="grid-break" aria-hidden="true"></div><article class="card card--t3" data-cat="参考"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家广播电视总局</h3><button type="button" class="card__fav" data-key="https://www.nrta.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">视听节目与网络音视频管理权威</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="参考">参考</button></div><div class="card__links"><a class="card__link" href="https://www.nrta.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">来源<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t3" data-cat="参考"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">中</span></div><h3 class="card__title">中国网络视听节目服务协会</h3><button type="button" class="card__fav" data-key="https://www.cnsav.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">网络音视频行业自律组织</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="参考">参考</button></div><div class="card__links"><a class="card__link" href="https://www.cnsav.com/" target="_blank" rel="nofollow noopener noreferrer">来源<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article>
   </main>
+
+  <!-- 面包屑导航（位置A：底部广告位②上方；根页为空，频道页=首页 › 频道导航 › 频道名，由 build_breadcrumb 注入） -->
+  <nav class="breadcrumb" aria-label="面包屑导航">
+  <ol class="breadcrumb__list" itemscope itemtype="https://schema.org/BreadcrumbList">
+    <li class="breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <a class="breadcrumb__link" href="https://zhengxie.com.cn/" itemprop="item"><span itemprop="name">首页</span></a>
+      <meta itemprop="position" content="1">
+    </li>
+    <li class="breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <a class="breadcrumb__link" href="https://zhengxie.com.cn/directory/" itemprop="item"><span itemprop="name">频道导航</span></a>
+      <meta itemprop="position" content="2">
+    </li>
+    <li class="breadcrumb__item breadcrumb__item--current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <span itemprop="item" itemid="https://zhengxie.com.cn/directory/media/"><span itemprop="name">音视频媒体导航</span></span>
+      <meta itemprop="position" content="3">
+    </li>
+  </ol>
+</nav>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "首页",
+      "item": "https://zhengxie.com.cn/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "频道导航",
+      "item": "https://zhengxie.com.cn/directory/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "音视频媒体导航",
+      "item": "https://zhengxie.com.cn/directory/media/"
+    }
+  ]
+}
+</script>
 
   <!-- 空结果状态（JS 控制显隐） -->
   <div class="empty-state" id="empty-state" hidden>

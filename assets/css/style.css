@@ -748,3 +748,53 @@ input, textarea, select { font-family: inherit; }
 [data-theme="dark"] .filter-tag { background: var(--bg-warm); }
 [data-theme="dark"] .card__tag { background: var(--bg-warm); }
 [data-theme="dark"] .footer__random { background: transparent; }
+
+/* ═══ 面包屑导航（B 档新增 + 底部位置改造，红/金奢华风，亮暗双模式） ═══ */
+.breadcrumb {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 14px 20px 12px;
+  border-top: 1px solid rgba(197, 165, 114, .4);
+  font-family: var(--sans);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.breadcrumb__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.breadcrumb__item {
+  display: inline-flex;
+  align-items: center;
+  color: var(--text-sub);
+}
+.breadcrumb__item:not(:last-child)::after {
+  content: "/";
+  margin: 0 8px;
+  color: var(--gold);
+  font-weight: 400;
+}
+.breadcrumb__link {
+  color: var(--red);
+  text-decoration: none;
+  transition: color .15s ease;
+}
+.breadcrumb__link:hover {
+  color: var(--red-deep);
+  text-decoration: underline;
+}
+.breadcrumb__item--current {
+  color: var(--red);
+  font-weight: 600;
+}
+/* 暗色模式 */
+[data-theme="dark"] .breadcrumb__link { color: var(--gold-bright); }
+[data-theme="dark"] .breadcrumb__link:hover { color: var(--gold); }
+[data-theme="dark"] .breadcrumb__item { color: var(--text-sub); }
+[data-theme="dark"] .breadcrumb__item::after { color: var(--gold); }
+[data-theme="dark"] .breadcrumb__item--current { color: var(--red); }

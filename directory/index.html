@@ -6,21 +6,21 @@
   <!-- 注意：不要设全局 <meta name="referrer" content="no-referrer">——它会让百度统计/GA4 收不到来源站(referer 被禁用)。
        本站仅在卡片图片上用 referrerpolicy="no-referrer" 单独压制图片防盗链；卡片外链/引擎跳转默认发 Referer（见 link_attr 规则）。 -->
   <title>频道导航 - 正协导航</title>
-  <meta name="description" content="正协导航频道中心：按垂类精选站点，AI 工具导航、政协专题导航一目了然，点击即可进入对应频道，正协导航 - 让每一次寻找，都不止于找到。">
+  <meta name="description" content="正协导航频道导航：按垂类精选站点，AI 工具导航、政协专题导航一目了然，点击即可进入对应频道，正协导航 - 让每一次寻找，都不止于找到。">
   <meta name="keywords" content="正协导航,频道导航,AI工具导航,政协专题导航,网站导航,垂类导航,精选收录">
   <meta name="author" content="正协导航">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://zhengxie.com.cn/directory/">
   <!-- 社交分享 -->
   <meta property="og:title" content="频道导航 - 正协导航">
-  <meta property="og:description" content="正协导航频道中心：AI 工具导航、政协专题导航等垂类频道，精选收录、分类清晰、一键直达。">
+  <meta property="og:description" content="正协导航频道导航：AI 工具导航、政协专题导航等垂类频道，精选收录、分类清晰、一键直达。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://zhengxie.com.cn/directory/">
   <meta property="og:image" content="https://zhengxie.com.cn/assets/images/logo.svg">
   <meta property="og:site_name" content="正协导航">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="频道导航 - 正协导航">
-  <meta name="twitter:description" content="正协导航频道中心：AI 工具导航、政协专题导航等垂类频道，精选收录、分类清晰、一键直达。">
+  <meta name="twitter:description" content="正协导航频道导航：AI 工具导航、政协专题导航等垂类频道，精选收录、分类清晰、一键直达。">
   <!-- PWA / 移动端 -->
   <meta name="theme-color" content="#9E1B22" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0D0C0E" media="(prefers-color-scheme: dark)">
@@ -44,7 +44,7 @@
   {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "name": "正协导航 · 频道中心",
+    "name": "正协导航 · 频道导航",
     "url": "https://zhengxie.com.cn/directory/",
     "description": "正协导航频道中心：按垂类精选站点，AI 工具导航、政协专题导航等频道，精选收录、分类清晰、一键直达。",
     "hasPart": [
@@ -147,6 +147,17 @@
   <!-- ═══ Google AdSense 加载器（全页仅此一份，async 不阻塞渲染） ═══ -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6434243103158481"
           crossorigin="anonymous"></script>
+  <!-- BreadcrumbList 结构化数据：首页 › 频道导航 -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "首页", "item": "https://zhengxie.com.cn/"},
+    {"@type": "ListItem", "position": 2, "name": "频道导航", "item": "https://zhengxie.com.cn/directory/"}
+  ]
+}
+  </script>
 </head>
 <body>
   <!-- 无障碍：跳到主内容 -->
@@ -275,6 +286,20 @@
       <div class="card__links"><a class="card__link" href="https://zhengxie.com.cn/directory/world-media/" target="_self">进入频道<span class="card__link-arrow" aria-hidden="true">↗</span></a></div>
     </article>
   </main>
+
+  <!-- 面包屑导航（位置A：底部广告位上方；首页 › 频道导航） -->
+  <nav class="breadcrumb" aria-label="面包屑导航">
+    <ol class="breadcrumb__list" itemscope itemtype="https://schema.org/BreadcrumbList">
+      <li class="breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a class="breadcrumb__link" href="https://zhengxie.com.cn/" itemprop="item"><span itemprop="name">首页</span></a>
+        <meta itemprop="position" content="1">
+      </li>
+      <li class="breadcrumb__item breadcrumb__item--current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <span itemprop="item" itemid="https://zhengxie.com.cn/directory/"><span itemprop="name">频道导航</span></span>
+        <meta itemprop="position" content="2">
+      </li>
+    </ol>
+  </nav>
 
   <!-- ═══ Footer ═══ -->
   <footer class="footer">

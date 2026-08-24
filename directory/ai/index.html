@@ -40,24 +40,57 @@
     (function(){try{var t=localStorage.getItem('zx_theme');if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();
   </script>
   <!-- JSON-LD 结构化数据：帮助搜索引擎理解站点类型与搜索功能 -->
+  <!-- 根页=WebSite；频道页=WebPage + isPartOf + mainEntity(ItemList)，详见 build_jsonld() -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "AI 工具导航 - 正协导航",
+  "url": "https://zhengxie.com.cn/directory/ai/",
+  "description": "正协导航 AI 频道：精选 ChatGPT、DeepSeek、Midjourney、通义千问、Kimi、文心一言等 AI 工具与大模型，让每一次寻找，都不止于找到。",
+  "isPartOf": {
     "@type": "WebSite",
-    "name": "AI 工具导航 - 正协导航",
-    "alternateName": "AI 工具导航 - 正协导航",
-    "url": "https://zhengxie.com.cn/directory/ai/",
-    "description": "正协导航 AI 频道：精选 ChatGPT、DeepSeek、Midjourney、通义千问、Kimi、文心一言等 AI 工具与大模型，让每一次寻找，都不止于找到。",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": {
-        "@type": "EntryPoint",
-        "urlTemplate": "https://zhengxie.com.cn/directory/ai/#q={search_term_string}"
+    "name": "正协导航",
+    "url": "https://zhengxie.com.cn/"
+  },
+  "mainEntity": {
+    "@type": "ItemList",
+    "numberOfItems": 6,
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "url": "https://chat.openai.com/"
       },
-      "query-input": "required name=search_term_string"
-    }
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "url": "https://www.deepseek.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "url": "https://www.midjourney.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "url": "https://tongyi.aliyun.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 5,
+        "url": "https://kimi.moonshot.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 6,
+        "url": "https://yiyan.baidu.com/"
+      }
+    ]
   }
-  </script>
+}
+</script>
 
   <!-- ═══ 统计（GA4 + 百度统计×2，双域名各一份） ═══ -->
   <!-- Google Analytics GA4 -->
@@ -85,7 +118,7 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6434243103158481"
           crossorigin="anonymous"></script>
 </head>
-<body>
+  <body>
   <!-- 无障碍：跳到主内容 -->
   <a href="#cards-container" class="skip-link">跳到主内容</a>
 
@@ -162,6 +195,50 @@
   <main class="cards-container wrap" id="cards-container">
     <article class="card card--t1" data-cat="AI智能"><div class="card__media"><img class="card__media-img" src="https://chat.openai.com/favicon.ico" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()"></div><h3 class="card__title">ChatGPT</h3><button type="button" class="card__fav" data-key="https://chat.openai.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">OpenAI 出品的对话式 AI，支持多模态与代码。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="AI智能">AI智能</button><button type="button" class="card__tag" data-tag="AI">AI</button><button type="button" class="card__tag" data-tag="聊天">聊天</button></div><div class="card__links"><a class="card__link" href="https://chat.openai.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="AI智能"><div class="card__media"><img class="card__media-img" src="https://www.deepseek.com/favicon.ico" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()"></div><h3 class="card__title">DeepSeek</h3><button type="button" class="card__fav" data-key="https://www.deepseek.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">国产开源大模型，推理能力强。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="AI智能">AI智能</button><button type="button" class="card__tag" data-tag="AI">AI</button><button type="button" class="card__tag" data-tag="大模型">大模型</button></div><div class="card__links"><a class="card__link" href="https://www.deepseek.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><div class="grid-break" aria-hidden="true"></div><article class="card card--t2" data-cat="AI智能"><div class="card__media"><img class="card__media-img" src="https://www.midjourney.com/favicon.ico" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()"></div><h3 class="card__title">Midjourney</h3><button type="button" class="card__fav" data-key="https://www.midjourney.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">AI 绘画工具，生成高质量图像。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="AI智能">AI智能</button><button type="button" class="card__tag" data-tag="AI">AI</button><button type="button" class="card__tag" data-tag="绘画">绘画</button></div><div class="card__links"><a class="card__link" href="https://www.midjourney.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t2" data-cat="AI智能"><div class="card__media"><img class="card__media-img" src="https://tongyi.aliyun.com/favicon.ico" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()"></div><h3 class="card__title">通义千问</h3><button type="button" class="card__fav" data-key="https://tongyi.aliyun.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">阿里出品的大语言模型。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="AI智能">AI智能</button><button type="button" class="card__tag" data-tag="AI">AI</button><button type="button" class="card__tag" data-tag="大模型">大模型</button></div><div class="card__links"><a class="card__link" href="https://tongyi.aliyun.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><div class="grid-break" aria-hidden="true"></div><article class="card card--t3" data-cat="AI智能"><div class="card__media"><img class="card__media-img" src="https://kimi.moonshot.cn/favicon.ico" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()"></div><h3 class="card__title">Kimi</h3><button type="button" class="card__fav" data-key="https://kimi.moonshot.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">月之暗面出品的超长上下文助手。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="AI智能">AI智能</button><button type="button" class="card__tag" data-tag="AI">AI</button><button type="button" class="card__tag" data-tag="助手">助手</button></div><div class="card__links"><a class="card__link" href="https://kimi.moonshot.cn/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t3" data-cat="AI智能"><div class="card__media"><img class="card__media-img" src="https://yiyan.baidu.com/favicon.ico" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()"></div><h3 class="card__title">文心一言</h3><button type="button" class="card__fav" data-key="https://yiyan.baidu.com/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">百度出品的大模型对话工具。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="AI智能">AI智能</button><button type="button" class="card__tag" data-tag="AI">AI</button><button type="button" class="card__tag" data-tag="助手">助手</button></div><div class="card__links"><a class="card__link" href="https://yiyan.baidu.com/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article>
   </main>
+
+  <!-- 面包屑导航（位置A：底部广告位②上方；根页为空，频道页=首页 › 频道导航 › 频道名，由 build_breadcrumb 注入） -->
+  <nav class="breadcrumb" aria-label="面包屑导航">
+  <ol class="breadcrumb__list" itemscope itemtype="https://schema.org/BreadcrumbList">
+    <li class="breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <a class="breadcrumb__link" href="https://zhengxie.com.cn/" itemprop="item"><span itemprop="name">首页</span></a>
+      <meta itemprop="position" content="1">
+    </li>
+    <li class="breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <a class="breadcrumb__link" href="https://zhengxie.com.cn/directory/" itemprop="item"><span itemprop="name">频道导航</span></a>
+      <meta itemprop="position" content="2">
+    </li>
+    <li class="breadcrumb__item breadcrumb__item--current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <span itemprop="item" itemid="https://zhengxie.com.cn/directory/ai/"><span itemprop="name">AI 工具导航</span></span>
+      <meta itemprop="position" content="3">
+    </li>
+  </ol>
+</nav>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "首页",
+      "item": "https://zhengxie.com.cn/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "频道导航",
+      "item": "https://zhengxie.com.cn/directory/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "AI 工具导航",
+      "item": "https://zhengxie.com.cn/directory/ai/"
+    }
+  ]
+}
+</script>
 
   <!-- 空结果状态（JS 控制显隐） -->
   <div class="empty-state" id="empty-state" hidden>

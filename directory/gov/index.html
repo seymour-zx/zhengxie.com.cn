@@ -40,24 +40,447 @@
     (function(){try{var t=localStorage.getItem('zx_theme');if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();
   </script>
   <!-- JSON-LD 结构化数据：帮助搜索引擎理解站点类型与搜索功能 -->
+  <!-- 根页=WebSite；频道页=WebPage + isPartOf + mainEntity(ItemList)，详见 build_jsonld() -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "中国政府网站导航 - 正协导航",
+  "url": "https://zhengxie.com.cn/directory/gov/",
+  "description": "正协导航收录各级政府与政务服务平台：国务院及组成部门、各省市党委、人大、政府机构、民主党派等官方入口，权威可查、一键直达。正协导航 - 让每一次寻找，都不止于找到。",
+  "isPartOf": {
     "@type": "WebSite",
-    "name": "中国政府网站导航 - 正协导航",
-    "alternateName": "中国政府网站导航 - 正协导航",
-    "url": "https://zhengxie.com.cn/directory/gov/",
-    "description": "正协导航收录各级政府与政务服务平台：国务院及组成部门、各省市党委、人大、政府机构、民主党派等官方入口，权威可查、一键直达。正协导航 - 让每一次寻找，都不止于找到。",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": {
-        "@type": "EntryPoint",
-        "urlTemplate": "https://zhengxie.com.cn/directory/gov/#q={search_term_string}"
+    "name": "正协导航",
+    "url": "https://zhengxie.com.cn/"
+  },
+  "mainEntity": {
+    "@type": "ItemList",
+    "numberOfItems": 84,
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "url": "http://www.gov.cn/"
       },
-      "query-input": "required name=search_term_string"
-    }
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "url": "https://www.fmprc.gov.cn/web/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "url": "http://www.mod.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "url": "https://www.ndrc.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 5,
+        "url": "http://www.moe.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 6,
+        "url": "http://www.moe.gov.cn/jyb_sy/China_Language/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 7,
+        "url": "http://www.most.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 8,
+        "url": "https://www.miit.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 9,
+        "url": "http://www.cnsa.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 10,
+        "url": "http://www.caea.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 11,
+        "url": "http://www.neac.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 12,
+        "url": "https://www.mps.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 13,
+        "url": "http://www.mca.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 14,
+        "url": "http://www.moj.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 15,
+        "url": "http://www.mof.gov.cn/index.htm"
+      },
+      {
+        "@type": "ListItem",
+        "position": 16,
+        "url": "http://www.mohrss.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 17,
+        "url": "http://www.mnr.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 18,
+        "url": "http://www.mee.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 19,
+        "url": "http://nnsa.mee.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 20,
+        "url": "http://www.mohurd.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 21,
+        "url": "http://www.mot.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 22,
+        "url": "http://www.mwr.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 23,
+        "url": "http://www.moa.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 24,
+        "url": "http://www.mofcom.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 25,
+        "url": "https://www.mct.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 26,
+        "url": "http://www.nhc.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 27,
+        "url": "https://www.mct.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 28,
+        "url": "http://www.mem.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 29,
+        "url": "http://www.pbc.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 30,
+        "url": "http://www.audit.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 31,
+        "url": "http://www.sasac.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 32,
+        "url": "http://www.customs.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 33,
+        "url": "http://www.chinatax.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 34,
+        "url": "http://www.samr.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 35,
+        "url": "http://www.cnca.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 36,
+        "url": "http://www.sac.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 37,
+        "url": "http://www.nrta.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 38,
+        "url": "http://www.sport.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 39,
+        "url": "http://www.stats.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 40,
+        "url": "http://www.cidca.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 41,
+        "url": "http://www.nhsa.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 42,
+        "url": "http://www.counsellor.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 43,
+        "url": "http://www.ggj.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 44,
+        "url": "http://www.ncac.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 45,
+        "url": "http://www.sara.gov.cn/gjzjswjhtml/index.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 46,
+        "url": "https://www.hmo.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 47,
+        "url": "http://www.gov.cn/guoqing/2018-06/22/content_5300522.htm"
+      },
+      {
+        "@type": "ListItem",
+        "position": 48,
+        "url": "http://www.gqb.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 49,
+        "url": "http://www.gwytb.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 50,
+        "url": "http://www.cac.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 51,
+        "url": "http://www.scio.gov.cn/index.htm"
+      },
+      {
+        "@type": "ListItem",
+        "position": 52,
+        "url": "http://203.192.6.89/xhs/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 53,
+        "url": "http://www.cas.ac.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 54,
+        "url": "http://cass.cssn.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 55,
+        "url": "http://www.cae.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 56,
+        "url": "https://www.drc.gov.cn/default.aspx"
+      },
+      {
+        "@type": "ListItem",
+        "position": 57,
+        "url": "http://www.cnr.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 58,
+        "url": "http://www.cma.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 59,
+        "url": "http://www.cbirc.gov.cn/cn/view/pages/index/index.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 60,
+        "url": "http://www.csrc.gov.cn/pub/newsite/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 61,
+        "url": "https://www.gjxfj.gov.cn/gjxfj/index.htm"
+      },
+      {
+        "@type": "ListItem",
+        "position": 62,
+        "url": "http://www.lswz.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 63,
+        "url": "http://www.nea.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 64,
+        "url": "http://www.sastind.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 65,
+        "url": "http://www.tobacco.gov.cn/gjyc/index.shtml"
+      },
+      {
+        "@type": "ListItem",
+        "position": 66,
+        "url": "https://www.nia.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 67,
+        "url": "http://www.forestry.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 68,
+        "url": "http://www.forestry.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 69,
+        "url": "http://www.nra.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 70,
+        "url": "http://www.caac.gov.cn/index.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 71,
+        "url": "http://www.spb.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 72,
+        "url": "http://www.ncha.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 73,
+        "url": "http://www.satcm.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 74,
+        "url": "http://www.chinacoal-safety.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 75,
+        "url": "http://www.safe.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 76,
+        "url": "https://www.nmpa.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 77,
+        "url": "https://www.cnipa.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 78,
+        "url": "https://www.saac.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 79,
+        "url": "http://www.gjbmj.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 80,
+        "url": "https://www.oscca.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 81,
+        "url": "http://www.locpg.hk/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 82,
+        "url": "http://www.zlb.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 83,
+        "url": "https://www.gov.cn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 84,
+        "url": "http://www.scopsr.gov.cn/"
+      }
+    ]
   }
-  </script>
+}
+</script>
 
   <!-- ═══ 统计（GA4 + 百度统计×2，双域名各一份） ═══ -->
   <!-- Google Analytics GA4 -->
@@ -85,7 +508,7 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6434243103158481"
           crossorigin="anonymous"></script>
 </head>
-<body>
+  <body>
   <!-- 无障碍：跳到主内容 -->
   <a href="#cards-container" class="skip-link">跳到主内容</a>
 
@@ -162,6 +585,50 @@
   <main class="cards-container wrap" id="cards-container">
     <article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">中</span></div><h3 class="card__title">中国政府网</h3><button type="button" class="card__fav" data-key="http://www.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">外</span></div><h3 class="card__title">外交部</h3><button type="button" class="card__fav" data-key="https://www.fmprc.gov.cn/web/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="https://www.fmprc.gov.cn/web/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国防部</h3><button type="button" class="card__fav" data-key="http://www.mod.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.mod.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家发展和改革委员会</h3><button type="button" class="card__fav" data-key="https://www.ndrc.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="https://www.ndrc.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">教</span></div><h3 class="card__title">教育部</h3><button type="button" class="card__fav" data-key="http://www.moe.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.moe.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">(</span></div><h3 class="card__title">(国家语言文字工作委员会)</h3><button type="button" class="card__fav" data-key="http://www.moe.gov.cn/jyb_sy/China_Language/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.moe.gov.cn/jyb_sy/China_Language/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">科</span></div><h3 class="card__title">科学技术部</h3><button type="button" class="card__fav" data-key="http://www.most.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.most.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">工</span></div><h3 class="card__title">工业和信息化部</h3><button type="button" class="card__fav" data-key="https://www.miit.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="https://www.miit.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">(</span></div><h3 class="card__title">(国家航天局)</h3><button type="button" class="card__fav" data-key="http://www.cnsa.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.cnsa.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">(</span></div><h3 class="card__title">(国家原子能机构)</h3><button type="button" class="card__fav" data-key="http://www.caea.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.caea.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家民族事务委员会</h3><button type="button" class="card__fav" data-key="http://www.neac.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.neac.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">公</span></div><h3 class="card__title">公安部</h3><button type="button" class="card__fav" data-key="https://www.mps.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="https://www.mps.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">民</span></div><h3 class="card__title">民政部</h3><button type="button" class="card__fav" data-key="http://www.mca.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.mca.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">司</span></div><h3 class="card__title">司法部</h3><button type="button" class="card__fav" data-key="http://www.moj.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.moj.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">财</span></div><h3 class="card__title">财政部</h3><button type="button" class="card__fav" data-key="http://www.mof.gov.cn/index.htm" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.mof.gov.cn/index.htm" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">人</span></div><h3 class="card__title">人力资源和社会保障部</h3><button type="button" class="card__fav" data-key="http://www.mohrss.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.mohrss.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">自</span></div><h3 class="card__title">自然资源部</h3><button type="button" class="card__fav" data-key="http://www.mnr.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.mnr.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">生</span></div><h3 class="card__title">生态环境部</h3><button type="button" class="card__fav" data-key="http://www.mee.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.mee.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">(</span></div><h3 class="card__title">(国家核安全局)</h3><button type="button" class="card__fav" data-key="http://nnsa.mee.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://nnsa.mee.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">住</span></div><h3 class="card__title">住房和城乡建设部</h3><button type="button" class="card__fav" data-key="http://www.mohurd.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.mohurd.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">交</span></div><h3 class="card__title">交通运输部</h3><button type="button" class="card__fav" data-key="http://www.mot.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.mot.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">水</span></div><h3 class="card__title">水利部</h3><button type="button" class="card__fav" data-key="http://www.mwr.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.mwr.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">农</span></div><h3 class="card__title">农业农村部</h3><button type="button" class="card__fav" data-key="http://www.moa.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.moa.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">商</span></div><h3 class="card__title">商务部</h3><button type="button" class="card__fav" data-key="http://www.mofcom.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.mofcom.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">文</span></div><h3 class="card__title">文化和旅游部</h3><button type="button" class="card__fav" data-key="https://www.mct.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="https://www.mct.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家卫生健康委员会</h3><button type="button" class="card__fav" data-key="http://www.nhc.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.nhc.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">退</span></div><h3 class="card__title">退役军人事务部</h3><button type="button" class="card__fav" data-key="https://www.mct.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="https://www.mct.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">应</span></div><h3 class="card__title">应急管理部</h3><button type="button" class="card__fav" data-key="http://www.mem.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.mem.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">中</span></div><h3 class="card__title">中国人民银行</h3><button type="button" class="card__fav" data-key="http://www.pbc.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.pbc.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">审</span></div><h3 class="card__title">审计署</h3><button type="button" class="card__fav" data-key="http://www.audit.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.audit.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国有资产监督管理委员会</h3><button type="button" class="card__fav" data-key="http://www.sasac.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.sasac.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">海</span></div><h3 class="card__title">海关总署</h3><button type="button" class="card__fav" data-key="http://www.customs.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.customs.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家税务总局</h3><button type="button" class="card__fav" data-key="http://www.chinatax.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.chinatax.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家市场监督管理总局</h3><button type="button" class="card__fav" data-key="http://www.samr.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.samr.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">(</span></div><h3 class="card__title">(国家认证认可监督管理委员会)</h3><button type="button" class="card__fav" data-key="http://www.cnca.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.cnca.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">(</span></div><h3 class="card__title">(国家标准化管理委员会)</h3><button type="button" class="card__fav" data-key="http://www.sac.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.sac.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家广播电视总局</h3><button type="button" class="card__fav" data-key="http://www.nrta.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.nrta.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家体育总局</h3><button type="button" class="card__fav" data-key="http://www.sport.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.sport.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家统计局</h3><button type="button" class="card__fav" data-key="http://www.stats.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.stats.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家国际发展合作署</h3><button type="button" class="card__fav" data-key="http://www.cidca.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.cidca.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家医疗保障局</h3><button type="button" class="card__fav" data-key="http://www.nhsa.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.nhsa.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国务院参事室</h3><button type="button" class="card__fav" data-key="http://www.counsellor.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.counsellor.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家机关事务管理局</h3><button type="button" class="card__fav" data-key="http://www.ggj.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.ggj.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家版权局网</h3><button type="button" class="card__fav" data-key="http://www.ncac.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.ncac.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家宗教事务局</h3><button type="button" class="card__fav" data-key="http://www.sara.gov.cn/gjzjswjhtml/index.html" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.sara.gov.cn/gjzjswjhtml/index.html" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国务院港澳事务办公室</h3><button type="button" class="card__fav" data-key="https://www.hmo.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="https://www.hmo.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国务院研究室</h3><button type="button" class="card__fav" data-key="http://www.gov.cn/guoqing/2018-06/22/content_5300522.htm" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.gov.cn/guoqing/2018-06/22/content_5300522.htm" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国务院侨务办公室</h3><button type="button" class="card__fav" data-key="http://www.gqb.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.gqb.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国务院台湾事务办公室</h3><button type="button" class="card__fav" data-key="http://www.gwytb.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.gwytb.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">中</span></div><h3 class="card__title">中共中央网络安全和信息化委员会办公室</h3><button type="button" class="card__fav" data-key="http://www.cac.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.cac.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国务院新闻办公室</h3><button type="button" class="card__fav" data-key="http://www.scio.gov.cn/index.htm" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.scio.gov.cn/index.htm" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">新</span></div><h3 class="card__title">新华通讯社</h3><button type="button" class="card__fav" data-key="http://203.192.6.89/xhs/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://203.192.6.89/xhs/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">中</span></div><h3 class="card__title">中国科学院</h3><button type="button" class="card__fav" data-key="http://www.cas.ac.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.cas.ac.cn/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">中</span></div><h3 class="card__title">中国社会科学院</h3><button type="button" class="card__fav" data-key="http://cass.cssn.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://cass.cssn.cn/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">中</span></div><h3 class="card__title">中国工程院</h3><button type="button" class="card__fav" data-key="http://www.cae.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.cae.cn/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国务院发展研究中心</h3><button type="button" class="card__fav" data-key="https://www.drc.gov.cn/default.aspx" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="https://www.drc.gov.cn/default.aspx" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">中</span></div><h3 class="card__title">中央广播电视总台</h3><button type="button" class="card__fav" data-key="http://www.cnr.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.cnr.cn/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">中</span></div><h3 class="card__title">中国气象局</h3><button type="button" class="card__fav" data-key="http://www.cma.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.cma.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">中</span></div><h3 class="card__title">中国银行保险监督管理委员会</h3><button type="button" class="card__fav" data-key="http://www.cbirc.gov.cn/cn/view/pages/index/index.html" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.cbirc.gov.cn/cn/view/pages/index/index.html" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">中</span></div><h3 class="card__title">中国证券监督管理委员会</h3><button type="button" class="card__fav" data-key="http://www.csrc.gov.cn/pub/newsite/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.csrc.gov.cn/pub/newsite/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家信访局</h3><button type="button" class="card__fav" data-key="https://www.gjxfj.gov.cn/gjxfj/index.htm" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="https://www.gjxfj.gov.cn/gjxfj/index.htm" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家粮食和物资储备局</h3><button type="button" class="card__fav" data-key="http://www.lswz.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.lswz.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家能源局</h3><button type="button" class="card__fav" data-key="http://www.nea.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.nea.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家国防科技工业局</h3><button type="button" class="card__fav" data-key="http://www.sastind.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.sastind.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家烟草专卖局</h3><button type="button" class="card__fav" data-key="http://www.tobacco.gov.cn/gjyc/index.shtml" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.tobacco.gov.cn/gjyc/index.shtml" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家移民管理局</h3><button type="button" class="card__fav" data-key="https://www.nia.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="https://www.nia.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家林业和草原局</h3><button type="button" class="card__fav" data-key="http://www.forestry.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.forestry.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">(</span></div><h3 class="card__title">(国家公园管理局)</h3><button type="button" class="card__fav" data-key="http://www.forestry.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.forestry.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家铁路局</h3><button type="button" class="card__fav" data-key="http://www.nra.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.nra.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">中</span></div><h3 class="card__title">中国民用航空局</h3><button type="button" class="card__fav" data-key="http://www.caac.gov.cn/index.html" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.caac.gov.cn/index.html" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家邮政局</h3><button type="button" class="card__fav" data-key="http://www.spb.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.spb.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家文物局</h3><button type="button" class="card__fav" data-key="http://www.ncha.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.ncha.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家中医药管理局</h3><button type="button" class="card__fav" data-key="http://www.satcm.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.satcm.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家矿山安全监察局</h3><button type="button" class="card__fav" data-key="http://www.chinacoal-safety.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.chinacoal-safety.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家外汇管理局</h3><button type="button" class="card__fav" data-key="http://www.safe.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.safe.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家药品监督管理局</h3><button type="button" class="card__fav" data-key="https://www.nmpa.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="https://www.nmpa.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家知识产权局</h3><button type="button" class="card__fav" data-key="https://www.cnipa.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="https://www.cnipa.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家档案局</h3><button type="button" class="card__fav" data-key="https://www.saac.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="https://www.saac.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家保密局</h3><button type="button" class="card__fav" data-key="http://www.gjbmj.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.gjbmj.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">国</span></div><h3 class="card__title">国家密码管理局</h3><button type="button" class="card__fav" data-key="https://www.oscca.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="https://www.oscca.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">香</span></div><h3 class="card__title">香港中联办</h3><button type="button" class="card__fav" data-key="http://www.locpg.hk/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.locpg.hk/" target="_blank" rel="nofollow noopener noreferrer">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t1" data-cat="国务院"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">澳</span></div><h3 class="card__title">澳门中联办</h3><button type="button" class="card__fav" data-key="http://www.zlb.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">中国政府机构官方入口。</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="国务院">国务院</button><button type="button" class="card__tag" data-tag="中国政府">中国政府</button><button type="button" class="card__tag" data-tag="政务">政务</button></div><div class="card__links"><a class="card__link" href="http://www.zlb.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">官网<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><div class="grid-break" aria-hidden="true"></div><article class="card card--t3" data-cat="参考"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">中</span></div><h3 class="card__title">中国政府网·国务院组织机构</h3><button type="button" class="card__fav" data-key="https://www.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">国务院组成部门与机构序列的权威发布源</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="参考">参考</button></div><div class="card__links"><a class="card__link" href="https://www.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">来源<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article><article class="card card--t3" data-cat="参考"><div class="card__media"><span class="card__media-fallback" aria-hidden="true">中</span></div><h3 class="card__title">中央机构编制委员会办公室</h3><button type="button" class="card__fav" data-key="http://www.scopsr.gov.cn/" aria-label="收藏/取消收藏" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><p class="card__desc">机关事业单位机构编制权威核定</p><div class="card__tags"><button type="button" class="card__tag card__tag--cat" data-tag="参考">参考</button></div><div class="card__links"><a class="card__link" href="http://www.scopsr.gov.cn/" target="_blank" rel="noopener" referrerpolicy="origin">来源<span class="card__link-arrow" aria-hidden="true">↗</span></a></div></article>
   </main>
+
+  <!-- 面包屑导航（位置A：底部广告位②上方；根页为空，频道页=首页 › 频道导航 › 频道名，由 build_breadcrumb 注入） -->
+  <nav class="breadcrumb" aria-label="面包屑导航">
+  <ol class="breadcrumb__list" itemscope itemtype="https://schema.org/BreadcrumbList">
+    <li class="breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <a class="breadcrumb__link" href="https://zhengxie.com.cn/" itemprop="item"><span itemprop="name">首页</span></a>
+      <meta itemprop="position" content="1">
+    </li>
+    <li class="breadcrumb__item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <a class="breadcrumb__link" href="https://zhengxie.com.cn/directory/" itemprop="item"><span itemprop="name">频道导航</span></a>
+      <meta itemprop="position" content="2">
+    </li>
+    <li class="breadcrumb__item breadcrumb__item--current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <span itemprop="item" itemid="https://zhengxie.com.cn/directory/gov/"><span itemprop="name">中国政府网站导航</span></span>
+      <meta itemprop="position" content="3">
+    </li>
+  </ol>
+</nav>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "首页",
+      "item": "https://zhengxie.com.cn/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "频道导航",
+      "item": "https://zhengxie.com.cn/directory/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "中国政府网站导航",
+      "item": "https://zhengxie.com.cn/directory/gov/"
+    }
+  ]
+}
+</script>
 
   <!-- 空结果状态（JS 控制显隐） -->
   <div class="empty-state" id="empty-state" hidden>
