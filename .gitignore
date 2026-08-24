@@ -2,3 +2,12 @@
 assets/*/__pycache__/
 __pycache__/
 *.pyc
+
+# 回档备份：本地可回档即可，不进 Git（含 MANIFEST.txt，整体忽略）
+.workbuddy/backups/
+
+# 临时校验/调试脚本
+*.verify.tmp.py
+
+# 注意：.workbuddy/memory/、.workbuddy/docs/、.workbuddy/skills/ 等"强制同步文件"
+# 必须进 Git（跨设备可读）。不要在此忽略它们。详见 .workbuddy/docs/execution-rules.md 规则 1。
