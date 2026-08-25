@@ -168,10 +168,13 @@
 > 根因：agent 为单次任务新建的 md（方案/计划/审计/纪要）若建完就裸放在 `docs/` 当永久文件，会重新制造"多 md 关联漂移"——正是 5.4 要消除的顽疾。故新建 md **默认不是终点**，必须有处置出口。
 
 - **处置优先级（融合优先，禁止裸放）**：
-  1. **融合进权威源后删废料**：方案/计划类 md（如 file-governance-plan、dev-process-plan、execution-rules）执行完后，实质内容并入 `README` / `CONVENTIONS` / `skills/SKILL` 之一，原文件**删除**（删除前须回档，见 5.3）。
-  2. **降级为 L2 归档**：审计报告 / 一次性交付物（seo-audit-*.md、artifacts/report.md、根 report.md、根 overview.md）无规定内容可融合，则明确归 L2 不主动读，可留作归档或删（删前可回档）。
+  1. **融合进权威源后删废料**：方案/计划类 md（如 file-governance-plan、dev-process-plan、execution-rules）执行完后，实质内容并入 `README` / `CONVENTIONS` / `skills/SKILL` 之一，原文件**删除**。
+  2. **降级为 L2 归档**：审计报告 / 一次性交付物（seo-audit-*.md、artifacts/report.md、根 report.md、根 overview.md）无规定内容可融合，则明确归 L2 不主动读，可留作归档或删。
   3. **保留为索引层**：提炼型 md（如 memory/changelog.md）有长期检索价值，保留并定为 L1。
   4. **权威源本身**（CONVENTIONS / README / SKILL）保留，是规定唯一归宿。
-- **删除纪律**：删任何 md 前必须先回档（`.workbuddy/backups/`，带 MANIFEST 注明"融合完成后的废料/原因"），再删活动文件；删除动作需用户确认（文件改动铁律）。
-- **禁止**：任务 md 建完即裸放 `docs/` 当永久文件、不处置；或删除前不回档导致不可追溯。
+- **删除纪律（已精简，2026-08-25）**：原"删前必回档 + 用户确认"已失效——
+  - *回档*：被 `backup.md` 第 2 铁律（全空间逐字符备份）取代，删除后仍能从 backup.md 完整恢复，不再强制每次删前单独回档到 `.workbuddy/backups/`；回档仅作可选的可追溯手段保留。
+  - *确认*：被「文件改动铁律」（用户首次明确同意前不修改/删除任何文件）取代，已覆盖全部文件的删改确认。
+  - 故删除动作只需满足「文件改动铁律首次确认 + 优先融合/降级处置」，不再强制删前回档。
+- **禁止**：任务 md 建完即裸放 `docs/` 当永久文件、不处置（核心断层仍在，backup/确认不能替代"处置出口"）。
 - **实例**：file-governance-plan.md（2026-08-24 任务交付方案）已并入本节 5.1–5.5 + changelog + 当日日志，原文件回档后删除，符合本纪律。
