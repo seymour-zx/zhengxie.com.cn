@@ -204,9 +204,8 @@
 └── .workbuddy/              项目级同步数据（随仓库，跨设备一致）
     ├── skills/
     │   ├── zhengxie-seo-standard/SKILL.md   SEO 标准手册（已注册技能，SEO 唯一权威源）
-    │   └── zhengxie-subpage-sop/
-    │       ├── SKILL.md                     子页新增全流程 SOP（操作步骤类，与 README 决策规范互补）
-    │       └── IMAGE_OPTIMIZATION.md        图片压图规范（技术备忘；权威规则见 SKILL.md「图片资源规范」段）
+│   └── zhengxie-subpage-sop/
+│       └── SKILL.md                     子页新增全流程 SOP（操作步骤类，与 README 决策规范互补）
     └── docs/
         └── CONVENTIONS.md                  跨设备权威源约定 + 专家转介纪律（单一权威源，去重后收敛于此）
 ```
@@ -287,7 +286,7 @@ python -m http.server 8080
 
 > ⚠️ 注意：单元格里一律使用**英文半角逗号 `,`** 与**英文分号 `;`** 作为分隔符，不要用中文全角符号。
 
-> ⚠️ **媒体图片格式**：`media` 列图片**统一用 WebP**（体积小、支持透明）；**必须保留透明通道（RGBA）**——透明 logo / 图标转图时若误用 `RGB` 会被填成黑底、与原图完全不同。压图步骤、命令与常见坑见 `.workbuddy/skills/zhengxie-subpage-sop/IMAGE_OPTIMIZATION.md`（技术备忘）。
+> ⚠️ **媒体图片格式**：`media` 列图片**统一用 WebP**（体积小、支持透明）；**必须保留透明通道（RGBA）**——透明 logo / 图标转图时若误用 `RGB` 会被填成黑底、与原图完全不同。
 
 ### 数据维护流程（三件事）
 
