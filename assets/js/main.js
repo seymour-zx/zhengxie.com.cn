@@ -81,6 +81,46 @@
     favToggle.setAttribute('aria-label', count > 0 ? '本地收藏（' + count + ' 个）' : '本地收藏');
   }
 
+  /* ── 站内搜索：同义词别名增强（B15） ──
+     搜「办理」应命中含「政务服务 / 办事」的卡片；搜「官网」应命中「官方入口」等。
+     字典为可扩展示例，正式词表见 D2「用户语言 ↔ 站点语言对照表」。 */
+  var ALIASES = {
+    '办理': ['政务服务', '办事', '政务服务平台', '网上办理'],
+    '官网': ['官方入口', '官方网站', '官方站'],
+    '政府': ['政务', '行政', '机关'],
+    '办事': ['政务服务', '办理', '政务服务平台'],
+    '搜索': ['检索', '查找'],
+    '工具': ['软件', '平台', '应用'],
+    '学习': ['教育', '课程', '培训'],
+    '视频': ['影音', '影视', '播放']
+  };
+  /* 返回某关键词的完整匹配集合（含自身与互为别名的词），用于站内筛选 */
+  function aliasSet(kw) {
+    kw = (kw || '').trim().toLowerCase();
+    if (!kw) { return []; }
+    var set = [kw];
+    Object.keys(ALIASES).forEach(function (k) {
+      if (k === kw) {
+        ALIASES[k].forEach(function (a) {
+          a = a.toLowerCase();
+          if (set.indexOf(a) === -1) { set.push(a); }
+        });
+      } else if (ALIASES[k].indexOf(kw) !== -1) {
+        /* 反向：搜索词本身是某词的别名（如搜「办事」也命中「办理」卡片） */
+        if (set.indexOf(k.toLowerCase()) === -1) { set.push(k.toLowerCase()); }
+      }
+    });
+    return set;
+  }
+  /* 大小写不敏感 + 别名匹配（B3 + B15），text 已 lowercased */
+  function textMatches(text, kw) {
+    var set = aliasSet(kw);
+    for (var i = 0; i < set.length; i++) {
+      if (text.indexOf(set[i]) !== -1) { return true; }
+    }
+    return false;
+  }
+
   /* ── 应用筛选：分类 AND 关键词 AND 本地收藏（含输入框实时关键词） ── */
   function applyFilter() {
     var kw = siteInput.value.trim();
@@ -89,13 +129,13 @@
     if (kw && activeKeywords.indexOf(kw) === -1) { activeKeywords.push(kw); }
     cards.forEach(function (card) {
       var catOk = activeCat === 'all' || card.getAttribute('data-cat') === activeCat;
-      var text = card.__search;
+      var text = card.__search.toLowerCase();   // 预计算文本已为纯文本，直接小写（B3 大小写不敏感）
       var kwOk = true;
       var i;
       for (i = 0; i < filterTags.length; i++) {
-        if (text.indexOf(filterTags[i]) === -1) { kwOk = false; break; }
+        if (!textMatches(text, filterTags[i])) { kwOk = false; break; }
       }
-      if (kwOk && kw && text.indexOf(kw) === -1) { kwOk = false; }
+      if (kwOk && kw && !textMatches(text, kw)) { kwOk = false; }
       var favBtn = card.querySelector('.card__fav');
       var favOk = !showFav || !!(favBtn && favs[favBtn.getAttribute('data-key')]);
       var show = catOk && kwOk && favOk;
@@ -235,12 +275,14 @@
   });
 
   /* ── 4. 本地收藏开关（第三维度） ── */
-  favToggle.addEventListener('click', function () {
-    showFav = !showFav;
-    favToggle.classList.toggle('active', showFav);
-    favToggle.setAttribute('aria-pressed', showFav ? 'true' : 'false');
-    applyFilter();
-  });
+  if (favToggle) {   // B2 判空：目录/子页若无此按钮也不致脚本崩溃
+    favToggle.addEventListener('click', function () {
+      showFav = !showFav;
+      favToggle.classList.toggle('active', showFav);
+      favToggle.setAttribute('aria-pressed', showFav ? 'true' : 'false');
+      applyFilter();
+    });
+  }
 
   /* ── 5. Hero 集合搜索引擎（主引擎按钮 + 下方滑道，单选激活） ── */
   var engineBtns = Array.prototype.slice.call(document.querySelectorAll('[data-engine]'));
@@ -274,13 +316,8 @@
      - 鼠标悬停在该滑道/行 → UI 变化（金色高亮提示），滚轮上下滑动被接管为
        左右滑动该行内容，页面不再上下滚动；
      - 触屏设备 → 触摸该滑道/行时激活同样的 UI 变化，手指左右滑动滚动（原生）。 */
-  /* E 方案：卡片描述改为纵向滚动，移出横向滑动接管（保留标题/标签/链接的横向滑） */
-  var SCROLL_ROW_SEL = '.track, .card__title, .card__tags, .card__links';
+  var SCROLL_ROW_SEL = '.track, .card__title, .card__desc, .card__tags, .card__links';
   var scrollRows = Array.prototype.slice.call(document.querySelectorAll(SCROLL_ROW_SEL));
-
-  /* t1 描述行：纵向溢出检测（复用 is-scrollable 触发金色悬停高亮，但滚轮改为纵向） */
-  var VSCROLL_SEL = '.card--t1 .card__desc';
-  var vScrollRows = Array.prototype.slice.call(document.querySelectorAll(VSCROLL_SEL));
 
   function refreshScrollable() {
     scrollRows.forEach(function (el) {
@@ -288,11 +325,6 @@
          防止卡片重新显示后标记丢失导致滚轮左右滑失效 */
       if (el.clientWidth === 0) { return; }
       el.classList.toggle('is-scrollable', el.scrollWidth > el.clientWidth + 1);
-    });
-    /* 描述行按纵向内容高度判定（max-height 3em，超出才可上下滚） */
-    vScrollRows.forEach(function (el) {
-      if (el.clientHeight === 0) { return; }
-      el.classList.toggle('is-scrollable', el.scrollHeight > el.clientHeight + 1);
     });
   }
   refreshScrollable();
@@ -316,13 +348,6 @@
       e.preventDefault();
       el.scrollLeft += e.deltaY;
       return;
-    }
-    /* t1 描述行：悬停且内容溢出时，滚轮 → 上下滑并锁定（阻止页面滚动）；
-       鼠标离开描述区即解除锁定，页面恢复滚动 */
-    var vEl = e.target.closest ? e.target.closest(VSCROLL_SEL) : null;
-    if (vEl && vEl.classList.contains('is-scrollable')) {
-      e.preventDefault();
-      vEl.scrollTop += e.deltaY;
     }
   }, { passive: false });
 
@@ -586,6 +611,18 @@
   window.addEventListener('hashchange', syncFromHash);
 
   /* ── 11. 搜索高亮 ── */
+  /* 文本经 Python html.escape 写入源 HTML，浏览器 textContent 会解码回 < & 等字符；
+     高亮重插时必须先转义（仅保留 <mark> 包裹），否则含 < 或 & 的内容会被当作
+     HTML 重新解析，导致标签破损甚至注入。 */
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  /* 搜索高亮（B1 修复）：旧实现用连续 replace 把已插入的 <mark> 文本二次匹配，
+     搜「k」「mark」等会产生 <mar<mark>k</mark>> 这类破损标签。
+     新实现：一次性合并所有关键词为正则，命中处用「非字母占位符（\uE000..\uE001）」包裹，
+     最后再统一替换为 <mark>；占位符不含任何字母，绝不会被关键词二次命中。 */
   function highlightCard(card, keywords) {
     var targets = card.querySelectorAll('.card__title, .card__desc');
     targets.forEach(function (el) {
@@ -595,13 +632,24 @@
         el.setAttribute('data-orig', orig);
       }
       if (!keywords.length) { el.textContent = orig; return; }
-      var html = orig;
+      var escaped = escapeHtml(orig);
+      var patterns = [];
       keywords.forEach(function (kw) {
+        kw = (kw || '').trim();
         if (!kw) { return; }
-        var re = new RegExp('(' + kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
-        html = html.replace(re, '<mark>$1</mark>');
+        var ek = escapeHtml(kw).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        if (ek) { patterns.push(ek); }
       });
-      el.innerHTML = html;
+      if (!patterns.length) { el.textContent = orig; return; }
+      var re = new RegExp('(' + patterns.join('|') + ')', 'gi');
+      var map = [];
+      var out = escaped.replace(re, function (m) {
+        var token = '' + map.length + '';
+        map.push(m);
+        return token;
+      });
+      out = out.replace(/(\d+)/g, function (_, i) { return '<mark>' + map[+i] + '</mark>'; });
+      el.innerHTML = out;
     });
   }
 

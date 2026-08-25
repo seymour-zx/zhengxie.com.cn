@@ -545,10 +545,22 @@ def build_links(links):
     return '<div class="card__links">' + "".join(parts) + "</div>"
 
 
+# 收藏星形：每卡只输出 <use> 引用，真正的 path 在页面顶部 STAR_SPRITE 里定义一次。
+# path 用 stroke="currentColor"，颜色由宿主 .card__fav 的 color 控制（穿透 shadow DOM），
+# 既消除 128 处内联重复，又保留空心描边星的视觉。
 FAV_SVG = (
-    '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
+    '<svg aria-hidden="true" focusable="false"><use href="#zx-fav-star"></use></svg>'
+)
+
+# 页面级 SVG sprite：在 build_page 的 {{STAR_SPRITE}} 处注入一次（每页仅此一份）。
+STAR_SPRITE = (
+    '<svg width="0" height="0" aria-hidden="true" focusable="false" '
+    'style="position:absolute;width:0;height:0;overflow:hidden">'
+    '<symbol id="zx-fav-star" viewBox="0 0 24 24">'
     '<path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 '
-    '9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>'
+    '9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="none" stroke="currentColor" '
+    'stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>'
+    '</symbol></svg>'
 )
 
 
@@ -875,6 +887,7 @@ def build_page(category_buttons, cards_html, engine_primary, engine_track, total
         .replace("{{SLOGAN}}", SLOGAN)
         .replace("{{JSON_LD}}", json_ld)
         .replace("{{BREADCRUMB}}", breadcrumb)
+        .replace("{{STAR_SPRITE}}", STAR_SPRITE)
     )
 
 
@@ -951,6 +964,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
           crossorigin="anonymous"></script>
 </head>
   <body>
+  {{STAR_SPRITE}}
   <!-- 无障碍：跳到主内容 -->
   <a href="#cards-container" class="skip-link">跳到主内容</a>
 

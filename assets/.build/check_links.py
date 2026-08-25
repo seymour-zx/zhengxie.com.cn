@@ -23,7 +23,10 @@ import urllib.error
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from openpyxl import load_workbook
+# 复用 build_homeplus 的「按表头名解析」逻辑，避免硬编码列索引（如 row[7]）：
+# 一旦 xlsx 列顺序调整，死链检测不会再静默读错列。
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from build_homeplus import load_rows, parse_links
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 XLSX_PATH = os.path.join(BASE_DIR, "assets", "xlsx", "self_links.xlsx")
@@ -35,36 +38,17 @@ HEADERS = {
 }
 
 
-def parse_links(raw):
-    """与 build.py 保持一致的解析规则：; 分链接、, 分名称与URL"""
-    items = []
-    for part in str(raw or "").split(";"):
-        part = part.strip()
-        if not part:
-            continue
-        if "," in part:
-            name, url = part.split(",", 1)
-        else:
-            name, url = part, part
-        url = url.strip()
-        if url.startswith("http://") or url.startswith("https://"):
-            items.append((name.strip() or url, url))
-    return items
-
-
 def collect_urls(xlsx_path, limit=None):
-    wb = load_workbook(xlsx_path, read_only=True, data_only=True)
-    ws = wb.active
+    """按表头名读取 links 列（复用 load_rows），逐项解析出 (名称, URL)。
+    仅检查 http/https 链接（HEAD 请求），其余跳过。"""
+    rows, _ = load_rows(xlsx_path)
     urls = []
-    for i, row in enumerate(ws.iter_rows(values_only=True)):
-        if i == 0 or row is None:
-            continue
-        raw = row[7] if len(row) > 7 else None  # links 列（第 8 列）
-        for name, url in parse_links(raw):
-            urls.append((name, url))
-        if limit is not None and len(urls) >= limit:
-            break
-    wb.close()
+    for rec in rows:
+        for name, url in parse_links(rec.get("links")):
+            if url.startswith(("http://", "https://")):
+                urls.append((name, url))
+                if limit is not None and len(urls) >= limit:
+                    return urls
     return urls
 
 

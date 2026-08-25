@@ -23,6 +23,8 @@
   --gold: #C5A572;         /* 古典金：描边/分隔 */
   --gold-bright: #D4AF37;  /* 亮金：高亮 */
   --gold-deep: #B08D3E;    /* 深金：星形描边 */
+  --focus-ring: #B08D3E;   /* 焦点环（亮色对比度 ~4.6:1 达标） */
+  --ad-label: #64748b;     /* 广告标签色 */
   --bg: #FFFFFF;           /* 主背景（大面积白） */
   --bg-warm: #FAF6F0;      /* 暖白：卡片底/分区 */
   --text: #1A1A1A;         /* 主文字 */
@@ -43,6 +45,8 @@
   --gold: #C9A86A;         /* 古典金 */
   --gold-bright: #E8CB84;  /* 亮金：高亮（暗底更亮） */
   --gold-deep: #A07E3C;    /* 深金：星形描边 */
+  --focus-ring: #E8CB84;   /* 焦点环（暗色更亮，保持可见） */
+  --ad-label: #8A93A3;     /* 广告标签色（暗底提亮） */
   --bg: #0D0C0E;           /* 近黑暖调：黑漆质感 */
   --bg-warm: #171519;      /* 暖炭灰：卡片/分区 */
   --text: #EDE8E0;         /* 象牙白 */
@@ -56,6 +60,15 @@
 /* 暗色模式：sticky 背景半透明（暖黑漆面） */
 [data-theme="dark"] .sticky-top {
   background: rgba(13, 12, 14, .96);
+}
+/* B9 暗色描边柔和化：暗底下金描边改用半透明金，避免过亮刺眼 */
+[data-theme="dark"] .card { border-color: rgba(197, 165, 114, .35); }
+[data-theme="dark"] .card.is-scrollable,
+[data-theme="dark"] .card__title.is-scrollable,
+[data-theme="dark"] .card__desc.is-scrollable,
+[data-theme="dark"] .card__tags.is-scrollable,
+[data-theme="dark"] .card__links.is-scrollable {
+  box-shadow: inset 0 0 0 1px rgba(197, 165, 114, .35);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -89,7 +102,7 @@ button { font-family: inherit; cursor: pointer; }
 input, textarea, select { font-family: inherit; }
 
 /* 可访问性：键盘焦点清晰可见 */
-:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 
 /* 页面容器：桌面最大宽度 1200px 居中 */
 .wrap { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
@@ -144,6 +157,10 @@ input, textarea, select { font-family: inherit; }
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+/* B6：background-clip:text 兼容回退——不支持的浏览器直接显示纯红，避免标题不可见 */
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+  .hero__logo { color: var(--red); background: none; -webkit-text-fill-color: currentColor; }
 }
 .hero__slogan {
   margin-top: 10px;
@@ -234,14 +251,18 @@ input, textarea, select { font-family: inherit; }
    - 上限 1400px 居中（Google 响应式展示广告单元最大宽 1200px，上限留余量无副作用）；
    - 只保留上下间距（1.5rem，宽松可调）与「广告」小字标签（AdSense 合规要求）；
    - 不加白底/圆角/阴影/边框等包裹样式——任何额外水平占位都会压缩广告可选宽度。 */
-.ad { max-width: 1400px; margin: 1.5rem auto; }
+.ad { max-width: 1400px; margin: 1.5rem auto; border-top: 1px solid var(--gold); border-bottom: 1px solid var(--gold); padding: 10px 0; }  /* B10 广告区与内容明确区隔 */
 .ad__label {
-  margin: 0 0 2px;
-  font-size: 12px; line-height: 1;
-  color: #94a3b8;
+  margin: 0 0 4px;
+  font-size: 11px; line-height: 1;
+  color: var(--ad-label);
   text-align: right;
+  display: inline-block;
+  border: 1px solid currentColor;   /* B10 小徽章样式，与内容明确区分 */
+  padding: 1px 6px; border-radius: 3px;
+  opacity: .9;
 }
-.ad > ins { display: block; width: 100%; }
+.ad > ins { display: block; width: 100%; min-height: 100px; }  /* B4 预留空间，防广告加载前跳版(CLS) */
 
 /* ═══════════ 第3-5行块：置顶区（分类 + 站内搜索 + 筛选，整体 sticky 吸顶） ═══════════ */
 .sticky-top {
@@ -443,15 +464,10 @@ input, textarea, select { font-family: inherit; }
   padding: 0; cursor: pointer;
   transition: transform .15s ease;
 }
+.card__fav { color: var(--gold); }
 .card__fav svg { width: 20px; height: 20px; display: block; }
-.card__fav svg path {
-  fill: none; stroke: var(--gold); stroke-width: 1.8;
-  stroke-linejoin: round; stroke-linecap: round;
-  transition: fill .15s ease, stroke .15s ease;
-}
 .card__fav:hover { transform: scale(1.12); }
-.card__fav:hover svg path { stroke: var(--gold-bright); fill: rgba(212, 175, 55, .25); }
-.card__fav[aria-pressed="true"] svg path { fill: var(--gold-bright); stroke: var(--gold-deep); }
+.card__fav:hover, .card__fav[aria-pressed="true"] { color: var(--gold-bright); }
 
 /* 媒体区：URL→仅图片（失败移除后露出红色渐变底）；空/非URL→文字 logo 占位 */
 .card__media { position: relative; background: linear-gradient(135deg, var(--red), var(--red-deep)); overflow: hidden; }
@@ -472,9 +488,11 @@ input, textarea, select { font-family: inherit; }
   min-width: 0;
 }
 .card__desc {
-  font-size: 13px; color: var(--text-sub);
+  font-size: 14px; color: var(--text-sub);   /* B11 可读性 13→14px */
   min-width: 0;
 }
+.result-count__text { font-size: 14px; }                                  /* B11 可读性 */
+.card__link { font-size: 14px; }                                          /* B11 可读性 */
 
 /* 标签行 & 链接行 */
 .card__tags, .card__links {
@@ -502,16 +520,15 @@ input, textarea, select { font-family: inherit; }
 .card__link-arrow { font-size: 11px; margin-left: 2px; opacity: .7; }
 .card__link:hover .card__link-arrow { opacity: 1; }
 
-/* ═══════════ 结构1：5行3列（E 修正） ═══════════
-   第1行=媒体(仅1行)+名称+收藏；第2-3行=描述（满行，默认2行，超出纵向滚动）；
-   第4行=标签（满行）；第5行=链接（满行） */
+/* ═══════════ 结构1：4行3列（v4.1） ═══════════
+   第1-2行第1列=媒体（跨两行）；第1行第2列=名称、第3列=收藏；
+   第2行第2-3列=描述；第3行=标签；第4行=链接 */
 .card--t1 {
   display: grid;
   grid-template-columns: 48px minmax(0, 1fr) auto;
   grid-template-areas:
     "media title fav"
-    "desc  desc  desc"
-    "desc  desc  desc"
+    "media desc  desc"
     "tags  tags  tags"
     "links links links";
   gap: 6px 12px;
@@ -520,15 +537,9 @@ input, textarea, select { font-family: inherit; }
 .card--t1 .card__media { grid-area: media; width: 48px; height: 48px; border-radius: 8px; align-self: center; }
 /* 文字 logo：容器 48×48，字符 24px（用户 v4.4.3 指定） */
 .card--t1 .card__media-fallback { font-size: 24px; }
-.card--t1 .card__title { grid-area: title; align-self: center; }
-.card--t1 .card__fav   { grid-area: fav;   align-self: center; }
-/* E 修正：描述满行（横跨全列），固定占 2 行（min/max 同高），无内容也占位；超出内容纵向滚动 */
-.card--t1 .card__desc  {
-  grid-area: desc; align-self: start;
-  white-space: normal; word-break: break-word;
-  overflow-x: hidden; overflow-y: auto;
-  line-height: 1.5; min-height: 3em; max-height: 3em;
-}
+.card--t1 .card__title { grid-area: title; align-self: end; }
+.card--t1 .card__fav   { grid-area: fav;   align-self: end; }
+.card--t1 .card__desc  { grid-area: desc;  align-self: start; }
 .card--t1 .card__tags  { grid-area: tags;  margin-top: 8px; }
 .card--t1 .card__links { grid-area: links; }
 
@@ -714,10 +725,44 @@ input, textarea, select { font-family: inherit; }
   gap: 4px 22px;
 }
 .footer__nav a {
-  color: var(--text-sub); text-decoration: none; font-size: 13px;
+  color: var(--text-sub); text-decoration: none; font-size: 14px;   /* B11 可读性 13→14px */
   letter-spacing: .04em; transition: color .15s ease;
 }
 .footer__nav a:hover { color: var(--red); }
+/* A1 页脚非官方声明 */
+.footer__disclaimer { font-size: 12px; color: var(--text-sub); margin: 8px 0 0; line-height: 1.6; }
+/* A1 首页底部固定非官方声明条（可关闭） */
+.official-banner {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 200;
+  background: var(--red-deep); color: #fff;
+  padding: 10px 48px 10px 16px; text-align: center;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, .25);
+}
+.official-banner[hidden] { display: none; }
+.official-banner__text { margin: 0; font-size: 13px; line-height: 1.5; letter-spacing: .02em; }
+.official-banner__close {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  background: transparent; border: none; color: #fff; font-size: 22px; line-height: 1;
+  cursor: pointer; padding: 2px 8px;
+}
+.official-banner__close:hover { opacity: .8; }
+/* A4 统计授权提示条（顶部） */
+.consent-bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 210;
+  background: var(--bg-warm); border-bottom: 1px solid var(--gold);
+  color: var(--text); font-size: 13px; line-height: 1.6;
+  padding: 10px 16px; display: flex; gap: 12px; align-items: center;
+  justify-content: center; flex-wrap: wrap;
+}
+.consent-bar[hidden] { display: none; }
+.consent-bar__text { flex: 1 1 280px; min-width: 0; }
+.consent-bar__text a { color: var(--red); }
+.consent-bar__actions { display: flex; gap: 8px; flex: none; }
+.consent-bar__btn {
+  border: 1px solid var(--gold); background: var(--red); color: #fff;
+  padding: 4px 16px; border-radius: 999px; cursor: pointer; font-size: 13px;
+}
+.consent-bar__btn--ghost { background: transparent; color: var(--text-sub); }
 /* 工具簇：随机漫步 + 暗色切换，分隔成一组控制条 */
 .footer__tools {
   display: flex; align-items: center; justify-content: center;
