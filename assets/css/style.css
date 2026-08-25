@@ -502,15 +502,16 @@ input, textarea, select { font-family: inherit; }
 .card__link-arrow { font-size: 11px; margin-left: 2px; opacity: .7; }
 .card__link:hover .card__link-arrow { opacity: 1; }
 
-/* ═══════════ 结构1：4行3列（v4.1） ═══════════
-   第1-2行第1列=媒体（跨两行）；第1行第2列=名称、第3列=收藏；
-   第2行第2-3列=描述；第3行=标签；第4行=链接 */
+/* ═══════════ 结构1：5行3列（E 修正） ═══════════
+   第1行=媒体(仅1行)+名称+收藏；第2-3行=描述（满行，默认2行，超出纵向滚动）；
+   第4行=标签（满行）；第5行=链接（满行） */
 .card--t1 {
   display: grid;
   grid-template-columns: 48px minmax(0, 1fr) auto;
   grid-template-areas:
     "media title fav"
-    "media desc  desc"
+    "desc  desc  desc"
+    "desc  desc  desc"
     "tags  tags  tags"
     "links links links";
   gap: 6px 12px;
@@ -519,9 +520,15 @@ input, textarea, select { font-family: inherit; }
 .card--t1 .card__media { grid-area: media; width: 48px; height: 48px; border-radius: 8px; align-self: center; }
 /* 文字 logo：容器 48×48，字符 24px（用户 v4.4.3 指定） */
 .card--t1 .card__media-fallback { font-size: 24px; }
-.card--t1 .card__title { grid-area: title; align-self: end; }
-.card--t1 .card__fav   { grid-area: fav;   align-self: end; }
-.card--t1 .card__desc  { grid-area: desc;  align-self: start; }
+.card--t1 .card__title { grid-area: title; align-self: center; }
+.card--t1 .card__fav   { grid-area: fav;   align-self: center; }
+/* E 修正：描述满行（横跨全列），固定占 2 行（min/max 同高），无内容也占位；超出内容纵向滚动 */
+.card--t1 .card__desc  {
+  grid-area: desc; align-self: start;
+  white-space: normal; word-break: break-word;
+  overflow-x: hidden; overflow-y: auto;
+  line-height: 1.5; min-height: 3em; max-height: 3em;
+}
 .card--t1 .card__tags  { grid-area: tags;  margin-top: 8px; }
 .card--t1 .card__links { grid-area: links; }
 

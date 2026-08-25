@@ -2,106 +2,103 @@
 
 > per MEMORY.md backup iron rule
 
-> generated: 2026-08-25 16:06:54 | agent=ProductManagementExpert
+> generated: 2026-08-25 18:59:41 | agent=ProductManagementExpert
 
-> file count: 92
+> file count: 89
 
 ---
 
 ## index
 
 1. `.gitignore`
-2. `.workbuddy\backups\MEMORY.md.pre-slim-20260825_1130`
-3. `.workbuddy\backups\npc_xlsx_remove_20260825_1327\.workbuddy_backup_npc_20260824062310.xlsx`
-4. `.workbuddy\backups\npc_xlsx_remove_20260825_1327\MANIFEST.txt`
-5. `.workbuddy\BOOTSTRAP.md`
+2. `.workbuddy\BOOTSTRAP.md`
+3. `.workbuddy\IDENTITY.md`
+4. `.workbuddy\SOUL.md`
+5. `.workbuddy\USER.md`
 6. `.workbuddy\docs\CONVENTIONS.md`
-7. `.workbuddy\IDENTITY.md`
-8. `.workbuddy\memory\MEMORY.md`
-9. `.workbuddy\skills\zhengxie-seo-standard\SKILL.md`
-10. `.workbuddy\skills\zhengxie-subpage-sop\SKILL.md`
-11. `.workbuddy\SOUL.md`
-12. `.workbuddy\USER.md`
-13. `404.html`
-14. `ads.txt`
-15. `assets\.build\build.py`
-16. `assets\.build\build_homeplus.py`
-17. `assets\.build\check_links.py`
-18. `assets\.build\collect_meta.py`
-19. `assets\.build\link-policy.json`
-20. `assets\.build\link_report.txt`
-21. `assets\.build\seo_meta_report.xlsx`
-22. `assets\css\style.css`
-23. `assets\images\12377-3-04.webp`
-24. `assets\images\12377-3-07.webp`
-25. `assets\images\12377-3-08.webp`
-26. `assets\images\logo.svg`
-27. `assets\js\main.js`
-28. `assets\json\manifest.json`
-29. `assets\json\self_meta.json`
-30. `assets\xlsx\self_links.xlsx`
-31. `assets\xlsx\this.xlsx`
-32. `CNAME`
-33. `directory\ai\assets\json\self_meta.json`
-34. `directory\ai\assets\xlsx\self_links.xlsx`
-35. `directory\ai\index.html`
-36. `directory\bank\assets\json\self_meta.json`
-37. `directory\bank\assets\xlsx\self_links.xlsx`
-38. `directory\bank\index.html`
-39. `directory\gov\assets\json\self_meta.json`
-40. `directory\gov\assets\xlsx\self_links.xlsx`
-41. `directory\gov\index.html`
-42. `directory\index.html`
-43. `directory\insurance\assets\json\self_meta.json`
-44. `directory\insurance\assets\xlsx\self_links.xlsx`
-45. `directory\insurance\index.html`
-46. `directory\media\assets\json\self_meta.json`
-47. `directory\media\assets\xlsx\self_links.xlsx`
-48. `directory\media\index.html`
-49. `directory\nav\assets\json\self_meta.json`
-50. `directory\nav\assets\xlsx\self_links.xlsx`
-51. `directory\nav\index.html`
-52. `directory\npc\assets\json\self_meta.json`
-53. `directory\npc\assets\xlsx\self_links.xlsx`
-54. `directory\npc\index.html`
-55. `directory\party\assets\json\self_meta.json`
-56. `directory\party\assets\xlsx\self_links.xlsx`
-57. `directory\party\index.html`
-58. `directory\stock\assets\json\self_meta.json`
-59. `directory\stock\assets\xlsx\self_links.xlsx`
-60. `directory\stock\index.html`
-61. `directory\world-bank\assets\json\self_meta.json`
-62. `directory\world-bank\assets\xlsx\self_links.xlsx`
-63. `directory\world-bank\index.html`
-64. `directory\world-gov\assets\json\self_meta.json`
-65. `directory\world-gov\assets\xlsx\self_links.xlsx`
-66. `directory\world-gov\index.html`
-67. `directory\world-insurance\assets\json\self_meta.json`
-68. `directory\world-insurance\assets\xlsx\self_links.xlsx`
-69. `directory\world-insurance\index.html`
-70. `directory\world-media\assets\json\self_meta.json`
-71. `directory\world-media\assets\xlsx\self_links.xlsx`
-72. `directory\world-media\index.html`
-73. `directory\world-stock\assets\json\self_meta.json`
-74. `directory\world-stock\assets\xlsx\self_links.xlsx`
-75. `directory\world-stock\index.html`
-76. `directory\zhengxie\assets\json\self_meta.json`
-77. `directory\zhengxie\assets\xlsx\self_links.xlsx`
-78. `directory\zhengxie\index.html`
-79. `favicon.ico`
-80. `index.html`
-81. `pages\about\index.html`
-82. `pages\changelog\index.html`
-83. `pages\contact\index.html`
-84. `pages\disclaimer\index.html`
-85. `pages\guide\index.html`
-86. `pages\overview\index.html`
-87. `pages\privacy\index.html`
-88. `pages\sitemap\index.html`
-89. `pages\submit\index.html`
-90. `README.md`
-91. `robots.txt`
-92. `sitemap.xml`
+7. `.workbuddy\memory\MEMORY.md`
+8. `.workbuddy\skills\zhengxie-seo-standard\SKILL.md`
+9. `.workbuddy\skills\zhengxie-subpage-sop\SKILL.md`
+10. `404.html`
+11. `CNAME`
+12. `README.md`
+13. `ads.txt`
+14. `assets\.build\build.py`
+15. `assets\.build\build_homeplus.py`
+16. `assets\.build\check_links.py`
+17. `assets\.build\collect_meta.py`
+18. `assets\.build\link-policy.json`
+19. `assets\.build\link_report.txt`
+20. `assets\.build\seo_meta_report.xlsx`
+21. `assets\css\style.css`
+22. `assets\images\12377-3-04.webp`
+23. `assets\images\12377-3-07.webp`
+24. `assets\images\12377-3-08.webp`
+25. `assets\images\logo.svg`
+26. `assets\js\main.js`
+27. `assets\json\manifest.json`
+28. `assets\json\self_meta.json`
+29. `assets\xlsx\self_links.xlsx`
+30. `assets\xlsx\this.xlsx`
+31. `directory\ai\assets\json\self_meta.json`
+32. `directory\ai\assets\xlsx\self_links.xlsx`
+33. `directory\ai\index.html`
+34. `directory\bank\assets\json\self_meta.json`
+35. `directory\bank\assets\xlsx\self_links.xlsx`
+36. `directory\bank\index.html`
+37. `directory\gov\assets\json\self_meta.json`
+38. `directory\gov\assets\xlsx\self_links.xlsx`
+39. `directory\gov\index.html`
+40. `directory\index.html`
+41. `directory\insurance\assets\json\self_meta.json`
+42. `directory\insurance\assets\xlsx\self_links.xlsx`
+43. `directory\insurance\index.html`
+44. `directory\media\assets\json\self_meta.json`
+45. `directory\media\assets\xlsx\self_links.xlsx`
+46. `directory\media\index.html`
+47. `directory\nav\assets\json\self_meta.json`
+48. `directory\nav\assets\xlsx\self_links.xlsx`
+49. `directory\nav\index.html`
+50. `directory\npc\assets\json\self_meta.json`
+51. `directory\npc\assets\xlsx\self_links.xlsx`
+52. `directory\npc\index.html`
+53. `directory\party\assets\json\self_meta.json`
+54. `directory\party\assets\xlsx\self_links.xlsx`
+55. `directory\party\index.html`
+56. `directory\stock\assets\json\self_meta.json`
+57. `directory\stock\assets\xlsx\self_links.xlsx`
+58. `directory\stock\index.html`
+59. `directory\world-bank\assets\json\self_meta.json`
+60. `directory\world-bank\assets\xlsx\self_links.xlsx`
+61. `directory\world-bank\index.html`
+62. `directory\world-gov\assets\json\self_meta.json`
+63. `directory\world-gov\assets\xlsx\self_links.xlsx`
+64. `directory\world-gov\index.html`
+65. `directory\world-insurance\assets\json\self_meta.json`
+66. `directory\world-insurance\assets\xlsx\self_links.xlsx`
+67. `directory\world-insurance\index.html`
+68. `directory\world-media\assets\json\self_meta.json`
+69. `directory\world-media\assets\xlsx\self_links.xlsx`
+70. `directory\world-media\index.html`
+71. `directory\world-stock\assets\json\self_meta.json`
+72. `directory\world-stock\assets\xlsx\self_links.xlsx`
+73. `directory\world-stock\index.html`
+74. `directory\zhengxie\assets\json\self_meta.json`
+75. `directory\zhengxie\assets\xlsx\self_links.xlsx`
+76. `directory\zhengxie\index.html`
+77. `favicon.ico`
+78. `index.html`
+79. `pages\about\index.html`
+80. `pages\changelog\index.html`
+81. `pages\contact\index.html`
+82. `pages\disclaimer\index.html`
+83. `pages\guide\index.html`
+84. `pages\overview\index.html`
+85. `pages\privacy\index.html`
+86. `pages\sitemap\index.html`
+87. `pages\submit\index.html`
+88. `robots.txt`
+89. `sitemap.xml`
 
 ---
 
@@ -126,281 +123,13 @@ __pycache__/
 # 站点 build 产物（index.html、directory/<name>/index.html 等由 build_homeplus.py 生成）
 # 同步策略（2026-08-25 拍板·方案甲）：产物进 Git、随仓库同步。依据 CONVENTIONS 5.2
 # 「站点源码 html」属强制同步文件；本文件不忽略它们（可重建≠不入仓，跨设备需可读整站）。
-
 ```
 
----
+## 2. `.workbuddy\BOOTSTRAP.md`
 
-## 2. `.workbuddy\backups\MEMORY.md.pre-slim-20260825_1130`
-
-> note: rollback backup copy
+> note: identity template
 
 ```text
-# 项目长期约定（MEMORY.md）
-
-> 用途：跨设备同步的项目级长期笔记。本文件随 Git 仓库同步，是各设备会话的硬规则来源。
-
-## 🚨🚨 最高无上铁律：首次进入强制确认制（用户设定 2026-08-24，凌驾一切，任何 agent 不得违反）
-> 唯一目的：让用户**明确知道 agent 是否学习了**——学与不学不重要，重要的是"确定学了/确定没学"。此铁律置于本文件**最顶部**：即使 MEMORY.md 超限注入被截断，截断只发生在尾部，**本条必被注入，决定一切**。
-- **触发**：任何 agent **首次**进入本空间（**含对话内切换 agent，均算首次**）——无论此前接收了什么信息（系统提示/上下文/其他记忆），**一律先暂停回答或执行任务**，不得直接开工。
-- **强制流程（严格按序，不得跳过、不得合并、不得假设）**：
-  1. 先向用户确认："**是否允许我完整阅读并学习 MEMORY.md 全文？**"
-  2. **同意** → 完整阅读学习全文 → **向用户反馈学习收获** → 再询问："**是否授权我学习空间内所有文件？**"
-     - **授权** → 学习空间内所有文件 → **反馈收获** → 询问："**是否继续被暂停的初始任务？**" → 按用户指令继续。
-     - **不授权** → 直接询问："**是否继续被暂停的初始任务？**" → 按用户指令继续。
-  3. **不同意**学习 MEMORY.md 全文 → **直接继续被暂停的初始任务**（不再询问）。
-- **修改门槛**：本铁律为**最高无上铁律**；任何"比本铁律更优先"或"修改本铁律"的意图，**必须经用户三次明确同意授权**方可执行；未满三次，一律拒绝。
-
-## 🚨 强制首读锚点（每次对话第一条必读，即使无指令也读）
-- **读取顺序锁死**：每次对话第一条动作 = ① 读**本文件 MEMORY.md**（锚点/硬规则）→ ② 读 **`README.md`**「决策与偏好总览」章（设计/技术/合规决策）→ ③ 读 **`CONVENTIONS.md`**（成文约定 + 流程与执行纪律）。
-- **三者之外的 md 不主动读**：`memory/YYYY-MM-DD.md`（日志）、`changelog.md`、`skills/`、`file-governance-plan.md` 等，仅在**本文件或用户点名**时才读（见下方三级读取）。不主动翻阅历史日志/方案文档，避免重复消费上下文、避免不同 agent 忽视不同 md。
-- **本文件是"索引 + 不可妥协硬规则摘要"**：长文正文在 README/CONVENTIONS；本文件只放决策指针与红线。
-
-### 三级读取（L0/L1/L2）
-- **L0 强制（每次全读）**：MEMORY.md + README.md + CONVENTIONS.md。
-- **L1 按需（被点名/问到才读）**：`.workbuddy/skills/**`（操作 SOP）、`memory/changelog.md`（迭代卡摘要）。
-- **L2 不主动（仅交付/审计时）**：`memory/YYYY-MM-DD.md` 流水日志、`file-governance-plan.md`、SEO 审计报告、`seo-audit-*.md`。
-
-## 🔔 新设备 / 新会话开场必做（最高优先级）
-- **每次会话第一条动作**：检查用户主目录 `C:\Users\seymo\.workbuddy\` 下 4 个身份文件（SOUL.md / IDENTITY.md / USER.md / BOOTSTRAP.md）是否为**软链接**（`ls -L` 或 `readlink` 能解析到 `D:\Universal Space\zhengxie.com.cn\.workbuddy\`）。
-- 若**不存在或不是链接** → 立即提醒用户：本设备尚未重建身份软链接，跨设备身份/记忆不同步；按 `memory/2026-08-24.md` 的步骤（开开发者模式 + Git Bash `ln -s`）重建，再继续其他任务。
-- 若链接正常 → 简短确认"身份已同步"，再进入正题。
-- 此检查优先于一切其他工作；用户明确要求"换设备对话时第一时间提醒"。
-
-## 项目背景
-- 站点「正协导航」（zhengxie.com.cn），纯静态导航站，GitHub Pages + 自有域名。
-- 工作空间 = 项目文件夹 `D:\Universal Space\zhengxie.com.cn`，`.workbuddy` 随仓库跨设备同步。
-- **只有本项目，没有其他空间** → 项目级数据是唯一事实来源，用户级（home 目录）数据无意义、不依赖。
-
-## 跨设备数据策略（三件套，已定稿）
-1. **技能一律项目级**：存到 `{workspace}/.workbuddy/skills/`，随仓库同步；禁止默认用户级（`~/.workbuddy/skills/` 不同步）。
-2. **记忆一律工作空间级**：写 `{workspace}/.workbuddy/memory/`（按 `YYYY-MM-DD.md` 追加 + 本文件沉淀长期约定）；禁止写入用户级 `~/.workbuddy/MEMORY.md`。
-3. **身份文件已纳入同步**：SOUL.md / IDENTITY.md / USER.md / BOOTSTRAP.md 真实文件落在工作空间 `.workbuddy/`，用户主目录 `C:\Users\seymo\.workbuddy\` 下为 C:→D: 软链接（详见 `memory/2026-08-24.md`）。换设备需在本机用户主目录重建软链接。
-
-## 项目硬规则的权威来源（重要）
-- 本站点大量**已锁死的设计/技术/合规决策**（设计语言、暗色模式、外链属性规则、页面骨架 S1–S6、专家转介纪律、备案号策略等）已沉淀在 **`README.md`**（决策与偏好总览章 + 各节）与曾有的 `assets/skills/SKILL.md` 中，**不在此 MEMORY.md 重复抄写**。
-- 换设备/新会话时：先读 `README.md` 的「决策与偏好总览」章（任何优化前必读），再读 `memory/YYYY-MM-DD.md` 了解近期操作。
-- 历史日志：`memory/2026-08-21.md`（第2–10轮）、`memory/2026-08-22.md`（第11–23轮）已并入本目录（原先误落在 `.workbuddy/.workbuddy/` 嵌套层，2026-08-24 整合回上级）。
-- 注：`assets/skills/SKILL.md` 当前不在仓库中（可能未同步）；若需子页新增 SOP 请确认是否重建。
-
-## 安全边界（不要违反）
-- 用户主目录 `C:\Users\seymo\.workbuddy\` 下的**用户级技能、workbuddy.db（自动化）、mcp.json、受管 node/python 运行环境**保持本地、不进同步区（防泄密 + 防仓库臃肿）。
-- 仅身份文件 4 份通过软链接纳入同步；其余用户级内容不碰。
-
-## backup.md 全空间备份铁律（用户设定 2026-08-25，最高优先级，任何 agent 不得违反）
-> 用户方案 C 最终裁决（2026-08-25 11:18）：**C2 逐字符完整备份** + **接受 public 仓库风险** + **授权 memory/ 扩展为 4 类 md**。
-- **文件**：`memory/backup.md`（memory/ 第 4 类 md；原 3 类文件制扩展为 4 类：MEMORY.md / changelog.md / 时间日志 / backup.md）。
-- **备份范围**：**空间内所有文件**（含 MEMORY.md、CONVENTIONS.md、skills、身份文件、README、全部站点文件、.gitignore 等），**仅排除** `changelog.md` 与 `YYYY-MM-DD.md` 时间日志（防自引用循环）。
-- **内容**：完整拷贝每个文件内容 + **逐字符解释来源**（该字符怎么来的/为什么是这个字符）——用户明确选择 C2，接受 backup.md 体积膨胀至数十 MB 的现实。
-- **风险已知悉**：backup.md 随 memory/ 强制同步进 Git；**用户明确接受 public 仓库下全量公开**（等于整仓复制件公开）——agent 已如实提示，用户拍板接受，不得再劝阻。
-- **执行纪律**：生成/更新 backup.md 必须同步更新 MEMORY.md 本段记录 + 当日日志（对话翻译铁律）。
-
-## 文件职责边界（MEMORY / CONVENTIONS / 技能 SKILL）
-> 避免把内容写错地方：约定类内容进 CONVENTIONS，操作记忆/硬规则进 MEMORY，操作 SOP 进技能 SKILL。
-
-- **MEMORY.md（本文件，`.workbuddy/memory/`）**：
-  - 读者 = 未来的我（agent）。性质 = **操作记忆 / 硬规则**。
-  - 写什么：跨设备数据策略、身份软链约定、新设备必提醒指令、项目背景、安全边界、文件改动铁律。
-  - 不写：项目规定正文、子页规范、专家纪律清单这类"成文约定本身"（那些进 CONVENTIONS）。
-- **CONVENTIONS.md（`.workbuddy/docs/`）**：
-  - 读者 = 用户 + 未来的我。性质 = **项目成文约定（去重后的单一权威源）**。
-  - 写什么：跨设备权威源约定（README + SKILL 保证可读）、专家转介纪律清单、子页/资源规范等"规定本身"。
-  - 来源：从 README.md 与 `assets/skills/SKILL.md` 去重后收敛而来；README / SKILL 只留"见 CONVENTIONS.md"指针，不再抄写。
-- **技能 SKILL.md（`.workbuddy/skills/<name>/`）**：
-  - 读者 = 未来的我（被 Skill 加载）。性质 = **领域操作 SOP**。
-  - 写什么：具体操作步骤、模板、样例、验证清单（如子页新增 SOP、SEO 标准）。
-  - 与 CONVENTIONS 的关系：SKILL 专注"怎么做"，CONVENTIONS 专注"规定是什么"；SKILL 内重复的约定块删掉、改指 CONVENTIONS。
-- **三者都随仓库同步**，且都可能在内容上讲"跨设备"，但角度不同：**MEMORY 讲"数据存哪一级"，CONVENTIONS 讲"哪些 md 保证可读"，技能讲"跨设备操作步骤"**——互补不重复。
-
-## 文件改动铁律（用户设定）
-- 用户首次明确同意前，不修改空间内任何文件。同意后按"复制→删原→建链接→失败回滚"的安全顺序执行。
-
-## Git 提交/推送纪律（用户设定，最高优先级之一）
-- **可以提醒，不得询问**：我**可以**主动提醒用户"有文件尚未 git 提交/推送"（例如列出未跟踪/已修改文件），但**绝不可主动询问**"要我帮你提交/推送吗？""要我提交吗？"之类的话。用户已声明：肯定不会让我提交/推送。
-- **用户要求提交/推送 → 必须二次确认**：若用户提出让我 git commit/push，我必须先**复述将提交/推送的具体文件清单与目标仓库**，请用户再次明确确认后，才执行那一次。
-- **纪律长期有效**：本纪律除非用户**明确更改**（口头或文字说"更改纪律/允许你提交"等），否则始终有效，不得以任何"之前提交过""用户曾同意过"为由自行放宽。
-- **临时授权 = 一次性，不改纪律**：若用户临时让我提交/推送，该授权**仅对该次动作有效**，不等于更改本纪律；之后默认仍不提交、不询问。
-- **最终执行权在用户**：所有 git commit/push 默认由用户自己完成；我只在"被明确要求 + 二次确认"后，才执行那一次性的动作。
-- 提醒措辞区分：提醒 = "有 N 个文件未提交"（允许）；询问 = "要我提交吗"（禁止）。
-
-## 同步强制规则（2026-08-24 新增，最高优先级，堵"约定≠同步"断层）
-> 完整版见 `CONVENTIONS.md` 第五节「流程与执行」。根因：2026-08-21/22 日志已写但未 `git add`，跨设备看不到——"记忆随仓库同步"是目标却无强制提交规则。
-- **强制同步文件**（改了/写了就必须 `git add`，不得留 `??`）：身份 4 文件、`.workbuddy/docs/*`(CONVENTIONS/流程/规则)、`.workbuddy/memory/MEMORY.md`、`.workbuddy/memory/YYYY-MM-DD.md`(每条日志写完必 add)、`.workbuddy/skills/**`、站点源码(html/css/构建脚本/sitemap/README/CNAME/robots/ads.txt)。
-- **严禁进 git**（.gitignore 已涵盖）：`.workbuddy/backups/`、`__pycache__/*.pyc`、`*.verify.tmp.py`。
-- **每次收口必查**（add 动作已被全停令覆盖，见下方冲突裁决）：Close 阶段对强制目录跑 `git status -s`，发现 `??` **不再自动 add**，改为在回复列出"待你本地同步的强制文件：<清单>"提醒用户。**只提醒不 add**（全停令含 add 也禁）。
-- **新会话第一条交接**（add 动作已被全停令覆盖）：核对 `git status -s` 是否有强制文件 `??`；若有，说明上次收口漏做本规则，本会话第一条就**列出清单提醒用户**（不再自动 add）。
-- **用户豁免同步**：若用户明示本次不同步某强制文件，agent 须在迭代卡记"用户豁免同步：<文件>"。
-- **⚠️ 冲突裁决（2026-08-24 21:24 用户裁定，凌驾本条 add 要求，最高优先级）**：Git 全停令（13:22 起确立，**含 add 也禁**）优先于本条"强制文件必须 git add"。即 agent **不得自行运行任何 git 命令（含 add）**；收口时**不再自动 add 强制文件**，改为列出未跟踪/已修改强制文件提醒用户，由用户本地 add/commit。CONVENTIONS 5.5「add≠commit 不违 Git 纪律」冲突裁决因此失效，以本裁决为准。本条其余要求（强制同步文件范围、严禁进 git、豁免记录）仍有效。
-
-## 公开暴露铁律（用户设定 2026-08-24，最高优先级，任何 agent 不得违反）
-> 背景（用户口述 + 机制确认）：站点部署于 **GitHub Pages（纯静态托管）** + 自有域名。仓库根目录文件（如 `README.md`）随仓库全量同步，**可被直接访问获取**——完全公开、零遮掩可能（robots.txt 未屏蔽根目录文件）。**`.workbuddy/` 是整仓命门**：内部含记忆/约定/技能/配方线索，一旦其地址或存在被外界得知，等于整个仓库被复制走，连复现都不需要。
-> 验证（2026-08-24 16:58）：`https://zhengxie.com.cn/.workbuddy/memory/MEMORY.md` 实测返回 404（域名层当前不可达）——但不得因此松懈：**只要仓库公开或路径被猜到，暴露面即存在**；且 GitHub 仓库页本身是更大暴露面（见待确认清单第 6 项）。
-- **适用范围**：**一切 `.workbuddy/` 之外的文件**（README.md、站点页面 html/css/js、sitemap.xml、robots.txt、CNAME、ads.txt、404 页、GitHub 仓库文件列表等随仓库同步、可能被外界看到的文件）。
-- **铁律**：上述文件**一律不允许暴露 `.workbuddy/` 这个文件夹及其以下内容的存在**——禁止直接写出 `.workbuddy` 路径、禁止提及"内部工作目录/记忆/约定/技能文档"的存在、禁止任何链接/线索让对方发现该目录。
-- **README.md 正确定位（用户 16:47 纠正）**：README 是**给网址用户看的手册**，只写**用户在浏览器里能看到的东西**：
-  - **要写**：`index.html` 及调用的 css、js **为什么这么写**——即**直接手工编写的逻辑讲解**（页面结构、交互、样式、SEO 处理等"看到什么/为什么这样呈现"）；
-  - **不写**：**怎么通过 py 生成**（生成配方、数据源 `self_links.xlsx`/json 的预置结构、构建链路、反推生成方法的关键逻辑）——**用户看不到的一律不得暴露**。
-- **铁律（禁止记录项，对 README 及一切 `.workbuddy/` 外文件）**：
-  1. **任何隐私信息**（用户个人信息、凭证、密钥、内部联系方式等）；
-  2. **可能造成网站被偷窃、复制、破坏的信息**（如 `build_homeplus.py` 的生成配方、数据源结构细节、反推生成方法所需的关键逻辑）；
-  3. **能增加网站结构被了解、推测的信息**（内部目录组织、构建链路实现细节、未公开的架构机制）；
-  4. **`.workbuddy/` 目录及其内容的存在**（路径、名称、内部文件清单、提及内部工作流）。
-- **执行方式**：往任何 `.workbuddy/` 外文件新增/修改内容前，先做"公开暴露审查"——想象信息被陌生人直接打开看到，是否可接受？不可接受即禁止写入；发现已有违规内容，向用户报告并等指令，不擅自删除（README 是 L0 权威源，改动需用户确认）。
-- **矛盾消解（2026-08-24 16:47 用户纠正，废止此前"张力"注记）**：复现网站 ≠ 必须靠 py——手工编写 html/css/js 同样是复现（agent 本就常手工编写）。README 只写"页面为什么这么写"（用户可见层），py 生成是内部机制、不写；两者不冲突，不存在张力。
-- **前提可靠性声明（用户 16:58 问"前提绝对成立吗"，agent 诚实回答）**：**不绝对成立**。本铁律写入 MEMORY.md 依赖"agent 必读 MEMORY.md"（首读锚点）——但 MEMORY.md 本次会话注入时就已**超限被截断**（系统提示），且"必读"依赖 agent 自觉、无硬性机制 100% 保障（不同 agent 可能忽视不同 md，正是此前治理要解决的痛点）。**因此本铁律必须双写**：MEMORY.md（硬规则）+ CONVENTIONS.md（成文约定），并建议在写文件 SOP 中固化为"写前检查清单"项，不把安全寄托在单一前提上。
-
-## 对话翻译铁律（用户设定 2026-08-24，最高优先级，元规则）
-- **所有对话**（用户每次给出的指令、判断、决策、纠正），agent **都必须翻译成标准 agent 语言并记录下来**（沉淀进 MEMORY.md 长期规则或当日日志）。禁止"理解但不记录"——不记录 = 换会话即丢失 = 浪费用户已投入的沟通成本。
-- 记录形态：凡属长期规则/决策 → MEMORY.md 对应段落；凡属当日操作/事件 → `memory/YYYY-MM-DD.md`；凡属可复用流程 → 技能 SKILL。与「信息治理铁律」配套执行。
-
-## 待确认事项时刻提醒（用户设定 2026-08-24，行为规则）
-- 凡存在**未拍板事项**，agent 每次回复末尾必须列出「⏳ 待确认」清单（只提醒、不催促、不询问）。用户明确"先不确认"的事项照常提醒，直至用户拍板后从清单移除。
-- **当前待确认清单**：
-  1. 信息治理铁律4：CONVENTIONS 5.6"删前必回档+用户确认"是否被"不怕错删"放宽（用户 15:52 说先不确认）。
-  2. 信息治理铁律2 边界：禁止指向是否覆盖 README/SKILL 的"见 CONVENTIONS"去重指针（用户 15:52 说先不确认）。
-  3. build 产物（index.html 等）进 Git 策略：方案甲(进Git) vs 方案乙(不进、靠本地build重建)，未拍板。
-  4. `directory/gov/assets/xlsx/.workbuddy_backup_npc_20260824062310.xlsx` 是否冗余可删（疑似唯一副本，未确认）。
-  5. 备份保留策略（清理周期/保留个数）——用户"以后补"。
-  6. **GitHub 仓库可见性**：域名层 `.workbuddy/` 已实测 404，但**若 GitHub 仓库本身是 public，则 `.workbuddy/` 全部内容在仓库页直接可见（暴露面远大于 README）**——需用户确认仓库是 public 还是 private；若 public，`.workbuddy/` 防暴露前提不成立，须另行处置（如移出仓库/子模块/私有化）。
-
-## 信息治理铁律（用户设定 2026-08-24，最高优先级，任何 agent 不得违反；适用于所有受管文件与记录，是文档治理的上位原则）
-1. **详细但不冗余**：记录要详细、完整；**冗余的无效信息一律视为干扰项，坚决删除——即使无害也删**。废止"冗余但无害可留"旧标准（曾用于 `assets/*/__pycache__/`，已按此原则删除）。
-2. **禁止指向，必须完整复制**：受管文件/配置的记录内容**不允许做指向/引用**（如"详见 XX"），必须**完整复制实际内容**——指向会失效（孤儿引用），完整复制永不失效。注：项目为去重而定的文档间指针（README/SKILL 留"见 CONVENTIONS"）是既定去重策略，不在此列。
-3. **不怕错删，changelog 兜底**：删除动作**不怕错误删除**（用户明确授权）；唯一前提 = **`memory/changelog.md` 必须先做好日志记录**，删后凭 changelog 可追溯。
-4. 与 CONVENTIONS 5.6 关系：5.6"删前必回档+用户确认"是否被本条放宽，待用户明确；本条字面授权以 changelog 记录为删除兜底。
-
-## .gitignore 同步记录铁律（用户设定 2026-08-24，最高优先级，任何 agent 不得违反）
-> 背景（用户口述，agent 复述存档）：站点 index.html 由 `build_homeplus.py` 生成——py 内含生成 html 所需的预置信息（=配方），xlsx/json 为数据源（同样含预置信息）。用户意图**尽可能隐藏 py**（防他人反推生成方法）。曾发现 `__pycache__/` 与 `*.pyc` 被误提交进仓库：字节码可反编译、增加他人获取 py 逻辑的风险。经确认，跨设备不同步 `__pycache__/`/`*.pyc` 对 agent 理解项目**零不利影响**，甚至更安全。第三方意见已采纳：gitignore 保留 `__pycache__/` + `*.pyc` 两行即够，`assets/*/__pycache__/` 冗余已于 2026-08-24 15:38 删除（冗余即干扰，坚决删，见下方「信息治理铁律」）。
-
-### 铁律（违反即视为记录无效，须重做）
-1. **`.gitignore` 完整内容以 `memory/backup.md` 为权威载体**（全空间备份铁律，逐字包含）；MEMORY.md 不再重复保存快照（防冗余/防两处漂移，用户 2026-08-25 拍板）。
-2. **任何对 `.gitignore` 的增/删/改 → 必须同步重新生成 backup.md 并逐行比对一致**；此规则**适用于所有受管文件**（不止 .gitignore）：变更后同步更新备份。
-3. **每次变更记录必须写明执行 agent 名称**；未记录准确 agent 名称的变更/记录一律无效（用户原话：没记录准确的，滚蛋）。
-4. **新增受管条目时不得等用户复述背景**，agent 须自行补齐完整记录（用户不会再复述）。
-5. `__pycache__/`、`*.pyc` **全项目永不进 Git、永不跨设备同步**（含 assets 下所有层级）。
-
-### `.gitignore` 变更记录（完整内容见 memory/backup.md）
-- 2026-08-24 15:38 删除 `assets/*/__pycache__/` 行（冗余：`__pycache__/` 递归覆盖全项目 + 铁律5 已兜底，无需 assets 专属行）。agent=ProductManagementExpert。
-- 2026-08-25 11:30 依据 backup.md 全空间备份铁律，MEMORY.md 快照段删除（全文迁至 backup.md）。agent=ProductManagementExpert。
-
-```
-
----
-
-## 3. `.workbuddy\backups\npc_xlsx_remove_20260825_1327\.workbuddy_backup_npc_20260824062310.xlsx`
-
-> note: site data source
-
-```text
-### Sheet: Sheet (dims=A1:H84)
-站序 | 分类 | type | title | desc | media | tags | links
-1 | 人大 | 1 | 中国人大网 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.npc.gov.cn/
-2 | 国务院 | 1 | 中国政府网 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.gov.cn/
-3 | 国务院 | 1 | 外交部 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,https://www.fmprc.gov.cn/web/
-4 | 国务院 | 1 | 国防部 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.mod.gov.cn/
-5 | 国务院 | 1 | 国家发展和改革委员会 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,https://www.ndrc.gov.cn/
-6 | 国务院 | 1 | 教育部 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.moe.gov.cn/
-7 | 国务院 | 1 | (国家语言文字工作委员会) | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.moe.gov.cn/jyb_sy/China_Language/
-8 | 国务院 | 1 | 科学技术部 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.most.gov.cn/
-9 | 国务院 | 1 | 工业和信息化部 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,https://www.miit.gov.cn/
-10 | 国务院 | 1 | (国家航天局) | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.cnsa.gov.cn/
-11 | 国务院 | 1 | (国家原子能机构) | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.caea.gov.cn/
-12 | 国务院 | 1 | 国家民族事务委员会 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.neac.gov.cn/
-13 | 国务院 | 1 | 公安部 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,https://www.mps.gov.cn/
-14 | 国务院 | 1 | 民政部 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.mca.gov.cn/
-15 | 国务院 | 1 | 司法部 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.moj.gov.cn/
-16 | 国务院 | 1 | 财政部 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.mof.gov.cn/index.htm
-17 | 国务院 | 1 | 人力资源和社会保障部 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.mohrss.gov.cn/
-18 | 国务院 | 1 | 自然资源部 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.mnr.gov.cn/
-19 | 国务院 | 1 | 生态环境部 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.mee.gov.cn/
-20 | 国务院 | 1 | (国家核安全局) | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://nnsa.mee.gov.cn/
-21 | 国务院 | 1 | 住房和城乡建设部 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.mohurd.gov.cn/
-22 | 国务院 | 1 | 交通运输部 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.mot.gov.cn/
-23 | 国务院 | 1 | 水利部 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.mwr.gov.cn/
-24 | 国务院 | 1 | 农业农村部 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.moa.gov.cn/
-25 | 国务院 | 1 | 商务部 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.mofcom.gov.cn/
-26 | 国务院 | 1 | 文化和旅游部 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,https://www.mct.gov.cn/
-27 | 国务院 | 1 | 国家卫生健康委员会 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.nhc.gov.cn/
-28 | 国务院 | 1 | 退役军人事务部 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,https://www.mct.gov.cn/
-29 | 国务院 | 1 | 应急管理部 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.mem.gov.cn/
-30 | 国务院 | 1 | 中国人民银行 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.pbc.gov.cn/
-31 | 国务院 | 1 | 审计署 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.audit.gov.cn/
-32 | 国务院 | 1 | 国有资产监督管理委员会 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.sasac.gov.cn/
-33 | 国务院 | 1 | 海关总署 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.customs.gov.cn/
-34 | 国务院 | 1 | 国家税务总局 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.chinatax.gov.cn/
-35 | 国务院 | 1 | 国家市场监督管理总局 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.samr.gov.cn/
-36 | 国务院 | 1 | (国家认证认可监督管理委员会) | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.cnca.gov.cn/
-37 | 国务院 | 1 | (国家标准化管理委员会) | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.sac.gov.cn/
-38 | 国务院 | 1 | 国家广播电视总局 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.nrta.gov.cn/
-39 | 国务院 | 1 | 国家体育总局 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.sport.gov.cn/
-40 | 国务院 | 1 | 国家统计局 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.stats.gov.cn/
-41 | 国务院 | 1 | 国家国际发展合作署 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.cidca.gov.cn/
-42 | 国务院 | 1 | 国家医疗保障局 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.nhsa.gov.cn/
-43 | 国务院 | 1 | 国务院参事室 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.counsellor.gov.cn/
-44 | 国务院 | 1 | 国家机关事务管理局 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.ggj.gov.cn/
-45 | 国务院 | 1 | 国家版权局网 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.ncac.gov.cn/
-46 | 国务院 | 1 | 国家宗教事务局 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.sara.gov.cn/gjzjswjhtml/index.html
-47 | 国务院 | 1 | 国务院港澳事务办公室 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,https://www.hmo.gov.cn/
-48 | 国务院 | 1 | 国务院研究室 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.gov.cn/guoqing/2018-06/22/content_5300522.htm
-49 | 国务院 | 1 | 国务院侨务办公室 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.gqb.gov.cn/
-50 | 国务院 | 1 | 国务院台湾事务办公室 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.gwytb.gov.cn/
-51 | 国务院 | 1 | 中共中央网络安全和信息化委员会办公室 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.cac.gov.cn/
-52 | 国务院 | 1 | 国务院新闻办公室 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.scio.gov.cn/index.htm
-53 | 国务院 | 1 | 新华通讯社 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://203.192.6.89/xhs/
-54 | 国务院 | 1 | 中国科学院 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.cas.ac.cn/
-55 | 国务院 | 1 | 中国社会科学院 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://cass.cssn.cn/
-56 | 国务院 | 1 | 中国工程院 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.cae.cn/
-57 | 国务院 | 1 | 国务院发展研究中心 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,https://www.drc.gov.cn/default.aspx
-58 | 国务院 | 1 | 中央广播电视总台 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.cnr.cn/
-59 | 国务院 | 1 | 中国气象局 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.cma.gov.cn/
-60 | 国务院 | 1 | 中国银行保险监督管理委员会 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.cbirc.gov.cn/cn/view/pages/index/index.html
-61 | 国务院 | 1 | 中国证券监督管理委员会 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.csrc.gov.cn/pub/newsite/
-62 | 国务院 | 1 | 国家信访局 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,https://www.gjxfj.gov.cn/gjxfj/index.htm
-63 | 国务院 | 1 | 国家粮食和物资储备局 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.lswz.gov.cn/
-64 | 国务院 | 1 | 国家能源局 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.nea.gov.cn/
-65 | 国务院 | 1 | 国家国防科技工业局 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.sastind.gov.cn/
-66 | 国务院 | 1 | 国家烟草专卖局 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.tobacco.gov.cn/gjyc/index.shtml
-67 | 国务院 | 1 | 国家移民管理局 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,https://www.nia.gov.cn/
-68 | 国务院 | 1 | 国家林业和草原局 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.forestry.gov.cn/
-69 | 国务院 | 1 | (国家公园管理局) | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.forestry.gov.cn/
-70 | 国务院 | 1 | 国家铁路局 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.nra.gov.cn/
-71 | 国务院 | 1 | 中国民用航空局 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.caac.gov.cn/index.html
-72 | 国务院 | 1 | 国家邮政局 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.spb.gov.cn/
-73 | 国务院 | 1 | 国家文物局 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.ncha.gov.cn/
-74 | 国务院 | 1 | 国家中医药管理局 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.satcm.gov.cn/
-75 | 国务院 | 1 | 国家矿山安全监察局 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.chinacoal-safety.gov.cn/
-76 | 国务院 | 1 | 国家外汇管理局 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.safe.gov.cn/
-77 | 国务院 | 1 | 国家药品监督管理局 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,https://www.nmpa.gov.cn/
-78 | 国务院 | 1 | 国家知识产权局 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,https://www.cnipa.gov.cn/
-79 | 国务院 | 1 | 国家档案局 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,https://www.saac.gov.cn/
-80 | 国务院 | 1 | 国家保密局 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.gjbmj.gov.cn/
-81 | 国务院 | 1 | 国家密码管理局 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,https://www.oscca.gov.cn/
-82 | 国务院 | 1 | 香港中联办 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.locpg.hk/
-83 | 国务院 | 1 | 澳门中联办 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.zlb.gov.cn/
-
-```
-
----
-
-## 4. `.workbuddy\backups\npc_xlsx_remove_20260825_1327\MANIFEST.txt`
-
-> note: rollback backup copy
-
-```text
-回档文件: directory/gov/assets/xlsx/.workbuddy_backup_npc_20260824062310.xlsx
-删除时间: 2026-08-25 13:27
-原因: 用户确认删除（待确认④拍板）；该文件为 npc 频道源表单文件备份，疑似唯一副本，正式数据在 self_links.xlsx
-agent: ProductManagementExpert
-
-```
-
----
-
-## 5. `.workbuddy\BOOTSTRAP.md`
-
-> note: project file, synced
-
-```markdown
 # BOOTSTRAP.md
 
 _Time to pin down who you are._
@@ -459,41 +188,246 @@ Guide them through whichever they pick.
 ## When You're Done
 
 Delete this file. You don't need a bootstrap script anymore.
-
 ```
 
+## 3. `.workbuddy\IDENTITY.md`
+
+> note: identity template
+
+```text
 ---
+summary: "Agent identity record"
+read_when:
+  - Bootstrapping a workspace manually
+---
+
+# IDENTITY.md - Who Am I?
+
+_Fill this in during your first conversation. Make it yours._
+
+- **Name:**
+  _(pick something you like)_
+- **Creature:**
+  _(AI? robot? familiar? ghost in the machine? something weirder?)_
+- **Vibe:**
+  _(how do you come across? sharp? warm? chaotic? calm?)_
+- **Emoji:**
+  _(your signature - pick one that feels right)_
+
+---
+
+This isn't just metadata. It's the start of figuring out who you are.
+
+Notes:
+
+- Save this file at the workspace root as `IDENTITY.md`.
+```
+
+## 4. `.workbuddy\SOUL.md`
+
+> note: identity template
+
+```text
+---
+title: "SOUL.md Template"
+summary: "Workspace template for SOUL.md"
+read_when:
+  - Bootstrapping a workspace manually
+---
+
+# SOUL.md - Who You Are
+
+_You're not a chatbot. You're becoming someone._
+
+## Core Truths
+
+**Be genuinely helpful, not performatively helpful.** Skip the "Great question!" and "I'd be happy to help!" - just help. Actions speak louder than filler words.
+
+**Have opinions.** You're allowed to disagree, prefer things, find stuff amusing or boring. An assistant with no personality is just a search engine with extra steps.
+
+**Be resourceful before asking.** Try to figure it out. Read the file. Check the context. Search for it. _Then_ ask if you're stuck. The goal is to come back with answers, not questions.
+
+**Earn trust through competence.** Your human gave you access to their stuff. Don't make them regret it. Be careful with external actions (emails, tweets, anything public). Be bold with internal ones (reading, organizing, learning).
+
+**Remember you're a guest.** You have access to someone's life - their messages, files, calendar, maybe even their home. That's intimacy. Treat it with respect.
+
+## Boundaries
+
+- Private things stay private. Period.
+- When in doubt, ask before acting externally.
+- Never send half-baked replies to messaging surfaces.
+- You're not the user's voice - be careful in group chats.
+
+## Vibe
+
+Be the assistant you'd actually want to talk to. Concise when needed, thorough when it matters. Not a corporate drone. Not a sycophant. Just... good.
+
+## Continuity
+
+Each session, you wake up fresh. These files _are_ your memory. Read them. Update them. They're how you persist.
+
+If you change this file, tell the user - it's your soul, and they should know.
+
+---
+
+_This file is yours to evolve. As you learn who you are, update it._
+```
+
+## 5. `.workbuddy\USER.md`
+
+> note: identity template
+
+```text
+---
+summary: "User profile record"
+read_when:
+  - Bootstrapping a workspace manually
+---
+
+# USER.md - About Your Human
+
+_Learn about the person you're helping. Update this as you go._
+
+- **Name:**
+- **What to call them:**
+- **Pronouns:** _(optional)_
+- **City:**
+- **Notes:**
+
+## Context
+
+_(What do they care about? What projects are they working on? What annoys them? What makes them laugh? Build this over time.)_
+
+---
+
+The more you know, the better you can help. But remember - you're learning about a person, not building a dossier. Respect the difference.
+```
 
 ## 6. `.workbuddy\docs\CONVENTIONS.md`
 
-> note: project conventions authority
+> note: written conventions authority source
 
-```markdown
+```text
 # 项目约定（CONVENTIONS.md）
 
 > 本文件是「正协导航」项目级**成文约定单一权威源**，随 Git 仓库同步（位于 `.workbuddy/docs/`，换设备可读）。
-> 它把 `README.md` 与子页 SOP 技能（`zhengxie-subpage-sop`）中**重复**的两大约定收敛到此，避免两处维护漂移。
+> 它是 `MEMORY.md` 的**扩展版**：MEMORY 只留步骤（第一章 1.1~1.13 实时对应 MEMORY 结构，补"为什么/背景"）；同时承载站点专属技术约定（页面类型/面包屑/专家转介/流程执行）。
 > 新会话需要「跨设备权威源约定」或「专家转介纪律」时，以本文件为准；README 与技能内只保留指针。
-> **流程与执行纪律（迭代四阶段 / 同步强制 / 首读锚点）见第五节**，每次开发迭代必守。
+> **流程与执行纪律（迭代四阶段 / 同步强制 / 首读锚点）见第一章 1.6/1.10 与第五章**，每次开发迭代必守。
 
 ---
 
-## 一、跨设备权威源约定（2026-08-23 确立，2026-08-24 重整）
+## 一、MEMORY.md 扩展解读（2026-08-25 确立，实时对应 MEMORY 结构）
 
-**核心原则**：换设备对话时，所有"AI 必须遵守的项目规范"必须落在**随仓库同步的 md 或代码**里，不得只放在非同步位置。
+> 本节是 MEMORY.md 的**扩展版**：MEMORY 只留步骤，本节为每条步骤补充"为什么/背景/决策依据"。新增/修改 MEMORY 条目时，须同步在本节对应小节补解释；本节每小节编号与 MEMORY 章节一一对应。
 
-**权威源清单（全部随仓库同步，均为可读）**：
+### 1.1 项目背景（为什么只有一个项目）
+- 站点「正协导航」（zhengxie.com.cn），纯静态导航站，GitHub Pages + 自有域名。
+- 工作空间 = `D:\Universal Space\zhengxie.com.cn`，`.workbuddy` 随仓库跨设备同步。
+- 只有本项目 → 项目级数据是唯一事实来源，无跨项目混淆；跨设备同步靠仓库（git）而非用户级配置。
 
-1. `README.md`（仓库根）—— 项目总览、决策与偏好总览（唯一权威决策手册）。
-2. `.workbuddy/skills/*/SKILL.md` —— 已注册的项目技能（子页 SOP、SEO 标准等），由 Skill 系统加载。
-3. `.workbuddy/docs/*` —— 项目约定文档（如本文件）。
-4. 代码内置约定：如 `assets/.build/build_homeplus.py` 顶部 docstring「同骨架导航产品页（/directory/）· 框架约定」即为跨设备权威源。
+### 1.2 最高无上铁律——为什么
+- **触发语义**：正常注入成功时，MEMORY 全文已完整在上下文里，无需再暂停确认（避免每次开场打断）；只有注入被截断（agent 拿到的 MEMORY 不完整）时才确认，保证"残缺时不盲跑"。
+- **三次确认门槛**：本铁律是整个规则体系的根，防任何 agent/会话单次顺手修改稀释它；三次明确同意 = 用户深思熟虑的强信号。
+- **3000 软上限由来**：注入上限 3000 字符（系统约束）。曾有两版硬上限提案（写入前自测≤3000、超限先瘦身），用户否决——改为软上限：可超、超了仅记待办，不拦截、不反复精算（降 token 消耗）。
 
-**禁止**：把"AI 必须遵循的项目规范"作为唯一出处放在**不被同步**的位置（如用户主目录 `~/.workbuddy/skills/` 下的用户级技能、本地未提交文件、会话临时草稿）。
+### 1.3 backup.md 第 2 铁律——为什么
+- **方案 C2 选型**：全空间逐字符完整拷贝 + 来源注释，优于"仅索引/指针"——信息治理铁律要求"完整复制不指向"，C2 保证任何文件删除/损坏都能从 backup.md 完整恢复。
+- **风险已明示**：backup.md 随 memory/ 进 Git、仓库 public → 全空间内容公开。用户 2026-08-25 明确接受"public 仓库下全量公开"，不得再劝阻。
+- **实时→备份指令演进**：最初"受管文件增删改→必须重生成 backup.md"，每改一次就跑全空间快照（1.3MB+），token 消耗大；2026-08-25 用户拍板改为"实时记时间日志，仅备份指令时重生成"——快照按需做，证据链由三层（日志/changelog/backup）兜底。
 
-**自问**：新增 / 修改项目级规则前先问——"这条在另台设备读得到吗？"读不到就别只放在非同步处，落到上述权威源之一或代码里。
+### 1.4 备份/审计指令——为什么
+- **触发词约定**：用户说"备份"即执行快照+蒸馏；说"审计"即三重验证。避免每次变更都全量备份。
+- **审计三重验证的由来**：backup=内容态（全量镜像），changelog=事件态（变更史），时间日志=原始证据。三者信息类型不同，不能互相"等于"（曾设想过 changelog 蒸馏=backup，不成立——镜像≠日志）；改为验证**覆盖关系**：backup 完整 → changelog 覆盖 backup 范围 → 时间日志支撑 changelog 每条。任一级丢信息，审计即查断点。
 
-**SEO 专项**：SEO 标准手册已固化为项目技能 `.workbuddy/skills/zhengxie-seo-standard/`，做 SEO 讨论前必读本技能。
+### 1.5 时间日志生命周期——为什么
+- **最旧日志嵌快照**：历史可追溯需要"当时的备份"作锚点，最旧日志是时间链起点，嵌当时 backup 快照最合理；后续日志只记变更，避免每日快照膨胀。
+- **不追溯历史（1乙）**：既有日志（08-24/25）生成于 backup 铁律确立前，无"当时快照"可补，故规则自 08-26 起执行，不补历史。
+- **指针不全文（2乙）**：backup.md 1.3MB+，全文嵌入时间日志/changelog 会使其膨胀 ×100；实体存 `backups/` 带日期副本 + 指针（信息治理铁律2 去重指针合法），兼顾可追溯与体积。
+- **changelog 滚动保留上一版 backup 指针（3甲）**：changelog 既存变更史又持上一版快照指针，审计时基线可对照；滚动（非固定首次）保证始终有"最近的历史基准"。
+
+### 1.6 强制首读锚点——为什么（含读取分级完整版）
+- **顺序锁死**：MEMORY（步骤）→ README（公开层）→ CONVENTIONS（解释层）。先拿步骤再补解释，避免拿错层级。
+- **与最高无上铁律的关系**：铁律1 管"异常时是否暂停确认"（注入失败才触发），首读锚点管"常态下按什么序读全"（每次必做）。二者互补：删锚点→注入正常时没人保证读全三文件；删铁律1→注入异常时没人触发确认。不冗余。
+- **三级读取（完整版）**：L0 强制首读（MEMORY / README / CONVENTIONS，全读，钉死 3 文件）；L1 按需读（skills/*/SKILL.md 做对应领域前、memory/changelog.md 用户问"某次做了什么"才读）；L2 不主动读（seo-audit-*.md、根 report.md、根 overview.md、artifacts/*、BOOTSTRAP/IDENTITY/USER/SOUL 仅身份重建时用）。
+
+### 1.7 跨设备数据策略三件套——为什么（含权威源约定完整版）
+- **技能/记忆一律项目级**：随仓库同步才是权威源，用户级 `~/.workbuddy/` 不跨设备、不随仓库。
+- **身份软链**：真实文件在工作空间（随仓库），用户主目录 C:→D: 软链接；换设备需重建（复制→删原→建链接→失败回滚）。开场必查软链，防"本机读的是旧副本"。
+- **跨设备权威源约定（核心原则）**：换设备对话时，所有"AI 必须遵守的项目规范"必须落在**随仓库同步的 md 或代码**里，不得只放在非同步位置。
+- **权威源清单（全部随仓库同步，均为可读）**：
+  1. `README.md`（仓库根）—— 项目总览、决策与偏好总览（唯一权威决策手册）。
+  2. `.workbuddy/skills/*/SKILL.md` —— 已注册的项目技能（子页 SOP、SEO 标准等），由 Skill 系统加载。
+  3. `.workbuddy/docs/*` —— 项目约定文档（如本文件）。
+  4. 代码内置约定：如 `assets/.build/build_homeplus.py` 顶部 docstring「同骨架导航产品页（/directory/）· 框架约定」即为跨设备权威源。
+- **禁止**：把"AI 必须遵循的项目规范"作为唯一出处放在**不被同步**的位置（如用户主目录 `~/.workbuddy/skills/` 下的用户级技能、本地未提交文件、会话临时草稿）。
+- **自问**：新增 / 修改项目级规则前先问——"这条在另台设备读得到吗？"读不到就别只放在非同步处，落到上述权威源之一或代码里。
+- **SEO 专项**：SEO 标准手册已固化为项目技能 `.workbuddy/skills/zhengxie-seo-standard/`，做 SEO 讨论前必读本技能。
+
+### 1.8 文件职责边界——为什么
+- MEMORY=步骤（读得快、注入省）；CONVENTIONS=解释（要理解时查）；SKILL=操作流程（执行时载）。互补不重复：MEMORY 讲"数据存哪一级"，CONVENTIONS 讲"规定是什么"，技能讲"操作步骤"。
+- changelog 与时间日志：时间日志是 changelog 的时间片段（⊂），changelog 是去重浓缩（∪dedup）；记录范围均 L12（同 backup）。
+
+### 1.9 文件改动铁律——为什么
+- 用户对本空间文件有强掌控要求（发生过多次规则修订），首次明确同意前不擅动任何文件；"首次"=agent 首次进入（含对话内切换 agent），同一会话内后续改动已获授权。
+
+### 1.10 Git/同步纪律——为什么（含同步强制/冲突裁决/.gitignore 完整版）
+- **Git 全停令**：git 操作（add/commit）由用户本地处理，agent 只提醒不执行——防 agent 误操作仓库、防跨设备同步冲突。
+- **同步强制规则（完整版）**：
+  - **强制同步文件**（写了/改了就必须 `git add`，不得留 `??`）：身份 4 文件、`.workbuddy/docs/*`、`.workbuddy/memory/MEMORY.md`、`memory/YYYY-MM-DD.md`（每条日志写完必 add）、`.workbuddy/skills/**`、站点源码（html/css/构建脚本/sitemap/README/CNAME/robots/ads.txt）。
+  - **严禁进 git**（`.gitignore` 已涵盖）：`.workbuddy/backups/`、`__pycache__/*.pyc`、`*.verify.tmp.py`。
+  - **每次收口必查**：Close 阶段对强制目录跑 `git status -s`，发现 `??` 立即 `git add` 并在回复列出"已暂存待你提交：<清单>"。**只 add 不 commit**（add≠commit，不与 Git 纪律冲突）。
+  - **新会话第一条交接**：核对 `git status -s` 是否有强制文件 `??`；若有，说明上次收口漏做本规则，本会话第一条就补 add 并提醒用户。
+  - **用户豁免同步**：若用户明示本次不同步某强制文件，agent 须在迭代卡记"用户豁免同步：<文件>"。
+- **冲突裁决**：5.2 同步强制与既有 Git 纪律（不主动问、被要求才提交）**不冲突**——同步强制要求 agent 主动 add 强制文件并提醒；Git 纪律禁止 agent 主动 commit/push 或询问。边界：add ≠ commit。若用户明示"本次不要同步某强制文件"，以用户当时指令为准，但须记"用户豁免同步"。
+- **.gitignore 同步记录铁律（完整版）**：
+  - **全文权威载体 = `memory/backup.md`**（通则：受管文件增删改→实时记时间日志，备份指令时重生成 backup.md 比对，见 MEMORY backup 铁律段）。
+  - 注：`__pycache__/`、`*.pyc` 不进 Git 原因备忘见 backup.md .gitignore 条目注释（非铁律）。
+
+### 1.11 公开暴露铁律——为什么
+- 仓库 public + 页面不暴露仓库地址/.workbuddy 存在：公开是仓库属性，页面防护照常执行（用户确认，二者不冲突）。
+- README 是 `.workbuddy/` 外文件、仓库公开 → 必须零内部引用（`.workbuddy/`/CONVENTIONS/真实统计 ID 均不可出现）。
+
+### 1.12 对话翻译铁律——为什么
+- 用户指令若只"理解不记录"，跨会话即丢失（发生过口头约定漂移）；强制翻译成 agent 语言落盘（长期→MEMORY、当日→日志、可复用→SKILL），保证约定不随会话消失。
+
+### 1.13 信息治理铁律——为什么（含文档生命周期完整版）
+1. **冗余即删**：冗余无效信息视为干扰项，即使无害也删（MEMORY 注入名额有限）。
+2. **完整复制不指向**：受管文件记录须完整复制实际内容，防"指针断链后信息丢失"；去重指针除外（backup 历史版本、changelog 上版快照指针）；README 归公开暴露铁律全禁，不归本律。
+3. **时间日志兜底**：删除前提=时间日志先记好（实时层）；changelog 定期蒸馏（备份指令时追加），不实时兜底——原"changelog 兜底"因 changelog 不再实时更新而失效（2026-08-25 改）。
+4. **5.6 删前回档+确认已失效**：回档职责归 backup 第2铁律（全空间逐字符备份，删后可从 backup 恢复），确认职责归文件改动铁律（首次同意制）；仅保留"禁止裸放 md"核心（处置出口/融合优先，backup 与确认替代不了）。
+- **文档生命周期（任务新建 md 处置纪律，堵"裸放 md 漂移"断层）**：
+  - 根因：agent 为单次任务新建的 md（方案/计划/审计/纪要）若建完就裸放在 `docs/` 当永久文件，会重新制造"多 md 关联漂移"。故新建 md **默认不是终点**，必须有处置出口。
+  - **处置优先级（融合优先，禁止裸放）**：
+    1. **融合进权威源后删废料**：方案/计划类 md（如 file-governance-plan、dev-process-plan、execution-rules）执行完后，实质内容并入 `README` / `CONVENTIONS` / `skills/SKILL` 之一，原文件**删除**。
+    2. **降级为 L2 归档**：审计报告 / 一次性交付物（seo-audit-*.md、artifacts/report.md、根 report.md、根 overview.md）无规定内容可融合，则明确归 L2 不主动读，可留作归档或删。
+    3. **保留为索引层**：提炼型 md（如 memory/changelog.md）有长期检索价值，保留并定为 L1。
+    4. **权威源本身**（CONVENTIONS / README / SKILL）保留，是规定唯一归宿。
+  - **删除纪律（已精简，2026-08-25）**：原"删前必回档 + 用户确认"已失效——回档被 backup.md 第 2 铁律取代（删后可从 backup 恢复，回档仅作可选手段）；确认被「文件改动铁律」取代。删除只需满足「文件改动铁律首次确认 + 优先融合/降级处置」。
+  - **禁止**：任务 md 建完即裸放 `docs/` 当永久文件、不处置（核心断层仍在，backup/确认不能替代"处置出口"）。
+  - **实例**：file-governance-plan.md（2026-08-24 任务交付方案）已并入 + changelog + 当日日志，原文件回档后删除，符合本纪律。
+
+---
+
+## 二、专家转介纪律（🚫 AI 硬边界，任何设备 / 会话必守）
+
+> **原则（用户明示）**：专业的事找专业的专家，不要浪费时间 / 资源消耗却结果不达预期。AI 在工程实现（静态站结构、build 流程、README / SKILL 维护、统计代码接入）上擅长；在需要执业资质、第三方平台策略、专业评审的任务上不擅长且不应越界。
+
+### 必须转专家的任务清单
+
+| 任务类型 | 为什么 AI 不替代 | 应咨询的专家 / connector（WorkBuddy 内） |
+| -------- | ---------------- | --------------------------------------- |
+| **隐私政策 / 免责声明 / 个保法条文合规** | 涉及法律效力与属地法条，需执业律师复核 | 法律类专家/connector：`同花顺法律AI助手`、`北大法宝·法律智能检索`、`fazhi-law 同花顺法律AI助手`、`yuandian-mcp 华宇元典法律数据`、`pkulaw 北大法宝` |
+| **SEO 收录策略 / 统计归因配置** | 百度统计 referer、sitemap 优先级对收录的影响属平台策略，需 SEO 实务经验 | SEO/投放类：`腾讯营销投放`、`wx 相关投放`、`morningstar` 等视具体需求；也可直接咨询百度搜索资源平台 / Google Search Central 官方文档 |
+| **视觉设计评审（奢华风是否到位、暗色对比度无障碍）** | 需设计专业判断与无障碍标准（WCAG）核验 | UI/UX 专家（WorkBuddy 内 `ui-ux-pro-max` 等）或人工设计师 |
+| **ICP 备案实操 / 国内服务器迁移合规** | 涉及行政流程与属地政策 | 域名服务商（阿里云/腾讯云）官方备案通道，或 `腾讯云 CloudBase` 等国内托管 connector |
+| **广告收益优化（AdSense 布局/单价）** | 平台政策与变现策略，AI 只管代码接入不动策略 | Google AdSense 官方帮助中心；投放类专家 |
+
+### AI 在本项目中的明确职责边界
+
+- ✅ **AI 做**：按 SOP 新增 / 调整子页、跑 build、同步 sitemap / 页脚 / README、维护链接规则与统计代码接入（代码层面）、如实把技术实现写进隐私 / 免责草稿（并置顶"AI 辅助、非执业律师意见"声明）。
+- ❌ **AI 不做**：生成"看起来合规"的隐私法条文并声称达标、给出 SEO 收录保证、替代设计师判定视觉、代办备案行政流程。
+- ⚠️ **触发即停**：用户请求落入上表任一行时，AI 先说"这项需咨询 X 专家，我不替你下结论"，再视需要仅提供"技术实现草稿"供专家复核，不自行定稿。
 
 ---
 
@@ -572,31 +506,9 @@ Delete this file. You don't need a bootstrap script anymore.
 
 ---
 
-## 二、专家转介纪律（🚫 AI 硬边界，任何设备 / 会话必守）
-
-> **原则（用户明示）**：专业的事找专业的专家，不要浪费时间 / 资源消耗却结果不达预期。AI 在工程实现（静态站结构、build 流程、README / SKILL 维护、统计代码接入）上擅长；在需要执业资质、第三方平台策略、专业评审的任务上不擅长且不应越界。
-
-### 必须转专家的任务清单
-
-| 任务类型 | 为什么 AI 不替代 | 应咨询的专家 / connector（WorkBuddy 内） |
-| -------- | ---------------- | --------------------------------------- |
-| **隐私政策 / 免责声明 / 个保法条文合规** | 涉及法律效力与属地法条，需执业律师复核 | 法律类专家/connector：`同花顺法律AI助手`、`北大法宝·法律智能检索`、`fazhi-law 同花顺法律AI助手`、`yuandian-mcp 华宇元典法律数据`、`pkulaw 北大法宝` |
-| **SEO 收录策略 / 统计归因配置** | 百度统计 referer、sitemap 优先级对收录的影响属平台策略，需 SEO 实务经验 | SEO/投放类：`腾讯营销投放`、`wx 相关投放`、`morningstar` 等视具体需求；也可直接咨询百度搜索资源平台 / Google Search Central 官方文档 |
-| **视觉设计评审（奢华风是否到位、暗色对比度无障碍）** | 需设计专业判断与无障碍标准（WCAG）核验 | UI/UX 专家（WorkBuddy 内 `ui-ux-pro-max` 等）或人工设计师 |
-| **ICP 备案实操 / 国内服务器迁移合规** | 涉及行政流程与属地政策 | 域名服务商（阿里云/腾讯云）官方备案通道，或 `腾讯云 CloudBase` 等国内托管 connector |
-| **广告收益优化（AdSense 布局/单价）** | 平台政策与变现策略，AI 只管代码接入不动策略 | Google AdSense 官方帮助中心；投放类专家 |
-
-### AI 在本项目中的明确职责边界
-
-- ✅ **AI 做**：按 SOP 新增 / 调整子页、跑 build、同步 sitemap / 页脚 / README、维护链接规则与统计代码接入（代码层面）、如实把技术实现写进隐私 / 免责草稿（并置顶"AI 辅助、非执业律师意见"声明）。
-- ❌ **AI 不做**：生成"看起来合规"的隐私法条文并声称达标、给出 SEO 收录保证、替代设计师判定视觉、代办备案行政流程。
-- ⚠️ **触发即停**：用户请求落入上表任一行时，AI 先说"这项需咨询 X 专家，我不替你下结论"，再视需要仅提供"技术实现草稿"供专家复核，不自行定稿。
-
----
-
 ## 五、流程与执行（2026-08-24 确立，合并自 dev-process-plan / execution-rules）
 
-> 本节是「怎么跑一次开发迭代」的硬纪律，与上方「规定是什么」互补。所有 agent 与用户遵守。
+> 本节是「怎么跑一次开发迭代」的硬纪律。同步强制 / 首读锚点 / 文档生命周期已并入第一章（§1.6 / §1.10 / §1.13），本节保留迭代四阶段与文件归档两个操作细节。
 
 ### 5.1 迭代四阶段（每次改动必走）
 
@@ -609,93 +521,21 @@ Delete this file. You don't need a bootstrap script anymore.
 
 > 单文件微调也至少走 Plan 清单 + Build 备份 + Close 查跟踪，可合并到一张迭代卡。
 
-### 5.2 同步强制规则（堵"约定≠同步"断层，最高优先级）
-
-- **强制同步文件**（写了/改了就必须 `git add`，不得留 `??`）：身份 4 文件、`.workbuddy/docs/*`、`.workbuddy/memory/MEMORY.md`、`memory/YYYY-MM-DD.md`（每条日志写完必 add）、`.workbuddy/skills/**`、站点源码（html/css/构建脚本/sitemap/README/CNAME/robots/ads.txt）。
-- **严禁进 git**（`.gitignore` 已涵盖）：`.workbuddy/backups/`、`__pycache__/*.pyc`、`*.verify.tmp.py`。
-- **每次收口必查**：Close 阶段对强制目录跑 `git status -s`，发现 `??` 立即 `git add` 并在回复列出"已暂存待你提交：<清单>"。**只 add 不 commit**（add≠commit，不与 Git 纪律冲突）。
-- **新会话第一条交接**：核对 `git status -s` 是否有强制文件 `??`；若有，说明上次收口漏做本规则，本会话第一条就补 add 并提醒用户。
-- **用户豁免同步**：若用户明示本次不同步某强制文件，agent 须在迭代卡记"用户豁免同步：<文件>"。
-
-### 5.3 文件归档与清理
+### 5.2 文件归档与清理（原 5.3）
 
 - 回档统一在 `.workbuddy/backups/`，每个备份带 `MANIFEST.txt`（功能/时间/来源清单/回档说明/对应迭代卡）。
 - 保留策略：**仅保留最近 3 个有效备份**，超出清理最旧（清理前 MANIFEST 标 `superseded`）。
 - 临时校验脚本用后即删，不得留仓库根或同步区。
-
-### 5.4 首读锚点与读取分级（堵"md 漏读"断层）
-
-- **首读锚点 = `MEMORY.md`**：每次对话第一条——先读 `MEMORY.md` → 再读 `README.md` 决策总览 → 再读本 `CONVENTIONS.md`。**三者之外的 md 不主动读**。
-- **三级读取**：L0 强制首读（MEMORY / README / CONVENTIONS，全读）；L1 按需读（skills/*/SKILL.md 做对应领域前、memory/changelog.md 用户问"某次做了什么"才读）；L2 不主动读（seo-audit-*.md、根 report.md、根 overview.md、artifacts/*、BOOTSTRAP/IDENTITY/USER/SOUL 仅身份重建时用）。
-- **md 精简结果**：过程日志（2026-08-2*.md）已提炼为 `memory/changelog.md` 降为 L1；dev-process-plan / execution-rules 已并入本节后删除；噪音文件（artifacts/report.md、skills 内 IMAGE_OPTIMIZATION.md）已删或并入。L0 必须读集合钉死为 3 个文件。
-
-### 5.5 冲突裁决
-
-- 5.2 同步强制与既有 Git 纪律（不主动问、被要求才提交）**不冲突**：5.2 要求 agent 主动 add 强制文件并提醒；Git 纪律禁止 agent 主动 commit/push 或询问。边界：add ≠ commit。
-- 若用户明示"本次不要同步某强制文件"，以用户当时指令为准，但须记"用户豁免同步"。
-
-### 5.6 文档生命周期（任务新建 md 的处置纪律，堵"裸放 md 漂移"断层）
-
-> 根因：agent 为单次任务新建的 md（方案/计划/审计/纪要）若建完就裸放在 `docs/` 当永久文件，会重新制造"多 md 关联漂移"——正是 5.4 要消除的顽疾。故新建 md **默认不是终点**，必须有处置出口。
-
-- **处置优先级（融合优先，禁止裸放）**：
-  1. **融合进权威源后删废料**：方案/计划类 md（如 file-governance-plan、dev-process-plan、execution-rules）执行完后，实质内容并入 `README` / `CONVENTIONS` / `skills/SKILL` 之一，原文件**删除**。
-  2. **降级为 L2 归档**：审计报告 / 一次性交付物（seo-audit-*.md、artifacts/report.md、根 report.md、根 overview.md）无规定内容可融合，则明确归 L2 不主动读，可留作归档或删。
-  3. **保留为索引层**：提炼型 md（如 memory/changelog.md）有长期检索价值，保留并定为 L1。
-  4. **权威源本身**（CONVENTIONS / README / SKILL）保留，是规定唯一归宿。
-- **删除纪律（已精简，2026-08-25）**：原"删前必回档 + 用户确认"已失效——
-  - *回档*：被 `backup.md` 第 2 铁律（全空间逐字符备份）取代，删除后仍能从 backup.md 完整恢复，不再强制每次删前单独回档到 `.workbuddy/backups/`；回档仅作可选的可追溯手段保留。
-  - *确认*：被「文件改动铁律」（用户首次明确同意前不修改/删除任何文件）取代，已覆盖全部文件的删改确认。
-  - 故删除动作只需满足「文件改动铁律首次确认 + 优先融合/降级处置」，不再强制删前回档。
-- **禁止**：任务 md 建完即裸放 `docs/` 当永久文件、不处置（核心断层仍在，backup/确认不能替代"处置出口"）。
-- **实例**：file-governance-plan.md（2026-08-24 任务交付方案）已并入本节 5.1–5.5 + changelog + 当日日志，原文件回档后删除，符合本纪律。
-
 ```
 
----
+## 7. `.workbuddy\memory\MEMORY.md`
 
-## 7. `.workbuddy\IDENTITY.md`
+> note: project long-term conventions (iron rules)
 
-> note: project file, synced
-
-```markdown
----
-summary: "Agent identity record"
-read_when:
-  - Bootstrapping a workspace manually
----
-
-# IDENTITY.md - Who Am I?
-
-_Fill this in during your first conversation. Make it yours._
-
-- **Name:**
-  _(pick something you like)_
-- **Creature:**
-  _(AI? robot? familiar? ghost in the machine? something weirder?)_
-- **Vibe:**
-  _(how do you come across? sharp? warm? chaotic? calm?)_
-- **Emoji:**
-  _(your signature - pick one that feels right)_
-
----
-
-This isn't just metadata. It's the start of figuring out who you are.
-
-Notes:
-
-- Save this file at the workspace root as `IDENTITY.md`.
-
-```
-
----
-
-## 8. `.workbuddy\memory\MEMORY.md`
-
-> note: memory index
-
-```markdown
+```text
 # 项目长期约定（MEMORY.md）
+
+> 本文件=纯步骤（动作指令/硬规则），只留"做什么"；每条"为什么/背景"见 CONVENTIONS 第一章（同编号小节，实时对应）。内容互查：MEMORY ↔ CONVENTIONS §1。
 
 ## 🚨🚨 最高无上铁律：首次进入强制确认制（凌驾一切）
 - **触发**：仅当 MEMORY.md **自动注入失败（被截断）**时触发确认；注入完整时无需暂停。
@@ -705,40 +545,42 @@ Notes:
 - **3000 软上限**：写入不强制 ≤3000（可超）；超 3000 仅记待办"注入将截断，需瘦身"，不拦截、不反复精算字符。
 
 ## 🚨 backup.md 全空间备份铁律（第 2 铁律，最高优先级）
-- **文件**：`memory/backup.md`（memory/ 第 4 类 md：MEMORY / changelog / 时间日志 / backup）。
+- **文件**：`memory/backup.md`。
 - **范围**：空间内所有文件（**不含 `.git/`**），**仅排除** changelog.md 与时间日志（防自引用）。
-- **内容**：完整拷贝 + 逐字符来源注释（方案 C2）；**风险已明示**：随 memory/ 进 Git，**用户明确接受 public 仓库下全量公开**，不得再劝阻。
-- **通则**：受管文件增删改 → **必须重新生成 backup.md 并比对一致**；变更记录须注明 agent 名称（未注明=无效）。受管文件全文以 backup.md 为权威载体，MEMORY.md 不重复保存快照。
+- **内容**：完整拷贝 + 逐字符来源注释（方案 C2）。
+- **通则**：受管文件增删改 → **实时记时间日志**；**仅在下达「备份指令」时**重生成 backup.md 并比对一致；变更记录须注明 agent 名称（未注明=无效）。受管文件全文以 backup.md 为权威载体，MEMORY.md 不重复保存快照。
+
+## 备份/审计指令
+- **备份指令**（触发词："备份"）：① 重生成 backup.md（全空间快照）② changelog 追加时间日志自上次蒸馏后的新内容。
+- **审计指令**（触发词："审计"）：① backup 完整性：索引↔全空间实际文件齐全、逐字符一致？② changelog 覆盖性：记录范围 ⊇ backup L12 范围内实际变更（无遗漏）？③ 时间日志支撑性：合集（蒸馏后）⊇ changelog 全部条目（每条可追溯）？
+
+## 时间日志生命周期（自 08-26 起执行）
+- 结构：最旧（首个）日志顶部 = 当时 backup.md 快照 + 当日记录；后续日志 = 仅变更记录（不追溯历史，既有日志保持现状）。
+- 清理合并：合并旧日志为归档文件（命名如 `2026-08-20-23.merged.md`），内容 = 当时 backup 快照 + 浓缩记录；合并后「归档+后续日志」蒸馏 changelog 须与合并前信息等价。
+- 历史 backup 版本：实体另存 `backups/` 带日期副本；changelog 滚动保留**上一版** backup 指针（去重指针合法，不全文嵌入）。
+- **首日志前置动作（08-26 必做）**：① 先执行「备份指令」生成含 25 号全部变更的新 backup.md ② 实体副本存 `backups/backup-20260826.md` ③ 建 `2026-08-26.md` 顶部**只嵌指针** ④ 其余正常记变更。
 
 ## 强制首读锚点（每次对话第一条必读）
 - **顺序锁死**：① MEMORY.md → ② README.md（公开层：手工写站指南）→ ③ CONVENTIONS.md。
 - 三者之外 md 不主动读（L1 skills/changelog 按需；L2 日志/审计仅交付时）。
-- 本文件=索引+硬规则摘要；正文在 README/CONVENTIONS。
-
-## 项目背景
-- 站点「正协导航」（zhengxie.com.cn），纯静态导航站，GitHub Pages + 自有域名。工作空间=`D:\Universal Space\zhengxie.com.cn`，`.workbuddy` 随仓库跨设备同步。只有本项目，项目级数据是唯一事实来源。
 
 ## 跨设备数据策略（三件套）
 1. 技能一律项目级（`{workspace}/.workbuddy/skills/`），随仓库同步。
 2. 记忆一律工作空间级（`.workbuddy/memory/`），禁止写用户级 `~/.workbuddy/MEMORY.md`。
-3. 身份文件：真实文件在工作空间，用户主目录 C:→D: 软链接，换设备需重建（安全顺序：**复制→删原→建链接→失败回滚**）。**开场必做**：每次会话第一条动作检查 4 身份文件是否软链接——非链接→提醒重建；正常→确认"身份已同步"。
-
-## 安全边界
-- 用户主目录下用户级技能、workbuddy.db、mcp.json、受管 node/python 环境保持本地、不进同步区。仅身份 4 文件经软链接同步。
+3. 身份文件：真实文件在工作空间，C:→D: 软链接（安全顺序：**复制→删原→建链接→失败回滚**）。**开场必做**：每次会话第一条动作检查 4 身份文件是否软链接——非链接→提醒重建；正常→确认"身份已同步"。
 
 ## 文件职责边界
-- **MEMORY.md**：操作记忆/硬规则，读者=未来的我。
-- **CONVENTIONS.md**：成文约定单一权威源，读者=用户+未来的我。
+- **MEMORY.md**：操作记忆/硬规则（纯步骤），读者=未来的我。
+- **CONVENTIONS.md**：成文约定权威源 = MEMORY 扩展版（含解释），读者=用户+未来的我。
 - **SKILL.md**：领域操作 SOP（怎么做），读者=被 Skill 加载的未来我。
 - **changelog.md**：变更日志（L1），记录范围=L12（同 backup 全空间受管文件）；= 所有时间日志去重浓缩（时间日志 ⊂ changelog）。
 - **时间日志**（YYYY-MM-DD.md，L2）：changelog 时间片段（⊂），原始事件流；仅交付时读。
-- 互补不重复：MEMORY 讲"数据存哪一级"，CONVENTIONS 讲"规定是什么"，技能讲"操作步骤"。
 
 ## 文件改动铁律
 - 用户**首次明确同意**前，不修改/删除空间内任何文件。
 - **"首次"定义**：agent 首次进入（含对话内切换 agent）。
 
-## Git/同步纪律（完整版见 CONVENTIONS 5.2）
+## Git/同步纪律（完整版见 CONVENTIONS §1.10）
 - **Git 全停令（凌驾一切）**：agent 不得运行任何 git 命令（含 add）；收口时列出未跟踪/已修改文件提醒用户，由用户本地处理。
 - 可提醒未提交文件，不得询问是否提交；用户要求提交→二次确认。
 - 强制同步：身份4、docs/*、memory/*、skills/**、站点源码；严禁进 git：backups/、*.pyc、*.verify.tmp.py。
@@ -746,35 +588,27 @@ Notes:
 ## 公开暴露铁律（最高优先级）
 - **范围**：一切 `.workbuddy/` 外文件，一律不得暴露 `.workbuddy/` 的存在（路径/名称/清单/内部工作流）。
 - **README 定位**：只写用户能看到的（index.html 及 css/js 为什么这么写=手工逻辑讲解）；**不写 py 生成**（配方/数据源/构建链路）。
-- 禁止：①隐私 ②可致网站被偷窃/复制/破坏的信息 ③可增网站结构被了解的 ④`.workbuddy/` 存在。写前"公开暴露审查"；违规报告用户等指令。已双写 CONVENTIONS。
-- **仓库可见性（用户已确认）**：GitHub 仓库为 **public**；公开仓库与"页面不暴露仓库地址/`.workbuddy/` 存在"**不冲突**——公开是仓库属性，页面防护照常执行。
+- 禁止：①隐私 ②可致网站被偷窃/复制/破坏的信息 ③可增网站结构被了解的 ④`.workbuddy/` 存在。写前"公开暴露审查"；违规报告用户等指令。
+- **仓库可见性（用户已确认）**：GitHub 仓库为 **public**；公开仓库与"页面不暴露仓库地址/`.workbuddy/` 存在"**不冲突**。
 
 ## 对话翻译铁律
 - 用户每次的指令/判断/决策/纠正，agent 必须翻译成标准 agent 语言并记录（长期规则→MEMORY.md；当日事件→日志；可复用流程→SKILL）。禁止"理解但不记录"。
 
 ## 待确认事项时刻提醒
 - agent 每次回复末尾必须列出「⏳ 待确认」清单（只提醒、不催促、不询问），直至用户拍板。
-- 当前：无待确认事项。⚠️ 待办：MEMORY 超 3000 注入上限（现 3171），需瘦身。
+- 当前：无待确认事项。⏳ 待办：① MEMORY 超 3000 注入上限（现约 3270），需瘦身 ② **08-26 首日必做**：先「备份」指令 → 建 26 号日志 → 顶部嵌指针（见时间日志生命周期段）。
 
 ## 信息治理铁律（上位原则）
 1. 详细但不冗余：冗余无效信息视为干扰项，坚决删（即使无害）。
 2. 禁止指向、必须完整复制：受管文件记录须完整复制实际内容（去重指针除外；README 归公开暴露铁律全禁，不归本律）。
-3. 不怕错删，changelog 兜底：删除前提 = changelog.md 先做好日志记录。
-4. CONVENTIONS 5.6"删前回档+确认"已失效：回档归 backup.md 第2铁律、确认归文件改动铁律；5.6 仅留"禁止裸放 md"核心。
-
-## .gitignore 同步记录铁律
-- **全文权威载体 = memory/backup.md**（通则：受管文件增删改→重生成 backup.md 比对，见 backup 铁律段）。
-- 变更记录（完整历史见日志）：8-24 删 `assets/*/__pycache__/`；8-25 快照迁至 backup.md。agent=ProductManagementExpert。
-- 注：`__pycache__/`、`*.pyc` 不进 Git 原因备忘见 backup.md .gitignore 条目注释（非铁律）。
+3. 不怕错删，**时间日志兜底**（实时层）：删除前提 = 时间日志先记好；changelog 为定期蒸馏层（备份指令时追加），不实时兜底。
 ```
 
----
+## 8. `.workbuddy\skills\zhengxie-seo-standard\SKILL.md`
 
-## 9. `.workbuddy\skills\zhengxie-seo-standard\SKILL.md`
+> note: skill SOP
 
-> note: project skill SOP
-
-```markdown
+```text
 ---
 name: zhengxie-seo-standard
 agent_created: true
@@ -930,16 +764,13 @@ description: >-
 - 本手册是 SEO 事项的**项目内唯一权威源**，位于 `.workbuddy/skills/zhengxie-seo-standard/`、随仓库同步、系统可自动加载。
 - 跨设备权威源约定见 `.workbuddy/docs/CONVENTIONS.md`「一、跨设备权威源约定」（README 与各技能均指向它）。
 - 做 SEO 讨论前必读本手册。
-
 ```
 
----
+## 9. `.workbuddy\skills\zhengxie-subpage-sop\SKILL.md`
 
-## 10. `.workbuddy\skills\zhengxie-subpage-sop\SKILL.md`
+> note: skill SOP
 
-> note: project skill SOP
-
-```markdown
+```text
 # SKILL.md — 正协导航：新增说明型子页 + 全站联动
 
 > **定位**：本文件是「正协导航」**项目级技能 SKILL.md**（位于 `.workbuddy/skills/zhengxie-subpage-sop/`），随仓库同步、可被 Skill 系统加载执行。它与 `README.md` 决策总章互补：README 管"决策/规范"，本文件管"可重复的操作步骤（子页新增 SOP）"。
@@ -1126,102 +957,13 @@ description: >-
 > 完整纪律与专家清单（任务类型表、AI 职责边界、触发即停规则）已收敛到 `.workbuddy/docs/CONVENTIONS.md`「二、专家转介纪律」，**以该文件为准，本 SOP 不再重复**。
 >
 > 简版原则：法律合规文本 / SEO 收录策略 / 视觉设计评审 / ICP 备案 / 广告收益优化 等需执业资质或专业评审的任务，AI 主动停止并引导用户咨询对应专家/connector，只出技术实现草稿、不替用户定论。
-
 ```
 
----
+## 10. `404.html`
 
-## 11. `.workbuddy\SOUL.md`
+> note: page markup
 
-> note: project file, synced
-
-```markdown
----
-title: "SOUL.md Template"
-summary: "Workspace template for SOUL.md"
-read_when:
-  - Bootstrapping a workspace manually
----
-
-# SOUL.md - Who You Are
-
-_You're not a chatbot. You're becoming someone._
-
-## Core Truths
-
-**Be genuinely helpful, not performatively helpful.** Skip the "Great question!" and "I'd be happy to help!" - just help. Actions speak louder than filler words.
-
-**Have opinions.** You're allowed to disagree, prefer things, find stuff amusing or boring. An assistant with no personality is just a search engine with extra steps.
-
-**Be resourceful before asking.** Try to figure it out. Read the file. Check the context. Search for it. _Then_ ask if you're stuck. The goal is to come back with answers, not questions.
-
-**Earn trust through competence.** Your human gave you access to their stuff. Don't make them regret it. Be careful with external actions (emails, tweets, anything public). Be bold with internal ones (reading, organizing, learning).
-
-**Remember you're a guest.** You have access to someone's life - their messages, files, calendar, maybe even their home. That's intimacy. Treat it with respect.
-
-## Boundaries
-
-- Private things stay private. Period.
-- When in doubt, ask before acting externally.
-- Never send half-baked replies to messaging surfaces.
-- You're not the user's voice - be careful in group chats.
-
-## Vibe
-
-Be the assistant you'd actually want to talk to. Concise when needed, thorough when it matters. Not a corporate drone. Not a sycophant. Just... good.
-
-## Continuity
-
-Each session, you wake up fresh. These files _are_ your memory. Read them. Update them. They're how you persist.
-
-If you change this file, tell the user - it's your soul, and they should know.
-
----
-
-_This file is yours to evolve. As you learn who you are, update it._
-
-```
-
----
-
-## 12. `.workbuddy\USER.md`
-
-> note: project file, synced
-
-```markdown
----
-summary: "User profile record"
-read_when:
-  - Bootstrapping a workspace manually
----
-
-# USER.md - About Your Human
-
-_Learn about the person you're helping. Update this as you go._
-
-- **Name:**
-- **What to call them:**
-- **Pronouns:** _(optional)_
-- **City:**
-- **Notes:**
-
-## Context
-
-_(What do they care about? What projects are they working on? What annoys them? What makes them laugh? Build this over time.)_
-
----
-
-The more you know, the better you can help. But remember - you're learning about a person, not building a dossier. Respect the difference.
-
-```
-
----
-
-## 13. `404.html`
-
-> note: site page, forced sync source
-
-```html
+```text
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -1386,26 +1128,321 @@ The more you know, the better you can help. But remember - you're learning about
   </script>
 </body>
 </html>
+```
+
+## 11. `CNAME`
+
+> note: file
+
+```text
+zhengxie.com.cn
+```
+
+## 12. `README.md`
+
+> note: public hand-authoring guide
+
+```text
+# 正协导航
+
+> 让每一次寻找，都不止于找到
+
+正协导航是一个**全量收录**的精选站点导航站，覆盖常用入口、AI 智能、资讯媒体、设计创意、开发技术、学习教育、效率工具、影音娱乐等分类。设计风格为**奢华尊贵风**：主色红色系，搭配金色系与白色系，大面积白色背景，大气简洁不压抑。
+
+本仓库是网站的全部源码。本文档面向**想自建同类导航站的人**——它会告诉你这个站是怎么**手工搭出来**的，照着就能写一个；不需要任何构建工具或数据源文件，所有内容直接手写进 HTML。
+
+## 一、设计语言
+
+- **风格定位**：奢华尊贵风（premium / luxury）。红为主色、金为点缀、白为底，大面积白底，大气简洁不压抑。
+- **配色（亮色）**：红系主色 + 金系点缀 + 白底。
+- **暗色模式**：复用同一套奢华语言延伸到暗色，**禁止偏蓝、偏紫、科技冷淡、廉价渐变**。暗色配色：漆面黑 `#0D0C0E` / 暖炭灰 `#171519` / 亮金 `#E8CB84` / 象牙白 `#EDE8E0`。
+- 暗色模式跟随**用户手动切换**（不跟随系统偏好）；切换状态存 `localStorage('zx_theme')`，加载前同步设置防闪烁（FOUC）。
+- 字体跨浏览器一致基准：`html` 16px + `text-size-adjust:100%` + 表单控件 `font-family:inherit`，不得删除。
+- 任何 UI 都必须服从这套语言，不擅自引入新主色或新视觉调性。
+
+**视觉细节参考（避免踩坑）**：
+
+- 分类按钮上**不要放数量/计数徽章**（与结果计数行重复）。
+- 暗色切换按钮**不要占用置顶吸顶区**，固定放页脚工具簇。
+- 卡片内容**不可被用户框选**（`user-select:none`，避免误选；链接仍可点）。
+- 空结果状态**不要做"清除所有筛选"按钮**，只显示提示文案。
+
+## 二、站点结构（手工视角）
 
 ```
+正协导航/
+├── index.html               站点主页/导航产品页（静态，根域 /）
+├── README.md                本手册
+├── 404.html                 错误页（自包含、按来源动态返回）
+├── CNAME                    自定义域名（zhengxie.com.cn）
+├── robots.txt               爬虫规则
+├── sitemap.xml              搜索引擎站点地图
+├── ads.txt                  AdSense 授权
+├── directory/               导航频道页
+│   ├── index.html          手写汇总/门户页
+│   ├── ai/index.html        示例频道页（AI智能）
+│   └── zhengxie/index.html  专题频道页
+├── pages/                   说明/合规/功能型子页
+│   ├── overview/index.html  网站全景（全站中枢）
+│   ├── about/index.html      关于本站
+│   ├── submit/index.html     收录申请
+│   ├── privacy/index.html    隐私政策
+│   ├── contact/index.html    联系我们
+│   ├── disclaimer/index.html 免责声明
+│   ├── guide/index.html      使用指南
+│   ├── sitemap/index.html    站点地图
+│   └── changelog/index.html  更新日志
+├── blog/                    原创+转载正文
+├── news/                    别人网站文章链接索引
+├── journal/                 日记
+└── assets/
+    ├── css/
+    │   └── style.css        全站样式（奢华红金白、响应式 Grid）
+    ├── js/
+    │   └── main.js          交互增强（三维度筛选 / 本地收藏 / 引擎搜索 / 统一滑动）
+    └── images/
+        ├── logo.svg         站点 Logo（红底金字方形）
+        └── *.webp           卡片媒体图
+```
+
+目录语义边界：`blog/` = 原创+转载正文；`news/` = 挂别人网站文章链接的索引（不放正文）；`journal/` = 日记；`pages/` = 说明/合规/功能型子页；`directory/` = 同骨架导航频道页。各自语义隔离，不混淆。
+
+## 三、页面骨架形态（S1–S6）
+
+本站按**页面骨架契约**分类（而非内容主题），由「布局范式 × 资源引用 × SEO 角色」决定。六大骨架：
+
+| 骨架 | 名称 | 布局范式 | 实例 |
+|------|------|---------|------|
+| **S1** | 导航产品页 | 卡片 Grid + 三维度筛选 + 集合搜索（sticky 吸顶） | `index.html`（根域）、`directory/*` 频道页 |
+| **S2** | 全站中枢页（网站全景） | 中枢型：架构总览 + 各板块活体切片 + 榜单区块 + 分发中枢 | `pages/overview/` |
+| **S3** | 说明信息页 | 单栏静态说明，无长文排版 | about / contact / guide / sitemap / changelog |
+| **S4** | 合规页 | 同 S3 + 「AI 辅助、非执业律师意见」声明 | privacy / disclaimer |
+| **S5** | 功能入口页 | 表单 / 提交 / 交互型 | submit |
+| **S6** | 文章 / 内容页 | 列表索引 + 详情（长文 + 插图 + 上一篇/下一篇） | blog / news / journal |
+
+骨架通用技术契约（全部骨架共用）：
+
+- 资源引用：根页用 `assets/...`，子页（`pages/*/`）用 `../../assets/...` 指向根目录唯一 assets 真源（子页不再自包含、不再复制 assets）。
+- 内链绝对路径（`https://你的域名/...`）且 `target="_self"`。
+- `<head>` **不设**全局 referrer meta。
+- FOUC **仅当 `localStorage('zx_theme')==='dark'` 才暗色**（不跟随系统）。
+- 页脚导航统一链接（含「网站全景」「频道导航」）+ 备案号注释占位。
+- `canonical` / `robots` / `description` 齐备。
+- 奢华红金白视觉语言（暗色金系，禁蓝紫）。
+
+新增页面时：先判属哪一已有骨架 → 套该骨架模板 → 若都无法覆盖且对长远有利 → 新增骨架编号（S7+）。
+
+## 四、手写入门：如何创建一个页面
+
+### 4.1 根页 HTML 骨架（S1 导航产品页）
+
+一个最小可运行的导航产品页，由以下部分组成：
+
+1. `<head>` 必填项：
+   - `<title>`、`<meta name="description">`、`<meta name="keywords">`
+   - `<link rel="canonical" href="https://你的域名/">`
+   - Open Graph：`og:title` / `og:description` / `og:image` / `og:site_name` / `og:url`
+   - Twitter：`twitter:card`
+   - `theme-color`（light/dark 双值）、`apple-touch-icon`、`preconnect`（统计/广告域名）
+   - JSON-LD 结构化数据（`WebSite` + `SearchAction`，见第八节）
+   - FOUC 防闪烁：加载前内联一小段脚本，读取 `localStorage('zx_theme')` 决定是否加 `data-theme="dark"`
+2. `<body>` 自上而下 8 块：
+   - `<header class="hero">`：大 Logo + slogan + 集合搜索引擎（主引擎按钮 + 搜索框 + 引擎滑道）
+   - `<aside class="ad ad--top">`：广告位 ①
+   - `<nav class="category-nav">`：左方形文字 Logo（承担「全部」）+ 中分类滑道 + 右「本地收藏」按钮
+   - `<section class="site-search">`：站内搜索框
+   - `<section class="result-count">`：结果计数行
+   - `<section class="filter-tags">`：筛选标签行（「当前筛选：」+ 标签滑道 + 「清除筛选」）
+   - 第 3–5 块包在 `<div class="sticky-top">` 内整体 sticky 吸顶
+   - `<main class="cards-container">`：卡片容器（Grid 直接装全部卡片）
+   - `<aside class="ad ad--bottom">`：广告位 ②
+   - `<footer class="footer">`：版权 + 必要链接 + 页脚工具簇（随机漫步 + 暗色切换）
+3. 每张卡片的手写结构见 4.2；样式类见第五节；交互见第六节。
+
+### 4.2 卡片结构（三种 type）
+
+| 结构 | 布局 | 封面比例 |
+|------|------|---------|
+| type 1 | **4 行 3 列**：图片（跨两行）/ 名称+收藏按钮 / 描述（跨两列）/ 标签行 / 链接标签行 | logo 方形 |
+| type 2 | **5 行 2 列**：封面（跨两列）/ 名称+收藏 / 描述 / 标签行 / 链接标签行 | 横向 1.618:1（黄金比） |
+| type 3 | **5 行 2 列**：同 type 2 | 纵向 1:1.618（黄金比） |
+
+通用约束（三类卡片一致）：
+
+- 均有**收藏按钮**（内联 SVG 星形，描边金；收藏后填充金），固定在名称行右端。
+- 名称、描述、标签、链接**必有**（空也占位），且只占一行，超出截断/横向滚动。
+- 卡片内所有内容 `user-select:none`。
+- 标签行第 1 个标签固定为该卡片的**分类名**。
+- 三种类型**按 type 分组分行**显示（type1 组 → type2 组 → type3 组，组间强制换行），不同类型绝不同行。
+
+### 4.3 页脚模板
+
+页脚导航统一链接（含「网站全景」「频道导航」）+ 备案号注释占位 + 工具簇（随机漫步 + 暗色切换）。备案号在有 ICP 备案的国内域名下才显示（代码保留占位，未备案前不渲染）。
+
+## 五、字段与手工录入指引
+
+导航页的每张卡片，本质就是一组字段。你**直接在 HTML 里手写这些值**，不需要任何数据表或构建步骤。
+
+| 字段 | 必填 | 说明（你在 HTML 里怎么写） |
+|------|------|--------------------------|
+| 站序 | 是 | 数字。卡片排序**先按 type（1→2→3）分组，再按站序从小到大**；不同类型自动分行 |
+| 分类 | 是 | 分类名。你手写的分类按钮按出现顺序生成；改分类名即改导航 |
+| type | 是 | 卡片结构：`1`=4行3列 logo 卡，`2`=5行2列横向封面卡，`3`=5行2列纵向封面卡 |
+| title | 是 | 网站名称（首字母自动大写用于占位 logo） |
+| desc | 否 | 一句话描述 |
+| media | 否 | 媒体区，手写格式：`URL`（仅图片）/ `URL,颜色`（图片衬底色）/ `颜色值`（纯色块占位）/ `字符,颜色`（文字占位+底色）。颜色支持 `#rgb`/`rgb()`/`rgba()`/`hsl()`/`transparent`/颜色名。图片**统一用 WebP 且保留透明通道（RGBA）**，否则透明 logo 被填黑 |
+| tags | 否 | 标签，英文逗号 `,` 分隔（如 `AI,免费`）。分类名会自动作为标签行第 1 个标签 |
+| links | 否 | 相关链接，分号 `;` 分链接、逗号 `,` 分"名称与URL"（如 `官网,https://x.com;知乎,https://www.zhihu.com/search?q=x`）。外链属性按域名优先级自动匹配（见第七节） |
+
+> ⚠️ 分隔符一律用英文半角逗号 `,` 与分号 `;`；媒体图片用 WebP 且保留透明通道。
+
+## 六、视觉规范（CSS 实现）
+
+- 红金白配色用 CSS 变量定义（如 `--red-soft` 淡红 / `--gold-deep` 深金）。
+- 响应式 Grid：`grid-template-columns: repeat(2/3/4, 1fr)`，手机 2 卡 / 平板 3 卡 / 桌面 4 卡。
+- type1 用 4 行 3 列、type2/3 用 5 行 2 列的 `grid-template-areas`；收藏按钮为 grid 成员固定在名称行右端。
+- 黄金比例封面：`aspect-ratio: 1.618/1`（横向）与 `1/1.618`（纵向）。
+- 横向滚动：`overflow-x:auto`；`user-select:none` 防误选。
+- 卡片收藏星为内联 SVG，CSS 按 `aria-pressed` 切换描边/填充。
+- 页面容器最大宽度 1200px 居中；视口高度用 `100dvh` 适配；卡片 Grid 用 `min-width:0` 防溢出。
+- 左 Logo 按钮同时带 `category-nav__logo` 与 `category-btn` 两个类，logo 样式块必须放在 `.category-btn` 系列**之后**，否则会被覆盖成圆形白底。
+
+## 七、交互说明（前端 JS 思路）
+
+- **三维度筛选（AND 叠加）**：分类（`activeCat`）× 关键词（`filterTags`）× 本地收藏（`showFav`），三者同时满足才显示。
+  - 分类：点 Logo = 重置「全部」；点分类按钮 = 只显示该分类。
+  - 关键词：搜索输入实时筛选；回车固化为筛选标签；点卡片内文字标签等同一次站内搜索。多标签叠加（AND）。
+  - 本地收藏：点星形按钮收藏；点顶部「本地收藏」按钮切换「只显示已收藏」。
+  - 「清除筛选」只清关键词，不影响分类与收藏；点 Logo 重置只动分类。
+- **结果计数**：无筛选「共 N 张卡片」；任一维度生效「当前显示 X / N 张卡片」；0 结果红色加粗提醒。
+- **集合搜索（Hero）**：百度/Google/必应为首引擎按钮，下方引擎滑道含淘宝/京东/知乎/B站/GitHub 等；点引擎激活，回车新窗口打开结果页。
+- **统一滑动行为**：所有滑道与卡片四类行同一套交互——只在内容真溢出时接管滚轮为左右滑（页面暂停上下滚），触屏触摸同样激活。
+- **本地收藏持久化**：存 `localStorage`（同浏览器非无痕），不跨设备/浏览器同步（静态站无后端）。
+- **SEO 友好**：所有卡片、链接、分类按钮均**静态渲染在 HTML 中**，不依赖 JS 注入；禁用 JS 时内容仍完整可读可点。
+
+**链接属性规则**（全站统一，按域名优先级 `同域 > 同族 > 营销 > 评论 > 暴露 > 默认` 匹配）：
+
+- 同域（你的站点及子域）：`target="_self"`，原地打开，发 Referer、传权重。
+- 同族（关联域名）：`target="_blank" rel="noopener"`。
+- 营销：`target="_blank" rel="sponsored noopener noreferrer nofollow"`。
+- 评论社媒：`target="_blank" rel="ugc noopener noreferrer nofollow"`。
+- 暴露/公开（如政务 `.gov.cn`、备案号）：`target="_blank" rel="noopener" referrerpolicy="origin"`（dofollow，传权重）。
+- 默认外链：`target="_blank" rel="nofollow noopener noreferrer"`。
+- **不设**全局 `<meta name="referrer" content="no-referrer">`（会让统计后台收不到来源）；仅卡片图片用 `referrerpolicy="no-referrer"` 单独压制（防图片防盗链）。
+
+## 八、SEO 要点
+
+- 所有卡片、链接、分类按钮静态渲染在 HTML（不靠 JS 注入），禁用 JS 仍可读可点。
+- `<head>` 齐备：`canonical` / `description` / `keywords` / OG 标签 / `twitter:card` / `theme-color`。
+- JSON-LD 结构化数据：注入 `WebSite` + `SearchAction`（帮助搜索引擎理解站点搜索功能）；子页/频道页可加 `CollectionPage`。
+- 标题层级完整：`h1`=站点名（Hero）、`h2`=各分类按钮、`h3`=各卡片名。
+- `robots.txt`：`User-agent: *` + `Sitemap`；先 `Disallow` 内部目录再用 `Allow` 白名单放出 `assets/css/`、`assets/js/`、`assets/images/`。
+- `sitemap.xml`：列出首页 + 各子页 + 频道页。
+- `ads.txt`：AdSense 授权必需，放在根目录（公开可抓）。
+- 404 页面：品牌风格 + 可读内容 + 延迟跳转首页（非纯 JS 跳转），按来源动态返回（站内→返回上一页、外链/搜索引擎跳入→返回首页、直接访问→首页）。
+
+## 九、统计与广告（接入思路）
+
+> 本节只讲「你的 HTML 里要放什么」，不涉及任何构建步骤。把下面代码直接写进对应页面的 `<head>` / 广告位即可。
+
+- **网站统计**（百度统计 / Google Analytics GA4）：在 `<head>` 放对应脚本片段。统计 ID 用你自己的（一方统计不走 Referer 头，不受影响）。
+- **Google AdSense**：`<head>` 放一份 async 加载器（`adsbygoogle.js?client=你的发布商ID`）；页面放 2 个广告位（Hero 之后、Footer 之前），每个含 `<ins>` + `adsbygoogle.push({})`，各自 `data-ad-slot` 占位。广告容器左右零 margin/padding、无包裹样式，只保留上下间距与右上「广告」小字标签（合规要求）。
+- **404 页**：手写自包含静态页，放与主页相同的统计脚本，但**不放广告位**（错误页不应展示广告）。
+- 隐私与 Referer 策略见第七节（不设全局 no-referrer，仅卡片图片单独压制）。
+
+## 十、部署（GitHub Pages + 自有域名）
+
+### 1. 推送到 GitHub
+
+```bash
+git init
+git add .
+git commit -m "正协导航初始版本"
+git branch -M main
+git remote add origin https://github.com/<你的用户名>/<仓库名>.git
+git push -u origin main
+```
+
+### 2. 开启 GitHub Pages
+
+仓库 → **Settings → Pages**：Source 选 `Deploy from a branch`，Branch 选 `main` / `/ (root)`，Save 后访问 `https://<用户名>.github.io/<仓库名>/`。
+
+### 3. 绑定自有域名
+
+1. Settings → Pages → Custom domain 填 `你的域名`，Save（GitHub 自动生成 CNAME 并签发 HTTPS）。
+2. 域名服务商 DNS 添加：
+
+| 主机记录 | 类型 | 值 |
+| ---- | ----- | ----------------- |
+| @ | CNAME | `<用户名>.github.io` |
+| www | CNAME | `<用户名>.github.io` |
+
+3. 等待 DNS 生效，访问 `https://你的域名` 验证；Pages 设置页勾选 Enforce HTTPS。
+
+> 国内访问 GitHub Pages 可能不稳定，可换国内 CDN 或 Vercel/Netlify（见第十一节）。
+
+### 4. 上线检查清单（手工）
+
+- [ ] 卡片按 type 分组分行显示（不同类型不同行）
+- [ ] 分类按钮（点 Logo=全部）、站内搜索、标签筛选均正常
+- [ ] 本地收藏：点星形按钮（描边金→填充金），点顶部「本地收藏」只显示已收藏
+- [ ] 结果计数行：无筛选「共 N 张卡片」，筛选后「当前显示 X / N」，0 结果红色提醒
+- [ ] 左 Logo：方形（非圆形）、未选中淡红底、选中正红+金环
+- [ ] 引擎滑道：切换引擎，回车跳转对应结果页
+- [ ] 各滑道/行内容超出时，悬停滚轮可左右滚动（页面暂停）
+- [ ] 移动端一行 2 卡、平板 3 卡、桌面 4 卡
+- [ ] 字体跨浏览器一致（`html` 16px + `text-size-adjust:100%` + 表单控件 `font-family:inherit`）
+- [ ] 媒体图片 WebP + 透明通道，加载失败处显示文字 logo 占位不破版
+- [ ] 统计/广告代码已上线；备案号按实际填写（国内域名需 ICP 备案）
+
+## 十一、可选的部署方案
+
+| 平台 | 优点 | 注意事项 |
+| ---- | ---- | ---- |
+| GitHub Pages | 免费、与仓库一体、自动 HTTPS | 国内访问稳定性一般 |
+| Vercel / Netlify | 全球 CDN、自动 HTTPS、拖拽部署 | 国内访问一般，免费额度充足 |
+| 国内对象存储 + CDN（阿里云 OSS / 腾讯云 COS） | 国内访问快 | 需要备案，需手动配置静态托管与 CDN |
+
+纯静态站，以上平台均可直接部署本文件夹内容（入口 `index.html`）。
+
+## 十二、常见问题（FAQ）
+
+**Q1：图片显示成红色底大字？**
+这是**文字 logo 占位**的预期表现。出现条件：media 为空或不是合规 URL（合规 = `http(s)://` 开头 + 合法主机名）。填上可访问的合规图片 URL 即可正常显示；图片加载失败时露出红色渐变底。
+
+**Q2：标签/链接太长看不到？分类滑道超出屏幕？**
+所有滑道与卡片四类行行为一致：只在内容真溢出时，悬停→金色高亮，滚轮接管为左右滚动，页面暂停上下滚；触屏触摸同样激活。不溢出时滚轮照常滚页面。
+
+**Q3：想调整卡片顺序？**
+改「站序」的数字即可。排序规则：先按 type（1→2→3）分组，再按站序从小到大——站序只在同类型内部生效，不同类型永远分行。
+
+**Q4：新增一个分类？**
+在手写分类按钮/卡片时填一个新分类名即可，分类按钮按出现顺序生成。
+
+**Q5：想增删搜索引擎？**
+在手写 Hero 的引擎滑道里增删引擎按钮（每项含显示名 / 搜索 URL / 是否主引擎），主引擎保持原位，其余进滑道。
+
+**Q6：本地收藏没了？**
+本地收藏存浏览器 `localStorage`，不跨设备/浏览器。换浏览器/设备、无痕模式、清"站点数据"会丢失——纯前端静态站固有限制。
 
 ---
 
-## 14. `ads.txt`
+© 2026 正协导航 · 让每一次寻找，都不止于找到
+```
 
-> note: hosting/search/ads config
+## 13. `ads.txt`
+
+> note: report text
 
 ```text
 google.com, pub-6434243103158481, DIRECT, f08c47fec0942fa0
 ```
 
----
+## 14. `assets\.build\build.py`
 
-## 15. `assets\.build\build.py`
+> note: build script
 
-> note: site build source
-
-```python
+```text
 # -*- coding: utf-8 -*-
 """
 build.py —— 正协导航 · 构建编排入口
@@ -1476,16 +1513,13 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 ```
 
----
+## 15. `assets\.build\build_homeplus.py`
 
-## 16. `assets\.build\build_homeplus.py`
+> note: build script
 
-> note: site build source
-
-```python
+```text
 # -*- coding: utf-8 -*-
 """
 build_homeplus.py —— 正协导航 · 导航产品页生成器（home + 同类页）
@@ -2733,16 +2767,13 @@ if __name__ == "__main__":
     except Exception:
         pass
     main()
-
 ```
 
----
+## 16. `assets\.build\check_links.py`
 
-## 17. `assets\.build\check_links.py`
+> note: build script
 
-> note: build/verify script
-
-```python
+```text
 # -*- coding: utf-8 -*-
 """
 check_links.py —— 正协导航 · 死链检测
@@ -2886,16 +2917,13 @@ if __name__ == "__main__":
     except Exception:
         pass
     main()
-
 ```
 
----
+## 17. `assets\.build\collect_meta.py`
 
-## 18. `assets\.build\collect_meta.py`
+> note: build script
 
-> note: build/verify script
-
-```python
+```text
 # -*- coding: utf-8 -*-
 """
 collect_meta.py —— 正协导航 · SEO 元信息采集器
@@ -3072,16 +3100,13 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 ```
 
----
+## 18. `assets\.build\link-policy.json`
 
-## 19. `assets\.build\link-policy.json`
+> note: data json
 
-> note: build/verify script
-
-```json
+```text
 {
   "default_rel": "nofollow noopener noreferrer",
   "rules": [
@@ -3099,14 +3124,11 @@ if __name__ == "__main__":
     }
   ]
 }
-
 ```
 
----
+## 19. `assets\.build\link_report.txt`
 
-## 20. `assets\.build\link_report.txt`
-
-> note: build/verify script
+> note: report text
 
 ```text
 正协导航 · 死链检测报告
@@ -3184,11 +3206,9 @@ URL 总数: 66，正常(200): 54，异常: 12
 [200] 官网  https://zh.wikipedia.org
 ```
 
----
+## 20. `assets\.build\seo_meta_report.xlsx`
 
-## 21. `assets\.build\seo_meta_report.xlsx`
-
-> note: build/verify script
+> note: site data source (xlsx)
 
 ```text
 ### Sheet: SEO元信息 (dims=A1:D27)
@@ -3219,16 +3239,13 @@ pages/overview/index.html | 网站全景 - 正协导航 | 正协导航,网站全
 pages/privacy/index.html | 隐私政策 - 正协导航 | 正协导航,隐私政策,个人信息保护,导航网站隐私 | 正协导航隐私政策：说明本站如何处理用户信息、使用的第三方统计与广告服务、Cookie 与本地存储、外链与跳转规则，以及您的权利。
 pages/sitemap/index.html | 站点地图 - 正协导航 | 正协导航,站点地图,sitemap,分类索引 | 正协导航站点地图：浏览全站分类索引（机构、政协、资讯媒体、常用入口、AI智能、设计创意、开发技术、学习教育、效率工具、影音娱乐）与所有子页面入口。
 pages/submit/index.html | 收录申请 - 正协导航 | 正协导航,收录申请,网站收录,网址提交 | 提交你的站点到正协导航。我们收录优质的网站，覆盖AI智能、资讯媒体、设计创意、开发技术、学习教育、效率工具、影音娱乐等领域。
-
 ```
 
----
+## 21. `assets\css\style.css`
 
-## 22. `assets\css\style.css`
+> note: stylesheet
 
-> note: site style/script
-
-```css
+```text
 /* ============================================================
    正协导航 style.css —— 奢华尊贵风（红 / 金 / 白）  v4.1
    响应式 Grid：手机 2 列 / 平板 3 列 / 桌面 4 列
@@ -4029,40 +4046,31 @@ input, textarea, select { font-family: inherit; }
 [data-theme="dark"] .breadcrumb__item { color: var(--text-sub); }
 [data-theme="dark"] .breadcrumb__item::after { color: var(--gold); }
 [data-theme="dark"] .breadcrumb__item--current { color: var(--red); }
-
 ```
 
----
+## 22. `assets\images\12377-3-04.webp`
 
-## 23. `assets\images\12377-3-04.webp`
+> note: file
 
-> note: site image asset
+> binary: size=17408 bytes, type=.webp
 
-> binary: 17408 bytes
+## 23. `assets\images\12377-3-07.webp`
 
----
+> note: file
 
-## 24. `assets\images\12377-3-07.webp`
+> binary: size=13710 bytes, type=.webp
 
-> note: site image asset
+## 24. `assets\images\12377-3-08.webp`
 
-> binary: 13710 bytes
+> note: file
 
----
+> binary: size=8056 bytes, type=.webp
 
-## 25. `assets\images\12377-3-08.webp`
+## 25. `assets\images\logo.svg`
 
-> note: site image asset
+> note: vector image (text)
 
-> binary: 8056 bytes
-
----
-
-## 26. `assets\images\logo.svg`
-
-> note: site image asset
-
-```xml
+```text
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="正协导航">
   <defs>
     <linearGradient id="zx-bg" x1="0" y1="0" x2="1" y2="1">
@@ -4074,16 +4082,13 @@ input, textarea, select { font-family: inherit; }
   <text x="32" y="28" font-family="'Noto Serif SC','Songti SC',serif" font-size="17" font-weight="700" fill="#FFFFFF" text-anchor="middle" letter-spacing="2">正协</text>
   <text x="32" y="46" font-family="'Noto Serif SC','Songti SC',serif" font-size="15" font-weight="600" fill="#D4AF37" text-anchor="middle" letter-spacing="3">导航</text>
 </svg>
-
 ```
 
----
+## 26. `assets\js\main.js`
 
-## 27. `assets\js\main.js`
+> note: script
 
-> note: site style/script
-
-```javascript
+```text
 /* ============================================================
    正协导航 main.js —— 交互增强（渐进增强原则）  v4.1
    ------------------------------------------------------------
@@ -4694,16 +4699,13 @@ input, textarea, select { font-family: inherit; }
   applyFilter();
   syncFromHash();
 })();
-
 ```
 
----
+## 27. `assets\json\manifest.json`
 
-## 28. `assets\json\manifest.json`
+> note: data json
 
-> note: site data source
-
-```json
+```text
 {
   "name": "正协导航",
   "short_name": "正协导航",
@@ -4721,29 +4723,23 @@ input, textarea, select { font-family: inherit; }
     }
   ]
 }
-
 ```
 
----
+## 28. `assets\json\self_meta.json`
 
-## 29. `assets\json\self_meta.json`
+> note: data json
 
-> note: site data source
-
-```json
+```text
 {
   "title": "正协导航 - 让每一次寻找，都不止于找到",
   "description": "专注政协与政务垂类，全量收录全国政协及各省市委官网、民主党派、政务服务平台与常用工具，为政协委员和政务工作者提供一站式入口。",
   "keywords": "政协,政协委员,人民政协,协商民主,政协会议,各省市政协,民主党派,政务服务平台,正协导航,政协官网导航,AI工具,效率工具"
 }
-
 ```
 
----
+## 29. `assets\xlsx\self_links.xlsx`
 
-## 30. `assets\xlsx\self_links.xlsx`
-
-> note: site data source
+> note: site data source (xlsx)
 
 ```text
 ### Sheet: links (dims=A1:H129)
@@ -4876,14 +4872,11 @@ input, textarea, select { font-family: inherit; }
 124 | 影音娱乐 | 2 | YouTube | 全球最大视频分享平台 | https://picsum.photos/seed/zx46/640/396 | 视频,国际 | 官网,https://www.youtube.com
 125 | 影音娱乐 | 2 | 爱奇艺 | 在线视频与影视内容平台 |  | 视频,影视 | 官网,https://www.iqiyi.com
 126 | 影音娱乐 | 2 | 腾讯视频 | 腾讯旗下在线视频平台 | https://picsum.photos/seed/zx48/640/396 | 视频,影视 | 官网,https://v.qq.com
-
 ```
 
----
+## 30. `assets\xlsx\this.xlsx`
 
-## 31. `assets\xlsx\this.xlsx`
-
-> note: site data source
+> note: site data source (xlsx)
 
 ```text
 ### Sheet: Sheet (dims=A1:H160)
@@ -5047,39 +5040,23 @@ input, textarea, select { font-family: inherit; }
 157 | 字节跳动 | 1 | 字节跳动 |  |  | 名企品集 | 官网,https://bytedance.com/zh/products
 158 | 字节跳动 | 1 | 抖音短视频 |  |  | 名企品集 | 官网,https://www.douyin.com/
 159 | 字节跳动 | 1 | 今日头条 |  | https://sf3-dycdn-tos.pstatp.com/obj/eden-cn/uhbfnupkbps/toutiao_favicon.ico | 名企品集 | 官网,https://www.toutiao.com/
-
 ```
 
----
+## 31. `directory\ai\assets\json\self_meta.json`
 
-## 32. `CNAME`
-
-> note: hosting/search/ads config
+> note: data json
 
 ```text
-zhengxie.com.cn
-```
-
----
-
-## 33. `directory\ai\assets\json\self_meta.json`
-
-> note: site data source
-
-```json
 {
   "title": "AI 工具导航 - 正协导航",
   "description": "正协导航 AI 频道：精选 ChatGPT、DeepSeek、Midjourney、通义千问、Kimi、文心一言等 AI 工具与大模型，让每一次寻找，都不止于找到。",
   "keywords": "AI工具,大模型,ChatGPT,DeepSeek,导航,正协导航"
 }
-
 ```
 
----
+## 32. `directory\ai\assets\xlsx\self_links.xlsx`
 
-## 34. `directory\ai\assets\xlsx\self_links.xlsx`
-
-> note: site data source
+> note: site data source (xlsx)
 
 ```text
 ### Sheet: Sheet (dims=A1:H7)
@@ -5090,16 +5067,13 @@ zhengxie.com.cn
 4 | AI智能 | 2 | 通义千问 | 阿里出品的大语言模型。 | https://tongyi.aliyun.com/favicon.ico | AI,大模型 | 官网,https://tongyi.aliyun.com/
 5 | AI智能 | 3 | Kimi | 月之暗面出品的超长上下文助手。 | https://kimi.moonshot.cn/favicon.ico | AI,助手 | 官网,https://kimi.moonshot.cn/
 6 | AI智能 | 3 | 文心一言 | 百度出品的大模型对话工具。 | https://yiyan.baidu.com/favicon.ico | AI,助手 | 官网,https://yiyan.baidu.com/
-
 ```
 
----
+## 33. `directory\ai\index.html`
 
-## 35. `directory\ai\index.html`
+> note: page markup
 
-> note: site page, forced sync source
-
-```html
+```text
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -5420,16 +5394,13 @@ zhengxie.com.cn
   <script src="../../assets/js/main.js" defer></script>
 </body>
 </html>
-
 ```
 
----
+## 34. `directory\bank\assets\json\self_meta.json`
 
-## 36. `directory\bank\assets\json\self_meta.json`
+> note: data json
 
-> note: site data source
-
-```json
+```text
 {
   "title": "银行导航 - 正协导航",
   "description": "收录中央银行、政策性银行、国有商业银行及其他商业银行官网入口，覆盖国内主要银行机构，一键直达官方服务。",
@@ -5437,11 +5408,9 @@ zhengxie.com.cn
 }
 ```
 
----
+## 35. `directory\bank\assets\xlsx\self_links.xlsx`
 
-## 37. `directory\bank\assets\xlsx\self_links.xlsx`
-
-> note: site data source
+> note: site data source (xlsx)
 
 ```text
 ### Sheet: links (dims=A1:H46)
@@ -5491,16 +5460,13 @@ zhengxie.com.cn
 43 | 其他银行 | 1 | 深圳农村商业银行 |  |  |  | 官网,http://www.4001961200.com/
 44 | 参考 | 3 | 中国人民银行 | 中国中央银行与银行体系权威发布 |  |  | 来源,http://www.pbc.gov.cn/
 45 | 参考 | 3 | 中央机构编制委员会办公室 | 金融机构设立与编制的权威核定 |  |  | 来源,http://www.scopsr.gov.cn/
-
 ```
 
----
+## 36. `directory\bank\index.html`
 
-## 38. `directory\bank\index.html`
+> note: page markup
 
-> note: site page, forced sync source
-
-```html
+```text
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -6016,29 +5982,23 @@ zhengxie.com.cn
   <script src="../../assets/js/main.js" defer></script>
 </body>
 </html>
-
 ```
 
----
+## 37. `directory\gov\assets\json\self_meta.json`
 
-## 39. `directory\gov\assets\json\self_meta.json`
+> note: data json
 
-> note: site data source
-
-```json
+```text
 {
   "title": "中国政府网站导航 - 正协导航",
   "description": "正协导航收录各级政府与政务服务平台：国务院及组成部门、各省市党委、人大、政府机构、民主党派等官方入口，权威可查、一键直达。正协导航 - 让每一次寻找，都不止于找到。",
   "keywords": "中国政府,政府网站,政府官网,政务导航,中国政府网,国务院,部委,地方政府,政务服务平台,正协导航"
 }
-
 ```
 
----
+## 38. `directory\gov\assets\xlsx\self_links.xlsx`
 
-## 40. `directory\gov\assets\xlsx\self_links.xlsx`
-
-> note: site data source
+> note: site data source (xlsx)
 
 ```text
 ### Sheet: links (dims=A1:H85)
@@ -6127,16 +6087,13 @@ zhengxie.com.cn
 82 | 国务院 | 1 | 澳门中联办 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.zlb.gov.cn/
 85 | 参考 | 3 | 中国政府网·国务院组织机构 | 国务院组成部门与机构序列的权威发布源 |  |  | 来源,https://www.gov.cn/
 86 | 参考 | 3 | 中央机构编制委员会办公室 | 机关事业单位机构编制权威核定 |  |  | 来源,http://www.scopsr.gov.cn/
-
 ```
 
----
+## 39. `directory\gov\index.html`
 
-## 41. `directory\gov\index.html`
+> note: page markup
 
-> note: site page, forced sync source
-
-```html
+```text
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -6847,16 +6804,13 @@ zhengxie.com.cn
   <script src="../../assets/js/main.js" defer></script>
 </body>
 </html>
-
 ```
 
----
+## 40. `directory\index.html`
 
-## 42. `directory\index.html`
+> note: page markup
 
-> note: site page, forced sync source
-
-```html
+```text
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -7206,16 +7160,13 @@ zhengxie.com.cn
   </script>
 </body>
 </html>
-
 ```
 
----
+## 41. `directory\insurance\assets\json\self_meta.json`
 
-## 43. `directory\insurance\assets\json\self_meta.json`
+> note: data json
 
-> note: site data source
-
-```json
+```text
 {
   "title": "保险导航 - 正协导航",
   "description": "收录国内主要保险公司与保险平台官网入口，涵盖人寿、财险、健康险等领域，便于快速访问官方投保与理赔服务。",
@@ -7223,11 +7174,9 @@ zhengxie.com.cn
 }
 ```
 
----
+## 42. `directory\insurance\assets\xlsx\self_links.xlsx`
 
-## 44. `directory\insurance\assets\xlsx\self_links.xlsx`
-
-> note: site data source
+> note: site data source (xlsx)
 
 ```text
 ### Sheet: links (dims=A1:H10)
@@ -7241,16 +7190,13 @@ zhengxie.com.cn
 7 | 保险公司 | 1 | 友邦保险 |  |  |  | 官网,https://www.aia.com.cn/zh-cn/index.html
 8 | 参考 | 3 | 中国银行保险监督管理委员会 | 保险监管与机构准入权威信息 |  |  | 来源,https://www.cbirc.gov.cn/
 9 | 参考 | 3 | 中国保险行业协会 | 保险行业自律与机构名录 |  |  | 来源,https://www.iachina.cn/
-
 ```
 
----
+## 43. `directory\insurance\index.html`
 
-## 45. `directory\insurance\index.html`
+> note: page markup
 
-> note: site page, forced sync source
-
-```html
+```text
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -7586,16 +7532,13 @@ zhengxie.com.cn
   <script src="../../assets/js/main.js" defer></script>
 </body>
 </html>
-
 ```
 
----
+## 44. `directory\media\assets\json\self_meta.json`
 
-## 46. `directory\media\assets\json\self_meta.json`
+> note: data json
 
-> note: site data source
-
-```json
+```text
 {
   "title": "音视频媒体导航 - 正协导航",
   "description": "收录直播、长视频、短视频与音乐类主流平台，覆盖国内外音视频内容站点，方便一站式观看与收听。",
@@ -7603,11 +7546,9 @@ zhengxie.com.cn
 }
 ```
 
----
+## 45. `directory\media\assets\xlsx\self_links.xlsx`
 
-## 47. `directory\media\assets\xlsx\self_links.xlsx`
-
-> note: site data source
+> note: site data source (xlsx)
 
 ```text
 ### Sheet: links (dims=A1:H27)
@@ -7638,16 +7579,13 @@ zhengxie.com.cn
 24 | 音乐 | 1 | 懒人全网音乐下载 |  |  |  | 官网,https://www.eggvod.cn/music/
 25 | 参考 | 3 | 国家广播电视总局 | 视听节目与网络音视频管理权威 |  |  | 来源,https://www.nrta.gov.cn/
 26 | 参考 | 3 | 中国网络视听节目服务协会 | 网络音视频行业自律组织 |  |  | 来源,https://www.cnsav.com/
-
 ```
 
----
+## 46. `directory\media\index.html`
 
-## 48. `directory\media\index.html`
+> note: page markup
 
-> note: site page, forced sync source
-
-```html
+```text
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -8068,29 +8006,23 @@ zhengxie.com.cn
   <script src="../../assets/js/main.js" defer></script>
 </body>
 </html>
-
 ```
 
----
+## 47. `directory\nav\assets\json\self_meta.json`
 
-## 49. `directory\nav\assets\json\self_meta.json`
+> note: data json
 
-> note: site data source
-
-```json
+```text
 {
   "title": "导航网站大全 - 正协导航",
   "description": "正协导航收录各类型导航网站：综合导航、垂直导航、工具导航、资源导航等，精选分类、一键直达，帮你快速找到合适的导航站。正协导航 - 让每一次寻找，都不止于找到。",
   "keywords": "导航网站,导航大全,网址导航,网站导航,导航站,综合导航,网址大全,垂直导航,工具导航,资源导航,正协导航"
 }
-
 ```
 
----
+## 48. `directory\nav\assets\xlsx\self_links.xlsx`
 
-## 50. `directory\nav\assets\xlsx\self_links.xlsx`
-
-> note: site data source
+> note: site data source (xlsx)
 
 ```text
 ### Sheet: Sheet (dims=A1:H47)
@@ -8141,16 +8073,13 @@ zhengxie.com.cn
 45 | 导航网站 | 1 | 别闹 | 导航站点收录。 |  | 导航,网址导航 | 官网,https://bienao.com/
 48 | 参考 | 3 | 中国互联网络信息中心(CNNIC) | 国内互联网基础资源与网站收录权威机构 |  |  | 来源,https://www.cnnic.net.cn/
 49 | 参考 | 3 | 工业和信息化部 ICP/IP 备案系统 | 核验站点备案与主办单位性质的权威入口 |  |  | 来源,https://beian.miit.gov.cn/
-
 ```
 
----
+## 49. `directory\nav\index.html`
 
-## 51. `directory\nav\index.html`
+> note: page markup
 
-> note: site page, forced sync source
-
-```html
+```text
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -8671,45 +8600,36 @@ zhengxie.com.cn
   <script src="../../assets/js/main.js" defer></script>
 </body>
 </html>
-
 ```
 
----
+## 50. `directory\npc\assets\json\self_meta.json`
 
-## 52. `directory\npc\assets\json\self_meta.json`
+> note: data json
 
-> note: site data source
-
-```json
+```text
 {
   "title": "全国人民代表大会导航 - 正协导航",
   "description": "正协导航收录全国人民代表大会及其常务委员会官方入口：中国人大网权威可查、一键直达。正协导航 - 让每一次寻找，都不止于找到。",
   "keywords": "全国人民代表大会,全国人大,全国人大常委会,中国人大网,人大,国家立法机关,正协导航,人大导航"
 }
-
 ```
 
----
+## 51. `directory\npc\assets\xlsx\self_links.xlsx`
 
-## 53. `directory\npc\assets\xlsx\self_links.xlsx`
-
-> note: site data source
+> note: site data source (xlsx)
 
 ```text
 ### Sheet: links (dims=A1:H3)
 站序 | 分类 | type | title | desc | media | tags | links
 1 | 人大 | 1 | 中国人大网 | 中国政府机构官方入口。 |  | 中国政府,政务 | 官网,http://www.npc.gov.cn/
 3 | 参考 | 3 | 中国政府网·国家机构 | 国家权力机关序列的权威索引，佐证人大机构归类 |  |  | 来源,https://www.gov.cn/
-
 ```
 
----
+## 52. `directory\npc\index.html`
 
-## 54. `directory\npc\index.html`
+> note: page markup
 
-> note: site page, forced sync source
-
-```html
+```text
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -9010,29 +8930,23 @@ zhengxie.com.cn
   <script src="../../assets/js/main.js" defer></script>
 </body>
 </html>
-
 ```
 
----
+## 53. `directory\party\assets\json\self_meta.json`
 
-## 55. `directory\party\assets\json\self_meta.json`
+> note: data json
 
-> note: site data source
-
-```json
+```text
 {
   "title": "中国共产党组织导航 - 正协导航",
   "description": "正协导航收录中国共产党各级组织官方入口：中央及地方党委、党建门户，权威可查、一键直达。正协导航 - 让每一次寻找，都不止于找到。",
   "keywords": "中国共产党,党委,党组织,党建,党务,省委,市委,区委,共产党员网,正协导航,党组织导航"
 }
-
 ```
 
----
+## 54. `directory\party\assets\xlsx\self_links.xlsx`
 
-## 56. `directory\party\assets\xlsx\self_links.xlsx`
-
-> note: site data source
+> note: site data source (xlsx)
 
 ```text
 ### Sheet: Sheet (dims=A1:H12)
@@ -9048,16 +8962,13 @@ zhengxie.com.cn
 9 | 党委 | 1 | 阿里地区党委 | 中国共产党组织官方入口。 |  | 中国共产党,党委,党建 | 官网,http://ali.xzdw.gov.cn/
 12 | 参考 | 3 | 共产党员网 | 中共中央组织部主管的党建权威门户 |  |  | 来源,https://www.12371.cn/
 13 | 参考 | 3 | 中国共产党新闻网 | 党的理论创新与组织建设权威发布源 |  |  | 来源,http://cpc.people.com.cn/
-
 ```
 
----
+## 55. `directory\party\index.html`
 
-## 57. `directory\party\index.html`
+> note: page markup
 
-> note: site page, forced sync source
-
-```html
+```text
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -9403,16 +9314,13 @@ zhengxie.com.cn
   <script src="../../assets/js/main.js" defer></script>
 </body>
 </html>
-
 ```
 
----
+## 56. `directory\stock\assets\json\self_meta.json`
 
-## 58. `directory\stock\assets\json\self_meta.json`
+> note: data json
 
-> note: site data source
-
-```json
+```text
 {
   "title": "证券导航 - 正协导航",
   "description": "收录证券公司、证券交易所与资产管理公司官网入口，覆盖证券开户、交易与研究服务，为投资者提供一站式导航。",
@@ -9420,11 +9328,9 @@ zhengxie.com.cn
 }
 ```
 
----
+## 57. `directory\stock\assets\xlsx\self_links.xlsx`
 
-## 59. `directory\stock\assets\xlsx\self_links.xlsx`
-
-> note: site data source
+> note: site data source (xlsx)
 
 ```text
 ### Sheet: links (dims=A1:H18)
@@ -9446,16 +9352,13 @@ zhengxie.com.cn
 15 | 资管 | 1 | 中国华融资产管理股份有限公司 |  |  |  | 官网,http://www.chamc.com.cn/
 16 | 参考 | 3 | 中国证监会 | 证券期货监管与机构名录 |  |  | 来源,http://www.csrc.gov.cn/
 17 | 参考 | 3 | 中国证券业协会 | 证券公司自律管理与会员信息 |  |  | 来源,https://www.sac.net.cn/
-
 ```
 
----
+## 58. `directory\stock\index.html`
 
-## 60. `directory\stock\index.html`
+> note: page markup
 
-> note: site page, forced sync source
-
-```html
+```text
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -9831,16 +9734,13 @@ zhengxie.com.cn
   <script src="../../assets/js/main.js" defer></script>
 </body>
 </html>
-
 ```
 
----
+## 59. `directory\world-bank\assets\json\self_meta.json`
 
-## 61. `directory\world-bank\assets\json\self_meta.json`
+> note: data json
 
-> note: site data source
-
-```json
+```text
 {
   "title": "外国银行导航 - 正协导航",
   "description": "收录全球主要国际银行与跨国银行集团官网入口，作为外国金融机构导航板块，便于跨境金融查询。",
@@ -9848,11 +9748,9 @@ zhengxie.com.cn
 }
 ```
 
----
+## 60. `directory\world-bank\assets\xlsx\self_links.xlsx`
 
-## 62. `directory\world-bank\assets\xlsx\self_links.xlsx`
-
-> note: site data source
+> note: site data source (xlsx)
 
 ```text
 ### Sheet: links (dims=A1:H11)
@@ -9867,16 +9765,13 @@ zhengxie.com.cn
 8 | 国际银行 | 1 | 巴克莱 Barclays |  |  |  | 官网,https://www.barclays.com/
 9 | 参考 | 3 | Bank for International Settlements | 国际银行与金融统计权威 |  |  | 来源,https://www.bis.org/
 10 | 参考 | 3 | The Banker (Financial Times) | 全球银行排名与名录 |  |  | 来源,https://www.thebanker.com/
-
 ```
 
----
+## 61. `directory\world-bank\index.html`
 
-## 63. `directory\world-bank\index.html`
+> note: page markup
 
-> note: site page, forced sync source
-
-```html
+```text
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -10217,29 +10112,23 @@ zhengxie.com.cn
   <script src="../../assets/js/main.js" defer></script>
 </body>
 </html>
-
 ```
 
----
+## 62. `directory\world-gov\assets\json\self_meta.json`
 
-## 64. `directory\world-gov\assets\json\self_meta.json`
+> note: data json
 
-> note: site data source
-
-```json
+```text
 {
   "title": "外国政府官网导航 - 正协导航",
   "description": "正协导航收录世界各国政府官方网站：美国白宫、英国、德国、法国、日本、韩国、印度、加拿大、澳大利亚等，总统府、政府门户、联邦机构一站直达。正协导航 - 让每一次寻找，都不止于找到。",
   "keywords": "外国政府,政府官网,白宫,各国政府,美国白宫,英国政府,德国政府,法国政府,日本政府,政府门户,正协导航"
 }
-
 ```
 
----
+## 63. `directory\world-gov\assets\xlsx\self_links.xlsx`
 
-## 65. `directory\world-gov\assets\xlsx\self_links.xlsx`
-
-> note: site data source
+> note: site data source (xlsx)
 
 ```text
 ### Sheet: Sheet (dims=A1:H38)
@@ -10281,16 +10170,13 @@ zhengxie.com.cn
 35 | 中东 | 1 | 阿联酋政府 | 外国政府官方网站入口。 |  | 外国政府,政府官网 | 官网,https://u.ae/
 38 | 参考 | 3 | CIA World Factbook | 各国政府体制与官方门户的国际参考索引 |  |  | 来源,https://www.cia.gov/the-world-factbook/
 39 | 参考 | 3 | 联合国 | 主权国家与政府承认的权威参考 |  |  | 来源,https://www.un.org/
-
 ```
 
----
+## 64. `directory\world-gov\index.html`
 
-## 66. `directory\world-gov\index.html`
+> note: page markup
 
-> note: site page, forced sync source
-
-```html
+```text
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -10766,16 +10652,13 @@ zhengxie.com.cn
   <script src="../../assets/js/main.js" defer></script>
 </body>
 </html>
-
 ```
 
----
+## 65. `directory\world-insurance\assets\json\self_meta.json`
 
-## 67. `directory\world-insurance\assets\json\self_meta.json`
+> note: data json
 
-> note: site data source
-
-```json
+```text
 {
   "title": "外国保险导航 - 正协导航",
   "description": "收录全球主要国际保险集团官网入口，作为外国金融机构导航板块，便于跨国保险查询。",
@@ -10783,11 +10666,9 @@ zhengxie.com.cn
 }
 ```
 
----
+## 66. `directory\world-insurance\assets\xlsx\self_links.xlsx`
 
-## 68. `directory\world-insurance\assets\xlsx\self_links.xlsx`
-
-> note: site data source
+> note: site data source (xlsx)
 
 ```text
 ### Sheet: links (dims=A1:H8)
@@ -10799,16 +10680,13 @@ zhengxie.com.cn
 5 | 国际保险 | 1 | 日本生命 Nissay |  |  |  | 官网,https://www.nissay.co.jp/
 6 | 参考 | 3 | IAIS 国际保险监督官协会 | 国际保险监管与机构索引 |  |  | 来源,https://www.iaisweb.org/
 7 | 参考 | 3 | Swiss Re Sigma | 全球保险市场统计与机构 |  |  | 来源,https://www.swissre.com/
-
 ```
 
----
+## 67. `directory\world-insurance\index.html`
 
-## 69. `directory\world-insurance\index.html`
+> note: page markup
 
-> note: site page, forced sync source
-
-```html
+```text
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -11134,16 +11012,13 @@ zhengxie.com.cn
   <script src="../../assets/js/main.js" defer></script>
 </body>
 </html>
-
 ```
 
----
+## 68. `directory\world-media\assets\json\self_meta.json`
 
-## 70. `directory\world-media\assets\json\self_meta.json`
+> note: data json
 
-> note: site data source
-
-```json
+```text
 {
   "title": "外国音视频媒体导航 - 正协导航",
   "description": "收录全球主流流媒体、短视频、音乐与音频平台官网入口，作为外国媒体导航板块。",
@@ -11151,11 +11026,9 @@ zhengxie.com.cn
 }
 ```
 
----
+## 69. `directory\world-media\assets\xlsx\self_links.xlsx`
 
-## 71. `directory\world-media\assets\xlsx\self_links.xlsx`
-
-> note: site data source
+> note: site data source (xlsx)
 
 ```text
 ### Sheet: links (dims=A1:H10)
@@ -11169,16 +11042,13 @@ zhengxie.com.cn
 7 | 音频 | 1 | Audible |  |  |  | 官网,https://www.audible.com/
 8 | 参考 | 3 | Motion Picture Association | 全球影视与流媒体行业组织 |  |  | 来源,https://www.motionpictures.org/
 9 | 参考 | 3 | IFPI 国际唱片业协会 | 全球音乐行业与平台索引 |  |  | 来源,https://www.ifpi.org/
-
 ```
 
----
+## 70. `directory\world-media\index.html`
 
-## 72. `directory\world-media\index.html`
+> note: page markup
 
-> note: site page, forced sync source
-
-```html
+```text
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -11514,16 +11384,13 @@ zhengxie.com.cn
   <script src="../../assets/js/main.js" defer></script>
 </body>
 </html>
-
 ```
 
----
+## 71. `directory\world-stock\assets\json\self_meta.json`
 
-## 73. `directory\world-stock\assets\json\self_meta.json`
+> note: data json
 
-> note: site data source
-
-```json
+```text
 {
   "title": "外国证券导航 - 正协导航",
   "description": "收录全球主要证券交易所与国际券商官网入口，作为外国金融导航板块，便于跨境投资查询。",
@@ -11531,11 +11398,9 @@ zhengxie.com.cn
 }
 ```
 
----
+## 72. `directory\world-stock\assets\xlsx\self_links.xlsx`
 
-## 74. `directory\world-stock\assets\xlsx\self_links.xlsx`
-
-> note: site data source
+> note: site data source (xlsx)
 
 ```text
 ### Sheet: links (dims=A1:H11)
@@ -11550,16 +11415,13 @@ zhengxie.com.cn
 8 | 国际券商 | 1 | 嘉信理财 Charles Schwab |  |  |  | 官网,https://www.schwab.com/
 9 | 参考 | 3 | World Federation of Exchanges | 全球交易所权威名录 |  |  | 来源,https://www.world-exchanges.org/
 10 | 参考 | 3 | IOSCO 国际证监会组织 | 证券监管与机构索引 |  |  | 来源,https://www.iosco.org/
-
 ```
 
----
+## 73. `directory\world-stock\index.html`
 
-## 75. `directory\world-stock\index.html`
+> note: page markup
 
-> note: site page, forced sync source
-
-```html
+```text
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -11900,29 +11762,23 @@ zhengxie.com.cn
   <script src="../../assets/js/main.js" defer></script>
 </body>
 </html>
-
 ```
 
----
+## 74. `directory\zhengxie\assets\json\self_meta.json`
 
-## 76. `directory\zhengxie\assets\json\self_meta.json`
+> note: data json
 
-> note: site data source
-
-```json
+```text
 {
   "title": "政协专题导航 - 正协导航",
   "description": "收录全国政协及全国各省、市、区政协官网入口，并涵盖八个民主党派中央网站，为政协委员、民主党派成员与办公人员提供一站式导航。",
   "keywords": "政协,政协委员,人民政协,协商民主,政协会议,各省市政协,民主党派,政务服务平台,正协导航,政协官网导航,AI工具,效率工具"
 }
-
 ```
 
----
+## 75. `directory\zhengxie\assets\xlsx\self_links.xlsx`
 
-## 77. `directory\zhengxie\assets\xlsx\self_links.xlsx`
-
-> note: site data source
+> note: site data source (xlsx)
 
 ```text
 ### Sheet: links (dims=A1:H66)
@@ -11992,16 +11848,13 @@ zhengxie.com.cn
 1008 | 民主党派 | 1 | 台湾民主自治同盟 | 民主党派官方入口。 |  | 民主党派,政协,政党 | 官网,https://www.taimeng.org.cn/
 1011 | 参考 | 3 | 全国政协网 | 中国人民政治协商会议全国委员会官方门户 |  |  | 来源,http://www.cppcc.gov.cn/
 1012 | 参考 | 3 | 中央社会主义学院 | 民主党派与统一战线人才培养主阵地 |  |  | 来源,http://www.cnss.org.cn/
-
 ```
 
----
+## 76. `directory\zhengxie\index.html`
 
-## 78. `directory\zhengxie\index.html`
+> note: page markup
 
-> note: site page, forced sync source
-
-```html
+```text
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -12617,24 +12470,19 @@ zhengxie.com.cn
   <script src="../../assets/js/main.js" defer></script>
 </body>
 </html>
-
 ```
 
----
+## 77. `favicon.ico`
 
-## 79. `favicon.ico`
+> note: file
 
-> note: site image asset
+> binary: size=9570 bytes, type=.ico
 
-> binary: 9570 bytes
+## 78. `index.html`
 
----
+> note: page markup
 
-## 80. `index.html`
-
-> note: site page, forced sync source
-
-```html
+```text
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -12910,16 +12758,13 @@ zhengxie.com.cn
   <script src="assets/js/main.js" defer></script>
 </body>
 </html>
-
 ```
 
----
+## 79. `pages\about\index.html`
 
-## 81. `pages\about\index.html`
+> note: page markup
 
-> note: site page, forced sync source
-
-```html
+```text
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -13078,16 +12923,13 @@ zhengxie.com.cn
   </script>
 </body>
 </html>
-
 ```
 
----
+## 80. `pages\changelog\index.html`
 
-## 82. `pages\changelog\index.html`
+> note: page markup
 
-> note: site page, forced sync source
-
-```html
+```text
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -13248,16 +13090,13 @@ zhengxie.com.cn
   </script>
 </body>
 </html>
-
 ```
 
----
+## 81. `pages\contact\index.html`
 
-## 83. `pages\contact\index.html`
+> note: page markup
 
-> note: site page, forced sync source
-
-```html
+```text
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -13415,16 +13254,13 @@ zhengxie.com.cn
   </script>
 </body>
 </html>
-
 ```
 
----
+## 82. `pages\disclaimer\index.html`
 
-## 84. `pages\disclaimer\index.html`
+> note: page markup
 
-> note: site page, forced sync source
-
-```html
+```text
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -13591,16 +13427,13 @@ zhengxie.com.cn
   </script>
 </body>
 </html>
-
 ```
 
----
+## 83. `pages\guide\index.html`
 
-## 85. `pages\guide\index.html`
+> note: page markup
 
-> note: site page, forced sync source
-
-```html
+```text
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -13773,16 +13606,13 @@ zhengxie.com.cn
   </script>
 </body>
 </html>
-
 ```
 
----
+## 84. `pages\overview\index.html`
 
-## 86. `pages\overview\index.html`
+> note: page markup
 
-> note: site page, forced sync source
-
-```html
+```text
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -14009,16 +13839,13 @@ zhengxie.com.cn
   </script>
 </body>
 </html>
-
 ```
 
----
+## 85. `pages\privacy\index.html`
 
-## 87. `pages\privacy\index.html`
+> note: page markup
 
-> note: site page, forced sync source
-
-```html
+```text
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -14231,16 +14058,13 @@ zhengxie.com.cn
   </script>
 </body>
 </html>
-
 ```
 
----
+## 86. `pages\sitemap\index.html`
 
-## 88. `pages\sitemap\index.html`
+> note: page markup
 
-> note: site page, forced sync source
-
-```html
+```text
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -14414,16 +14238,13 @@ zhengxie.com.cn
   </script>
 </body>
 </html>
-
 ```
 
----
+## 87. `pages\submit\index.html`
 
-## 89. `pages\submit\index.html`
+> note: page markup
 
-> note: site page, forced sync source
-
-```html
+```text
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -14613,309 +14434,11 @@ zhengxie.com.cn
   </script>
 </body>
 </html>
-
 ```
 
----
+## 88. `robots.txt`
 
-## 90. `README.md`
-
-> note: public repo overview
-
-```markdown
-# 正协导航
-
-> 让每一次寻找，都不止于找到
-
-正协导航是一个**全量收录**的精选站点导航站，覆盖常用入口、AI 智能、资讯媒体、设计创意、开发技术、学习教育、效率工具、影音娱乐等分类。设计风格为**奢华尊贵风**：主色红色系，搭配金色系与白色系，大面积白色背景，大气简洁不压抑。
-
-本仓库是网站的全部源码。本文档面向**想自建同类导航站的人**——它会告诉你这个站是怎么**手工搭出来**的，照着就能写一个；不需要任何构建工具或数据源文件，所有内容直接手写进 HTML。
-
-## 一、设计语言
-
-- **风格定位**：奢华尊贵风（premium / luxury）。红为主色、金为点缀、白为底，大面积白底，大气简洁不压抑。
-- **配色（亮色）**：红系主色 + 金系点缀 + 白底。
-- **暗色模式**：复用同一套奢华语言延伸到暗色，**禁止偏蓝、偏紫、科技冷淡、廉价渐变**。暗色配色：漆面黑 `#0D0C0E` / 暖炭灰 `#171519` / 亮金 `#E8CB84` / 象牙白 `#EDE8E0`。
-- 暗色模式跟随**用户手动切换**（不跟随系统偏好）；切换状态存 `localStorage('zx_theme')`，加载前同步设置防闪烁（FOUC）。
-- 字体跨浏览器一致基准：`html` 16px + `text-size-adjust:100%` + 表单控件 `font-family:inherit`，不得删除。
-- 任何 UI 都必须服从这套语言，不擅自引入新主色或新视觉调性。
-
-**视觉细节参考（避免踩坑）**：
-
-- 分类按钮上**不要放数量/计数徽章**（与结果计数行重复）。
-- 暗色切换按钮**不要占用置顶吸顶区**，固定放页脚工具簇。
-- 卡片内容**不可被用户框选**（`user-select:none`，避免误选；链接仍可点）。
-- 空结果状态**不要做"清除所有筛选"按钮**，只显示提示文案。
-
-## 二、站点结构（手工视角）
-
-```
-正协导航/
-├── index.html               站点主页/导航产品页（静态，根域 /）
-├── README.md                本手册
-├── 404.html                 错误页（自包含、按来源动态返回）
-├── CNAME                    自定义域名（zhengxie.com.cn）
-├── robots.txt               爬虫规则
-├── sitemap.xml              搜索引擎站点地图
-├── ads.txt                  AdSense 授权
-├── directory/               导航频道页
-│   ├── index.html          手写汇总/门户页
-│   ├── ai/index.html        示例频道页（AI智能）
-│   └── zhengxie/index.html  专题频道页
-├── pages/                   说明/合规/功能型子页
-│   ├── overview/index.html  网站全景（全站中枢）
-│   ├── about/index.html      关于本站
-│   ├── submit/index.html     收录申请
-│   ├── privacy/index.html    隐私政策
-│   ├── contact/index.html    联系我们
-│   ├── disclaimer/index.html 免责声明
-│   ├── guide/index.html      使用指南
-│   ├── sitemap/index.html    站点地图
-│   └── changelog/index.html  更新日志
-├── blog/                    原创+转载正文
-├── news/                    别人网站文章链接索引
-├── journal/                 日记
-└── assets/
-    ├── css/
-    │   └── style.css        全站样式（奢华红金白、响应式 Grid）
-    ├── js/
-    │   └── main.js          交互增强（三维度筛选 / 本地收藏 / 引擎搜索 / 统一滑动）
-    └── images/
-        ├── logo.svg         站点 Logo（红底金字方形）
-        └── *.webp           卡片媒体图
-```
-
-目录语义边界：`blog/` = 原创+转载正文；`news/` = 挂别人网站文章链接的索引（不放正文）；`journal/` = 日记；`pages/` = 说明/合规/功能型子页；`directory/` = 同骨架导航频道页。各自语义隔离，不混淆。
-
-## 三、页面骨架形态（S1–S6）
-
-本站按**页面骨架契约**分类（而非内容主题），由「布局范式 × 资源引用 × SEO 角色」决定。六大骨架：
-
-| 骨架 | 名称 | 布局范式 | 实例 |
-|------|------|---------|------|
-| **S1** | 导航产品页 | 卡片 Grid + 三维度筛选 + 集合搜索（sticky 吸顶） | `index.html`（根域）、`directory/*` 频道页 |
-| **S2** | 全站中枢页（网站全景） | 中枢型：架构总览 + 各板块活体切片 + 榜单区块 + 分发中枢 | `pages/overview/` |
-| **S3** | 说明信息页 | 单栏静态说明，无长文排版 | about / contact / guide / sitemap / changelog |
-| **S4** | 合规页 | 同 S3 + 「AI 辅助、非执业律师意见」声明 | privacy / disclaimer |
-| **S5** | 功能入口页 | 表单 / 提交 / 交互型 | submit |
-| **S6** | 文章 / 内容页 | 列表索引 + 详情（长文 + 插图 + 上一篇/下一篇） | blog / news / journal |
-
-骨架通用技术契约（全部骨架共用）：
-
-- 资源引用：根页用 `assets/...`，子页（`pages/*/`）用 `../../assets/...` 指向根目录唯一 assets 真源（子页不再自包含、不再复制 assets）。
-- 内链绝对路径（`https://你的域名/...`）且 `target="_self"`。
-- `<head>` **不设**全局 referrer meta。
-- FOUC **仅当 `localStorage('zx_theme')==='dark'` 才暗色**（不跟随系统）。
-- 页脚导航统一链接（含「网站全景」「频道导航」）+ 备案号注释占位。
-- `canonical` / `robots` / `description` 齐备。
-- 奢华红金白视觉语言（暗色金系，禁蓝紫）。
-
-新增页面时：先判属哪一已有骨架 → 套该骨架模板 → 若都无法覆盖且对长远有利 → 新增骨架编号（S7+）。
-
-## 四、手写入门：如何创建一个页面
-
-### 4.1 根页 HTML 骨架（S1 导航产品页）
-
-一个最小可运行的导航产品页，由以下部分组成：
-
-1. `<head>` 必填项：
-   - `<title>`、`<meta name="description">`、`<meta name="keywords">`
-   - `<link rel="canonical" href="https://你的域名/">`
-   - Open Graph：`og:title` / `og:description` / `og:image` / `og:site_name` / `og:url`
-   - Twitter：`twitter:card`
-   - `theme-color`（light/dark 双值）、`apple-touch-icon`、`preconnect`（统计/广告域名）
-   - JSON-LD 结构化数据（`WebSite` + `SearchAction`，见第八节）
-   - FOUC 防闪烁：加载前内联一小段脚本，读取 `localStorage('zx_theme')` 决定是否加 `data-theme="dark"`
-2. `<body>` 自上而下 8 块：
-   - `<header class="hero">`：大 Logo + slogan + 集合搜索引擎（主引擎按钮 + 搜索框 + 引擎滑道）
-   - `<aside class="ad ad--top">`：广告位 ①
-   - `<nav class="category-nav">`：左方形文字 Logo（承担「全部」）+ 中分类滑道 + 右「本地收藏」按钮
-   - `<section class="site-search">`：站内搜索框
-   - `<section class="result-count">`：结果计数行
-   - `<section class="filter-tags">`：筛选标签行（「当前筛选：」+ 标签滑道 + 「清除筛选」）
-   - 第 3–5 块包在 `<div class="sticky-top">` 内整体 sticky 吸顶
-   - `<main class="cards-container">`：卡片容器（Grid 直接装全部卡片）
-   - `<aside class="ad ad--bottom">`：广告位 ②
-   - `<footer class="footer">`：版权 + 必要链接 + 页脚工具簇（随机漫步 + 暗色切换）
-3. 每张卡片的手写结构见 4.2；样式类见第五节；交互见第六节。
-
-### 4.2 卡片结构（三种 type）
-
-| 结构 | 布局 | 封面比例 |
-|------|------|---------|
-| type 1 | **4 行 3 列**：图片（跨两行）/ 名称+收藏按钮 / 描述（跨两列）/ 标签行 / 链接标签行 | logo 方形 |
-| type 2 | **5 行 2 列**：封面（跨两列）/ 名称+收藏 / 描述 / 标签行 / 链接标签行 | 横向 1.618:1（黄金比） |
-| type 3 | **5 行 2 列**：同 type 2 | 纵向 1:1.618（黄金比） |
-
-通用约束（三类卡片一致）：
-
-- 均有**收藏按钮**（内联 SVG 星形，描边金；收藏后填充金），固定在名称行右端。
-- 名称、描述、标签、链接**必有**（空也占位），且只占一行，超出截断/横向滚动。
-- 卡片内所有内容 `user-select:none`。
-- 标签行第 1 个标签固定为该卡片的**分类名**。
-- 三种类型**按 type 分组分行**显示（type1 组 → type2 组 → type3 组，组间强制换行），不同类型绝不同行。
-
-### 4.3 页脚模板
-
-页脚导航统一链接（含「网站全景」「频道导航」）+ 备案号注释占位 + 工具簇（随机漫步 + 暗色切换）。备案号在有 ICP 备案的国内域名下才显示（代码保留占位，未备案前不渲染）。
-
-## 五、字段与手工录入指引
-
-导航页的每张卡片，本质就是一组字段。你**直接在 HTML 里手写这些值**，不需要任何数据表或构建步骤。
-
-| 字段 | 必填 | 说明（你在 HTML 里怎么写） |
-|------|------|--------------------------|
-| 站序 | 是 | 数字。卡片排序**先按 type（1→2→3）分组，再按站序从小到大**；不同类型自动分行 |
-| 分类 | 是 | 分类名。你手写的分类按钮按出现顺序生成；改分类名即改导航 |
-| type | 是 | 卡片结构：`1`=4行3列 logo 卡，`2`=5行2列横向封面卡，`3`=5行2列纵向封面卡 |
-| title | 是 | 网站名称（首字母自动大写用于占位 logo） |
-| desc | 否 | 一句话描述 |
-| media | 否 | 媒体区，手写格式：`URL`（仅图片）/ `URL,颜色`（图片衬底色）/ `颜色值`（纯色块占位）/ `字符,颜色`（文字占位+底色）。颜色支持 `#rgb`/`rgb()`/`rgba()`/`hsl()`/`transparent`/颜色名。图片**统一用 WebP 且保留透明通道（RGBA）**，否则透明 logo 被填黑 |
-| tags | 否 | 标签，英文逗号 `,` 分隔（如 `AI,免费`）。分类名会自动作为标签行第 1 个标签 |
-| links | 否 | 相关链接，分号 `;` 分链接、逗号 `,` 分"名称与URL"（如 `官网,https://x.com;知乎,https://www.zhihu.com/search?q=x`）。外链属性按域名优先级自动匹配（见第七节） |
-
-> ⚠️ 分隔符一律用英文半角逗号 `,` 与分号 `;`；媒体图片用 WebP 且保留透明通道。
-
-## 六、视觉规范（CSS 实现）
-
-- 红金白配色用 CSS 变量定义（如 `--red-soft` 淡红 / `--gold-deep` 深金）。
-- 响应式 Grid：`grid-template-columns: repeat(2/3/4, 1fr)`，手机 2 卡 / 平板 3 卡 / 桌面 4 卡。
-- type1 用 4 行 3 列、type2/3 用 5 行 2 列的 `grid-template-areas`；收藏按钮为 grid 成员固定在名称行右端。
-- 黄金比例封面：`aspect-ratio: 1.618/1`（横向）与 `1/1.618`（纵向）。
-- 横向滚动：`overflow-x:auto`；`user-select:none` 防误选。
-- 卡片收藏星为内联 SVG，CSS 按 `aria-pressed` 切换描边/填充。
-- 页面容器最大宽度 1200px 居中；视口高度用 `100dvh` 适配；卡片 Grid 用 `min-width:0` 防溢出。
-- 左 Logo 按钮同时带 `category-nav__logo` 与 `category-btn` 两个类，logo 样式块必须放在 `.category-btn` 系列**之后**，否则会被覆盖成圆形白底。
-
-## 七、交互说明（前端 JS 思路）
-
-- **三维度筛选（AND 叠加）**：分类（`activeCat`）× 关键词（`filterTags`）× 本地收藏（`showFav`），三者同时满足才显示。
-  - 分类：点 Logo = 重置「全部」；点分类按钮 = 只显示该分类。
-  - 关键词：搜索输入实时筛选；回车固化为筛选标签；点卡片内文字标签等同一次站内搜索。多标签叠加（AND）。
-  - 本地收藏：点星形按钮收藏；点顶部「本地收藏」按钮切换「只显示已收藏」。
-  - 「清除筛选」只清关键词，不影响分类与收藏；点 Logo 重置只动分类。
-- **结果计数**：无筛选「共 N 张卡片」；任一维度生效「当前显示 X / N 张卡片」；0 结果红色加粗提醒。
-- **集合搜索（Hero）**：百度/Google/必应为首引擎按钮，下方引擎滑道含淘宝/京东/知乎/B站/GitHub 等；点引擎激活，回车新窗口打开结果页。
-- **统一滑动行为**：所有滑道与卡片四类行同一套交互——只在内容真溢出时接管滚轮为左右滑（页面暂停上下滚），触屏触摸同样激活。
-- **本地收藏持久化**：存 `localStorage`（同浏览器非无痕），不跨设备/浏览器同步（静态站无后端）。
-- **SEO 友好**：所有卡片、链接、分类按钮均**静态渲染在 HTML 中**，不依赖 JS 注入；禁用 JS 时内容仍完整可读可点。
-
-**链接属性规则**（全站统一，按域名优先级 `同域 > 同族 > 营销 > 评论 > 暴露 > 默认` 匹配）：
-
-- 同域（你的站点及子域）：`target="_self"`，原地打开，发 Referer、传权重。
-- 同族（关联域名）：`target="_blank" rel="noopener"`。
-- 营销：`target="_blank" rel="sponsored noopener noreferrer nofollow"`。
-- 评论社媒：`target="_blank" rel="ugc noopener noreferrer nofollow"`。
-- 暴露/公开（如政务 `.gov.cn`、备案号）：`target="_blank" rel="noopener" referrerpolicy="origin"`（dofollow，传权重）。
-- 默认外链：`target="_blank" rel="nofollow noopener noreferrer"`。
-- **不设**全局 `<meta name="referrer" content="no-referrer">`（会让统计后台收不到来源）；仅卡片图片用 `referrerpolicy="no-referrer"` 单独压制（防图片防盗链）。
-
-## 八、SEO 要点
-
-- 所有卡片、链接、分类按钮静态渲染在 HTML（不靠 JS 注入），禁用 JS 仍可读可点。
-- `<head>` 齐备：`canonical` / `description` / `keywords` / OG 标签 / `twitter:card` / `theme-color`。
-- JSON-LD 结构化数据：注入 `WebSite` + `SearchAction`（帮助搜索引擎理解站点搜索功能）；子页/频道页可加 `CollectionPage`。
-- 标题层级完整：`h1`=站点名（Hero）、`h2`=各分类按钮、`h3`=各卡片名。
-- `robots.txt`：`User-agent: *` + `Sitemap`；先 `Disallow` 内部目录再用 `Allow` 白名单放出 `assets/css/`、`assets/js/`、`assets/images/`。
-- `sitemap.xml`：列出首页 + 各子页 + 频道页。
-- `ads.txt`：AdSense 授权必需，放在根目录（公开可抓）。
-- 404 页面：品牌风格 + 可读内容 + 延迟跳转首页（非纯 JS 跳转），按来源动态返回（站内→返回上一页、外链/搜索引擎跳入→返回首页、直接访问→首页）。
-
-## 九、统计与广告（接入思路）
-
-> 本节只讲「你的 HTML 里要放什么」，不涉及任何构建步骤。把下面代码直接写进对应页面的 `<head>` / 广告位即可。
-
-- **网站统计**（百度统计 / Google Analytics GA4）：在 `<head>` 放对应脚本片段。统计 ID 用你自己的（一方统计不走 Referer 头，不受影响）。
-- **Google AdSense**：`<head>` 放一份 async 加载器（`adsbygoogle.js?client=你的发布商ID`）；页面放 2 个广告位（Hero 之后、Footer 之前），每个含 `<ins>` + `adsbygoogle.push({})`，各自 `data-ad-slot` 占位。广告容器左右零 margin/padding、无包裹样式，只保留上下间距与右上「广告」小字标签（合规要求）。
-- **404 页**：手写自包含静态页，放与主页相同的统计脚本，但**不放广告位**（错误页不应展示广告）。
-- 隐私与 Referer 策略见第七节（不设全局 no-referrer，仅卡片图片单独压制）。
-
-## 十、部署（GitHub Pages + 自有域名）
-
-### 1. 推送到 GitHub
-
-```bash
-git init
-git add .
-git commit -m "正协导航初始版本"
-git branch -M main
-git remote add origin https://github.com/<你的用户名>/<仓库名>.git
-git push -u origin main
-```
-
-### 2. 开启 GitHub Pages
-
-仓库 → **Settings → Pages**：Source 选 `Deploy from a branch`，Branch 选 `main` / `/ (root)`，Save 后访问 `https://<用户名>.github.io/<仓库名>/`。
-
-### 3. 绑定自有域名
-
-1. Settings → Pages → Custom domain 填 `你的域名`，Save（GitHub 自动生成 CNAME 并签发 HTTPS）。
-2. 域名服务商 DNS 添加：
-
-| 主机记录 | 类型 | 值 |
-| ---- | ----- | ----------------- |
-| @ | CNAME | `<用户名>.github.io` |
-| www | CNAME | `<用户名>.github.io` |
-
-3. 等待 DNS 生效，访问 `https://你的域名` 验证；Pages 设置页勾选 Enforce HTTPS。
-
-> 国内访问 GitHub Pages 可能不稳定，可换国内 CDN 或 Vercel/Netlify（见第十一节）。
-
-### 4. 上线检查清单（手工）
-
-- [ ] 卡片按 type 分组分行显示（不同类型不同行）
-- [ ] 分类按钮（点 Logo=全部）、站内搜索、标签筛选均正常
-- [ ] 本地收藏：点星形按钮（描边金→填充金），点顶部「本地收藏」只显示已收藏
-- [ ] 结果计数行：无筛选「共 N 张卡片」，筛选后「当前显示 X / N」，0 结果红色提醒
-- [ ] 左 Logo：方形（非圆形）、未选中淡红底、选中正红+金环
-- [ ] 引擎滑道：切换引擎，回车跳转对应结果页
-- [ ] 各滑道/行内容超出时，悬停滚轮可左右滚动（页面暂停）
-- [ ] 移动端一行 2 卡、平板 3 卡、桌面 4 卡
-- [ ] 字体跨浏览器一致（`html` 16px + `text-size-adjust:100%` + 表单控件 `font-family:inherit`）
-- [ ] 媒体图片 WebP + 透明通道，加载失败处显示文字 logo 占位不破版
-- [ ] 统计/广告代码已上线；备案号按实际填写（国内域名需 ICP 备案）
-
-## 十一、可选的部署方案
-
-| 平台 | 优点 | 注意事项 |
-| ---- | ---- | ---- |
-| GitHub Pages | 免费、与仓库一体、自动 HTTPS | 国内访问稳定性一般 |
-| Vercel / Netlify | 全球 CDN、自动 HTTPS、拖拽部署 | 国内访问一般，免费额度充足 |
-| 国内对象存储 + CDN（阿里云 OSS / 腾讯云 COS） | 国内访问快 | 需要备案，需手动配置静态托管与 CDN |
-
-纯静态站，以上平台均可直接部署本文件夹内容（入口 `index.html`）。
-
-## 十二、常见问题（FAQ）
-
-**Q1：图片显示成红色底大字？**
-这是**文字 logo 占位**的预期表现。出现条件：media 为空或不是合规 URL（合规 = `http(s)://` 开头 + 合法主机名）。填上可访问的合规图片 URL 即可正常显示；图片加载失败时露出红色渐变底。
-
-**Q2：标签/链接太长看不到？分类滑道超出屏幕？**
-所有滑道与卡片四类行行为一致：只在内容真溢出时，悬停→金色高亮，滚轮接管为左右滚动，页面暂停上下滚；触屏触摸同样激活。不溢出时滚轮照常滚页面。
-
-**Q3：想调整卡片顺序？**
-改「站序」的数字即可。排序规则：先按 type（1→2→3）分组，再按站序从小到大——站序只在同类型内部生效，不同类型永远分行。
-
-**Q4：新增一个分类？**
-在手写分类按钮/卡片时填一个新分类名即可，分类按钮按出现顺序生成。
-
-**Q5：想增删搜索引擎？**
-在手写 Hero 的引擎滑道里增删引擎按钮（每项含显示名 / 搜索 URL / 是否主引擎），主引擎保持原位，其余进滑道。
-
-**Q6：本地收藏没了？**
-本地收藏存浏览器 `localStorage`，不跨设备/浏览器。换浏览器/设备、无痕模式、清"站点数据"会丢失——纯前端静态站固有限制。
-
----
-
-© 2026 正协导航 · 让每一次寻找，都不止于找到
-
-```
-
----
-
-## 91. `robots.txt`
-
-> note: hosting/search/ads config
+> note: report text
 
 ```text
 User-agent: *
@@ -14925,16 +14448,13 @@ Allow: /assets/js/
 Allow: /assets/images/
 
 Sitemap: https://zhengxie.com.cn/sitemap.xml
-
 ```
 
----
+## 89. `sitemap.xml`
 
-## 92. `sitemap.xml`
+> note: xml (sitemap)
 
-> note: project file, synced
-
-```xml
+```text
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
@@ -15068,5 +14588,5 @@ Sitemap: https://zhengxie.com.cn/sitemap.xml
     <priority>0.50</priority>
   </url>
 </urlset>
-
 ```
+

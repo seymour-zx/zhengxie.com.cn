@@ -64,6 +64,9 @@
 - **⑬ MEMORY 删信息治理铁律4（历史记录不入 MEMORY）（2026-08-25 17:56）**：用户判定信息治理铁律 4（5.6 失效+职责移交说明）为历史变更记录而非步骤，不应占 MEMORY 名额。归位：失效声明已在 CONVENTIONS §1.13 全文、"回档归 backup/确认归文件改动"已分别在两铁律自身、"5.6 失效"历史已在 changelog ① 与日志。MEMORY 信息治理铁律仅留 1-3（冗余即删/完整复制/时间日志兜底）。
 - **⑭ 按"历史记录归位"逻辑整理三文件（2026-08-25 17:57）**：CONVENTIONS 第一章删 3 处纯历史记录（1.6 md 精简结果、1.10 .gitignore 变更展开句、1.11 README 清理事件句）——均已在 changelog/日志有完整记录；MEMORY 待办措辞更新（现约 3270）；时间日志确认 append-only 定位、历史归位正确。
 
+- **⑮ 备份指令执行·重生成 backup.md（2026-08-25 18:54）**：用户触发「备份指令」→ 第2铁律执行。背景：16:06 生成后，17:xx 治理（MEMORY/CONVENTIONS 架构重构、安全边界删除、.gitignore 铁律迁移、待办瘦身）修改了受管文件但未重生成（新铁律仅备份指令时重生成）；且 `backups/` 下 3 个旧回档（MEMORY.pre-slim/npc 回档/MANIFEST）已不存在。重生成 `memory/backup.md`（方案 C2，agent=ProductManagementExpert，files=89）：文本逐字拷贝+来源注释、xlsx 转文本表、二进制登记路径/大小；排除正确（changelog/时间日志/backup 自身/.git 均不在索引，无时间日志泄露）；逐文件校验通过。MEMORY/CONVENTIONS/README 副本更新为 17:57 后当前版；`backups/` 现空，旧回档不纳入。
+- ⚠️ Git 全停令：未 add 未 commit。
+
 ## 已知遗留（BACKLOG）
 - `pages/` 子页 assets 已改 `../../assets/` 引用；无未清残留。
 - 营销/评论域名预设 `MARKETING = []` / `UGCCOMMENT = []` 待增删。（第十轮）

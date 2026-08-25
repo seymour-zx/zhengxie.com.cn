@@ -274,8 +274,13 @@
      - 鼠标悬停在该滑道/行 → UI 变化（金色高亮提示），滚轮上下滑动被接管为
        左右滑动该行内容，页面不再上下滚动；
      - 触屏设备 → 触摸该滑道/行时激活同样的 UI 变化，手指左右滑动滚动（原生）。 */
-  var SCROLL_ROW_SEL = '.track, .card__title, .card__desc, .card__tags, .card__links';
+  /* E 方案：卡片描述改为纵向滚动，移出横向滑动接管（保留标题/标签/链接的横向滑） */
+  var SCROLL_ROW_SEL = '.track, .card__title, .card__tags, .card__links';
   var scrollRows = Array.prototype.slice.call(document.querySelectorAll(SCROLL_ROW_SEL));
+
+  /* t1 描述行：纵向溢出检测（复用 is-scrollable 触发金色悬停高亮，但滚轮改为纵向） */
+  var VSCROLL_SEL = '.card--t1 .card__desc';
+  var vScrollRows = Array.prototype.slice.call(document.querySelectorAll(VSCROLL_SEL));
 
   function refreshScrollable() {
     scrollRows.forEach(function (el) {
@@ -283,6 +288,11 @@
          防止卡片重新显示后标记丢失导致滚轮左右滑失效 */
       if (el.clientWidth === 0) { return; }
       el.classList.toggle('is-scrollable', el.scrollWidth > el.clientWidth + 1);
+    });
+    /* 描述行按纵向内容高度判定（max-height 3em，超出才可上下滚） */
+    vScrollRows.forEach(function (el) {
+      if (el.clientHeight === 0) { return; }
+      el.classList.toggle('is-scrollable', el.scrollHeight > el.clientHeight + 1);
     });
   }
   refreshScrollable();
@@ -298,12 +308,21 @@
     el.addEventListener('touchcancel', function () { el.classList.remove('is-touch-active'); });
   });
 
-  /* 鼠标：悬停在内容真溢出的滑道/行上时，滚轮改为左右滑动（阻止页面上下滚动） */
+  /* 鼠标：悬停在内容真溢出的滑道/行上时，滚轮改为对应方向滑动（阻止页面上下滚动） */
   document.addEventListener('wheel', function (e) {
+    /* 横向滑道：滚轮 → 左右滑 */
     var el = e.target.closest ? e.target.closest(SCROLL_ROW_SEL) : null;
     if (el && el.classList.contains('is-scrollable')) {
       e.preventDefault();
       el.scrollLeft += e.deltaY;
+      return;
+    }
+    /* t1 描述行：悬停且内容溢出时，滚轮 → 上下滑并锁定（阻止页面滚动）；
+       鼠标离开描述区即解除锁定，页面恢复滚动 */
+    var vEl = e.target.closest ? e.target.closest(VSCROLL_SEL) : null;
+    if (vEl && vEl.classList.contains('is-scrollable')) {
+      e.preventDefault();
+      vEl.scrollTop += e.deltaY;
     }
   }, { passive: false });
 
