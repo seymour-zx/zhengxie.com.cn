@@ -1,108 +1,136 @@
 # -*- coding: utf-8 -*-
 """
-build_site.py  ——  zhengxie.com.cn 全站静态生成器（单一真值源版）
+build_site.py  ——  zhengxie.com.cn 全站静态生成器（单一真值源版 · 卡片类型4）
+================================================================================
+读取 directory/_master/site_data.xlsx（32 列扁平行模型，每行=一个站点），
+生成与线上完全一致的「生产页外壳」（搜索框 / 分类导航吸顶 / 广告位 / 页脚 /
+JSON-LD / 收藏星 / 暗色切换），卡片则渲染为用户定义的「卡片类型4 · 2列×6行栅格」。
 
-读取 同目录下的 site_data.xlsx（单一 tab「全量数据」，扁平行模型）：
-  - 每一行 = 一个站点（url 非空）= 一条可点链接
-  - 同 page_id 的行自动归一个页面；页面级字段取该 page_id 首个非空值
-  - 同 card_id 的行自动归一张卡片；卡片级字段取该 card_id 首个非空值
-  - url 为空 且 slot_key 非空 = 定义该页某「同位置文本」槽位（如 hero_title / footer_note）
-  - attest_card_id 非空 = 本行是挂在某张卡片下的「认证/凭证徽章」（备案号查询/时间戳认证…），
-    不是卡片主链接；渲染为该卡片级别的小徽章（整张机构卡一个备案徽章）。一行形状不变，只用此键分组。
+设计取舍（与用户 2026-08-26 确认）：
+- 页外壳 100% 复用 assets/.build/build_homeplus.py（PAGE_TEMPLATE / build_page /
+  build_jsonld / build_breadcrumb / 引擎与链接属性规则 / 收藏星 sprite），不重复造
+  轮子，保证与线上页结构完全一致；本脚本只换两处：
+    (1) 数据加载：site_data.xlsx 32 列 → pages / cards / links / verification / hint
+    (2) 卡片渲染：卡片类型4（2列×6行栅格，见 build_card_type4 注释）
+- 输出到 directory/_master/dist/，与线上零耦合；人工比对无误后复制 dist/ → 站点根。
+- 不修改任何线上文件、不自动 git（治理纪律）。
 
-输出到同目录 dist/ ：
-  - 每个页面的 output_path 对应一个 index.html（相对路径镜像）
-  - 根 sitemap.xml
-
-不修改任何线上文件；线上部署由人工在比对无误后复制 dist/ -> 站点根。
+卡片类型4 栅格（2 列 × 6 行）：
+    列1(控件轨)       列2(内容轨)
+  ┌─────────────┬──────────────────────┐
+  │ (1,1) logo  │ (1,2) 卡片名称         │
+  │ (2,1) 分类  │ (2~3,2) 描述(2行截断)  │
+  │ (3,1) 认证  │                        │
+  │ (4,1) 收藏  │ (4,2) 文字标签按钮行    │
+  │ (5) 提示(法律等专家, 有列才显示) 全宽 │
+  │ (6) 链接标签行(全宽)                │
+  └─────────────┴──────────────────────┘
+第5行「提示」对应 xlsx 可选列 card_hint：存在则渲染，不存在则该栅格位留空（不强行改 32 列模型）。
 """
+
 import os
+import shutil
 import re
 import html
 import json
+import importlib.util
 from collections import OrderedDict, defaultdict
 import openpyxl
 
-BASE_URL = "https://zhengxie.com.cn/"
+# ── 路径 ──────────────────────────────────────────────
 HERE = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(os.path.dirname(HERE))          # HERE=_master → 仓库根
 XLSX = os.path.join(HERE, "site_data.xlsx")
 DIST = os.path.join(HERE, "dist")
+HP_PATH = os.path.join(BASE_DIR, "assets", ".build", "build_homeplus.py")
 
-PAGE_CSS = """
-:root{--bg:#0f1b2d;--panel:#16263d;--panel2:#1d3350;--gold:#c9a45c;--gold2:#e7c987;--txt:#eef3fa;--muted:#9fb0c8;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;background:var(--bg);color:var(--txt);line-height:1.6;}
-a{color:inherit;text-decoration:none;}
-.wrap{max-width:1080px;margin:0 auto;padding:0 20px;}
-header.site{background:linear-gradient(135deg,#0f1b2d,#1d3350);border-bottom:1px solid var(--gold);}
-header.site .wrap{display:flex;align-items:center;justify-content:space-between;padding:22px 20px;}
-.brand{font-size:20px;font-weight:700;color:var(--gold2);letter-spacing:1px;}
-.brand small{display:block;font-size:12px;color:var(--muted);font-weight:400;letter-spacing:0;}
-nav.breadcrumb{padding:14px 0;color:var(--muted);font-size:13px;}
-nav.breadcrumb a{color:var(--gold);}
-.hero{padding:34px 0 10px;}
-.hero h1{font-size:30px;color:var(--gold2);}
-.hero p{color:var(--muted);margin-top:6px;}
-main{padding:24px 0 50px;}
-.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;}
-.card{background:var(--panel);border:1px solid #2a3f5e;border-radius:12px;padding:18px;transition:.2s;}
-.card:hover{border-color:var(--gold);transform:translateY(-2px);}
-.card h2{font-size:17px;color:var(--gold2);margin-bottom:6px;}
-.card .desc{color:var(--muted);font-size:13px;margin-bottom:12px;}
-.card-attests{list-style:none;display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px;padding:0;}
-.card-attests li a{font-size:11px;color:var(--muted);border:1px solid #3a5170;border-radius:20px;padding:2px 9px;display:inline-flex;gap:5px;align-items:center;}
-.card-attests li a:hover{border-color:var(--gold);color:var(--gold2);}
-.card-attests .at-type{color:var(--gold);}
-.links{list-style:none;display:flex;flex-direction:column;gap:8px;}
-.links > li{background:var(--panel2);border-radius:8px;padding:9px 11px;}
-.links > li:hover{background:#24406a;}
-.links .lk-top{display:flex;align-items:center;gap:10px;}
-.links img{width:20px;height:20px;border-radius:4px;flex:0 0 auto;background:#fff;}
-.links .lk-name{font-size:14px;}
-.links .lk-meta{margin-left:auto;font-size:11px;color:var(--gold);border:1px solid var(--gold);border-radius:20px;padding:1px 8px;white-space:nowrap;}
-.attests{list-style:none;display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;padding-left:30px;}
-.attests li a{font-size:11px;color:var(--muted);border:1px solid #3a5170;border-radius:20px;padding:2px 9px;display:inline-flex;gap:5px;align-items:center;}
-.attests li a:hover{border-color:var(--gold);color:var(--gold2);}
-.attests .at-type{color:var(--gold);}
-footer.site{border-top:1px solid #2a3f5e;color:var(--muted);font-size:12px;text-align:center;padding:22px 0;}
-.empty{padding:40px 0;color:var(--muted);text-align:center;}
+# ── 复用 build_homeplus.py 的生产页外壳（不重复造轮子，保证与线上页一致） ──
+_spec = importlib.util.spec_from_file_location("build_homeplus_ref", HP_PATH)
+hp = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(hp)
+PAGE_TEMPLATE = hp.PAGE_TEMPLATE
+FAV_SVG = hp.FAV_SVG
+STAR_SPRITE = hp.STAR_SPRITE
+ENGINES = hp.ENGINES
+ROOT_META = hp.ROOT_META
+BRAND = hp.BRAND
+SLOGAN = hp.SLOGAN
+SITE_DOMAIN = hp.SITE_DOMAIN
+EXPOSED_ATTR = hp.EXPOSED_ATTR
+
+# ── 卡片类型4 专属 CSS（生产 style.css 无此栅格，内联注入，不影响线上） ──
+TYPE4_CSS = """
+.card.card--t4{
+  display:grid;
+  grid-template-columns:60px 1fr;
+  grid-template-areas:
+    "logo name"
+    "cat desc"
+    "verify desc"
+    "fav tags"
+    "hint hint"
+    "links links";
+  gap:10px 12px;
+  align-items:start;
+  padding:16px;
+}
+.card--t4 .t4-logo{grid-area:logo;width:60px;height:60px;border-radius:10px;overflow:hidden;}
+.card--t4 .t4-logo .card__media-img{max-width:100%;max-height:100%;width:auto;height:auto;}
+.card--t4 .t4-name{grid-area:name;margin:0;align-self:center;font-size:17px;line-height:1.3;}
+.card--t4 .t4-cat{grid-area:cat;font-size:12px;color:var(--muted,#9fb0c8);}
+.card--t4 .t4-desc{grid-area:desc;margin:0;font-size:13px;color:var(--muted,#9fb0c8);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.card--t4 .t4-verify{grid-area:verify;font-size:12px;line-height:1.3;}
+.card--t4 .t4-verify__type{color:var(--gold,#c9a45c);font-weight:600;margin-right:4px;}
+.card--t4 .t4-fav{grid-area:fav;}
+.card--t4 .card__tags{grid-area:tags;display:flex;flex-wrap:wrap;gap:6px;}
+.card--t4 .t4-hint{grid-area:hint;margin:0;font-size:12px;color:#b08d57;
+  background:rgba(201,164,92,.10);border-left:3px solid var(--gold,#c9a45c);
+  padding:6px 10px;border-radius:6px;}
+.card--t4 .t4-hint__icon{margin-right:4px;font-weight:700;}
+.card--t4 .card__links{grid-area:links;display:flex;flex-wrap:wrap;gap:6px;}
 """
 
-def first(d, key, default=""):
-    return d.get(key, default) if d.get(key) not in (None, "") else default
 
-def load(path):
+def first(d, key, default=""):
+    v = d.get(key)
+    return v if v not in (None, "") else default
+
+
+def parse_tags(raw):
+    """card_tags 用 ; 或 , 分隔，去空去重保持顺序。"""
+    seen = []
+    for t in re.split(r"[;,]", str(raw or "")):
+        t = t.strip()
+        if t and t not in seen:
+            seen.append(t)
+    return seen
+
+
+def load_site_data(path):
+    """读取 site_data.xlsx 全部数据行（32 列扁平行）。返回 (headers, records)。"""
     wb = openpyxl.load_workbook(path, data_only=True)
     ws = wb.active
-    headers = [ws.cell(row=1, column=c).value for c in range(1, ws.max_column + 1)]
+    headers = [c.value for c in ws[1]]
     records = []
     for r in range(2, ws.max_row + 1):
         rec = {}
-        for h in headers:
-            v = ws.cell(row=r, column=headers.index(h) + 1).value
-            if v is not None and str(v).strip() != "":
+        for i, h in enumerate(headers):
+            v = ws.cell(row=r, column=i + 1).value
+            if v not in (None, ""):
                 rec[h] = v
         if rec:
             records.append(rec)
     return headers, records
 
+
 def build_model(records):
+    """把扁平行分组为 pages / cards / links（保留 xlsx 行序）。"""
     pages = OrderedDict()
-    cards = OrderedDict()
-    links = []
-    attestations = defaultdict(list)
+    cards = OrderedDict()        # key=(page_id, card_id)
+    card_order = defaultdict(list)
+    links = defaultdict(list)
     for rec in records:
-        # 认证行：attest_card_id 非空 + 有 url -> 挂在某张卡片下（无需 page_id，优先处理避免被 pid 守卫跳过）
-        a_cid = rec.get("attest_card_id")
-        url = rec.get("url")
-        if a_cid and url:
-            attestations[str(a_cid)].append({
-                "name": first(rec, "name"),
-                "url": url,
-                "tags": first(rec, "tags"),
-                "desc": first(rec, "desc"),
-            })
-            continue
         pid = rec.get("page_id")
         if not pid:
             continue
@@ -112,188 +140,229 @@ def build_model(records):
                 "page_title": first(rec, "page_title"),
                 "page_keywords": first(rec, "page_keywords"),
                 "page_description": first(rec, "page_description"),
-                "page_type": first(rec, "page_type", "channel"),
-                "output_path": first(rec, "output_path", pid + "/index.html"),
-                "parent_id": first(rec, "parent_id"),
-                "page_sort": rec.get("page_sort", 999),
-                "page_status": first(rec, "page_status", "active"),
-                "slots": {},
+                "slot_header_text": first(rec, "slot_header_text"),
+                "slot_header_enabled": str(first(rec, "slot_header_enabled", "true")).lower() != "false",
+                "slot_footer_text": first(rec, "slot_footer_text"),
+                "slot_footer_enabled": str(first(rec, "slot_footer_enabled", "true")).lower() != "false",
             }
-        sk = rec.get("slot_key")
-        if sk and not rec.get("url"):
-            if str(rec.get("slot_enabled", "true")).lower() != "false":
-                pages[pid]["slots"][sk] = first(rec, "slot_text")
         cid = rec.get("card_id")
-        if cid and cid not in cards:
-            cards[cid] = {
-                "card_id": cid,
-                "page_id": pid,
+        if not cid:
+            continue
+        key = (pid, cid)
+        if key not in cards:
+            cards[key] = {
+                "page_id": pid, "card_id": cid,
+                "card_media": first(rec, "card_media"),
                 "card_title": first(rec, "card_title"),
                 "card_desc": first(rec, "card_desc"),
                 "card_tags": first(rec, "card_tags"),
-                "card_order": rec.get("card_order", 999),
-                "card_status": first(rec, "card_status", "active"),
+                "cat_id": first(rec, "cat_id"),
+                "verification_type": first(rec, "verification_type"),
+                "verification_name": first(rec, "verification_name"),
+                "verification_url": first(rec, "verification_url"),
+                "verification_desc": first(rec, "verification_desc"),
+                "verification_enabled": str(first(rec, "verification_enabled", "false")).lower() == "true",
+                "card_hint": first(rec, "card_hint"),   # 可选列：存在才渲染
             }
+            card_order[pid].append(key)
         url = rec.get("url")
-        # 主链接行：url 非空 + 有 card_id
-        if url and cid:
-            links.append({
-                "link_id": first(rec, "link_id"),
-                "card_id": cid,
-                "page_id": pid,
-                "name": first(rec, "name"),
+        if url:
+            links[key].append({
+                "name": first(rec, "name", url),
                 "url": url,
                 "desc": first(rec, "desc"),
                 "media": first(rec, "media"),
-                "tags": first(rec, "tags"),
-                "link_order": rec.get("link_order", 999),
                 "source_type": first(rec, "source_type"),
-                "link_status": first(rec, "link_status", "active"),
+                "verify_date": first(rec, "verify_date"),
             })
-    page_cards = defaultdict(list)
-    for c in cards.values():
-        page_cards[c["page_id"]].append(c)
-    for pid in page_cards:
-        page_cards[pid].sort(key=lambda c: (c["card_order"], c["card_id"]))
-    card_links = defaultdict(list)
-    for l in links:
-        card_links[l["card_id"]].append(l)
-    for cid in card_links:
-        card_links[cid].sort(key=lambda l: (l["link_order"], l["link_id"]))
-    return pages, page_cards, card_links, attestations
+    return pages, cards, card_order, links
 
-def rel_prefix(output_path):
-    depth = output_path.count("/")
-    return ("../" * depth) if depth > 0 else ""
 
-def render_link_li(l):
-    if l["link_status"] == "dead":
-        return ""
-    icon = ""
-    if l["media"]:
-        icon = f'<img src="{html.escape(l["media"])}" alt="" loading="lazy" onerror="this.style.display=\'none\'">'
-    badge = f'<span class="lk-meta">{html.escape(l["source_type"])}</span>' if l["source_type"] else ""
-    return f'''<li><div class="lk-top"><a href="{html.escape(l["url"])}" target="_blank" rel="noopener">{icon}<span class="lk-name">{html.escape(l["name"])}</span></a>{badge}</div></li>'''
+def card_category(c):
+    """(2,1) 分类标签：优先 cat_id，否则取 card_tags 首个。"""
+    cat = (c.get("cat_id") or "").strip()
+    if cat:
+        return cat
+    tags = parse_tags(c.get("card_tags", ""))
+    return tags[0] if tags else ""
 
-def render_card(c, card_links, attestations):
-    links_html = "".join(render_link_li(l) for l in card_links.get(c["card_id"], []))
-    desc = f'<div class="desc">{html.escape(c["card_desc"])}</div>' if c["card_desc"] else ""
-    atts = attestations.get(c["card_id"], [])
-    att_html = ""
-    if atts:
-        pills = []
-        for a in atts:
-            typ = f'<span class="at-type">{html.escape(a["tags"])}</span>' if a["tags"] else ""
-            title = html.escape(a["desc"]) if a["desc"] else html.escape(a["name"])
-            pills.append(f'<li><a href="{html.escape(a["url"])}" target="_blank" rel="noopener" title="{title}">{typ}{html.escape(a["name"])}</a></li>')
-        att_html = f'<ul class="card-attests">{"".join(pills)}</ul>'
-    return f'''<article class="card">
-  <h2>{html.escape(c["card_title"])}</h2>
-  {att_html}
-  {desc}
-  <ul class="links">{links_html}</ul>
-</article>'''
 
-def jsonld(page, page_cards, card_links):
-    graph = [{
-        "@type": "WebSite",
-        "name": page["page_title"],
-        "url": BASE_URL + page["output_path"],
-        "description": page["page_description"],
-    }]
-    for c in page_cards.get(page["page_id"], []):
-        ls = [l for l in card_links.get(c["card_id"], []) if l["link_status"] != "dead"]
-        if not ls:
-            continue
-        urls = [l["url"] for l in ls]
-        org = {"@type": "Organization", "name": c["card_title"], "url": urls[0]}
-        if len(urls) > 1:
-            org["sameAs"] = urls
-        if c["card_desc"]:
-            org["description"] = c["card_desc"]
-        graph.append(org)
-    return {"@context": "https://schema.org", "@graph": graph}
+def build_card_type4(c, links):
+    """渲染单张「卡片类型4 · 2列×6行栅格」（字段映射见文件头注释）。"""
+    cid = c["card_id"]
+    title = c["card_title"]
+    cat = card_category(c)
 
-def render_page(page, page_cards, card_links, attestations):
-    prefix = rel_prefix(page["output_path"])
-    title = page["page_title"] or page["page_id"]
-    desc = page["page_description"]
-    kw = page["page_keywords"]
-    crumb = ""
-    if page["parent_id"]:
-        parent = pages.get(page["parent_id"])
-        pname = parent["page_title"] if parent else page["parent_id"]
-        ppath = parent["output_path"] if parent else ""
-        crumb = f'<nav class="breadcrumb wrap"><a href="{html.escape(prefix+ppath)}">首页</a> / {html.escape(pname)} / {html.escape(title)}</nav>'
+    # (1,1) logo：复用 build_homeplus.build_media（URL/纯色/首字符兜底）
+    logo = hp.build_media(c.get("card_media", ""), title)
+    logo = logo.replace('class="card__media"', 'class="card__media t4-logo"', 1)
+
+    # (1,2) 名称
+    name = f'<h3 class="card__title t4-name">{html.escape(title)}</h3>'
+
+    # (2,1) 分类标签
+    cat_html = f'<span class="t4-cat">{html.escape(cat)}</span>' if cat else ""
+
+    # (2~3,2) 描述（2 行占位，超出截断，由 CSS -webkit-line-clamp 控制）
+    desc = f'<p class="card__desc t4-desc">{html.escape(c["card_desc"])}</p>' if c["card_desc"] else ""
+
+    # (3,1) verification 链接标签（仅启用且有 url 时渲染；备案号走公开来源策略）
+    verify = ""
+    if c["verification_enabled"] and c["verification_url"]:
+        vtype = html.escape(c["verification_type"] or "认证")
+        vdesc = html.escape(c["verification_desc"] or c["verification_name"] or "")
+        verify = (f'<a class="t4-verify" href="{html.escape(c["verification_url"], quote=True)}" '
+                  f'{EXPOSED_ATTR} title="{vdesc}">'
+                  f'<span class="t4-verify__type">{vtype}</span>{vdesc}</a>')
+
+    # (4,1) 收藏按钮（SVG 星，localStorage 由 main.js 接管；key 取首个链接 url）
+    key = links[0]["url"] if links else (title or cid)
+    fav = (f'<button type="button" class="card__fav t4-fav" data-key="{html.escape(key, quote=True)}" '
+           f'aria-label="收藏/取消收藏" aria-pressed="false">{FAV_SVG}</button>')
+
+    # (4,2) 文字标签按钮行（card_tags 拆分；data-tag 供筛选）
+    tag_html = ""
+    tags = parse_tags(c["card_tags"])
+    if tags:
+        parts = [
+            f'<button type="button" class="card__tag" data-tag="{html.escape(t, quote=True)}">{html.escape(t)}</button>'
+            for t in tags
+        ]
+        tag_html = '<div class="card__tags">' + "".join(parts) + "</div>"
+
+    # (5) 提示（法律等专家说的提示文本）—— 仅当 xlsx 存在 card_hint 列且有值
+    hint = ""
+    if c.get("card_hint"):
+        hint = (f'<p class="t4-hint"><span class="t4-hint__icon" aria-hidden="true">ⓘ</span>'
+                f'{html.escape(c["card_hint"])}</p>')
+
+    # (6) 链接标签行（name → url；属性按域名自动匹配，由 build_homeplus.build_links 处理）
+    links_html = ""
+    if links:
+        parsed = [(l["name"] or l["url"], l["url"]) for l in links]
+        links_html = hp.build_links(parsed)
+
+    return (f'<article class="card card--t4" data-cat="{html.escape(cat, quote=True)}">'
+            f'{logo}{name}{cat_html}{desc}{verify}{fav}{tag_html}{hint}{links_html}'
+            f'</article>')
+
+
+def build_jsonld_rows(card_links):
+    """把卡片链接拼成 build_homeplus.build_jsonld 能消费的伪行（取首个外链进 ItemList）。"""
+    rows = []
+    for ls in card_links:
+        if ls:
+            rows.append({"links": ";".join(f'{l["name"]},{l["url"]}' for l in ls)})
+    return rows
+
+
+def render_page(pid, page, cards, cards_for_page, links):
+    """组装单个页面：复用 build_homeplus.build_page（生产页外壳）。"""
+    is_root = pid in ("home", "")
+    # dist/ 作为站点根镜像：首页在 dist/，频道页在 dist/<pid>/（仅深一层），
+    # 共享资源统一放 dist/assets/ → 首页前缀 ""、频道页前缀 "../"
+    prefix = "" if is_root else "../"
+    canonical = "/" if is_root else f"/{pid}/"
+
+    cat_order = []
+    card_htmls = []
+    card_links = []
+    for key in cards_for_page:
+        c = cards[key]
+        ls = links.get(key, [])
+        card_htmls.append(build_card_type4(c, ls))
+        card_links.append(ls)
+        cc = card_category(c)
+        if cc and cc not in cat_order:
+            cat_order.append(cc)
+
+    category_buttons = hp.build_category_buttons(cat_order)
+    engine_primary, engine_track = hp.build_engine_buttons()
+
+    meta = {k: page.get(k, "") for k in ("page_title", "page_keywords", "page_description")}
+    meta = {**ROOT_META, **{k: v for k, v in meta.items() if v}}
+
+    # hero 下半部：根页=集合搜索框；频道页=专题介绍块；均可在上方追加 slot_header 副标题
+    sub = page["slot_header_text"] if page["slot_header_enabled"] else ""
+    sub_html = f'<p class="hero__sub">{html.escape(sub)}</p>\n' if sub else ""
+    if is_root:
+        hero_search = sub_html + hp.HERO_SEARCH_BLOCK
     else:
-        crumb = f'<nav class="breadcrumb wrap">首页 / {html.escape(title)}</nav>'
-    hero_title = page["slots"].get("hero_title")
-    hero = f'<section class="hero wrap"><h1>{html.escape(title)}</h1><p>{html.escape(hero_title)}</p></section>' if hero_title else f'<section class="hero wrap"><h1>{html.escape(title)}</h1></section>'
-    cs = page_cards.get(page["page_id"], [])
-    if cs:
-        cards_html = "".join(render_card(c, card_links, attestations) for c in cs)
-        main = f'<main class="wrap"><div class="cards">{cards_html}</div></main>'
-    else:
-        main = '<main class="wrap"><div class="empty">本页暂无卡片数据（可在 site_data.xlsx 继续追加 card_id / url 行）。</div></main>'
-    footer_note = page["slots"].get("footer_note", "本站为独立第三方导航，与收录站点无隶属关系。")
-    ld = jsonld(page, page_cards, card_links)
-    return f'''<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{html.escape(title)}</title>
-<meta name="description" content="{html.escape(desc)}">
-{("<meta name=\"keywords\" content=\""+html.escape(kw)+"\">") if kw else ""}
-<style>{PAGE_CSS}</style>
-<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>
-</head>
-<body>
-<header class="site"><div class="wrap"><div class="brand">正协导航<small>独立第三方导航 · 人民政协与民主党派官方入口</small></div></div></header>
-{crumb}
-{hero}
-{main}
-<footer class="site">{html.escape(footer_note)}</footer>
-</body>
-</html>'''
+        hero_search = sub_html + hp.build_channel_intro(meta)
+
+    channel_name = meta["title"].replace(" - 正协导航", "").replace(" -正协导航", "").strip()
+    page_html = hp.build_page(
+        category_buttons, "".join(card_htmls), engine_primary, engine_track,
+        len(card_htmls), prefix=prefix, meta=meta, canonical_path=canonical,
+        hero_search=hero_search, rows=build_jsonld_rows(card_links),
+        channel_name=channel_name,
+    )
+
+    # 注入卡片类型4 专属 CSS（共享 style.css 之后，保证覆盖）
+    page_html = page_html.replace("</head>", f"<style>{TYPE4_CSS}</style></head>")
+    # 页脚 slot（slot_footer_text，可选）
+    if page["slot_footer_enabled"] and page["slot_footer_text"]:
+        page_html = page_html.replace(
+            "</footer>",
+            f'<p class="footer__note">{html.escape(page["slot_footer_text"])}</p></footer>',
+        )
+    return page_html, canonical
+
 
 def main():
     os.makedirs(DIST, exist_ok=True)
-    headers, records = load(XLSX)
-    global pages
-    pages, page_cards, card_links, attestations = build_model(records)
-    # 校验孤儿认证（attest_card_id 须对应存在的卡片）
-    card_ids = {c["card_id"] for v in page_cards.values() for c in v}
-    orphan_att = [(k, v) for k, v in attestations.items() if k not in card_ids]
+
+    # 把共享资源与手写页复制进 dist/，使 dist/ 成为自包含站点根镜像
+    # （首页 assets/、频道页 ../assets/ 均精确指向 dist/assets/；页脚 ../pages/ 指向 dist/pages/）
+    for src_name, dst_name in (("assets", "assets"), ("pages", "pages")):
+        src = os.path.join(BASE_DIR, src_name)
+        dst = os.path.join(DIST, dst_name)
+        if os.path.isdir(src):
+            shutil.copytree(src, dst, dirs_exist_ok=True)
+            print(f"同步[{src_name}] → {dst}")
+
+    headers, records = load_site_data(XLSX)
+    pages, cards, card_order, links = build_model(records)
+
     written = []
-    for pid, page in pages.items():
-        if page["page_status"] != "active":
+    for pid in pages:
+        page = pages[pid]
+        # 跳过 0 卡片页面：多为手写 pages/ 子页（about/submit/...）或空定义，不覆盖、不生成
+        if not card_order[pid]:
+            print(f"跳过[{pid}]: 无卡片（手写页或空定义），不生成。")
             continue
-        out_abs = os.path.join(DIST, page["output_path"])
+        page_html, canonical = render_page(pid, page, cards, card_order[pid], links)
+        out_rel = "index.html" if pid in ("home", "") else os.path.join(pid, "index.html")
+        out_abs = os.path.join(DIST, out_rel)
         os.makedirs(os.path.dirname(out_abs), exist_ok=True)
         with open(out_abs, "w", encoding="utf-8") as f:
-            f.write(render_page(page, page_cards, card_links, attestations))
-        written.append(page["output_path"])
-    locs = [f"  <url><loc>{html.escape(BASE_URL + p['output_path'])}</loc></url>" for p in pages.values() if p["page_status"] == "active"]
-    sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "\n".join(locs) + "\n</urlset>\n"
+            f.write(page_html)
+        n = len(card_order[pid])
+        written.append((pid, canonical, out_rel, n))
+        print(f"生成[{pid}]: {out_abs}  ({n} 张卡片)")
+
+    # sitemap.xml
+    locs = [
+        f'  <url><loc>{html.escape(SITE_DOMAIN + canonical)}</loc></url>'
+        for _pid, canonical, _rel, _n in written
+    ]
+    sm = ('<?xml version="1.0" encoding="UTF-8"?>\n'
+          '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+          + "\n".join(locs) + "\n</urlset>\n")
     with open(os.path.join(DIST, "sitemap.xml"), "w", encoding="utf-8") as f:
         f.write(sm)
-    # 反向提醒：含 official 链接的卡片尚未挂任何认证（卡片级）
-    official_no_att = []
-    for cid in card_ids:
-        ls = card_links.get(cid, [])
-        has_official = any(l["source_type"] == "official" for l in ls)
-        if has_official and not attestations.get(cid):
-            official_no_att.append(cid)
-    print(f"源表列数: {len(headers)} | 数据行: {len(records)}")
-    print(f"页面: {len(pages)} | 卡片: {sum(len(v) for v in page_cards.values())} | 主链接: {sum(len(v) for v in card_links.values())} | 认证徽章: {sum(len(v) for v in attestations.values())}")
+
+    print(f"\n源表列数: {len(headers)} | 数据行: {len(records)}")
+    print(f"页面: {len(pages)} | 卡片: {sum(len(v) for v in card_order.values())} | 主链接: {sum(len(v) for v in links.values())}")
     print(f"已生成 {len(written)} 个页面 + sitemap.xml 至: {DIST}")
-    if orphan_att:
-        print("⚠ 孤儿认证(attest_link_id 无对应链接):", orphan_att)
-    if official_no_att:
-        print(f"⚠ 以下含 official 链接的卡片尚未挂认证(建议补 attest_card_id 行): {official_no_att}")
-    for w in written:
-        print("  +", w)
+    for pid, canonical, rel, n in written:
+        print(f"  + {rel}  ({canonical})")
+
 
 if __name__ == "__main__":
+    try:
+        import sys
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
     main()
