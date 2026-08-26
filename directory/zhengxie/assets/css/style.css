@@ -451,9 +451,6 @@ input, textarea, select { font-family: inherit; }
   box-shadow: var(--shadow);
   overflow: hidden;
   min-width: 0;
-  /* 卡片内容不可被用户选择，避免误框选文本 */
-  user-select: none;
-  -webkit-user-select: none;
   transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
 }
 .card:hover { border-color: var(--gold-bright); transform: translateY(-3px); box-shadow: var(--shadow-hover); }
