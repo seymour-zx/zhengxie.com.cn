@@ -11,15 +11,11 @@
     <priority>0.70</priority>
   </url>
   <url>
-    <loc>https://zhengxie.com.cn/directory/renmin/</loc>
+    <loc>https://zhengxie.com.cn/directory/gov/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.65</priority>
   </url>
-  <url>
-    <loc>https://zhengxie.com.cn/directory/zhengwu/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.65</priority>
-  </url>
+
 <url>
     <loc>https://zhengxie.com.cn/pages/overview/</loc>
     <changefreq>weekly</changefreq>
@@ -65,7 +61,7 @@
     <changefreq>monthly</changefreq>
     <priority>0.50</priority>
   </url>
-  <url>
+<url>
     <loc>https://zhengxie.com.cn/directory/engine/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.60</priority>

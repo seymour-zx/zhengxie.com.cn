@@ -1216,7 +1216,8 @@ def render_and_write(xlsx_path, out_path, prefix="", meta=None, canonical_path="
     # - 其余频道：专题介绍块
     ch_slug = canonical_path.strip("/").split("/")[-1] if canonical_path.strip("/") else ""
     if prefix == "":
-        hero_search = ""
+        # 首页 hero 下半部：用 channel_intro 定义站点（不碰 slogan；与 SEO description 解耦，可独立编辑）
+        hero_search = build_channel_intro(meta)
         channel_name = ""
     elif ch_slug == ENGINE_CHANNEL:
         hero_search = HERO_SEARCH_BLOCK
