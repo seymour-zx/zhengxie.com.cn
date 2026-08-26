@@ -1,133 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
+<url>
     <loc>https://zhengxie.com.cn/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.00</priority>
   </url>
-  <url>
+<url>
     <loc>https://zhengxie.com.cn/directory/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.70</priority>
   </url>
   <url>
-    <loc>https://zhengxie.com.cn/directory/ai/</loc>
+    <loc>https://zhengxie.com.cn/directory/renmin/</loc>
     <changefreq>weekly</changefreq>
-    <priority>0.60</priority>
+    <priority>0.65</priority>
   </url>
   <url>
-    <loc>https://zhengxie.com.cn/directory/zhengxie/</loc>
+    <loc>https://zhengxie.com.cn/directory/zhengwu/</loc>
     <changefreq>weekly</changefreq>
-    <priority>0.70</priority>
+    <priority>0.65</priority>
   </url>
-  <url>
-    <loc>https://zhengxie.com.cn/directory/bank/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.60</priority>
-  </url>
-  <url>
-    <loc>https://zhengxie.com.cn/directory/insurance/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.60</priority>
-  </url>
-  <url>
-    <loc>https://zhengxie.com.cn/directory/stock/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.60</priority>
-  </url>
-  <url>
-    <loc>https://zhengxie.com.cn/directory/media/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.60</priority>
-  </url>
-  <url>
-    <loc>https://zhengxie.com.cn/directory/nav/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.60</priority>
-  </url>
-  <url>
-    <loc>https://zhengxie.com.cn/directory/gov/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.60</priority>
-  </url>
-  <url>
-    <loc>https://zhengxie.com.cn/directory/npc/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.60</priority>
-  </url>
-  <url>
-    <loc>https://zhengxie.com.cn/directory/party/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.60</priority>
-  </url>
-  <url>
-    <loc>https://zhengxie.com.cn/directory/world-bank/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.55</priority>
-  </url>
-  <url>
-    <loc>https://zhengxie.com.cn/directory/world-gov/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.55</priority>
-  </url>
-  <url>
-    <loc>https://zhengxie.com.cn/directory/world-insurance/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.55</priority>
-  </url>
-  <url>
-    <loc>https://zhengxie.com.cn/directory/world-media/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.55</priority>
-  </url>
-  <url>
-    <loc>https://zhengxie.com.cn/directory/world-stock/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.55</priority>
-  </url>
-  <url>
+<url>
     <loc>https://zhengxie.com.cn/pages/overview/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.70</priority>
   </url>
-  <url>
+<url>
     <loc>https://zhengxie.com.cn/pages/about/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.60</priority>
   </url>
-  <url>
+<url>
     <loc>https://zhengxie.com.cn/pages/submit/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.60</priority>
   </url>
-  <url>
+<url>
     <loc>https://zhengxie.com.cn/pages/privacy/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.60</priority>
   </url>
-  <url>
+<url>
     <loc>https://zhengxie.com.cn/pages/contact/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.50</priority>
   </url>
-  <url>
+<url>
     <loc>https://zhengxie.com.cn/pages/disclaimer/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.50</priority>
   </url>
-  <url>
+<url>
     <loc>https://zhengxie.com.cn/pages/guide/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.50</priority>
   </url>
-  <url>
+<url>
     <loc>https://zhengxie.com.cn/pages/sitemap/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.50</priority>
   </url>
-  <url>
+<url>
     <loc>https://zhengxie.com.cn/pages/changelog/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.50</priority>
+  </url>
+  <url>
+    <loc>https://zhengxie.com.cn/directory/engine/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.60</priority>
   </url>
 </urlset>

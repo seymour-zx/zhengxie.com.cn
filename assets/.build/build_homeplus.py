@@ -24,7 +24,9 @@ build_homeplus.py —— 正协导航 · 导航产品页生成器（home + 同�
 build_homeplus.py 与 collect_meta.py）。直接跑本脚本可只重新生成导航产品页、跳过 SEO 报告。
 
 数据表列（self_links.xlsx 第一行为表头）：
-    站序 | 分类 | type | title | desc | media | tags | links
+    站序 | 分类 | type | title | desc | media | tags | link1_name | link1_url | … | link10_name | link10_url
+- 链接录入改为「多组单元格」：每组 2 列（名称 + URL），预设 10 组共 20 列（link1_name/link1_url … link10_name/link10_url）；
+  组间顺序即链接展示顺序，url 为空的组自动跳过。
 - 站序：数字，卡片按站序从小到大排列
 - type：1=4行2列logo卡，2=5行横向封面卡，3=5行纵向封面卡（封面黄金比例 1.618）
 - media：媒体区（逗号分隔，向后兼容旧数据）。语法：
@@ -36,7 +38,8 @@ build_homeplus.py 与 collect_meta.py）。直接跑本脚本可只重新生成�
         颜色值示例：#FFFFFF / #3A7BD5 / rgb(58,123,213) / rgba(0,0,0,.5) / hsl(210,80%,50%) / transparent
         仅按「第一个逗号」分割，颜色值内自带逗号(如 rgba(0,0,0,.5)) 不受影响。
 - tags：英文逗号分隔（如 AI,免费）；分类名自动作为标签行第1个标签
-- links：分号分隔链接，逗号分隔"名称与URL"（如 官网,https://x;知乎,https://z）
+- 链接（多组单元格）：每组 2 列 = 名称(linkN_name) + URL(linkN_url)，N=1..10；如 link1_name=官网、link1_url=https://x；
+  空 URL 的组跳过，保留组序即展示顺序。旧单列 links（分号/逗号分隔）仍被兼容读取。
 - 外链属性策略（target/rel）不由本表决定，而由下方 LINK_ATTR_PRESET 按**链接域名**自动匹配；
   命中预设域名（含其子域，如 www.x.com、a.b.x.com 均命中 x.com）采用对应属性，未命中一律用 DEFAULT_LINK_ATTR。
 
@@ -97,7 +100,7 @@ build_homeplus.py 一次运行**同时生成两类 S1 导航产品页**：
   · 目录元信息   `directory/<name>/assets/json/self_meta.json`
 - 全站共享文件**不加** `self_`：`assets/json/manifest.json`、`assets/xlsx/link-policy.json`、
   `assets/.build/*.py`、`pages/<name>/index.html`（手写本体）。
-- 目录页列结构须与根 `self_links.xlsx` 一致（站序/type/分类/title/url/media/tags…），
+- 目录页列结构须与根 `self_links.xlsx` 一致（站序/type/分类/title/desc/media/tags/link1_name/link1_url…link10_name/link10_url），
   否则 `build_cards` 不复用。
 
 ### 元信息（self_meta.json）约定
@@ -209,6 +212,9 @@ ENGINES = [
 # ── 站点配置（换域名只改这里一处） ──────────────────
 # 末尾不要斜杠；下方所有站内绝对链接、canonical、og、JSON-LD 均由此生成。
 SITE_DOMAIN = "https://zhengxie.com.cn"
+# 每张卡片链接录入组数（xlsx 中 link1_name/link1_url … link10_name/link10_url 共 20 列）。
+# 想增减录入容量只改这里与 xlsx 表头即可，解析逻辑自动按此上限读取。
+LINK_GROUP_COUNT = 10
 # ───────────────────────────────────────────────────────────────
 # 全链接属性规则（build 与子页通用，集中配置，手工增删只改这里）
 # 优先级：同域 > 同族 > 营销 > 评论 > 公开 > 默认
@@ -268,6 +274,31 @@ def parse_links(raw):
         name, url = name.strip(), url.strip()
         if url:
             items.append((name or url, url))
+    return items
+
+
+def collect_links(row):
+    """从多组链接单元格读取链接：link1_name/link1_url … link{LINK_GROUP_COUNT}_name/url。
+
+    - 每个组：url 非空才计入；name 缺省回退为 url。
+    - 按 link1→linkN 顺序拼接，保证「第 1 组优先作为收藏 key / JSON-LD 首项」语义不变。
+    - 兼容旧格式：当行内完全没有 linkN_* 列（如仍是单 links 单元格）时，回退 parse_links。
+    返回 [(name, url), ...]，无链接返回 []。
+    """
+    items = []
+    has_groups = False
+    for n in range(1, LINK_GROUP_COUNT + 1):
+        name = str(row.get(f"link{n}_name") or "").strip()
+        url = str(row.get(f"link{n}_url") or "").strip()
+        if name or url:
+            has_groups = True
+        if url:
+            items.append((name or url, url))
+    if has_groups:
+        return items
+    legacy = row.get("links")
+    if legacy:
+        return parse_links(legacy)
     return items
 
 
@@ -575,7 +606,7 @@ def build_card(row):
 
     media_html = build_media(row.get("media"), title)
     tags_html = build_tags(category, parse_tags(row.get("tags")))
-    parsed_links = parse_links(row.get("links"))
+    parsed_links = collect_links(row)
     links_html = build_links(parsed_links)
 
     # 星标 key：取首个链接 URL（最稳定），无链接则退回标题
@@ -739,22 +770,14 @@ def build_jsonld(rows, meta=None, canonical_path="/", prefix=""):
     desc = m["description"]
 
     if prefix == "":
-        # —— 根页：WebSite ——
+        # —— 根页：WebSite（集合搜索框已迁至 directory/engine/，不再声明站内 SearchAction） ——
         data = {
             "@context": "https://schema.org",
             "@type": "WebSite",
             "name": name,
             "alternateName": name,
             "url": page_url,
-            "description": desc,
-            "potentialAction": {
-                "@type": "SearchAction",
-                "target": {
-                    "@type": "EntryPoint",
-                    "urlTemplate": page_url + "#q={search_term_string}"
-                },
-                "query-input": "required name=search_term_string"
-            }
+            "description": desc
         }
     else:
         # —— 频道页：WebPage + isPartOf + mainEntity(ItemList) ——
@@ -762,7 +785,7 @@ def build_jsonld(rows, meta=None, canonical_path="/", prefix=""):
         item_list = []
         pos = 0
         for r in rows:
-            parsed = parse_links(r.get("links"))
+            parsed = collect_links(r)
             if not parsed:
                 continue
             url = parsed[0][1]
@@ -1174,6 +1197,10 @@ def build_cards(rows):
     return "".join(parts)
 
 
+# 引擎频道：集合搜索框（原根页 hero 行为）迁移至此独立频道，首页保持品牌纯净
+ENGINE_CHANNEL = "engine"
+
+
 def render_and_write(xlsx_path, out_path, prefix="", meta=None, canonical_path="/", label="根页"):
     """通用渲染：读取 xlsx → 生成静态页 → 写出。根页与 directory 页共用。"""
     rows, cat_order = load_rows(xlsx_path)
@@ -1183,10 +1210,17 @@ def render_and_write(xlsx_path, out_path, prefix="", meta=None, canonical_path="
     category_buttons = build_category_buttons(cat_order)
     cards = build_cards(rows)
     engine_primary, engine_track = build_engine_buttons()
-    # hero 下半部：根页保留集合搜索框；directory 频道页替换为专题介绍块
+    # hero 下半部：
+    # - 根页(prefix=="")：仅保留 logo+标语，引擎框已迁移至 directory/engine/ 频道（减法优先/品牌纯净）
+    # - 引擎频道(ENGINE_CHANNEL)：注入集合搜索框（行为同原根页 hero）
+    # - 其余频道：专题介绍块
+    ch_slug = canonical_path.strip("/").split("/")[-1] if canonical_path.strip("/") else ""
     if prefix == "":
-        hero_search = HERO_SEARCH_BLOCK
+        hero_search = ""
         channel_name = ""
+    elif ch_slug == ENGINE_CHANNEL:
+        hero_search = HERO_SEARCH_BLOCK
+        channel_name = (meta or {}).get("title", "").replace(" - 正协导航", "").replace(" -正协导航", "").strip() or "引擎频道"
     else:
         hero_search = build_channel_intro(meta)
         # 频道名：从标题去掉 " - 正协导航" 后缀（如 "银行导航 - 正协导航" → "银行导航"）

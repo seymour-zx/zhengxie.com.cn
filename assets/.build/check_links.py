@@ -2,7 +2,7 @@
 """
 check_links.py —— 正协导航 · 死链检测
 ====================================
-读取 assets/xlsx/self_links.xlsx 中 links 列的 URL，逐个请求检查可达性，
+读取 assets/xlsx/self_links.xlsx 中链接单元格的 URL，逐个请求检查可达性，
 输出报告 assets/.build/link_report.txt。
 
 用法：
@@ -10,7 +10,8 @@ check_links.py —— 正协导航 · 死链检测
     python assets/.build/check_links.py --limit 5    # 只检查前 5 条（快速测试）
 
 说明：
-- links 列格式：名称,URL;名称,URL （分号分链接、逗号分名称与URL）
+- 链接录入为「多组单元格」：link1_name/link1_url … link10_name/link10_url（每组 名称+URL），
+  空 URL 的组跳过；兼容旧单列 links（名称,URL;名称,URL）格式。
 - 使用 HEAD 请求，遇到 405/403/501 自动降级为 GET
 - 并发 8 线程，单链接超时 8 秒
 """
@@ -26,7 +27,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 # 复用 build_homeplus 的「按表头名解析」逻辑，避免硬编码列索引（如 row[7]）：
 # 一旦 xlsx 列顺序调整，死链检测不会再静默读错列。
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from build_homeplus import load_rows, parse_links
+from build_homeplus import load_rows, collect_links
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 XLSX_PATH = os.path.join(BASE_DIR, "assets", "xlsx", "self_links.xlsx")
@@ -39,12 +40,12 @@ HEADERS = {
 
 
 def collect_urls(xlsx_path, limit=None):
-    """按表头名读取 links 列（复用 load_rows），逐项解析出 (名称, URL)。
+    """按表头名读取链接单元格（复用 load_rows + collect_links），逐项解析出 (名称, URL)。
     仅检查 http/https 链接（HEAD 请求），其余跳过。"""
     rows, _ = load_rows(xlsx_path)
     urls = []
     for rec in rows:
-        for name, url in parse_links(rec.get("links")):
+        for name, url in collect_links(rec):
             if url.startswith(("http://", "https://")):
                 urls.append((name, url))
                 if limit is not None and len(urls) >= limit:

@@ -33,10 +33,10 @@
 ├── robots.txt               爬虫规则
 ├── sitemap.xml              搜索引擎站点地图
 ├── ads.txt                  AdSense 授权
-├── directory/               导航频道页
-│   ├── index.html          手写汇总/门户页
-│   ├── ai/index.html        示例频道页（AI智能）
-│   └── zhengxie/index.html  专题频道页
+├── directory/               导航频道页（频道 hub + 各垂类频道）
+│   ├── index.html          频道导航 hub（列出各频道）【待建】
+│   ├── renmin/index.html    人大频道（全国人大及地方人大官网）【待建】
+│   └── zhengwu/index.html   政务机构频道（国务院/部委/政务服务平台）【待建】
 ├── pages/                   说明/合规/功能型子页
 │   ├── overview/index.html  网站全景（全站中枢）
 │   ├── about/index.html      关于本站
@@ -147,7 +147,8 @@
 | desc | 否 | 一句话描述 |
 | media | 否 | 媒体区，手写格式：`URL`（仅图片）/ `URL,颜色`（图片衬底色）/ `颜色值`（纯色块占位）/ `字符,颜色`（文字占位+底色）。颜色支持 `#rgb`/`rgb()`/`rgba()`/`hsl()`/`transparent`/颜色名。图片**统一用 WebP 且保留透明通道（RGBA）**，否则透明 logo 被填黑 |
 | tags | 否 | 标签，英文逗号 `,` 分隔（如 `AI,免费`）。分类名会自动作为标签行第 1 个标签 |
-| links | 否 | 相关链接，分号 `;` 分链接、逗号 `,` 分"名称与URL"（如 `官网,https://x.com;知乎,https://www.zhihu.com/search?q=x`）。外链属性按域名优先级自动匹配（见第七节） |
+| link1_name … link10_name | 否 | 相关链接名称（共 10 组，每组 2 列 `linkN_name` + `linkN_url`） |
+| link1_url … link10_url | 否 | 相关链接 URL；**空 URL 的组自动跳过**，组序即展示顺序（如 `link1_name=官网`、`link1_url=https://x.com`）。外链属性按域名优先级自动匹配（见第七节） |
 
 > ⚠️ 分隔符一律用英文半角逗号 `,` 与分号 `;`；媒体图片用 WebP 且保留透明通道。
 
