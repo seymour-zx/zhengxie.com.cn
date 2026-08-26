@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>音视频媒体导航</title>
+<meta name="description" content="收录直播、长视频、短视频与音乐类主流平台，覆盖国内外音视频内容站点，方便一站式观看与收听。">
+<meta name="keywords" content="直播,视频,短视频,音乐,音视频,正协导航">
+<style>
+:root{--bg:#0f1b2d;--panel:#16263d;--panel2:#1d3350;--gold:#c9a45c;--gold2:#e7c987;--txt:#eef3fa;--muted:#9fb0c8;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;background:var(--bg);color:var(--txt);line-height:1.6;}
+a{color:inherit;text-decoration:none;}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px;}
+header.site{background:linear-gradient(135deg,#0f1b2d,#1d3350);border-bottom:1px solid var(--gold);}
+header.site .wrap{display:flex;align-items:center;justify-content:space-between;padding:22px 20px;}
+.brand{font-size:20px;font-weight:700;color:var(--gold2);letter-spacing:1px;}
+.brand small{display:block;font-size:12px;color:var(--muted);font-weight:400;letter-spacing:0;}
+nav.breadcrumb{padding:14px 0;color:var(--muted);font-size:13px;}
+nav.breadcrumb a{color:var(--gold);}
+.hero{padding:34px 0 10px;}
+.hero h1{font-size:30px;color:var(--gold2);}
+.hero p{color:var(--muted);margin-top:6px;}
+main{padding:24px 0 50px;}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;}
+.card{background:var(--panel);border:1px solid #2a3f5e;border-radius:12px;padding:18px;transition:.2s;}
+.card:hover{border-color:var(--gold);transform:translateY(-2px);}
+.card h2{font-size:17px;color:var(--gold2);margin-bottom:6px;}
+.card .desc{color:var(--muted);font-size:13px;margin-bottom:12px;}
+.card-attests{list-style:none;display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px;padding:0;}
+.card-attests li a{font-size:11px;color:var(--muted);border:1px solid #3a5170;border-radius:20px;padding:2px 9px;display:inline-flex;gap:5px;align-items:center;}
+.card-attests li a:hover{border-color:var(--gold);color:var(--gold2);}
+.card-attests .at-type{color:var(--gold);}
+.links{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.links > li{background:var(--panel2);border-radius:8px;padding:9px 11px;}
+.links > li:hover{background:#24406a;}
+.links .lk-top{display:flex;align-items:center;gap:10px;}
+.links img{width:20px;height:20px;border-radius:4px;flex:0 0 auto;background:#fff;}
+.links .lk-name{font-size:14px;}
+.links .lk-meta{margin-left:auto;font-size:11px;color:var(--gold);border:1px solid var(--gold);border-radius:20px;padding:1px 8px;white-space:nowrap;}
+.attests{list-style:none;display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;padding-left:30px;}
+.attests li a{font-size:11px;color:var(--muted);border:1px solid #3a5170;border-radius:20px;padding:2px 9px;display:inline-flex;gap:5px;align-items:center;}
+.attests li a:hover{border-color:var(--gold);color:var(--gold2);}
+.attests .at-type{color:var(--gold);}
+footer.site{border-top:1px solid #2a3f5e;color:var(--muted);font-size:12px;text-align:center;padding:22px 0;}
+.empty{padding:40px 0;color:var(--muted);text-align:center;}
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "WebSite", "name": "音视频媒体导航", "url": "https://zhengxie.com.cn/directory/media/index.html", "description": "收录直播、长视频、短视频与音乐类主流平台，覆盖国内外音视频内容站点，方便一站式观看与收听。"}, {"@type": "Organization", "name": "斗鱼", "url": "https://www.douyu.com/"}, {"@type": "Organization", "name": "芒果TV", "url": "https://www.mgtv.com/"}, {"@type": "Organization", "name": "优酷", "url": "https://www.youku.com/"}, {"@type": "Organization", "name": "腾讯视频", "url": "https://v.qq.com/"}, {"@type": "Organization", "name": "iQIYI", "url": "https://www.iq.com/"}, {"@type": "Organization", "name": "土豆", "url": "https://www.tudou.com/"}, {"@type": "Organization", "name": "豆瓣电影", "url": "https://movie.douban.com/"}, {"@type": "Organization", "name": "风行网", "url": "http://www.fun.tv/"}, {"@type": "Organization", "name": "360影视", "url": "http://www.360kan.com/"}, {"@type": "Organization", "name": "AcFun", "url": "https://www.acfun.cn/"}, {"@type": "Organization", "name": "咪咕视频", "url": "https://www.miguvideo.com/"}, {"@type": "Organization", "name": "乐视视频", "url": "http://www.le.com/"}, {"@type": "Organization", "name": "哔哩哔哩", "url": "https://www.bilibili.com/"}, {"@type": "Organization", "name": "百度视频", "url": "http://v.baidu.com/"}, {"@type": "Organization", "name": "搜狐视频", "url": "https://tv.sohu.com/"}, {"@type": "Organization", "name": "PPTV", "url": "https://www.pptv.com/"}, {"@type": "Organization", "name": "搜狗视频", "url": "https://v.sogou.com/"}, {"@type": "Organization", "name": "抖音短视频", "url": "https://www.douyin.com/"}, {"@type": "Organization", "name": "网易云音乐", "url": "https://music.163.com/"}, {"@type": "Organization", "name": "千千音乐", "url": "https://music.taihe.com/"}, {"@type": "Organization", "name": "QQ音乐", "url": "https://y.qq.com/"}, {"@type": "Organization", "name": "音乐Tai", "url": "https://www.yinyuetai.com/"}, {"@type": "Organization", "name": "抖音短视频", "url": "https://www.douyin.com/"}, {"@type": "Organization", "name": "懒人全网音乐下载", "url": "https://www.eggvod.cn/music/"}, {"@type": "Organization", "name": "国家广播电视总局", "url": "https://www.nrta.gov.cn/", "description": "视听节目与网络音视频管理权威"}, {"@type": "Organization", "name": "中国网络视听节目服务协会", "url": "https://www.cnsav.com/", "description": "网络音视频行业自律组织"}]}</script>
+</head>
+<body>
+<header class="site"><div class="wrap"><div class="brand">正协导航<small>独立第三方导航 · 人民政协与民主党派官方入口</small></div></div></header>
+<nav class="breadcrumb wrap"><a href="../../index.html">首页</a> / 正协导航 / 音视频媒体导航</nav>
+<section class="hero wrap"><h1>音视频媒体导航</h1></section>
+<main class="wrap"><div class="cards"><article class="card">
+  <h2>斗鱼</h2>
+  
+  
+  <ul class="links"><li><div class="lk-top"><a href="https://www.douyu.com/" target="_blank" rel="noopener"><span class="lk-name">官网</span></a></div></li></ul>
+</article><article class="card">
+  <h2>芒果TV</h2>
+  
+  
+  <ul class="links"><li><div class="lk-top"><a href="https://www.mgtv.com/" target="_blank" rel="noopener"><span class="lk-name">官网</span></a></div></li></ul>
+</article><article class="card">
+  <h2>优酷</h2>
+  
+  
+  <ul class="links"><li><div class="lk-top"><a href="https://www.youku.com/" target="_blank" rel="noopener"><span class="lk-name">官网</span></a></div></li></ul>
+</article><article class="card">
+  <h2>腾讯视频</h2>
+  
+  
+  <ul class="links"><li><div class="lk-top"><a href="https://v.qq.com/" target="_blank" rel="noopener"><span class="lk-name">官网</span></a></div></li></ul>
+</article><article class="card">
+  <h2>iQIYI</h2>
+  
+  
+  <ul class="links"><li><div class="lk-top"><a href="https://www.iq.com/" target="_blank" rel="noopener"><span class="lk-name">官网</span></a></div></li></ul>
+</article><article class="card">
+  <h2>土豆</h2>
+  
+  
+  <ul class="links"><li><div class="lk-top"><a href="https://www.tudou.com/" target="_blank" rel="noopener"><span class="lk-name">官网</span></a></div></li></ul>
+</article><article class="card">
+  <h2>豆瓣电影</h2>
+  
+  
+  <ul class="links"><li><div class="lk-top"><a href="https://movie.douban.com/" target="_blank" rel="noopener"><span class="lk-name">官网</span></a></div></li></ul>
+</article><article class="card">
+  <h2>风行网</h2>
+  
+  
+  <ul class="links"><li><div class="lk-top"><a href="http://www.fun.tv/" target="_blank" rel="noopener"><span class="lk-name">官网</span></a></div></li></ul>
+</article><article class="card">
+  <h2>360影视</h2>
+  
+  
+  <ul class="links"><li><div class="lk-top"><a href="http://www.360kan.com/" target="_blank" rel="noopener"><span class="lk-name">官网</span></a></div></li></ul>
+</article><article class="card">
+  <h2>AcFun</h2>
+  
+  
+  <ul class="links"><li><div class="lk-top"><a href="https://www.acfun.cn/" target="_blank" rel="noopener"><span class="lk-name">官网</span></a></div></li></ul>
+</article><article class="card">
+  <h2>咪咕视频</h2>
+  
+  
+  <ul class="links"><li><div class="lk-top"><a href="https://www.miguvideo.com/" target="_blank" rel="noopener"><span class="lk-name">官网</span></a></div></li></ul>
+</article><article class="card">
+  <h2>乐视视频</h2>
+  
+  
+  <ul class="links"><li><div class="lk-top"><a href="http://www.le.com/" target="_blank" rel="noopener"><span class="lk-name">官网</span></a></div></li></ul>
+</article><article class="card">
+  <h2>哔哩哔哩</h2>
+  
+  
+  <ul class="links"><li><div class="lk-top"><a href="https://www.bilibili.com/" target="_blank" rel="noopener"><span class="lk-name">官网</span></a></div></li></ul>
+</article><article class="card">
+  <h2>百度视频</h2>
+  
+  
+  <ul class="links"><li><div class="lk-top"><a href="http://v.baidu.com/" target="_blank" rel="noopener"><span class="lk-name">官网</span></a></div></li></ul>
+</article><article class="card">
+  <h2>搜狐视频</h2>
+  
+  
+  <ul class="links"><li><div class="lk-top"><a href="https://tv.sohu.com/" target="_blank" rel="noopener"><span class="lk-name">官网</span></a></div></li></ul>
+</article><article class="card">
+  <h2>PPTV</h2>
+  
+  
+  <ul class="links"><li><div class="lk-top"><a href="https://www.pptv.com/" target="_blank" rel="noopener"><span class="lk-name">官网</span></a></div></li></ul>
+</article><article class="card">
+  <h2>搜狗视频</h2>
+  
+  
+  <ul class="links"><li><div class="lk-top"><a href="https://v.sogou.com/" target="_blank" rel="noopener"><span class="lk-name">官网</span></a></div></li></ul>
+</article><article class="card">
+  <h2>抖音短视频</h2>
+  
+  
+  <ul class="links"><li><div class="lk-top"><a href="https://www.douyin.com/" target="_blank" rel="noopener"><span class="lk-name">官网</span></a></div></li></ul>
+</article><article class="card">
+  <h2>网易云音乐</h2>
+  
+  
+  <ul class="links"><li><div class="lk-top"><a href="https://music.163.com/" target="_blank" rel="noopener"><span class="lk-name">官网</span></a></div></li></ul>
+</article><article class="card">
+  <h2>千千音乐</h2>
+  
+  
+  <ul class="links"><li><div class="lk-top"><a href="https://music.taihe.com/" target="_blank" rel="noopener"><span class="lk-name">官网</span></a></div></li></ul>
+</article><article class="card">
+  <h2>QQ音乐</h2>
+  
+  
+  <ul class="links"><li><div class="lk-top"><a href="https://y.qq.com/" target="_blank" rel="noopener"><span class="lk-name">官网</span></a></div></li></ul>
+</article><article class="card">
+  <h2>音乐Tai</h2>
+  
+  
+  <ul class="links"><li><div class="lk-top"><a href="https://www.yinyuetai.com/" target="_blank" rel="noopener"><span class="lk-name">官网</span></a></div></li></ul>
+</article><article class="card">
+  <h2>抖音短视频</h2>
+  
+  
+  <ul class="links"><li><div class="lk-top"><a href="https://www.douyin.com/" target="_blank" rel="noopener"><span class="lk-name">官网</span></a></div></li></ul>
+</article><article class="card">
+  <h2>懒人全网音乐下载</h2>
+  
+  
+  <ul class="links"><li><div class="lk-top"><a href="https://www.eggvod.cn/music/" target="_blank" rel="noopener"><span class="lk-name">官网</span></a></div></li></ul>
+</article><article class="card">
+  <h2>国家广播电视总局</h2>
+  
+  <div class="desc">视听节目与网络音视频管理权威</div>
+  <ul class="links"><li><div class="lk-top"><a href="https://www.nrta.gov.cn/" target="_blank" rel="noopener"><span class="lk-name">来源</span></a></div></li></ul>
+</article><article class="card">
+  <h2>中国网络视听节目服务协会</h2>
+  
+  <div class="desc">网络音视频行业自律组织</div>
+  <ul class="links"><li><div class="lk-top"><a href="https://www.cnsav.com/" target="_blank" rel="noopener"><span class="lk-name">来源</span></a></div></li></ul>
+</article></div></main>
+<footer class="site">本站为独立第三方导航，与收录站点无隶属关系。</footer>
+</body>
+</html>
