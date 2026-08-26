@@ -1,0 +1,17 @@
+{
+  "default_rel": "nofollow noopener noreferrer",
+  "rules": [
+    {
+      "domain": "zhengxie.com.cn",
+      "rel": "",
+      "type": "own",
+      "note": "本站主域名：内链不 nofollow（传递权重）、不隐藏 referrer 给自家站"
+    },
+    {
+      "domain": "zhengxie.github.io",
+      "rel": "",
+      "type": "own-mirror",
+      "note": "GitHub Pages 镜像域名，同上视为自有"
+    }
+  ]
+}
