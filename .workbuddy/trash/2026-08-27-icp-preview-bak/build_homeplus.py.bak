@@ -24,14 +24,14 @@ build_homeplus.py —— 正协导航 · 导航产品页生成器（home + 同�
 build_homeplus.py 与 collect_meta.py）。直接跑本脚本可只重新生成导航产品页、跳过 SEO 报告。
 
 数据表列（self_links.xlsx 第一行为表头，统一英文 snake_case，2026-08-27 起不再支持中文 27 列旧格式）：
-    row_seq | dir_path | cat_id | cat_name | card_layout | card_title | card_desc | card_media | card_tags | card_id | card_order |
-    link_1_name | link_1_url | … | link_10_name | link_10_url
+    row_seq | cat_id | cat_name | card_layout | card_title | card_desc | card_media | card_tags | card_id | card_order |
+    link_1_id | link_1_name | link_1_url | link_1_desc | link_1_media | link_1_enabled | … | link_10_enabled
 - 表头兼容（2026-08-27 起仅英文）：load_rows 读表头时经 HEADER_NORMALIZE 把英文蛇形列名
-  归一化为内部英文键（渲染逻辑沿用）；表头含中文旧键（站序/分类/type/title…）直接报错拒绝，
-  不再透传兼容。card_id/card_order 当前不参与渲染，留待后续徽章接入（card_order 可作手动排序键）。
-  链接富化列（link_N_id/desc/media/enabled）与来源列（source_*）已于 2026-08-27 从数据源移除，仅保留 link_N_name/url。
-- 链接录入为「多组单元格」：每组 2 列（name/url），预设 10 组共 20 列
-  （link_1_name/link_1_url … link_10_name/link_10_url）；
+  归一化为内部中文键（渲染逻辑沿用）；表头含中文旧键（站序/分类/type/title…）直接报错拒绝，
+  不再透传兼容。card_id/card_order/link_N_* 的 id/desc/media/enabled 等当前不参与
+  渲染，留待后续徽章接入。
+- 链接录入为「多组单元格」：每组 6 列（id/name/url/desc/media/enabled），预设 10 组共 60 列
+  （link_1_id/link_1_name/link_1_url/link_1_desc/link_1_media/link_1_enabled … link_10_enabled）；
   组间顺序即链接展示顺序，url 为空的组自动跳过。
 - 站序：数字，卡片按站序从小到大排列
 - type：1=4行2列logo卡，2=5行横向封面卡，3=5行纵向封面卡（封面黄金比例 1.618）
@@ -46,7 +46,9 @@ build_homeplus.py 与 collect_meta.py）。直接跑本脚本可只重新生成�
 - tags：英文逗号分隔（如 AI,免费）；分类名自动作为标签行第1个标签
 - 链接（多组单元格）：每组 2 列 = 名称(linkN_name) + URL(linkN_url)，N=1..10；如 link1_name=官网、link1_url=https://x；
   空 URL 的组跳过，保留组序即展示顺序。旧单列 links（分号/逗号分隔）仍被兼容读取。
-- 来源列（source_1~5_name/url）：已于 2026-08-27 从数据源移除（此前文档承诺的「来源行渲染」从未实现，属文档与实际不符）。如需「出处 / 佐证」展示，须先新增列并接入渲染逻辑。
+- 来源（独立列，不占 link_1~10 动作链接槽）：source_1_name/source_1_url … source_5_name/source_5_url；
+  作为卡片信息的权威「出处 / 佐证」单独成行渲染（虚线分隔 + 来源徽标），统一 nofollow；
+  url 为空则该卡不渲染来源子行。校验器可据此对「来源可达性 × 目标可达性」做差分诊断。
 - 外链属性策略（target/rel）不由本表决定，而由下方 LINK_ATTR_PRESET 按**链接域名**自动匹配；
   命中预设域名（含其子域，如 www.x.com、a.b.x.com 均命中 x.com）采用对应属性，未命中一律用 DEFAULT_LINK_ATTR。
 
@@ -60,7 +62,7 @@ v4 变更（相对 v3）：
 v4.1 修订：
 - media 合规 URL 校验加严：http/https + 合法主机（域名/IP/localhost），
   不合规一律视为空值 → 首字符文字占位（URL图片 / 文字占位 二选一，不叠加）
-- 卡片排序：先按 card_layout（1→2→3），再按 row_seq；不同类型之间插入 grid-break 强制换行，
+- 卡片排序：先按 type（1→2→3），再按站序；不同类型之间插入 grid-break 强制换行，
   不同类型卡片绝不同行显示
 - 卡片结构重排：
   · type1 = 4行3列（媒体跨1-2行1列 / 名称1行2列 / 收藏1行3列 / 描述跨2行2-3列 / 标签3行 / 链接4行）
@@ -107,7 +109,7 @@ build_homeplus.py 一次运行**同时生成两类 S1 导航产品页**：
   · 目录元信息   `directory/<name>/assets/json/self_meta.json`
 - 全站共享文件**不加** `self_`：`assets/json/manifest.json`、`assets/.build/link-policy.json`、
   `assets/.build/*.py`、`pages/<name>/index.html`（手写本体）。
-- 目录页列结构须与根 `self_links.xlsx` 一致（英文 snake_case：row_seq/dir_path/cat_name/card_layout/
+- 目录页列结构须与根 `self_links.xlsx` 一致（英文 snake_case：row_seq/cat_name/card_layout/
   card_title/card_desc/card_media/card_tags/link_1_name/link_1_url…link_10_enabled），
   否则 `build_cards` 不复用。
 
@@ -156,42 +158,34 @@ from urllib.parse import urlparse
 
 from openpyxl import load_workbook
 
-# ── 字段名常量：唯一事实源（英文 snake_case，既作 xlsx 列名也作内部键） ──
-# 改列名 = 只改这里一处常量值；HEADER_NORMALIZE 与全部运行逻辑都引用这些常量，
-# 不再有任何硬编码的中文/字符串内部键。例：把 cat_name 改名 → 改 CAT_NAME 常量值即可。
-# cat_id 为独立内部键，仅保留、不参与渲染（留待后续排序/徽章接入）。
-ROW_SEQ = "row_seq"
-DIR_PATH = "dir_path"   # 预留占位：目录页相对路径（面包屑/内链接入备用），目前不参与渲染
-CAT_ID = "cat_id"
-CAT_NAME = "cat_name"
-CARD_LAYOUT = "card_layout"      # 内部键；列名==内部键，纯恒等
-CARD_TITLE = "card_title"
-CARD_DESC = "card_desc"
-CARD_MEDIA = "card_media"
-CARD_TAGS = "card_tags"
-
-# 列名 → 内部键（恒等映射，全部英文；列名==内部键，纯恒等）。
+# ── 表头归一化（仅英文 snake_case，2026-08-27 起不再兼容中文 27 列） ──────
+# 根页与频道页数据源统一采用英文蛇形命名(row_seq/cat_id/cat_name/card_layout/
+# card_title/card_desc/card_media/card_tags/link_1_name…)，本字典把「英文→内部中文键」
+# 做映射，load_rows 读表头时统一归一化；表头含中文旧键（站序/分类/type/title 等）
+# 会被 load_rows 直接报错拒绝，不再透传兼容。
+# 注意：cat_id 与 cat_name 都映射到「分类」——英文文件中 cat_name 为展示名、
+# cat_id 多为空，归一时后者覆盖前者（cat_name 优先），符合预期。
 HEADER_NORMALIZE = {
-    ROW_SEQ: ROW_SEQ,
-    DIR_PATH: DIR_PATH,
-    CAT_ID: CAT_ID,
-    CAT_NAME: CAT_NAME,
-    CARD_LAYOUT: CARD_LAYOUT,    # 列名 card_layout → 内部键 card_layout（纯恒等）
-    CARD_TITLE: CARD_TITLE,
-    CARD_DESC: CARD_DESC,
-    CARD_MEDIA: CARD_MEDIA,
-    CARD_TAGS: CARD_TAGS,
+    "row_seq": "站序",
+    "cat_id": "分类",
+    "cat_name": "分类",
+    "card_layout": "type",
+    "card_title": "title",
+    "card_desc": "desc",
+    "card_media": "media",
+    "card_tags": "tags",
 }
-# 链接多组列（link_1_name/url … link_10_name/url）按序号批量映射为内部键 linkN_name/url
+# 中文旧表头标志键：任一命中即判定为「中文 27 列旧格式」并拒绝
+_CN_HEADER_MARKS = ("站序", "分类", "link1_name", "link1_url")
 for _n in range(1, 11):
     HEADER_NORMALIZE[f"link_{_n}_name"] = f"link{_n}_name"
     HEADER_NORMALIZE[f"link_{_n}_url"] = f"link{_n}_url"
 
-# 内部语义核心键（用于表头自动定位）：基于「归一化后的内部键」判定。
-CORE_KEYS = {ROW_SEQ, CAT_NAME, CARD_TITLE}
-
-# 中文旧表头标志键：任一命中即判定为「中文 27 列旧格式」并拒绝（检测 raw 中文列名，非内部键）
-_CN_HEADER_MARKS = ("站序", "分类", "link1_name", "link1_url")
+# 来源列（独立 source_* 列，不占 link_1~10 动作链接槽）：source_1_name/source_1_url …
+SOURCE_GROUP_COUNT = 5
+for _n in range(1, SOURCE_GROUP_COUNT + 1):
+    HEADER_NORMALIZE[f"source_{_n}_name"] = f"source{_n}_name"
+    HEADER_NORMALIZE[f"source_{_n}_url"] = f"source{_n}_url"
 
 # ── 路径 ──────────────────────────────────────────────
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -347,6 +341,20 @@ def collect_links(row):
     return items
 
 
+def collect_sources(row):
+    """独立「来源」列：source1_name/source1_url … source{N}_name/url。
+
+    - 每个组：url 非空才计入；name 缺省回退为 url。
+    - 来源为卡片信息的权威出处/佐证，与主链接 link_1~10 的动作链接**相互独立**，
+      不共享 10 个链接槽位；空来源返回 []（由 build_sources 渲染为占位空行，保证卡片等高）。
+    返回 [(name, url), ...]，无来源返回 []。"""
+    items = []
+    for n in range(1, SOURCE_GROUP_COUNT + 1):
+        name = str(row.get(f"source{n}_name") or "").strip()
+        url = str(row.get(f"source{n}_url") or "").strip()
+        if url:
+            items.append((name or url, url))
+    return items
 
 
 _DOMAIN_RE = re.compile(
@@ -624,6 +632,32 @@ def build_links(links):
     return '<div class="card__links">' + "".join(parts) + "</div>"
 
 
+def build_sources(sources):
+    """来源子行：与主链接区视觉断开（虚线分隔 + 引用图标 + 「来源」徽标）。
+
+    - 来源为「出处 / 佐证」，统一 nofollow（引用非背书），不沿用主链接按域名匹配的属性策略。
+    - 无来源也渲染占位行（.card__sources：与有来源行同高、带相同虚线脚部分隔、不显示标签），
+      网格 align-items:start 下靠完全相同的行高保证同排卡片等高；有来源才显示「来源」标签与链接。
+    """
+    if not sources:
+        return '<div class="card__sources"></div>'
+    parts = []
+    for name, url in sources:
+        parts.append(
+            f'<a class="card__source" href="{html.escape(url, quote=True)}" '
+            f'target="_blank" rel="nofollow noopener noreferrer">'
+            f'{html.escape(name)}<span class="arrow" aria-hidden="true">↗</span></a>'
+        )
+    inner = "".join(parts)
+    label = (
+        '<span class="card__sources-label">'
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
+        'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+        '<path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/>'
+        '<path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>'
+        '来源</span>'
+    )
+    return f'<div class="card__sources">{label}{inner}</div>'
 
 
 # 收藏星形：每卡只输出 <use> 引用，真正的 path 在页面顶部 STAR_SPRITE 里定义一次。
@@ -647,22 +681,20 @@ STAR_SPRITE = (
 
 def build_card(row):
     """按 type 生成三类卡片结构之一（v4.1：收藏按钮为 SVG 星，位于名称行右端）"""
-    t = str(row.get(CARD_LAYOUT) or "").strip()
+    t = str(row.get("type") or "").strip()
     cls = {"1": "card--t1", "2": "card--t2", "3": "card--t3"}.get(t, "card--t2")
-    category = str(row.get(CAT_NAME) or "").strip()
-    title = row.get(CARD_TITLE) or ""
-    desc = row.get(CARD_DESC) or ""
+    category = str(row.get("分类") or "").strip()
+    title = row.get("title") or ""
+    desc = row.get("desc") or ""
 
-    media_html = build_media(row.get(CARD_MEDIA), title)
-    tags_html = build_tags(category, parse_tags(row.get(CARD_TAGS)))
+    media_html = build_media(row.get("media"), title)
+    tags_html = build_tags(category, parse_tags(row.get("tags")))
     parsed_links = collect_links(row)
     links_html = build_links(parsed_links)
+    sources_html = build_sources(collect_sources(row))
 
-    # 星标 key：有链接用首个 URL（最稳）；无链接回退 标题→分类→row_seq，row_seq 兜底去重
-    if parsed_links:
-        fav_key = parsed_links[0][1]
-    else:
-        fav_key = f"{(title or category or 'card')}#{row.get(ROW_SEQ)}"
+    # 星标 key：取首个链接 URL（最稳定），无链接则退回标题
+    fav_key = parsed_links[0][1] if parsed_links else (title or category or "card")
     fav_key_esc = html.escape(fav_key, quote=True)
 
     return (
@@ -672,83 +704,57 @@ def build_card(row):
         f'<button type="button" class="card__fav" data-key="{fav_key_esc}" '
         f'aria-label="收藏/取消收藏" aria-pressed="false">{FAV_SVG}</button>'
         f'<p class="card__desc">{html.escape(desc)}</p>'
-        f"{tags_html}{links_html}"
+        f"{tags_html}{links_html}{sources_html}"
         f"</article>"
     )
 
 
 def load_rows(xlsx_path=None):
     """读取 xlsx 全部数据行。
-    v4.1 排序：先按 card_layout（1→2→3，非法排最后），再按 row_seq 从小到大。
+    v4.1 排序：先按 type（1→2→3，非法排最后），再按站序从小到大。
     xlsx_path 缺省用全局 XLSX_PATH（根页）；directory 页传入各自的 self_links.xlsx。"""
     wb = load_workbook(xlsx_path or XLSX_PATH, read_only=True, data_only=True)
     ws = wb.active
-    all_rows = [list(r) for r in ws.iter_rows(values_only=True)]
-    wb.close()
-
-    # ── 表头自动定位（v4.2） ──
-    # 不再写死「第 1 行是表头」：从顶部扫描（最多前 20 行），首个命中英文 schema 的行即表头。
-    # 这样即便 xlsx 顶部夹了空行 / 测试行（如 self_links1.xlsx 第 1 行空、第 2 行「测试py」），
-    # 也能自动跳过并正确读取。命中中文旧键仍按原规则报错拒绝。
-    header_idx = None
-    for idx, row in enumerate(all_rows[:20]):
-        cells = [str(c).strip() if c is not None else "" for c in row]
-        # 中文旧表头：保留原报错语义（精确列值匹配，不误伤数据行的分类名等中文值）
-        for mark in _CN_HEADER_MARKS:
-            if mark in cells:
-                raise ValueError(
-                    f"数据源表头含中文旧键「{mark}」：{xlsx_path or XLSX_PATH}\n"
-                    "2026-08-27 起不再支持中文 27 列旧格式，请转换为英文 snake_case "
-                    "（row_seq/cat_name/card_layout/card_title/card_desc/card_media/card_tags/"
-                    "link_1_name/link_1_url…），参考 assets/xlsx/self_links.xlsx。"
-                )
-        # 表头自动定位（v4.2，基于内部语义键）：将候选行原始列名经 HEADER_NORMALIZE 归一化后，
-        # 判定是否齐备核心键（row_seq + cat_name/card_title 至少其一）。因检测只看「归一化内部键」，
-        # 原始列名怎么改名都只影响 HEADER_NORMALIZE，此处与运行逻辑一律不动。
-        norm_keys = {HEADER_NORMALIZE.get(c, c) for c in cells if c}
-        if ROW_SEQ in norm_keys and (CAT_NAME in norm_keys or CARD_TITLE in norm_keys):
-            header_idx = idx
-            break
-    if header_idx is None:
-        raise ValueError(
-            f"数据源未找到合法英文表头（需含 row_seq，且 cat_name/card_title 至少其一；"
-            f"列名别名请在 HEADER_NORMALIZE 登记）：{xlsx_path or XLSX_PATH}"
-        )
-
-    raw_header = [str(c).strip() if c is not None else "" for c in all_rows[header_idx]]
-    # 英文蛇形表头归一化为内部英文键（见 HEADER_NORMALIZE）
-    header = [HEADER_NORMALIZE.get(h, h) for h in raw_header]
-
     rows = []
-    for row in all_rows[header_idx + 1:]:
+    header = None
+    for i, row in enumerate(ws.iter_rows(values_only=True)):
         if row is None or all(c is None for c in row):
             continue
+        if i == 0:
+            raw_header = [str(c).strip() if c is not None else "" for c in row]
+            # 仅支持英文 snake_case 表头：命中中文旧键（站序/分类/link1_name…）即拒绝
+            for mark in _CN_HEADER_MARKS:
+                if mark in raw_header:
+                    raise ValueError(
+                        f"数据源表头含中文旧键「{mark}」：{xlsx_path or XLSX_PATH}\n"
+                        "2026-08-27 起不再支持中文 27 列旧格式，请转换为英文 snake_case "
+                        "（row_seq/cat_name/card_layout/card_title/card_desc/card_media/card_tags/"
+                        "link_1_name/link_1_url…），参考 assets/xlsx/self_links.xlsx。"
+                    )
+            # 英文蛇形表头归一化为内部中文键（见 HEADER_NORMALIZE）
+            header = [HEADER_NORMALIZE.get(h, h) for h in raw_header]
+            continue
         rec = {}
-        for i, col in enumerate(header):
-            if not col:                       # 跳过无列名的空表头列
-                continue
-            val = row[i] if i < len(row) else None
-            # 同名列/同内部键多列时，保留「首个非空值」（按列从左到右），
-            # 使读取与列顺序无关；靠后的空列不会覆盖主列（分类等字段更稳）。
-            if col not in rec or rec[col] in (None, ""):
-                rec[col] = val
-        if rec.get(ROW_SEQ) is None and rec.get(CARD_TITLE) is None:
+        for idx, col in enumerate(header):
+            rec[col] = row[idx] if idx < len(row) else None
+        if rec.get("站序") is None and rec.get("title") is None:
             continue
         rows.append(rec)
+    wb.close()
 
     def type_order(r):
-        t = str(r.get(CARD_LAYOUT) or "").strip()
+        t = str(r.get("type") or "").strip()
         return {"1": 1, "2": 2, "3": 3}.get(t, 9)
 
     def order_key(r):
         try:
-            return (type_order(r), int(r.get(ROW_SEQ) or 0))
+            return (type_order(r), int(r.get("站序") or 0))
         except (TypeError, ValueError):
             return (type_order(r), 10**9)
     # 分类按钮顺序：原始数据从上到下首次出现（先于 type 分组排序）
     cat_order = []
     for r in rows:
-        c = str(r.get(CAT_NAME) or "").strip()
+        c = str(r.get("分类") or "").strip()
         if c and c not in cat_order:
             cat_order.append(c)
     rows.sort(key=order_key)
@@ -1278,7 +1284,7 @@ def build_cards(rows):
     parts = []
     prev_type = None
     for r in rows:
-        t = str(r.get(CARD_LAYOUT) or "").strip()
+        t = str(r.get("type") or "").strip()
         if prev_type is not None and t != prev_type:
             parts.append('<div class="grid-break" aria-hidden="true"></div>')
         prev_type = t
@@ -1321,7 +1327,7 @@ def render_and_write(xlsx_path, out_path, prefix="", meta=None, canonical_path="
                       hero_search=hero_search, rows=rows, channel_name=channel_name)
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(page)
-    cats = [str(r.get(CAT_NAME) or "").strip() for r in rows]
+    cats = [str(r.get("分类") or "").strip() for r in rows]
     print(f"已生成[{label}]: {out_path}  ({len(rows)} 张卡片, 分类: {' / '.join(dict.fromkeys(cats))})")
     return len(rows)
 

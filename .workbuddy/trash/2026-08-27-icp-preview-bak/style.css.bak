@@ -1,5 +1,5 @@
 /* ============================================================
-   正协导航 style.css —— 红 / 金 / 白配色（清爽克制）  v4.1
+   正协导航 style.css —— 奢华尊贵风（红 / 金 / 白）  v4.1
    响应式 Grid：手机 2 列 / 平板 3 列 / 桌面 4 列
    容器最大宽度 1200px 居中，桌面不铺满
    ------------------------------------------------------------
@@ -70,7 +70,8 @@
 [data-theme="dark"] .card__title.is-scrollable,
 [data-theme="dark"] .card__desc.is-scrollable,
 [data-theme="dark"] .card__tags.is-scrollable,
-[data-theme="dark"] .card__links.is-scrollable {
+[data-theme="dark"] .card__links.is-scrollable,
+[data-theme="dark"] .card__sources.is-scrollable {
   box-shadow: inset 0 0 0 1px rgba(197, 165, 114, .35);
 }
 
@@ -116,7 +117,7 @@ input, textarea, select { font-family: inherit; }
    共用 is-scrollable 高亮态；只在真溢出时 JS 标记。
    ═══════════════════════════════════════════════════════ */
 .track,
-.card__title, .card__desc, .card__tags, .card__links {
+.card__title, .card__desc, .card__tags, .card__links, .card__sources {
   overflow-x: auto;
   scrollbar-width: none;
   white-space: nowrap;
@@ -124,21 +125,21 @@ input, textarea, select { font-family: inherit; }
 }
 .track::-webkit-scrollbar,
 .card__title::-webkit-scrollbar, .card__desc::-webkit-scrollbar,
-.card__tags::-webkit-scrollbar, .card__links::-webkit-scrollbar { display: none; }
+.card__tags::-webkit-scrollbar, .card__links::-webkit-scrollbar, .card__sources::-webkit-scrollbar { display: none; }
 
 /* 内容真溢出时（JS 标 is-scrollable）：悬停/触摸金色高亮提示可左右滚 */
 .track.is-scrollable,
 .card__title.is-scrollable, .card__desc.is-scrollable,
-.card__tags.is-scrollable, .card__links.is-scrollable { cursor: grab; }
+.card__tags.is-scrollable, .card__links.is-scrollable, .card__sources.is-scrollable { cursor: grab; }
 .track.is-scrollable:active,
 .card__title.is-scrollable:active, .card__desc.is-scrollable:active,
-.card__tags.is-scrollable:active, .card__links.is-scrollable:active { cursor: grabbing; }
+.card__tags.is-scrollable:active, .card__links.is-scrollable:active, .card__sources.is-scrollable:active { cursor: grabbing; }
 .track.is-scrollable:hover,
 .card__title.is-scrollable:hover, .card__desc.is-scrollable:hover,
-.card__tags.is-scrollable:hover, .card__links.is-scrollable:hover,
+.card__tags.is-scrollable:hover, .card__links.is-scrollable:hover, .card__sources.is-scrollable:hover,
 .track.is-scrollable.is-touch-active,
 .card__title.is-scrollable.is-touch-active, .card__desc.is-scrollable.is-touch-active,
-.card__tags.is-scrollable.is-touch-active, .card__links.is-scrollable.is-touch-active {
+.card__tags.is-scrollable.is-touch-active, .card__links.is-scrollable.is-touch-active, .card__sources.is-scrollable.is-touch-active {
   background: linear-gradient(180deg, rgba(197, 165, 114, .10), rgba(197, 165, 114, .20));
   box-shadow: inset 0 0 0 1px var(--gold);
   border-radius: 6px;
@@ -523,7 +524,35 @@ input, textarea, select { font-family: inherit; }
 .card__link-arrow { font-size: 11px; margin-left: 2px; opacity: .7; }
 .card__link:hover .card__link-arrow { opacity: 1; }
 
-
+/* 来源子行（独立 source_* 列：不占主链接槽，作出处/佐证单独成行，与主链接视觉断开） */
+.card__sources {
+  grid-column: 1 / -1;
+  display: flex; flex-wrap: nowrap; align-items: center; gap: 6px 10px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--gold);
+  font-size: 12px;
+  min-height: 27px;            /* 有/无来源同高 + 统一脚部分隔线，保证同排卡片等高（网格 align-items:start） */
+}
+.card__sources-label {
+  display: inline-flex; align-items: center; gap: 4px; flex: none;
+  color: var(--text-sub); font-weight: 600;
+  position: sticky; left: 0; z-index: 2;     /* 横滑时「来源」标签固定不动 */
+  background: var(--bg-warm);                   /* 遮挡滑过的链接，明暗主题通用 */
+  padding-right: 8px; margin-right: -2px;
+  box-shadow: 7px 0 6px -4px var(--bg-warm);   /* 标签右侧柔和淡出，链接不穿透 */
+}
+.card__sources-label svg { width: 12px; height: 12px; opacity: .7; }
+.card__source {
+  color: var(--text-sub); text-decoration: none; flex: none;
+  border-bottom: 1px dotted var(--gold); padding-bottom: 1px;
+  transition: all .15s ease;
+}
+.card__source:hover { color: var(--red); border-color: var(--red); }
+.card__source .arrow { font-size: 10px; margin-left: 2px; opacity: .6; }
+/* 类型1 卡片内容与边距由卡片 padding 控制，来源行不额外内缩 */
+.card--t1 .card__sources { margin: 0; }
+/* 类型2/3 卡片链接行有 14px 内缩，来源行对齐 */
+.card--t2 .card__sources, .card--t3 .card__sources { margin: 6px 14px 0; }
 
 /* ═══════════ 结构1：4行3列（v4.1） ═══════════
    第1-2行第1列=媒体（跨两行）；第1行第2列=名称、第3列=收藏；
@@ -782,7 +811,7 @@ input, textarea, select { font-family: inherit; }
   padding: 0 1px;
 }
 
-/* ── Footer 重构（版权 / 导航 / 工具簇） ── */
+/* ── Footer 重构（尊贵简约：版权 / 导航 / 工具簇） ── */
 .footer__inner {
   display: flex; flex-direction: column; align-items: center;
   gap: 16px; text-align: center;
@@ -869,7 +898,7 @@ input, textarea, select { font-family: inherit; }
 [data-theme="dark"] .card__tag { background: var(--bg-warm); }
 [data-theme="dark"] .footer__random { background: transparent; }
 
-/* ═══ 面包屑导航（B 档新增 + 底部位置改造，红/金配色，亮暗双模式） ═══ */
+/* ═══ 面包屑导航（B 档新增 + 底部位置改造，红/金奢华风，亮暗双模式） ═══ */
 .breadcrumb {
   max-width: 1200px;
   margin: 0 auto;
