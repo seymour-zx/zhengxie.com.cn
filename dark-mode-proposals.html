@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>正协导航 · 暗色模式改版方案预览</title>
+<style>
+/* ══════════ 预览框架（非站点真实样式，仅用于演示） ══════════ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: #0a0a0c; color: #cfcfcf; line-height: 1.5;
+}
+/* 顶部切换工具栏 */
+.toolbar {
+  position: sticky; top: 0; z-index: 1000;
+  display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+  padding: 12px 16px; background: #141416;
+  border-bottom: 1px solid #2a2a2e;
+}
+.toolbar__title { font-size: 13px; color: #8a8a8f; margin-right: 6px; letter-spacing: .04em; }
+.swatch-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid #333; background: #1c1c20; color: #d8d8d8;
+  padding: 7px 12px; border-radius: 999px; cursor: pointer; font-size: 13px;
+  transition: all .15s ease;
+}
+.swatch-btn:hover { border-color: #555; }
+.swatch-btn.is-active { border-color: #fff; background: #2a2a30; color: #fff; }
+.swatch-btn__dot { width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(255,255,255,.25); }
+.toolbar__hint { margin-left: auto; font-size: 12px; color: #6a6a70; }
+
+/* ══════════ 阶段容器：承载各方案变量 ══════════ */
+.stage {
+  max-width: 1200px; margin: 0 auto; padding: 0 16px 80px;
+  font-size: 16px;
+}
+/* —— 各方案色板：在 stage 上用 data-preview 切换 —— */
+/* 0 原版（阴森，作对照） */
+[data-preview="0"] {
+  --bg:#0D0C0E; --bg-warm:#171519; --text:#EDE8E0; --text-sub:#9C948B;
+  --red:#D65A60; --red-deep:#9E1B22; --gold:#C9A86A; --gold-bright:#E8CB84; --gold-deep:#A07E3C;
+  --accent:#C9A86A; --accent-deep:#A07E3C; --ad-label:#8A93A3; --focus-ring:#E8CB84;
+  --shadow:0 1px 3px rgba(0,0,0,.5); --shadow-hover:0 8px 24px rgba(0,0,0,.55);
+  --serif:"Noto Serif SC","Songti SC","SimSun",serif; --sans:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+}
+/* 1 暖夜朱砂（推荐★★★） */
+[data-preview="1"] {
+  --bg:#1E1B1F; --bg-warm:#2A252A; --text:#F4EEE3; --text-sub:#B3A89C;
+  --red:#E2604E; --red-deep:#C0392B; --gold:#D9B978; --gold-bright:#ECD49A; --gold-deep:#B8923F;
+  --accent:#D9B978; --accent-deep:#B8923F; --ad-label:#9AA6B2; --focus-ring:#ECD49A;
+  --shadow:0 1px 3px rgba(0,0,0,.45); --shadow-hover:0 8px 24px rgba(226,96,78,.20);
+  --serif:"Noto Serif SC","Songti SC","SimSun",serif; --sans:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+}
+/* 2 黛青翰墨（推荐★★☆） */
+[data-preview="2"] {
+  --bg:#16222A; --bg-warm:#1E2E38; --text:#E6EEF1; --text-sub:#9FB2BB;
+  --red:#E0805F; --red-deep:#B8553C; --gold:#C9A86A; --gold-bright:#E0C485; --gold-deep:#A07E3C;
+  --accent:#5FB3A1; --accent-deep:#3E8C7C; --ad-label:#86A0AB; --focus-ring:#5FB3A1;
+  --shadow:0 1px 3px rgba(0,0,0,.4); --shadow-hover:0 8px 24px rgba(95,179,161,.16);
+  --serif:"Noto Serif SC","Songti SC","SimSun",serif; --sans:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+}
+/* 3 栗棕香槟（推荐★★☆） */
+[data-preview="3"] {
+  --bg:#221B16; --bg-warm:#2E241C; --text:#F2E9DC; --text-sub:#BBA78F;
+  --red:#CF7A52; --red-deep:#A85A38; --gold:#E3C98C; --gold-bright:#F0DCA8; --gold-deep:#C2A05C;
+  --accent:#D99A52; --accent-deep:#B97A33; --ad-label:#A89A86; --focus-ring:#F0DCA8;
+  --shadow:0 1px 3px rgba(0,0,0,.4); --shadow-hover:0 8px 24px rgba(227,201,140,.18);
+  --serif:"Noto Serif SC","Songti SC","SimSun",serif; --sans:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+}
+/* 4 石墨靛蓝（推荐★☆☆） */
+[data-preview="4"] {
+  --bg:#191C22; --bg-warm:#23272F; --text:#ECEFF3; --text-sub:#9BA3AF;
+  --red:#5B7CFA; --red-deep:#3F5FD6; --gold:#8A93A3; --gold-bright:#AEB8C6; --gold-deep:#6B7383;
+  --accent:#5B7CFA; --accent-deep:#3F5FD6; --ad-label:#8A93A3; --focus-ring:#5B7CFA;
+  --shadow:0 1px 3px rgba(0,0,0,.4); --shadow-hover:0 8px 24px rgba(91,124,250,.22);
+  --serif:"Noto Serif SC","Songti SC","SimSun",serif; --sans:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+}
+
+/* ══════════ 站点版式（精简复刻，套用上方位变量） ══════════ */
+.stage { background: var(--bg); color: var(--text); transition: background .25s ease, color .25s ease; }
+
+.hero { background: linear-gradient(180deg, var(--bg-warm) 0%, var(--bg) 100%); text-align: center; padding: 52px 16px 40px; border-bottom: 1px solid var(--gold); }
+.hero__logo { font-family: var(--serif); font-weight: 900; font-size: clamp(40px,7vw,72px); letter-spacing: .06em;
+  background: linear-gradient(135deg, var(--red) 0%, var(--red-deep) 60%, var(--gold) 125%);
+  -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero__slogan { margin-top: 8px; font-family: var(--serif); font-size: clamp(15px,2.2vw,20px); color: var(--red); letter-spacing: .18em; }
+.hero__search { max-width: 660px; margin: 28px auto 0; }
+.hero__engines { display: inline-flex; gap: 4px; background: var(--bg); border: 1px solid var(--gold); border-bottom: none; border-radius: 999px 999px 0 0; padding: 4px 6px; }
+.hero__engines button { border: none; background: transparent; color: var(--text-sub); padding: 6px 16px; border-radius: 999px; font-size: 14px; cursor: pointer; }
+.hero__engines button.active { background: var(--red); color: #fff; }
+.hero__searchrow { display: flex; background: var(--bg); border: 1px solid var(--gold); border-radius: 999px; overflow: hidden; box-shadow: var(--shadow-hover); }
+.hero__searchrow input { flex: 1; min-width: 0; border: none; outline: none; padding: 13px 22px; font-size: 15px; background: transparent; color: var(--text); }
+.hero__searchrow button { border: none; background: linear-gradient(135deg, var(--red), var(--red-deep)); color: #fff; padding: 0 26px; font-size: 15px; letter-spacing: .1em; }
+.hero__engines-track { display: flex; gap: 6px; margin-top: 8px; padding: 4px 2px; flex-wrap: wrap; justify-content: center; }
+.hero__engines-track button { border: 1px solid var(--gold); background: var(--bg); color: var(--text-sub); padding: 5px 14px; border-radius: 999px; font-size: 13px; cursor: pointer; }
+.hero__engines-track button.active { background: var(--red); color: #fff; border-color: var(--red); }
+
+.sticky-top { position: sticky; top: 0; z-index: 100; background: rgba(0,0,0,.04); border-bottom: 1px solid var(--gold); box-shadow: var(--shadow); }
+[data-preview] .sticky-top { background: var(--bg-warm); }
+.category-nav__inner { display: flex; align-items: center; gap: 10px; padding: 8px 0; }
+.category-nav__logo { flex: none; width: 44px; height: 44px; border-radius: 8px; background: linear-gradient(135deg, var(--red), var(--red-deep)); color: #fff; border: none; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: var(--serif); box-shadow: 0 2px 8px rgba(0,0,0,.35), 0 0 0 2px var(--gold-bright); }
+.category-nav__logo span { line-height: 1.15; display: block; }
+.category-nav__logo span:first-child { font-size: 15px; letter-spacing: .12em; }
+.category-nav__logo span:last-child { font-size: 13px; letter-spacing: .2em; opacity: .92; }
+.category-nav__list { flex: 1; min-width: 0; list-style: none; display: flex; gap: 6px; padding: 2px; flex-wrap: wrap; }
+.category-btn { border: 1px solid transparent; background: transparent; color: var(--text-sub); font-size: 14px; padding: 7px 15px; border-radius: 999px; white-space: nowrap; cursor: pointer; }
+.category-btn:hover { color: var(--red); border-color: var(--gold); background: var(--bg); }
+.category-btn.active { background: linear-gradient(135deg, var(--red), var(--red-deep)); color: #fff; border-color: var(--red); box-shadow: 0 2px 8px rgba(0,0,0,.25); }
+.category-nav__fav { flex: none; width: 44px; height: 44px; border-radius: 8px; border: none; background: linear-gradient(135deg, var(--gold-bright), var(--gold)); color: var(--red-deep); display: flex; align-items: center; justify-content: center; font-size: 20px; box-shadow: 0 2px 6px rgba(0,0,0,.3); }
+
+.site-search { margin-top: 12px; }
+.site-search input { width: 100%; max-width: 660px; display: block; margin: 0 auto; padding: 12px 22px; border: 1px solid var(--gold); border-radius: 999px; font-size: 15px; outline: none; background: var(--bg-warm); color: var(--text); }
+
+.cards-container { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; padding-top: 18px; padding-bottom: 30px; align-items: start; }
+@media (min-width: 768px) { .cards-container { grid-template-columns: repeat(3,1fr); gap: 16px; } }
+@media (min-width: 1024px) { .cards-container { grid-template-columns: repeat(4,1fr); gap: 18px; } }
+
+.card { position: relative; background: var(--bg); border: 1px solid var(--gold); border-radius: 8px; box-shadow: var(--shadow); overflow: hidden; transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+.card:hover { border-color: var(--gold-bright); transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+.card--t1 { display: grid; grid-template-columns: minmax(0,1fr) 48px; grid-template-areas: "title media" "desc fav" "tags tags" "links links"; gap: 6px 12px; padding: 14px; align-items: start; }
+.card--t2, .card--t3 { display: grid; grid-template-columns: minmax(0,1fr) auto; grid-template-areas: "media media" "title title" "desc fav" "tags tags" "links links"; row-gap: 6px; padding: 0 0 14px; }
+.card__media { position: relative; background: linear-gradient(135deg, var(--red), var(--red-deep)); overflow: hidden; }
+.card--t1 .card__media { grid-area: media; width: 48px; height: 48px; border-radius: 8px; align-self: start; }
+.card--t2 .card__media, .card--t3 .card__media { grid-area: media; }
+.card--t2 .card__media { aspect-ratio: 1.618/1; }
+.card--t3 .card__media { aspect-ratio: 1/1.618; }
+.card__media-fallback { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-weight: 700; font-size: 34px; color: #fff; }
+.card--t1 .card__media-fallback { font-size: 24px; }
+.card__title { grid-area: title; font-family: var(--serif); font-size: 16px; font-weight: 700; color: var(--text); }
+.card__desc { grid-area: desc; font-size: 14px; color: var(--text-sub); }
+.card__fav { grid-area: fav; justify-self: center; align-self: start; width: 30px; height: 30px; border: none; background: transparent; border-radius: 6px; color: var(--gold); font-size: 18px; cursor: pointer; }
+.card__fav:hover, .card__fav[aria-pressed="true"] { color: var(--gold-bright); }
+.card__tags { grid-area: tags; display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.card__tag { border: 1px solid var(--gold); background: var(--bg-warm); color: var(--red); border-radius: 999px; padding: 2px 10px; font-size: 12px; }
+.card__tag:hover { background: var(--red); color: #fff; border-color: var(--red); }
+.card__links { grid-area: links; display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+.card__link { font-size: 13px; color: var(--text-sub); text-decoration: none; border: 1px solid var(--gold); padding: 3px 12px; transition: all .15s ease; }
+.card__link:hover { background: var(--red); color: #fff; border-color: var(--red); }
+.card__sources { grid-area: links; margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--gold); font-size: 12px; color: var(--text-sub); }
+.card--t2 .card__title, .card--t3 .card__title { margin: 12px 14px 0; }
+.card--t2 .card__desc, .card--t3 .card__desc { margin: 2px 14px 0; }
+.card--t2 .card__fav, .card--t3 .card__fav { margin: 2px 14px 0 0; }
+.card--t2 .card__tags, .card--t3 .card__tags { margin: 10px 14px 0; }
+.card--t2 .card__links, .card--t3 .card__links { margin: 6px 14px 0; }
+
+.footer { border-top: 1px solid var(--gold); background: var(--bg-warm); text-align: center; padding: 26px 16px 30px; color: var(--text-sub); font-size: 13px; }
+.footer__nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 22px; margin-bottom: 12px; }
+.footer__nav a { color: var(--text-sub); text-decoration: none; font-size: 14px; }
+.footer__nav a:hover { color: var(--red); }
+
+/* ══════════ 方案说明面板 ══════════ */
+.proposal { max-width: 900px; margin: 40px auto 0; padding: 0 16px; }
+.proposal h2 { color: #fff; font-family: var(--serif); font-size: 24px; letter-spacing: .04em; margin-bottom: 6px; }
+.proposal .lead { color: #9a9aa0; font-size: 14px; margin-bottom: 24px; }
+.rank { display: grid; grid-template-columns: 48px 1fr; gap: 16px; padding: 18px 0; border-top: 1px solid #2a2a2e; }
+.rank__no { font-family: var(--serif); font-size: 30px; font-weight: 900; color: #E2604E; }
+.rank h3 { color: #fff; font-size: 18px; margin-bottom: 4px; }
+.rank .meta { font-size: 12px; color: #7a7a80; margin-bottom: 10px; letter-spacing: .03em; }
+.rank .stars { color: #E0C485; font-weight: 700; }
+.rank p { color: #c2c2c8; font-size: 14px; line-height: 1.75; margin-bottom: 8px; }
+.rank .focus { display: inline-block; margin-top: 4px; padding: 4px 10px; border: 1px solid #3a3a40; border-radius: 6px; font-size: 12px; color: #9fd9c9; }
+.foot { text-align: center; color: #6a6a70; font-size: 12px; margin-top: 30px; }
+</style>
+</head>
+<body>
+
+<div class="toolbar" id="toolbar">
+  <span class="toolbar__title">暗色方案预览：</span>
+  <button class="swatch-btn is-active" data-set="0"><span class="swatch-btn__dot" style="background:#0D0C0E"></span>原版（阴森·对照）</button>
+  <button class="swatch-btn" data-set="1"><span class="swatch-btn__dot" style="background:#1E1B1F"></span>暖夜朱砂 ★★★</button>
+  <button class="swatch-btn" data-set="2"><span class="swatch-btn__dot" style="background:#16222A"></span>黛青翰墨 ★★☆</button>
+  <button class="swatch-btn" data-set="3"><span class="swatch-btn__dot" style="background:#221B16"></span>栗棕香槟 ★★☆</button>
+  <button class="swatch-btn" data-set="4"><span class="swatch-btn__dot" style="background:#191C22"></span>石墨靛蓝 ★☆☆</button>
+  <span class="toolbar__hint">点击切换 · 下方版式为真实复刻</span>
+</div>
+
+<div class="stage" id="stage" data-preview="0">
+
+  <section class="hero">
+    <div class="hero__logo">正协导航</div>
+    <div class="hero__slogan">让每一次寻找，都不止于找到</div>
+    <div class="hero__search">
+      <div class="hero__engines">
+        <button class="active">综合</button><button>政务</button><button>新闻</button>
+      </div>
+      <div class="hero__searchrow">
+        <input value="全国政协" readonly>
+        <button>搜索</button>
+      </div>
+      <div class="hero__engines-track">
+        <button class="active">百度</button><button>必应</button><button>360</button><button>搜狗</button><button>谷歌</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="sticky-top">
+    <div class="category-nav__inner">
+      <button class="category-nav__logo"><span>正协</span><span>导航</span></button>
+      <ul class="category-nav__list">
+        <li><button class="category-btn active">全部</button></li>
+        <li><button class="category-btn">全国政协</button></li>
+        <li><button class="category-btn">各省市政协</button></li>
+        <li><button class="category-btn">民主党派</button></li>
+        <li><button class="category-btn">相关机构</button></li>
+      </ul>
+      <button class="category-nav__fav">★</button>
+    </div>
+    <div class="site-search"><input value="站内搜索站点名称…" readonly></div>
+  </div>
+
+  <div class="cards-container">
+    <article class="card card--t1">
+      <div class="card__media"><div class="card__media-fallback">全</div></div>
+      <div class="card__title">全国政协办公厅</div>
+      <div class="card__desc">中国人民政治协商会议全国委员会官方网站入口</div>
+      <button class="card__fav" aria-pressed="false">☆</button>
+      <div class="card__tags"><span class="card__tag">政协</span><span class="card__tag">国家级</span></div>
+      <div class="card__links"><a class="card__link">官网</a><a class="card__link">新闻</a></div>
+      <div class="card__sources">来源：百度百科</div>
+    </article>
+
+    <article class="card card--t2">
+      <div class="card__media"></div>
+      <div class="card__title">民革中央</div>
+      <div class="card__desc">中国国民党革命委员会中央委员会官方网站</div>
+      <button class="card__fav" aria-pressed="true">★</button>
+      <div class="card__tags"><span class="card__tag">民主党派</span><span class="card__tag">民革</span></div>
+      <div class="card__links"><a class="card__link">官网</a><a class="card__link">概况</a></div>
+      <div class="card__sources">来源：官方网站</div>
+    </article>
+
+    <article class="card card--t3">
+      <div class="card__media"></div>
+      <div class="card__title">北京市政协</div>
+      <div class="card__desc">中国人民政治协商会议北京市委员会</div>
+      <button class="card__fav" aria-pressed="false">☆</button>
+      <div class="card__tags"><span class="card__tag">各省市</span><span class="card__tag">北京</span></div>
+      <div class="card__links"><a class="card__link">官网</a></div>
+      <div class="card__sources">来源：百度百科</div>
+    </article>
+
+    <article class="card card--t1">
+      <div class="card__media"><div class="card__media-fallback">民</div></div>
+      <div class="card__title">民盟中央</div>
+      <div class="card__desc">中国民主同盟中央委员会官方网站入口</div>
+      <button class="card__fav" aria-pressed="false">☆</button>
+      <div class="card__tags"><span class="card__tag">民主党派</span><span class="card__tag">民盟</span></div>
+      <div class="card__links"><a class="card__link">官网</a><a class="card__link">动态</a></div>
+      <div class="card__sources">来源：官方网站</div>
+    </article>
+  </div>
+
+  <footer class="footer">
+    <nav class="footer__nav">
+      <a>关于本站</a><a>使用指南</a><a>隐私政策</a><a>免责声明</a><a>联系我们</a><a>站点地图</a>
+    </nav>
+    <div>© 正协导航 · 独立第三方导航站，与任何官方机构无隶属关系</div>
+  </footer>
+
+</div>
+
+<section class="proposal">
+  <h2>四套暗色方案 · 推荐分级与理由</h2>
+  <p class="lead">"阴森"根因：底色近死黑（#0D0C0E，明度≈5%）+ 发灰酒红（血感）+ 亮金，三者叠加出哥特/墓室观感。以下方案均从"提亮底色 / 暖化红 / 换主调"三选一或组合破局。</p>
+
+  <div class="rank">
+    <div class="rank__no">1</div>
+    <div>
+      <h3>暖夜朱砂 <span class="stars">★★★ 最推荐</span></h3>
+      <div class="meta">底色 #1E1B1F · 朱砂红 #E2604E · 暖金 #D9B978 · 保留红/金品牌资产</div>
+      <p><b>改法</b>：底色由死黑(5%)→暖炭(12%)，红由"酒红血感"→"朱砂/中国红"暖化提亮，金由亮金→香槟金柔化。整套只是"提亮+暖化"，不动品牌色相。</p>
+      <p><b>理由</b>：直击阴森根因且改动最小、风险最低；用户认知无缝迁移，SEO/品牌识别零损耗；暖堂红+香槟金读感从"墓室"变"灯笼暖堂"。</p>
+      <span class="focus">侧重点：最小风险修复 · 品牌一致性 · 立即可上线</span>
+    </div>
+  </div>
+
+  <div class="rank">
+    <div class="rank__no">2</div>
+    <div>
+      <h3>黛青翰墨 <span class="stars">★★☆ 文化向推荐</span></h3>
+      <div class="meta">底色 #16222A（墨蓝绿）· 主交互色 青瓷 #5FB3A1 · 朱砂仅作点缀 · 金降为辅助</div>
+      <p><b>改法</b>：彻底换基底为"黛青/翰墨"冷调，引入青瓷绿作主交互强调色（链接/焦点/hover），红仅保留给主按钮作克制点缀，金退为弱描边。</p>
+      <p><b>理由</b>：最契合政协/文人"翰墨"气质，冷静、权威、长时间浏览不刺眼；去"金"的富贵炫感，换"墨"的儒雅厚度。代价：偏离红/金品牌识别，需评估。</p>
+      <span class="focus">侧重点：文化厚度 · 权威冷静 · 护眼长读</span>
+    </div>
+  </div>
+
+  <div class="rank">
+    <div class="rank__no">3</div>
+    <div>
+      <h3>栗棕香槟 <span class="stars">★★☆ 温暖向推荐</span></h3>
+      <div class="meta">底色 #221B16（栗棕/espresso）· 香槟金 #E3C98C · 陶土红 #CF7A52 克制</div>
+      <p><b>改法</b>：基底转暖栗棕（estate 暖调），主调由亮金→香槟金，红降为陶土色仅点缀。整体最"暖"、最"宜居"。</p>
+      <p><b>理由</b>：彻底消除冰冷空洞感，富贵但柔和不刺眼，适合"夜间舒适浏览"。代价：与原有"尊贵红金"差异较大，暖棕调偏生活化，略弱政务严肃感。</p>
+      <span class="focus">侧重点：最暖宜居 · 消除空洞 · 夜间舒适</span>
+    </div>
+  </div>
+
+  <div class="rank">
+    <div class="rank__no">4</div>
+    <div>
+      <h3>石墨靛蓝 <span class="stars">★☆☆ 现代向备选</span></h3>
+      <div class="meta">底色 #191C22（中性石墨）· 主色 靛蓝 #5B7CFA · 去金改灰描边</div>
+      <p><b>改法</b>：中性冷灰基底 + 单一靛蓝主色，金被灰描边取代，红身份整体让位给蓝。</p>
+      <p><b>理由</b>：现代、克制、工具感最强（导航站本质是工具）；去装饰重功能。代价：完全脱离红/金品牌，识别度损失最大，且与政务严肃调性略有距离，列为备选。</p>
+      <span class="focus">侧重点：现代极简 · 功能优先 · 品牌弱相关</span>
+    </div>
+  </div>
+
+  <p class="foot">本页为设计预览稿（非站点真实文件）。选定方案后，我可将对应变量集写入 style.css 的 <code>[data-theme="dark"]</code> 区块并同步 theme-color。修改前需你确认。</p>
+</section>
+
+<script>
+  var btns = document.querySelectorAll('.swatch-btn');
+  var stage = document.getElementById('stage');
+  btns.forEach(function(b){
+    b.addEventListener('click', function(){
+      btns.forEach(function(x){ x.classList.remove('is-active'); });
+      b.classList.add('is-active');
+      stage.setAttribute('data-preview', b.getAttribute('data-set'));
+    });
+  });
+</script>
+</body>
+</html>
