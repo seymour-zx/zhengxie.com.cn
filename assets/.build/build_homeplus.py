@@ -23,9 +23,15 @@ build_homeplus.py —— 正协导航 · 导航产品页生成器（home + 同�
 注：本脚本是「生成器核心」。统一入口为 assets/.build/build.py（编排脚本，会依次调用
 build_homeplus.py 与 collect_meta.py）。直接跑本脚本可只重新生成导航产品页、跳过 SEO 报告。
 
-数据表列（self_links.xlsx 第一行为表头）：
-    站序 | 分类 | type | title | desc | media | tags | link1_name | link1_url | … | link10_name | link10_url
-- 链接录入改为「多组单元格」：每组 2 列（名称 + URL），预设 10 组共 20 列（link1_name/link1_url … link10_name/link10_url）；
+数据表列（self_links.xlsx 第一行为表头，统一英文 snake_case，2026-08-27 起不再支持中文 27 列旧格式）：
+    row_seq | cat_id | cat_name | card_layout | card_title | card_desc | card_media | card_tags | card_id | card_order |
+    link_1_id | link_1_name | link_1_url | link_1_desc | link_1_media | link_1_enabled | … | link_10_enabled
+- 表头兼容（2026-08-27 起仅英文）：load_rows 读表头时经 HEADER_NORMALIZE 把英文蛇形列名
+  归一化为内部中文键（渲染逻辑沿用）；表头含中文旧键（站序/分类/type/title…）直接报错拒绝，
+  不再透传兼容。card_id/card_order/link_N_* 的 id/desc/media/enabled 等当前不参与
+  渲染，留待后续徽章接入。
+- 链接录入为「多组单元格」：每组 6 列（id/name/url/desc/media/enabled），预设 10 组共 60 列
+  （link_1_id/link_1_name/link_1_url/link_1_desc/link_1_media/link_1_enabled … link_10_enabled）；
   组间顺序即链接展示顺序，url 为空的组自动跳过。
 - 站序：数字，卡片按站序从小到大排列
 - type：1=4行2列logo卡，2=5行横向封面卡，3=5行纵向封面卡（封面黄金比例 1.618）
@@ -40,6 +46,9 @@ build_homeplus.py 与 collect_meta.py）。直接跑本脚本可只重新生成�
 - tags：英文逗号分隔（如 AI,免费）；分类名自动作为标签行第1个标签
 - 链接（多组单元格）：每组 2 列 = 名称(linkN_name) + URL(linkN_url)，N=1..10；如 link1_name=官网、link1_url=https://x；
   空 URL 的组跳过，保留组序即展示顺序。旧单列 links（分号/逗号分隔）仍被兼容读取。
+- 来源（独立列，不占 link_1~10 动作链接槽）：source_1_name/source_1_url … source_5_name/source_5_url；
+  作为卡片信息的权威「出处 / 佐证」单独成行渲染（虚线分隔 + 来源徽标），统一 nofollow；
+  url 为空则该卡不渲染来源子行。校验器可据此对「来源可达性 × 目标可达性」做差分诊断。
 - 外链属性策略（target/rel）不由本表决定，而由下方 LINK_ATTR_PRESET 按**链接域名**自动匹配；
   命中预设域名（含其子域，如 www.x.com、a.b.x.com 均命中 x.com）采用对应属性，未命中一律用 DEFAULT_LINK_ATTR。
 
@@ -98,9 +107,10 @@ build_homeplus.py 一次运行**同时生成两类 S1 导航产品页**：
   · 目录数据源   `directory/<name>/assets/xlsx/self_links.xlsx`
   · 根页元信息   `assets/json/self_meta.json`
   · 目录元信息   `directory/<name>/assets/json/self_meta.json`
-- 全站共享文件**不加** `self_`：`assets/json/manifest.json`、`assets/xlsx/link-policy.json`、
+- 全站共享文件**不加** `self_`：`assets/json/manifest.json`、`assets/.build/link-policy.json`、
   `assets/.build/*.py`、`pages/<name>/index.html`（手写本体）。
-- 目录页列结构须与根 `self_links.xlsx` 一致（站序/type/分类/title/desc/media/tags/link1_name/link1_url…link10_name/link10_url），
+- 目录页列结构须与根 `self_links.xlsx` 一致（英文 snake_case：row_seq/cat_name/card_layout/
+  card_title/card_desc/card_media/card_tags/link_1_name/link_1_url…link_10_enabled），
   否则 `build_cards` 不复用。
 
 ### 元信息（self_meta.json）约定
@@ -147,6 +157,35 @@ import sys
 from urllib.parse import urlparse
 
 from openpyxl import load_workbook
+
+# ── 表头归一化（仅英文 snake_case，2026-08-27 起不再兼容中文 27 列） ──────
+# 根页与频道页数据源统一采用英文蛇形命名(row_seq/cat_id/cat_name/card_layout/
+# card_title/card_desc/card_media/card_tags/link_1_name…)，本字典把「英文→内部中文键」
+# 做映射，load_rows 读表头时统一归一化；表头含中文旧键（站序/分类/type/title 等）
+# 会被 load_rows 直接报错拒绝，不再透传兼容。
+# 注意：cat_id 与 cat_name 都映射到「分类」——英文文件中 cat_name 为展示名、
+# cat_id 多为空，归一时后者覆盖前者（cat_name 优先），符合预期。
+HEADER_NORMALIZE = {
+    "row_seq": "站序",
+    "cat_id": "分类",
+    "cat_name": "分类",
+    "card_layout": "type",
+    "card_title": "title",
+    "card_desc": "desc",
+    "card_media": "media",
+    "card_tags": "tags",
+}
+# 中文旧表头标志键：任一命中即判定为「中文 27 列旧格式」并拒绝
+_CN_HEADER_MARKS = ("站序", "分类", "link1_name", "link1_url")
+for _n in range(1, 11):
+    HEADER_NORMALIZE[f"link_{_n}_name"] = f"link{_n}_name"
+    HEADER_NORMALIZE[f"link_{_n}_url"] = f"link{_n}_url"
+
+# 来源列（独立 source_* 列，不占 link_1~10 动作链接槽）：source_1_name/source_1_url …
+SOURCE_GROUP_COUNT = 5
+for _n in range(1, SOURCE_GROUP_COUNT + 1):
+    HEADER_NORMALIZE[f"source_{_n}_name"] = f"source{_n}_name"
+    HEADER_NORMALIZE[f"source_{_n}_url"] = f"source{_n}_url"
 
 # ── 路径 ──────────────────────────────────────────────
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -299,6 +338,22 @@ def collect_links(row):
     legacy = row.get("links")
     if legacy:
         return parse_links(legacy)
+    return items
+
+
+def collect_sources(row):
+    """独立「来源」列：source1_name/source1_url … source{N}_name/url。
+
+    - 每个组：url 非空才计入；name 缺省回退为 url。
+    - 来源为卡片信息的权威出处/佐证，与主链接 link_1~10 的动作链接**相互独立**，
+      不共享 10 个链接槽位；空来源返回 []（由 build_sources 渲染为占位空行，保证卡片等高）。
+    返回 [(name, url), ...]，无来源返回 []。"""
+    items = []
+    for n in range(1, SOURCE_GROUP_COUNT + 1):
+        name = str(row.get(f"source{n}_name") or "").strip()
+        url = str(row.get(f"source{n}_url") or "").strip()
+        if url:
+            items.append((name or url, url))
     return items
 
 
@@ -577,6 +632,34 @@ def build_links(links):
     return '<div class="card__links">' + "".join(parts) + "</div>"
 
 
+def build_sources(sources):
+    """来源子行：与主链接区视觉断开（虚线分隔 + 引用图标 + 「来源」徽标）。
+
+    - 来源为「出处 / 佐证」，统一 nofollow（引用非背书），不沿用主链接按域名匹配的属性策略。
+    - 无来源也渲染占位行（.card__sources：与有来源行同高、带相同虚线脚部分隔、不显示标签），
+      网格 align-items:start 下靠完全相同的行高保证同排卡片等高；有来源才显示「来源」标签与链接。
+    """
+    if not sources:
+        return '<div class="card__sources"></div>'
+    parts = []
+    for name, url in sources:
+        parts.append(
+            f'<a class="card__source" href="{html.escape(url, quote=True)}" '
+            f'target="_blank" rel="nofollow noopener noreferrer">'
+            f'{html.escape(name)}<span class="arrow" aria-hidden="true">↗</span></a>'
+        )
+    inner = "".join(parts)
+    label = (
+        '<span class="card__sources-label">'
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
+        'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+        '<path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/>'
+        '<path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>'
+        '来源</span>'
+    )
+    return f'<div class="card__sources">{label}{inner}</div>'
+
+
 # 收藏星形：每卡只输出 <use> 引用，真正的 path 在页面顶部 STAR_SPRITE 里定义一次。
 # path 用 stroke="currentColor"，颜色由宿主 .card__fav 的 color 控制（穿透 shadow DOM），
 # 既消除 128 处内联重复，又保留空心描边星的视觉。
@@ -608,6 +691,7 @@ def build_card(row):
     tags_html = build_tags(category, parse_tags(row.get("tags")))
     parsed_links = collect_links(row)
     links_html = build_links(parsed_links)
+    sources_html = build_sources(collect_sources(row))
 
     # 星标 key：取首个链接 URL（最稳定），无链接则退回标题
     fav_key = parsed_links[0][1] if parsed_links else (title or category or "card")
@@ -620,7 +704,7 @@ def build_card(row):
         f'<button type="button" class="card__fav" data-key="{fav_key_esc}" '
         f'aria-label="收藏/取消收藏" aria-pressed="false">{FAV_SVG}</button>'
         f'<p class="card__desc">{html.escape(desc)}</p>'
-        f"{tags_html}{links_html}"
+        f"{tags_html}{links_html}{sources_html}"
         f"</article>"
     )
 
@@ -637,7 +721,18 @@ def load_rows(xlsx_path=None):
         if row is None or all(c is None for c in row):
             continue
         if i == 0:
-            header = [str(c).strip() if c is not None else "" for c in row]
+            raw_header = [str(c).strip() if c is not None else "" for c in row]
+            # 仅支持英文 snake_case 表头：命中中文旧键（站序/分类/link1_name…）即拒绝
+            for mark in _CN_HEADER_MARKS:
+                if mark in raw_header:
+                    raise ValueError(
+                        f"数据源表头含中文旧键「{mark}」：{xlsx_path or XLSX_PATH}\n"
+                        "2026-08-27 起不再支持中文 27 列旧格式，请转换为英文 snake_case "
+                        "（row_seq/cat_name/card_layout/card_title/card_desc/card_media/card_tags/"
+                        "link_1_name/link_1_url…），参考 assets/xlsx/self_links.xlsx。"
+                    )
+            # 英文蛇形表头归一化为内部中文键（见 HEADER_NORMALIZE）
+            header = [HEADER_NORMALIZE.get(h, h) for h in raw_header]
             continue
         rec = {}
         for idx, col in enumerate(header):
@@ -941,7 +1036,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
   <meta name="twitter:description" content="{{META_DESC}}">
   <!-- PWA / 移动端 -->
   <meta name="theme-color" content="#9E1B22" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#0D0C0E" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#1E1B1F" media="(prefers-color-scheme: dark)">
   <link rel="manifest" href="{{ASSET_PREFIX}}assets/json/manifest.json">
   <!-- 图标 -->
   <link rel="icon" type="image/svg+xml" href="{{ASSET_PREFIX}}assets/images/logo.svg">

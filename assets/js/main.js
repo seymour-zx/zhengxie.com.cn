@@ -480,7 +480,7 @@
      - 鼠标悬停在该滑道/行 → UI 变化（金色高亮提示），滚轮上下滑动被接管为
        左右滑动该行内容，页面不再上下滚动；
      - 触屏设备 → 触摸该滑道/行时激活同样的 UI 变化，手指左右滑动滚动（原生）。 */
-  var SCROLL_ROW_SEL = '.track, .card__title, .card__desc, .card__tags, .card__links';
+  var SCROLL_ROW_SEL = '.track, .card__title, .card__desc, .card__tags, .card__links, .card__sources';
   var scrollRows = Array.prototype.slice.call(document.querySelectorAll(SCROLL_ROW_SEL));
   /* 类型1 名称/描述改为「点击展开」交互，不再作为横向滚动行：
      排除后不会被标 is-scrollable，避免悬停时滚轮被接管、显示抓取光标。 */
@@ -537,6 +537,11 @@
       document.documentElement.setAttribute('data-theme', next);
       try { localStorage.setItem('zx_theme', next); } catch (e) {}
       themeToggle.setAttribute('aria-pressed', next === 'dark' ? 'true' : 'false');
+      /* 主题切换埋点：验证“暗色偏好人群”留存 / 复访假设（圆桌 #26 / #20 / #22） */
+      try {
+        if (window.gtag) { window.gtag('event', 'theme_switch', { from_theme: current ? 'dark' : 'light', to_theme: next }); }
+        if (window._hmt) { window._hmt.push(['_trackEvent', 'theme', 'switch', next, 1]); }
+      } catch (err) {}
     });
   }
 
