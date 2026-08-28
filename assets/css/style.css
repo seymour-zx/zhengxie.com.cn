@@ -502,6 +502,8 @@ input, textarea, select { font-family: inherit; }
   display: flex; gap: 6px;
   padding-bottom: 2px;
 }
+/* A：无链接时链接行占位，防止卡片底部塌陷（链接行恒为单行，与一条链接等高；min-height≈链接按钮高度+padding） */
+.card__links { min-height: 28px; }
 .card__tag {
   flex: none;
   border: 1px solid var(--gold); background: var(--bg-warm);
