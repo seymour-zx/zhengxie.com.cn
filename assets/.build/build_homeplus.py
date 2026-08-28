@@ -940,6 +940,21 @@ def build_engine_buttons():
     return "\n        ".join(primary_parts), "\n        ".join(track_parts)
 
 
+def _locate_header_row(all_rows, required_keys, max_scan=20):
+    """扫描 all_rows 前 max_scan 行，返回首个「经 HEADER_NORMALIZE 归一化后含全部 required_keys」的行索引；找不到返回 None。
+
+    供 self_meta 三个读取函数（load_meta / meta_dir_paths / list_directory_pages）共用，使其具备与
+    load_rows 同款的「表头行自动定位」能力（2026-08-28 增强）：xlsx 顶部夹空行 / 测试行、列乱序、
+    插入无关列均不影响读取。required_keys 用内部英文键（如 {DIR_PATH}）。
+    """
+    for idx, row in enumerate(all_rows[:max_scan]):
+        cells = [str(c).strip() if c is not None else "" for c in row]
+        norm_keys = {HEADER_NORMALIZE.get(c, c) for c in cells if c}
+        if required_keys <= norm_keys:
+            return idx
+    return None
+
+
 def load_meta(dir_path="/"):
     """从统一元信息真值源 self_meta.unified.xlsx 按 dir_path 读取页面级元信息。
     返回 dict(title/description/keywords/channel_intro)；读不到 / 缺行返回 {}，由调用方兜底 ROOT_META。
@@ -958,10 +973,13 @@ def load_meta(dir_path="/"):
         return {}
     if not all_rows:
         return {}
-    header = [str(c).strip() if c is not None else "" for c in all_rows[0]]
-    if "dir_path" not in header:
+    # 表头自动定位（增强 2026-08-28）：不再写死第 1 行为表头，扫描前 20 行首个含 dir_path 的行
+    header_idx = _locate_header_row(all_rows, {DIR_PATH})
+    if header_idx is None:
         return {}
-    dir_path_idx = header.index("dir_path")
+    raw_header = [str(c).strip() if c is not None else "" for c in all_rows[header_idx]]
+    header = [HEADER_NORMALIZE.get(h, h) for h in raw_header]
+    dir_path_idx = header.index(DIR_PATH)
     field_cols = {}
     for f in ("title", "description", "keywords", "channel_intro"):
         if f in header:
@@ -972,7 +990,7 @@ def load_meta(dir_path="/"):
     # 根页(dir_path="/")为站点入口，enabled 总开关对根页无效（永不被关）；
     # 其余频道：enabled=False/空/其他 → 视为无此元信息行（回退 ROOT_META / 跳过生成）。
     enabled_idx = header.index("enabled") if "enabled" in header else None
-    for row in all_rows[1:]:
+    for row in all_rows[header_idx + 1:]:
         if row is None or all(c is None for c in row):
             continue
         rdir_path = _normalize_dir_path(row[dir_path_idx])
@@ -1011,12 +1029,15 @@ def meta_dir_paths():
         return result
     if not all_rows:
         return result
-    header = [str(c).strip() if c is not None else "" for c in all_rows[0]]
-    if "dir_path" not in header:
+    # 表头自动定位（增强 2026-08-28）：对齐 load_rows 的 v4.2 行为
+    header_idx = _locate_header_row(all_rows, {DIR_PATH})
+    if header_idx is None:
         return result
-    idx = header.index("dir_path")
+    raw_header = [str(c).strip() if c is not None else "" for c in all_rows[header_idx]]
+    header = [HEADER_NORMALIZE.get(h, h) for h in raw_header]
+    idx = header.index(DIR_PATH)
     enabled_idx = header.index("enabled") if "enabled" in header else None
-    for row in all_rows[1:]:
+    for row in all_rows[header_idx + 1:]:
         if row is None or all(c is None for c in row):
             continue
         dp = _normalize_dir_path(row[idx])
@@ -1053,13 +1074,16 @@ def list_directory_pages():
         return pages
     if not all_rows:
         return pages
-    header = [str(c).strip() if c is not None else "" for c in all_rows[0]]
-    if "dir_path" not in header:
+    # 表头自动定位（增强 2026-08-28）：对齐 load_rows 的 v4.2 行为
+    header_idx = _locate_header_row(all_rows, {DIR_PATH})
+    if header_idx is None:
         return pages
-    dir_path_idx = header.index("dir_path")
+    raw_header = [str(c).strip() if c is not None else "" for c in all_rows[header_idx]]
+    header = [HEADER_NORMALIZE.get(h, h) for h in raw_header]
+    dir_path_idx = header.index(DIR_PATH)
     enabled_idx = header.index("enabled") if "enabled" in header else None
     seen = set()
-    for row in all_rows[1:]:
+    for row in all_rows[header_idx + 1:]:
         if row is None or all(c is None for c in row):
             continue
         dir_path = _normalize_dir_path(row[dir_path_idx])
