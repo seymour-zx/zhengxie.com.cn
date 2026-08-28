@@ -2,8 +2,13 @@
 """
 build_homeplus.py —— 正协导航 · 导航产品页生成器（home + 同类页）
 ==============================================================
-读取 assets/xlsx/self_links.xlsx（根页独享数据源，前缀 self_ 表示独享），生成完整的 index.html；
-并自动扫描 directory/<name>/（各含独立 self_links.xlsx + self_meta.json）生成同骨架频道页。
+读取两张「统一真值源」xlsx（均含 dir_path 列区分频道）：
+  · 卡片数据：assets/xlsx/self_links.unified.xlsx（dir_path=根页 "/" 行 / 频道 "directory/gov" 等行）
+  · 页面元信息：assets/xlsx/self_meta.unified.xlsx（title/description/keywords/channel_intro，同 dir_path 划分）
+dir_path 现为「相对 BASE_DIR 的频道目录路径」：根页 "/"，频道 "directory/gov"/"directory/engine" 等；
+输出位置/canonical/资源前缀全部由 dir_path 推导。按 dir_path 分流生成根页 index.html 与各 directory/<name>/ 频道页。
+2026-08-28 起：卡片数据由 3 份独立 self_links.xlsx 合并为 self_links.unified.xlsx；
+               页面元信息由 3 份散落的 self_meta.json 合并为 self_meta.unified.xlsx。
 
 设计原则（SEO 友好）：
 - 所有导航卡片、分类按钮、链接全部内联在静态 HTML 中，不使用 JS 注入；
@@ -23,7 +28,7 @@ build_homeplus.py —— 正协导航 · 导航产品页生成器（home + 同�
 注：本脚本是「生成器核心」。统一入口为 assets/.build/build.py（编排脚本，会依次调用
 build_homeplus.py 与 collect_meta.py）。直接跑本脚本可只重新生成导航产品页、跳过 SEO 报告。
 
-数据表列（self_links.xlsx 第一行为表头，统一英文 snake_case，2026-08-27 起不再支持中文 27 列旧格式）：
+数据表列（self_links.unified.xlsx 第一行为表头，统一英文 snake_case，2026-08-27 起不再支持中文 27 列旧格式；2026-08-28 起新增首列 dir_path 区分频道）：
     row_seq | dir_path | cat_id | cat_name | card_layout | card_title | card_desc | card_media | card_tags | card_id | card_order |
     link_1_name | link_1_url | … | link_10_name | link_10_url
 - 表头兼容（2026-08-27 起仅英文）：load_rows 读表头时经 HEADER_NORMALIZE 把英文蛇形列名
@@ -79,62 +84,77 @@ v4.1 修订：
 > `.workbuddy/docs/CONVENTIONS.md`。
 
 build_homeplus.py 一次运行**同时生成两类 S1 导航产品页**：
-  (1) 根 `index.html`           —— 读 `assets/xlsx/self_links.xlsx`
-  (2) 各 `directory/<name>/index.html` —— 自动扫描 `directory/` 下含
-       `assets/xlsx/self_links.xlsx` 的子目录逐个生成，**无需手工登记目录清单**。
+  (1) 根 `index.html`           —— 读统一真值源 `assets/xlsx/self_links.unified.xlsx`（dir_path="/"）
+  (2) 各 `directory/<name>/index.html` —— 频道清单由 `assets/xlsx/self_meta.unified.xlsx` 的「非根
+        dir_path 行」定义（dir_path 现值为相对 BASE_DIR 的频道目录路径，如 `directory/gov`）；卡片数据从
+        `self_links.unified.xlsx` 取 dir_path=该路径 的行生成，**无需手工登记目录清单**
+        （新增频道 = 在两张表各加一行 dir_path=频道目录路径的行）。
 
 ### 范围与边界（用户逐项确认，必须照做）
 1. py 只生成 S1 骨架页：根 `index.html` + `directory/<name>/index.html`。
-2. 每个 `directory/<name>/` 有**自己独立**的 `self_links.xlsx`，独立编排，**不是根表子集**。
+2. **两张统一真值源（均含 `dir_path` 列：root/gov/engine，2026-08-28 合并）**：
+   · 卡片数据 = `assets/xlsx/self_links.unified.xlsx`（各频道是同一表的 dir_path 子集，build 按 dir_path 分流）。
+   · 页面元信息 = `assets/xlsx/self_meta.unified.xlsx`（title/description/keywords/channel_intro，
+     各频道是同一表的 dir_path 子集）。
+   **新增频道 = 在两表各加 dir_path=频道名的行**（不再各带独立 self_links.xlsx / self_meta.json）。
 3. `pages/` 子页（about/submit/privacy/overview…）**py 完全不管**，维持手写（S3/S4/S5），
    本文件不生成也不触碰。
-4. 自动扫描：在 `directory/` 下建 `<name>/` 并放入 `self_links.xlsx` + `self_meta.json`，
-   重跑 build 即生成；无 `DIRECTORY_PAGES` 清单。
+4. 自动扫描：频道清单来自 `self_meta.unified.xlsx` 的非根 dir_path 行（dir_path 现值为相对 BASE_DIR 的频道目录路径，频道由元信息表定义）；
+   各频道卡片数据统一进 `self_links.unified.xlsx` 的 dir_path=该路径 行；
+   重跑 build 即生成对应 `directory/<name>/index.html`；无 `DIRECTORY_PAGES` 清单。
 5. `directory/index.html` **不在 build_homeplus.py 任务内**：它是手写静态页（非 S1、汇总/门户性质），
    与 `pages/` 子页同级，py 不碰、绝不生成。
 6. directory 频道页 hero 下半部 = **专题介绍块（无搜索框）**：`build_channel_intro()`
-   优先读取该页 `self_meta.json` 专属字段 `channel_intro`（与 SEO `description` 解耦；
+   优先读取该页元信息表 `self_meta.unified.xlsx` 专属字段 `channel_intro`（与 SEO `description` 解耦；
    缺失回退 `description`），输出 `<section>` + 一段 `<p>`，不自动生成
    概览段落。根页 hero 仍保留完整集合搜索框 + 搜一下按钮。两类页共用 `{{HERO_SEARCH}}`
    占位符（`HERO_SEARCH_BLOCK` / `build_channel_intro` 二选一注入）。
    站内筛选框（`#site-search-input`，筛选本页卡片）两页均保留。
 
 ### 文件命名与路径约定
-- `self_` 前缀 = 某页面**独享**的数据文件（不与其他页共享）：
-  · 根页数据源   `assets/xlsx/self_links.xlsx`
-  · 目录数据源   `directory/<name>/assets/xlsx/self_links.xlsx`
-  · 根页元信息   `assets/json/self_meta.json`
-  · 目录元信息   `directory/<name>/assets/json/self_meta.json`
+- **两张统一真值源（2026-08-28 合并，详见时间日志）**：
+  · 卡片数据 `assets/xlsx/self_links.unified.xlsx`（含 `dir_path` 列，值为相对 BASE_DIR 的频道目录路径）
+      - 根页数据   dir_path="/" 的行
+      - 目录数据   dir_path="directory/<name>" 的行（如 directory/gov、directory/engine）
+  · 页面元信息 `assets/xlsx/self_meta.unified.xlsx`（含 `dir_path` 列，同路径约定）
+      - 根页元信息 dir_path="/" 的行
+      - 目录元信息 dir_path="directory/<name>" 的行（如 directory/gov、directory/engine）
+  · 原 `self_links.xlsx` 三份独立文件 与 `self_meta.json` 三份散落文件约定作废，均已合并进 xlsx 并移入 trash/。
 - 全站共享文件**不加** `self_`：`assets/json/manifest.json`、`assets/.build/link-policy.json`、
   `assets/.build/*.py`、`pages/<name>/index.html`（手写本体）。
-- 目录页列结构须与根 `self_links.xlsx` 一致（英文 snake_case：row_seq/dir_path/cat_name/card_layout/
+- 目录页列结构须与统一真值源一致（英文 snake_case：dir_path/row_seq/dir_path/cat_name/card_layout/
   card_title/card_desc/card_media/card_tags/link_1_name/link_1_url…link_10_enabled），
   否则 `build_cards` 不复用。
 
-### 元信息（self_meta.json）约定
-- 仅 3 字段：`title` / `description` / `keywords`，注入 `<title>` / `<meta description>` /
-  `<meta keywords>`，且 `og:title`/`og:description`/`twitter:title`/`twitter:description`/
-  JSON-LD 的 name/description **全部引用** title/description（不单独写）。
-- 常量（代码固定，不进 meta）：`author`=正协导航、`og:type`=website、
-  `twitter:card`=summary、`og:image`={SITE_DOMAIN}/assets/images/logo.svg、
-  `og:site_name`=正协导航。
-- **canonical 不进 meta**：由 `SITE_DOMAIN` + 路径规则自动拼
-  （根 `/`、目录 `/directory/<name>/`），`<name>` 取自扫描目录名。
-- **self_meta.json 为必填项**：`self_links.xlsx` 与（非空、含 3 字段的）`self_meta.json`
-  **二者齐备才生成**该目录 `index.html`；缺任一 → 跳过不生成。空占位文件（0 字节 / 0 数据行
-  / 非法 JSON）在每次运行时被删除；字段不全（填写中）只跳过生成、**保留文件不删**。
-- 兜底：`ROOT_META`（py 常量）打底，`meta = {**ROOT_META, **load_meta(...)}`，读不到
-  self_meta.json 也不崩（但 directory 页要求齐备，故实际会跳过而非兜底）。
+### 元信息（self_meta.unified.xlsx）约定
+- 单一真值源：`assets/xlsx/self_meta.unified.xlsx`（含 `dir_path` 列，值为相对 BASE_DIR 的频道目录路径：根页 `/`、频道 `directory/gov` 等），
+  **取代原先 3 份散落的 `self_meta.json`**（assets/json/ + 各 directory/<name>/assets/json/）。
+  字段（英文 snake_case，与卡片表一致）：`dir_path` / `title` / `description` / `keywords` / `channel_intro`。
+- 字段注入：title/description/keywords → `<title>` / `<meta description>` / `<meta keywords>`，
+  且 `og:title`/`og:description`/`twitter:title`/`twitter:description`/JSON-LD 的 name/description
+  **全部引用** title/description（不单独写）。
+- 常量（代码固定，不进 meta）：`author`=正协导航、`og:type`=website、`twitter:card`=summary、
+  `og:image`={SITE_DOMAIN}/assets/images/logo.svg、`og:site_name`=正协导航。
+- **canonical 不进 meta**：由 `SITE_DOMAIN` + dir_path 自动拼（根 dir_path="/" → `/`；频道 dir_path="directory/gov" → `/directory/gov/`），
+  dir_path 即相对 BASE_DIR 的频道目录路径，不再单独取 `<name>`。
+- **dir_path 行必填**：某 dir_path 在 `self_meta.unified.xlsx` 有行且 title/description/keywords 齐备才生成
+  对应页；缺字段 → 跳过不生成。`channel_intro` 可选（缺失回退 description）。
+- 兜底：`ROOT_META`（py 常量）打底，**根页**读不到 dir_path="/" 行时回退；目录频道读不到对应 dir_path 行 → 跳过。
+- **不再有散落的 self_meta.json**：旧 3 份已合并进 xlsx 并移入 trash/（可恢复）。
 
 ### 生成流程（每次运行 main()）
-1. 先生成根 `index.html`（读 `assets/json/self_meta.json`，兜底 `ROOT_META`）。
-2. 对 `directory/`：① 删除所有 `directory/<name>/index.html`（防旧页残留）；
-   ② 遍历含 `self_links.xlsx` 的子目录，删除空 `self_links.xlsx`、空 `self_meta.json`；
-   ③ 生成循环：xlsx + 有效 meta 齐备才 `render_and_write`，否则跳过。
+1. 先生成根 `index.html`（元信息读 `self_meta.unified.xlsx` dir_path="/"，兜底 `ROOT_META`）。
+2. 对 `directory/`：① 删除所有 `directory/<name>/index.html`（防旧页残留，显式跳过门户页
+   `directory/index.html`）；② 频道清单来自 `self_meta.unified.xlsx` 非 root dir_path 行；
+   ③ 生成循环：该 dir_path 卡片数据（self_links.unified.xlsx）与元信息齐备才 `render_and_write`，否则跳过。
+   卡片数据加载时再经 `meta_dir_paths()` 白名单二次过滤（用户 2026-08-28 规则 2：self_links 中 dir_path
+   不在 self_meta 集合内的行一律跳过，不进入任何页面渲染）。
+   ④ 行级总开关 `enabled`（2026-08-28 新增，两表同列）：元信息行 enabled=False → 该频道页不生成；
+   卡片行 enabled=False → 该卡片不渲染；根页(dir_path="/")永不被 enabled 关闭（保证站点入口常驻）。
 
 ### 资源 / 页脚前缀
-- 资源前缀 `ASSET_PREFIX`：根页 `""`、目录页 `"../../"`（`manifest`/css/js/favicon 走它，
-  指向根唯一 assets 真源）。
+- 资源前缀 `ASSET_PREFIX`：按 dir_path 路径段数推导（根页 dir_path="/" → `""`；频道 dir_path="directory/gov" → `"../../"`），
+  `manifest`/css/js/favicon 走它，指向根唯一 assets 真源。
 - 页脚 `pages/` 链接：目录页前缀改 `../../pages/...`（同结构）。
 
 ### 品牌常量
@@ -142,9 +162,19 @@ build_homeplus.py 一次运行**同时生成两类 S1 导航产品页**：
   驱动。改品牌名/口号只动这两处。
 
 ### 本期不做
-- 不生成 `pages/`、`/blog/`、`/news/`、`/journal/`；不做"从根表拆频道"；不改 xlsx 结构
-  加"频道"列；不动 `directory/index.html`；不自动维护 `sitemap.xml`（待用户授权）。
+- 不生成 `pages/`、`/blog/`、`/news/`、`/journal/`；不动 `directory/index.html`；不自动维护
+  `sitemap.xml`（待用户授权）。
 - 用户明确：**不提交 git**。
+- **2026-08-28 变更（用户显式覆盖原「不拆频道/不加频道列」范围）**：三份独立 self_links.xlsx
+  已合并为单一 `self_links.unified.xlsx`，新增 `dir_path` 列（值为相对 BASE_DIR 的频道目录路径：/、directory/gov、directory/engine）作为频道区分；
+  build 按 dir_path 分流生成各页。原「不做从根表拆频道 / 不改 xlsx 加频道列」两条本期不做**作废**。
+- **2026-08-28 二次变更**：三份散落 `self_meta.json`（根 + 各频道）已合并为单一
+  `self_meta.unified.xlsx`（dir_path|title|description|keywords|channel_intro），build_homeplus.py
+  改为从该 xlsx 按 dir_path 读取页面元信息；原散落 `self_meta.json` 移入 trash/（可恢复）。
+  元信息与卡片数据现为两张统一真值源 xlsx，频道定义（非根 dir_path 行）由元信息表驱动。
+- **2026-08-28 三次变更**：dir_path 值由标识（root/gov/engine）改为「相对 BASE_DIR 的频道目录路径」
+  （/、directory/gov、directory/engine）；输出位置/canonical/资源前缀全部由 dir_path 推导，
+  不再用写死的 `DIRECTORY_ROOT` 拼接（避免目录叠加为 directory/directory/gov）。`DIR_ASSET_PREFIX` 常量随之移除。
 """
 
 import html
@@ -161,7 +191,6 @@ from openpyxl import load_workbook
 # 不再有任何硬编码的中文/字符串内部键。例：把 cat_name 改名 → 改 CAT_NAME 常量值即可。
 # cat_id 为独立内部键，仅保留、不参与渲染（留待后续排序/徽章接入）。
 ROW_SEQ = "row_seq"
-DIR_PATH = "dir_path"   # 预留占位：目录页相对路径（面包屑/内链接入备用），目前不参与渲染
 CAT_ID = "cat_id"
 CAT_NAME = "cat_name"
 CARD_LAYOUT = "card_layout"      # 内部键；列名==内部键，纯恒等
@@ -169,11 +198,14 @@ CARD_TITLE = "card_title"
 CARD_DESC = "card_desc"
 CARD_MEDIA = "card_media"
 CARD_TAGS = "card_tags"
+DIR_PATH = "dir_path"   # 统一真值源中的频道区分列（root/gov/engine）；2026-08-28 合并新增，位于首列
+ENABLED = "enabled"    # 行级总开关列：True/真值=读取，False/空/其他=不读取（2026-08-28 新增）
 
 # 列名 → 内部键（恒等映射，全部英文；列名==内部键，纯恒等）。
 HEADER_NORMALIZE = {
     ROW_SEQ: ROW_SEQ,
     DIR_PATH: DIR_PATH,
+    ENABLED: ENABLED,
     CAT_ID: CAT_ID,
     CAT_NAME: CAT_NAME,
     CARD_LAYOUT: CARD_LAYOUT,    # 列名 card_layout → 内部键 card_layout（纯恒等）
@@ -181,6 +213,7 @@ HEADER_NORMALIZE = {
     CARD_DESC: CARD_DESC,
     CARD_MEDIA: CARD_MEDIA,
     CARD_TAGS: CARD_TAGS,
+    DIR_PATH: DIR_PATH,
 }
 # 链接多组列（link_1_name/url … link_10_name/url）按序号批量映射为内部键 linkN_name/url
 for _n in range(1, 11):
@@ -199,7 +232,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # 不再复制 assets 进各子页目录（见 2026-08-22 调整：子页用 ../../assets/ 回退到根）。
 # 因此 build 时无需 sync 子页 assets；根 assets 为唯一真源。
 
-XLSX_PATH = os.path.join(BASE_DIR, "assets", "xlsx", "self_links.xlsx")
+# 全站唯一真值源（合并 root/gov/engine，含 dir_path 列）；2026-08-28 起取代原先 3 份独立 self_links.xlsx
+UNIFIED_XLSX_PATH = os.path.join(BASE_DIR, "assets", "xlsx", "self_links.unified.xlsx")
+XLSX_PATH = UNIFIED_XLSX_PATH  # 兼容别名（load_rows 默认读统一真值源）
+# 页面元信息统一真值源（合并 root/gov/engine，含 dir_path 列）；2026-08-28 起取代原先 3 份散落 self_meta.json
+META_XLSX_PATH = os.path.join(BASE_DIR, "assets", "xlsx", "self_meta.unified.xlsx")
 OUT_PATH = os.path.join(BASE_DIR, "index.html")
 
 # ── 站点品牌（全局常量：换名只改这里一处，模板/兜底 meta 全部联动） ──
@@ -210,14 +247,15 @@ _BRAND_MID = len(BRAND) // 2
 BRAND_A = BRAND[:_BRAND_MID] or BRAND
 BRAND_B = BRAND[_BRAND_MID:] or ""
 
-# ── 根页元信息兜底（读不到 self_meta.json 时用此值，保证生成永不崩） ──
+# ── 根页元信息兜底（读不到 self_meta.unified.xlsx 的 dir_path=root 行时用此值，保证生成永不崩） ──
 ROOT_META = {
     "title": f"{BRAND} - {SLOGAN}",
     "description": f"{BRAND}：全量收录的精选站点导航，覆盖常用入口、AI智能、资讯媒体、设计创意、开发技术、学习教育、效率工具、影音娱乐等分类，{SLOGAN}。",
     "keywords": f"{BRAND},网址导航,网站导航,AI工具,效率工具,政协,导航网站",
 }
-# directory 子页相对资源前缀（子页在 /directory/<name>/ 下，回退两级到根 assets）
-DIR_ASSET_PREFIX = "../../"
+# directory 子页根目录（仅用于「清理旧页」时遍历子目录删除旧 index.html）。
+# 注意：频道输出位置不再由 DIRECTORY_ROOT 拼接——dir_path 已是相对 BASE_DIR 的频道目录路径
+# （如 directory/gov），资源前缀按 dir_path 路径段数推导（2 段 → "../../"）。
 DIRECTORY_ROOT = os.path.join(BASE_DIR, "directory")
 
 def _merge_meta(meta):
@@ -226,6 +264,86 @@ def _merge_meta(meta):
     if meta:
         m.update({k: v for k, v in meta.items() if v})
     return m
+
+
+# ── dir_path 归一化与卫哨（2026-08-28 加，用户拍板规则） ──
+#   1) 空值 / 哨兵文本（none/null/nil/na/n-a/nan 等）→ 跳过（视为「无 dir_path」行）
+#   2) 归一化：仅去首尾斜杠 → 干净相对路径
+#   3) 拒绝非法：含 "//" 连续斜杠（视为非法字符）/ 含 ".." 穿越 / 非法文件名字符 / Windows 保留名
+#   4) 安全网：归一化后拼到 BASE_DIR 必须仍在项目内（否则跳过）
+#   特例：根标记 "/" 去首尾斜杠会变空，此处特判保留为 "/"（否则根页元信息丢失）。
+#   说明：连续斜杠 // 判为非法是 2026-08-28 末次拍板，覆盖先前「保留内部 // 不折叠」方案；
+#        因开头 // 会被 str.strip("/") 剥掉而漏判，故拦截必须发生在去斜杠之前。
+_EMPTY_DIR_PATH_SENTINELS = {"", "none", "null", "nil", "na", "n/a", "nan"}
+_WIN_RESERVED = {
+    "CON", "PRN", "AUX", "NUL",
+    "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
+    "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9",
+}
+_ILLEGAL_NAME_CHARS = set('<>:"\\|?*')   # 不含 "/"，因 / 是路径分隔符
+
+
+def _normalize_dir_path(raw):
+    """归一化并校验 dir_path；返回规范字符串，非法/空/越界 → None（调用方跳过该行）。
+
+    入参 raw 为单元格原始值（可能是 None 或任意字符串）。仅做「去首尾斜杠」归一化；
+    连续斜杠 // 视为非法字符直接跳过（按用户 2026-08-28 末次拍板，覆盖先前「不折叠 //」方案，
+    在去斜杠前即拦截，避免开头 // 被 str.strip("/") 剥掉而漏判）；随后执行空值/哨兵/非法/越界四重卫哨。
+    """
+    if raw is None:
+        return None
+    s = str(raw).strip()
+    sl = s.lower()
+    if sl in _EMPTY_DIR_PATH_SENTINELS:
+        return None
+    # 根标记特判："/" 去首尾斜杠会变空，必须保留为根
+    if sl == "/":
+        return "/"
+    # 规则 3（前置）：连续斜杠 // 视为非法路径字符 → 该行跳过不读
+    #   （必须在去斜杠前拦截：开头 // 会被 str.strip("/") 剥掉而漏判）
+    if "//" in s:
+        return None
+    # 规则 2：仅去首尾斜杠
+    s = s.strip("/")
+    if s == "":
+        return None
+    # 规则 3a：拒绝路径穿越
+    if ".." in s.split("/"):
+        return None
+    # 规则 3b/3c：逐段检查非法文件名字符与 Windows 保留名
+    for seg in s.split("/"):
+        if any(c in _ILLEGAL_NAME_CHARS for c in seg):
+            return None
+        if seg.upper() in _WIN_RESERVED:
+            return None
+    # 规则 4：安全网——拼到 BASE_DIR 必须仍在项目内
+    target = os.path.normpath(os.path.join(BASE_DIR, s))
+    try:
+        if os.path.commonpath([os.path.abspath(BASE_DIR), os.path.abspath(target)]) != os.path.abspath(BASE_DIR):
+            return None
+    except ValueError:
+        # 跨盘符等无法比较 → 视为越界拒绝
+        return None
+    return s
+
+
+# ── 行级总开关 enabled（2026-08-28 新增，用户规则） ──
+# True/真值 → 读取该行；False/空值/其他 → 不读取（跳过）。
+# 真值判定（大小写不敏感，仅下列精确匹配）：true / 1 / yes / y / 是 / on
+# 其余（false / 0 / no / 空 / 任意其它文本）→ 视为「关闭」，跳过该行。
+_TRUE_TOKENS = {"true", "1", "yes", "y", "是", "on"}
+
+
+def _is_enabled(cell):
+    """行级总开关：True/真值 → 读取；False/空值/其他 → 不读取。
+    应用于 self_meta（频道页开关）与 self_links（卡片开关）两表的 enabled 列。"""
+    if cell is None:
+        return False
+    s = str(cell).strip().lower()
+    if s == "":
+        return False
+    return s in _TRUE_TOKENS
+
 
 # ── 搜索引擎清单（key, 显示名, 搜索URL, 是否主引擎） ──
 # 主引擎（百度/Google/必应）原位不变（搜索框上方按钮）；其余进下方引擎滑道。
@@ -677,11 +795,15 @@ def build_card(row):
     )
 
 
-def load_rows(xlsx_path=None):
+def load_rows(xlsx_path=None, dir_path=None, valid_dir_paths=None):
     """读取 xlsx 全部数据行。
     v4.1 排序：先按 card_layout（1→2→3，非法排最后），再按 row_seq 从小到大。
-    xlsx_path 缺省用全局 XLSX_PATH（根页）；directory 页传入各自的 self_links.xlsx。"""
-    wb = load_workbook(xlsx_path or XLSX_PATH, read_only=True, data_only=True)
+    xlsx_path 缺省用全局 UNIFIED_XLSX_PATH（统一真值源）；dir_path 给定时仅保留该频道行
+    （dir_path = 相对 BASE_DIR 的频道目录路径："/" 或 "directory/gov" 等；与 row_seq 排序解耦）。
+    valid_dir_paths：可选「合法频道白名单」集合（来自 meta_dir_paths）；若给定，则 dir_path 不在
+    其中的行一律跳过（用户 2026-08-28 规则 2：self_links 的 dir_path 必须已在 self_meta 定义）。
+    不传（如 check_links 全量排查）则不做白名单过滤，保留全部行。"""
+    wb = load_workbook(xlsx_path or UNIFIED_XLSX_PATH, read_only=True, data_only=True)
     ws = wb.active
     all_rows = [list(r) for r in ws.iter_rows(values_only=True)]
     wb.close()
@@ -751,6 +873,38 @@ def load_rows(xlsx_path=None):
         c = str(r.get(CAT_NAME) or "").strip()
         if c and c not in cat_order:
             cat_order.append(c)
+    # dir_path 归一化 + 卫哨（2026-08-28）：空值/哨兵/非法路径的行直接跳过，
+    # 其余行写回归一化后的 dir_path，保证后续过滤/输出一致。
+    _clean = []
+    for r in rows:
+        nz = _normalize_dir_path(r.get(DIR_PATH))
+        if nz is None:
+            continue
+        rr = dict(r)
+        rr[DIR_PATH] = nz
+        # 行级总开关 enabled（2026-08-28）：True=读取，False/空/其他=跳过。
+        # 两表同名列，统一在此拦截（根页卡片亦受此约束）。
+        if ENABLED in rr and not _is_enabled(rr.get(ENABLED)):
+            continue
+        _clean.append(rr)
+    rows = _clean
+    # 规则 2（用户 2026-08-28）：self_links 的 dir_path 若不在 meta 定义的频道集合内 → 跳过该行。
+    # 仅当 valid_dir_paths 给定时启用；check_links 等其它调用默认不传，保持全量读取（含孤儿行，便于排查）。
+    if valid_dir_paths is not None:
+        _valid = set(valid_dir_paths)
+        rows = [r for r in rows if r.get(DIR_PATH) in _valid]
+    # dir_path 分流：仅保留本频道行，并按过滤后结果重建分类顺序（2026-08-28 统一真值源）
+    if dir_path is not None:
+        target = _normalize_dir_path(dir_path)
+        if target is None:
+            rows = []
+        else:
+            rows = [r for r in rows if r.get(DIR_PATH) == target]
+        cat_order = []
+        for r in rows:
+            c = str(r.get(CAT_NAME) or "").strip()
+            if c and c not in cat_order:
+                cat_order.append(c)
     rows.sort(key=order_key)
     return rows, cat_order
 
@@ -786,59 +940,147 @@ def build_engine_buttons():
     return "\n        ".join(primary_parts), "\n        ".join(track_parts)
 
 
-def load_meta(json_path):
-    """读取 self_meta.json（页面级元信息）。文件不存在/损坏返回 {}，由调用方兜底 ROOT_META。"""
-    if not json_path or not os.path.isfile(json_path):
+def load_meta(dir_path="/"):
+    """从统一元信息真值源 self_meta.unified.xlsx 按 dir_path 读取页面级元信息。
+    返回 dict(title/description/keywords/channel_intro)；读不到 / 缺行返回 {}，由调用方兜底 ROOT_META。
+    dir_path 值 = 相对 BASE_DIR 的频道目录路径：根页 "/"、频道 "directory/gov"/"directory/engine"（与卡片表同义）。
+    2026-08-28 取代原先散落的 self_meta.json；2026-08-28 二次变更 dir_path 值改为路径形式。
+    2026-08-28 三次变更：新增行级总开关 enabled 列——频道行 enabled=False/空/其他 → 视为无此元信息行
+    （回退 ROOT_META / 跳过生成）；根页(dir_path="/")永不被 enabled 关闭。"""
+    if not os.path.isfile(META_XLSX_PATH):
         return {}
     try:
-        with open(json_path, "r", encoding="utf-8") as f:
-            data = json.load(f)
-        return data if isinstance(data, dict) else {}
-    except (ValueError, OSError):
+        wb = load_workbook(META_XLSX_PATH, read_only=True, data_only=True)
+        ws = wb.active
+        all_rows = [list(r) for r in ws.iter_rows(values_only=True)]
+        wb.close()
+    except Exception:
         return {}
+    if not all_rows:
+        return {}
+    header = [str(c).strip() if c is not None else "" for c in all_rows[0]]
+    if "dir_path" not in header:
+        return {}
+    dir_path_idx = header.index("dir_path")
+    field_cols = {}
+    for f in ("title", "description", "keywords", "channel_intro"):
+        if f in header:
+            field_cols[f] = header.index(f)
+    target = _normalize_dir_path(dir_path)
+    if target is None:
+        return {}
+    # 根页(dir_path="/")为站点入口，enabled 总开关对根页无效（永不被关）；
+    # 其余频道：enabled=False/空/其他 → 视为无此元信息行（回退 ROOT_META / 跳过生成）。
+    enabled_idx = header.index("enabled") if "enabled" in header else None
+    for row in all_rows[1:]:
+        if row is None or all(c is None for c in row):
+            continue
+        rdir_path = _normalize_dir_path(row[dir_path_idx])
+        if rdir_path is None:
+            continue
+        if rdir_path == target:
+            if target != "/" and enabled_idx is not None and not _is_enabled(row[enabled_idx]):
+                return {}
+            meta = {}
+            for f, idx in field_cols.items():
+                val = row[idx] if idx < len(row) else None
+                if val is not None:
+                    meta[f] = str(val).strip()
+            return meta
+    return {}
+
+
+def meta_dir_paths():
+    """返回 self_meta.unified.xlsx 中出现的全部「归一化」dir_path 集合（含根 "/"）。
+
+    用作 self_links 卡片行的「合法频道白名单」（用户 2026-08-28 规则 2）：
+    self_links 中 dir_path 不在该集合内的行一律跳过，不进入任何页面渲染。
+    - meta 文件缺失 / 无 dir_path 列 / 空表 → 返回空集（调用方据此跳过全部卡片行，等价于「无合法频道」）。
+    - 仅统计经 _normalize_dir_path 通过的合法 dir_path（空值/哨兵/非法路径行不计）。
+    - 行级总开关（2026-08-28 enabled 列）：元信息行 enabled=False/空/其他 → 该频道不进白名单
+      （不生成对应页，且其 self_links 卡片因规则 2 白名单缺失而一并跳过）。"""
+    result = set()
+    if not os.path.isfile(META_XLSX_PATH):
+        return result
+    try:
+        wb = load_workbook(META_XLSX_PATH, read_only=True, data_only=True)
+        ws = wb.active
+        all_rows = [list(r) for r in ws.iter_rows(values_only=True)]
+        wb.close()
+    except Exception:
+        return result
+    if not all_rows:
+        return result
+    header = [str(c).strip() if c is not None else "" for c in all_rows[0]]
+    if "dir_path" not in header:
+        return result
+    idx = header.index("dir_path")
+    enabled_idx = header.index("enabled") if "enabled" in header else None
+    for row in all_rows[1:]:
+        if row is None or all(c is None for c in row):
+            continue
+        dp = _normalize_dir_path(row[idx])
+        if dp is None:
+            continue
+        # 根页("/")为站点入口，永不被 enabled 关闭 → 始终进白名单
+        if dp == "/":
+            result.add(dp)
+            continue
+        # 行级总开关：enabled=False/空/其他 → 该频道不进白名单（不生成页、其卡片一并跳过）
+        if enabled_idx is not None and not _is_enabled(row[enabled_idx]):
+            continue
+        result.add(dp)
+    return result
 
 
 def list_directory_pages():
-    """自动扫描 directory/ 下含 self_links.xlsx 的子目录。
-    返回 [(name, xlsx_path, meta_path, out_path, canonical_path), ...]。
-    不用手工维护列表——放一个带 self_links.xlsx 的子目录即自动生成。"""
+    """频道清单来自统一元信息表 self_meta.unified.xlsx 的非根 dir_path 行（频道由元信息表定义）。
+    返回 [(dir_path, out_path, prefix, canonical_path), ...]。
+    dir_path 现为「相对 BASE_DIR 的频道目录路径」（如 directory/gov），根页 dir_path="/" 不在此列；
+    输出位置 / canonical / 资源前缀全部由 dir_path 推导，**不再用写死的 DIRECTORY_ROOT 拼接**
+    （DIRECTORY_ROOT 仅用于清理旧页时的目录遍历）。
+    新增频道 = 在 self_meta.unified.xlsx 加一行 dir_path=频道目录路径（并在 self_links.unified.xlsx 加该行卡片）。"""
     pages = []
-    if not os.path.isdir(DIRECTORY_ROOT):
+    if not os.path.isfile(META_XLSX_PATH):
         return pages
-    for name in sorted(os.listdir(DIRECTORY_ROOT)):
-        d = os.path.join(DIRECTORY_ROOT, name)
-        if not os.path.isdir(d):
-            continue
-        xlsx = os.path.join(d, "assets", "xlsx", "self_links.xlsx")
-        if not os.path.isfile(xlsx):
-            continue
-        meta = os.path.join(d, "assets", "json", "self_meta.json")
-        out = os.path.join(d, "index.html")
-        canonical = "/directory/%s/" % name
-        pages.append((name, xlsx, meta, out, canonical))
-    return pages
-
-
-def _file_empty(path):
-    """文件不存在或 0 字节 → 视为空"""
-    return not os.path.isfile(path) or os.path.getsize(path) == 0
-
-
-def is_empty_xlsx(path):
-    """xlsx 为空：不存在 / 0字节 / 读取后无数据行 → 视为空占位"""
-    if _file_empty(path):
-        return True
+    # 收集所有非根 dir_path 行（按元信息表定义频道）
     try:
-        rows, _ = load_rows(path)
+        wb = load_workbook(META_XLSX_PATH, read_only=True, data_only=True)
+        ws = wb.active
+        all_rows = [list(r) for r in ws.iter_rows(values_only=True)]
+        wb.close()
     except Exception:
-        return True
-    return not rows
-
-
-def is_empty_meta(path):
-    """meta 为空：不存在 / 0字节 / 非法JSON / 完全无字段 → 视为空占位。
-    仅用于『删除空文件』判断；部分字段（填写中）不视为空，不删。"""
-    return _file_empty(path) or not load_meta(path)
+        return pages
+    if not all_rows:
+        return pages
+    header = [str(c).strip() if c is not None else "" for c in all_rows[0]]
+    if "dir_path" not in header:
+        return pages
+    dir_path_idx = header.index("dir_path")
+    enabled_idx = header.index("enabled") if "enabled" in header else None
+    seen = set()
+    for row in all_rows[1:]:
+        if row is None or all(c is None for c in row):
+            continue
+        dir_path = _normalize_dir_path(row[dir_path_idx])
+        # 根页 dir_path="/" 由 main() 单独生成；空值/哨兵/非法（_normalize_dir_path=None）亦跳过
+        if dir_path is None or dir_path == "/" or dir_path in seen:
+            continue
+        # 行级总开关 enabled=False/空/其他 → 该频道页不生成（也不创建空目录）
+        if enabled_idx is not None and not _is_enabled(row[enabled_idx]):
+            continue
+        seen.add(dir_path)
+        # 输出路径：BASE_DIR + dir_path + index.html（dir_path 已是归一化后的相对 BASE_DIR 频道目录，
+        # 例 dir_path="directory/gov" → BASE_DIR/directory/gov/index.html，不再叠加 directory/）
+        d = os.path.join(BASE_DIR, dir_path)
+        os.makedirs(d, exist_ok=True)  # 频道目录不存在则创建，保证可写 index.html
+        out = os.path.join(d, "index.html")
+        # 资源前缀：按 dir_path 路径段数推导（directory/gov → 2 段 → "../../"；根页 0 段 → ""）
+        depth = len([s for s in dir_path.split("/") if s])
+        prefix = "../" * depth
+        canonical = "/" + dir_path + "/"
+        pages.append((dir_path, out, prefix, canonical))
+    return sorted(pages, key=lambda p: p[0])
 
 
 def build_jsonld(rows, meta=None, canonical_path="/", prefix=""):
@@ -1257,7 +1499,7 @@ def build_channel_intro(meta):
 
     设计取舍（用户 2026-08-23 指令 + 2026-08-26 修订）：
     - 频道页去掉搜索框/搜一下按钮（对用户价值不大），改为语义化专题介绍。
-    - 内容来源：优先读取 self_meta.json 专属字段 `channel_intro`（专题介绍文案，
+    - 内容来源：优先读取自元信息表 self_meta.unified.xlsx 的专属字段 `channel_intro`（专题介绍文案，
       与 SEO 用的 `description` 解耦，可独立编辑）；该字段缺失时回退到 `description`
       （向后兼容旧配置 / 其它未配置频道），保证生成永不崩。
     - 标签：<section> 专题分组；内仅一段 <p> 承载介绍文案。
@@ -1290,11 +1532,12 @@ def build_cards(rows):
 ENGINE_CHANNEL = "engine"
 
 
-def render_and_write(xlsx_path, out_path, prefix="", meta=None, canonical_path="/", label="根页"):
-    """通用渲染：读取 xlsx → 生成静态页 → 写出。根页与 directory 页共用。"""
-    rows, cat_order = load_rows(xlsx_path)
+def render_and_write(dir_path, out_path, prefix="", meta=None, canonical_path="/", label="根页", valid_dir_paths=None):
+    """通用渲染：从统一真值源按 dir_path 取本频道数据 → 生成静态页 → 写出。根页与 directory 页共用。
+    valid_dir_paths：合法频道白名单（来自 meta_dir_paths），传给 load_rows 用于规则 2 过滤。"""
+    rows, cat_order = load_rows(UNIFIED_XLSX_PATH, dir_path=dir_path, valid_dir_paths=valid_dir_paths)
     if not rows:
-        print(f"跳过 {label}：{xlsx_path} 无数据行。")
+        print(f"跳过 {label}：{UNIFIED_XLSX_PATH} 无数据行。")
         return 0
     category_buttons = build_category_buttons(cat_order)
     cards = build_cards(rows)
@@ -1327,13 +1570,18 @@ def render_and_write(xlsx_path, out_path, prefix="", meta=None, canonical_path="
 
 
 def main():
-    # 1) 根页 index.html（meta 读根 self_meta.json，兜底 ROOT_META）
-    #    canonical 由 SITE_DOMAIN + "/" 自动拼，不进 meta（域名与路径代码已知）
-    root_meta = load_meta(os.path.join(BASE_DIR, "assets", "json", "self_meta.json"))
-    render_and_write(XLSX_PATH, OUT_PATH, prefix="", meta=root_meta,
-                     canonical_path="/", label="根页")
+    # 合法频道白名单：self_meta 中定义的全部 dir_path（含根 "/"）。
+    # 根页始终生成（main 硬编码），故 "/" 恒为合法——即便 meta 缺 "/" 行，根卡片仍应渲染。
+    valid_dir_paths = meta_dir_paths()
+    valid_dir_paths.add("/")
 
-    # 2) directory/ 子页：先清残留，再按要求生成
+    # 1) 根页 index.html（dir_path="/"；元信息读 self_meta.unified.xlsx dir_path="/"，兜底 ROOT_META）
+    #    canonical 由 SITE_DOMAIN + "/" 自动拼，不进 meta（域名与路径代码已知）
+    root_meta = load_meta("/")
+    render_and_write("/", OUT_PATH, prefix="", meta=root_meta,
+                     canonical_path="/", label="根页", valid_dir_paths=valid_dir_paths)
+
+    # 2) directory/ 子页：先清残留，再按元信息表 dir_path 生成
     if os.path.isdir(DIRECTORY_ROOT):
         # 2a) 删除 py 生成的 directory/<name>/index.html，避免旧页残留
         #     只处理「子目录」下的 index.html，显式跳过门户页 directory/index.html
@@ -1353,30 +1601,20 @@ def main():
                     # 仅打印警告，不中断构建。
                     print(f"警告: 删除旧 {old} 失败（{e}），将由重新生成覆盖。")
 
-        # 2b) 遍历子目录：清理空数据文件 + 生成
-        #     规则：self_links.xlsx 与 self_meta.json 都齐备才生成；缺一个或都缺 → 不生成
-        for name, xlsx, meta_path, out, canonical in list_directory_pages():
-            # 空 self_links.xlsx（占位/未填数据）→ 删除且不生成
-            if is_empty_xlsx(xlsx):
-                os.remove(xlsx)
-                print(f"清理: 删除空 {xlsx}")
-                continue
-            # self_meta.json 必填：缺失 → 不生成
-            if not os.path.isfile(meta_path):
-                print(f"跳过 directory/{name}：缺少 self_meta.json")
-                continue
-            # self_meta.json 空/非法 → 删除且不生成
-            if is_empty_meta(meta_path):
-                os.remove(meta_path)
-                print(f"清理: 删除空 {meta_path}（空/非法）")
-                continue
-            # self_meta.json 字段不全（填写中）→ 不生成，但保留文件
-            m = load_meta(meta_path)
+        # 2b) 频道清单来自 self_meta.unified.xlsx 非根 dir_path 行；逐频道生成
+        #     dir_path 已是相对 BASE_DIR 的频道目录路径（如 directory/gov），
+        #     输出/资源前缀/canonical 全部由 list_directory_pages() 按 dir_path 推导。
+        for dir_path, out, prefix, canonical in list_directory_pages():
+            # 元信息必填：该 dir_path 行缺失/无 title → 不生成
+            m = load_meta(dir_path)
             if not (m.get("title") and m.get("description") and m.get("keywords")):
-                print(f"跳过 directory/{name}：self_meta.json 字段不全（保留文件）")
+                print(f"跳过 {dir_path}：self_meta.unified.xlsx 缺少 dir_path={dir_path} 的有效元信息行")
                 continue
-            render_and_write(xlsx, out, prefix=DIR_ASSET_PREFIX, meta=m,
-                             canonical_path=canonical, label=f"directory/{name}")
+            # 卡片数据来源：self_links.unified.xlsx 中 dir_path==该路径 的行
+            # 经 valid_dir_paths 白名单二次过滤（规则 2：dir_path 不在 meta 集合内的行跳过）
+            render_and_write(dir_path, out, prefix=prefix, meta=m,
+                             canonical_path=canonical, label=f"directory/{dir_path}",
+                             valid_dir_paths=valid_dir_paths)
 
     print(f"引擎: {len(ENGINES)} 个（主{sum(1 for e in ENGINES if e[3])} + 滑道{sum(1 for e in ENGINES if not e[3])}）")
 

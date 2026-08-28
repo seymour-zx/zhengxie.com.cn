@@ -259,7 +259,7 @@
 
 **分类型细则：**
 - **页面/URL 目录**：`pages/<name>/`、`directory/<name>/` —— `<name>` 小写英文单词（URL 友好），中文仅作页面标题。
-- **数据源 xlsx**：`self_links.<scope>.xlsx`（scope=`root`/`engine`/`gov`）+ 台账 `<层级>_verification_log.xlsx`（`card`/`link`/`html`）。
+- **数据源 xlsx（单一真值源）**：`assets/xlsx/self_links.unified.xlsx`（含 `scope` 列区分 root/gov/engine；2026-08-28 由 3 份独立 `self_links.xlsx` 合并而来，取代 `self_links.<scope>.xlsx` 命名）+ 台账 `<层级>_verification_log.xlsx`（`card`/`link`/`html`）。
 - **Python 脚本**：生成器 `build_*.py`；工具 `check_links.py`/`collect_meta.py`；临时 `_临时名.py` 用后即删。
 - **文档 md**：`<主题>-<日期>.md`（交付物）或 `<序号>-<角色>-<日期>.md`（答卷归档）；**治理规范融入本节，不裸放独立文件**。
 - **备份**：统一 `.workbuddy/backups/<YYYY-MM-DD>-<用途>/`（目录）或 `<原名>.<YYYY-MM-DD>.bak.<ext>`（单文件）。
@@ -267,8 +267,8 @@
 
 ### 4.3 数据 schema 一致性
 
-- 根页数据源（`self_links.root.unified.xlsx`，英文蛇形 **75 列**）为标准 schema；`build_homeplus.py` **仅接受英文表头**，表头含中文旧键（站序/分类/link1_name…）直接报错拒绝。
-- 频道页数据（`directory/engine|gov/assets/xlsx/self_links.xlsx`）须与根页同 schema，新增/编辑按英文 75 列录入。
+- 全站统一真值源（`self_links.unified.xlsx`，英文蛇形，含 `scope` 列区分 root/gov/engine）为标准 schema；`build_homeplus.py` **仅接受英文表头**，表头含中文旧键（站序/分类/link1_name…）直接报错拒绝。
+- 频道数据（统一真值源中 `scope`=频道名 的行）须与根页同 schema；2026-08-28 起各 `directory/<name>/` **不再单独携带 self_links.xlsx**，数据统一进根 `assets/xlsx/self_links.unified.xlsx`，新增/编辑按英文列录入。
 - 台账（`card`/`link`/`html` `*_verification_log.xlsx`）是独立 ledger，不与主数据表合并。
 
 ### 4.4 备份与归档生命周期（权威位：含原五§5.2 归档规则）
@@ -291,12 +291,12 @@
 zhengxie.com.cn/
 ├── index.html / 404.html / robots.txt / sitemap.xml / CNAME / ads.txt / favicon.ico   # L1
 ├── pages/<name>/index.html        # L3 手写子页，英文小写
-├── directory/<name>/{index.html, assets/{xlsx/self_links.xlsx, json/self_meta.json}}  # L3 频道
+├── directory/<name>/{index.html, assets/{json/self_meta.json}}  # L3 频道（数据在根 assets/xlsx/self_links.unified.xlsx 的 scope=<name> 行）
 ├── assets/{css,js,images,json,xlsx,.build/reports}                                    # L2
 └── .workbuddy/{docs,memory,skills,backups,staging,trash,agent-review-survey}          # L4/L5
 ```
 
-> 站点 URL 可访问性实测（2026-08-27）：GitHub Pages 对点目录（`.build/`）返回 404，无需改名；`assets/xlsx/self_links.xlsx` 可被 URL 下载（已确认接受公开）。
+> 站点 URL 可访问性实测（2026-08-27）：GitHub Pages 对点目录（`.build/`）返回 404，无需改名；`assets/xlsx/self_links.unified.xlsx` 可被 URL 下载（已确认接受公开）。
 
 ### 4.6 文件体检（定期检查与整理，2026-08-27 用户确认纳入）
 
@@ -307,7 +307,7 @@ zhengxie.com.cn/
 |---|---|---|---|
 | **每周** | ~10 分钟 | 本会话新增/改动文件归层核对 | 新文件是否落在正确层（L1–L5，见 §4.1）；`_` 前缀临时文件是否滞留；`*.bak` 是否误落发布层/资源层（§4.1 铁律 1） |
 | **每月** | ~30 分钟 | 全仓文件盘点 + 数据对账 | 对照 §4.5 目录目标态找违规：无意义命名、副本混真值源、真值源不唯一（§4.1 铁律 3）；staging 清点（草稿批准即移权威位或删除）；死链全量（根页+频道，§5.3.6 #4）；台账对账（card/link/html，§5.3.6 #3） |
-| **每季度** | 1–2 小时 | 归档生命周期 + 备份抽查 + 数据源一致性 | trash 超 30 天确认删除（§4.4）；backups 仅留最近 3 个、旧 MANIFEST 标 `superseded`（§4.4）；backup.md 索引 ↔ 全空间一致性抽查；3 份 `self_links.xlsx` 表头一致性（§4.3）；域名/备案/DNS（§5.3.7 #3） |
+| **每季度** | 1–2 小时 | 归档生命周期 + 备份抽查 + 数据源一致性 | trash 超 30 天确认删除（§4.4）；backups 仅留最近 3 个、旧 MANIFEST 标 `superseded`（§4.4）；backup.md 索引 ↔ 全空间一致性抽查；`self_links.unified.xlsx` 的 scope 分流一致性（§4.3）；域名/备案/DNS（§5.3.7 #3） |
 | **半年/年度** | ~半天 | 大清理 + 文件治理复盘 | 旧时间日志合并归档、changelog 蒸馏、backup.md 重生成核对（触发"备份"指令联动，见 MEMORY 备份铁律）；命名规范遵守复盘，需修订则更新 §4.2；新治理规则 → 沉淀本文件 |
 
 **红线提醒**：任何删除/移动前，**先记时间日志**（备份铁律 + 信息治理铁律 3）；批量删除类动作**先列清单请用户确认**（文件改动铁律）；临时脚本用后即删、`_` 前缀不表示可长期滞留（§4.1 铁律 2）。
@@ -319,7 +319,7 @@ zhengxie.com.cn/
 > 本节约束**设计 → 开发 → 部署 → 收录 → 运营 → 维护**全流程，按 **日 / 周 / 月 / 季度 / 每次部署 / 每次收录** 周期节点给出"按顺序做什么"。
 > 背景（2026-08-27 用户确认）：站点此前无全流程控制表，规定碎片化散在 5 处——迭代四阶段（§5.1）、文件命名规范（§4）、README §10.4 上线清单、`zhengxie-seo-standard` Backlog、卡片录入 SOP。本节把这些既有规则**编排成时间表，不新增规则**；冲突时以"用户最新指令 > 本文件既有章节 > 技能手册"裁决。
 > 草案文件 `.workbuddy/staging/网站全流程运营手册-草案-2026-08-27.md` 已移 trash 保留 30 天；正文以本节为准（真值源唯一）。
-> 现状快照（以 xlsx 实际为准）：根页 65 卡 + 频道 hub + `gov/`（政务导航 59 卡）+ `engine/`（引擎导航 18 卡）；sitemap 13 条 URL；根页数据源 `assets/xlsx/self_links.xlsx`（英文 75 列）；台账 card/link/html 三份已建（0 行，未接入渲染）。
+> 现状快照（以 xlsx 实际为准）：单一真值源 `assets/xlsx/self_links.unified.xlsx`（scope=root 65 卡 / gov 59 卡 / engine 67 卡，32 列含 scope）；sitemap 13 条 URL；台账 card/link/html 三份已建（0 行，未接入渲染）。
 
 ### 5.1 迭代四阶段（每次改动必走；2026-08-24 确立，合并自 dev-process-plan / execution-rules）
 
@@ -381,7 +381,7 @@ zhengxie.com.cn/
 |---|---|---|---|
 | 1 | **官方源核实**（官网域名/ICP 备案/属主/诈骗预警），禁止凭印象收录 | 圆桌 #13/#19/#21 红线 | 深度研究/数据核验 |
 | 2 | 判定位：进根页 / 频道页 / 两者；判分类与卡片 type（1/2/3） | README §五 | 产品管理 |
-| 3 | 按 `政协官网卡片录入规范-SOP` 填 `self_links.xlsx`（英文 75 列：row_seq/cat_id/card_layout/card_title/card_desc/card_media/card_tags/link_N_name/url…） | SOP + §4.3 | 数据建表/文档管家 |
+| 3 | 按 `政协官网卡片录入规范-SOP` 填 `self_links.unified.xlsx`（`scope` 列标 root/gov/engine；英文列：row_seq/cat_id/card_layout/card_title/card_desc/card_media/card_tags/link_N_name/url…） | SOP + §4.3 | 数据建表/文档管家 |
 | 4 | 登记台账：`card`/`link` 台账（verify_date/verify_channel/status） | 台账 xlsx | 文档管家 |
 | 5 | 重跑 build + 校验（同 5.3.2 第 3–4 步） | — | 网站开发 |
 | 6 | 更新 `pages/changelog` + 收进"本周上新"（C3 建成后） | — | 内容创作 |

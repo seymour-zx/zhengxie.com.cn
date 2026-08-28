@@ -70,17 +70,14 @@
     gtag('js', new Date());
     gtag('config', 'G-B880S4NQVK');
   </script>
-  <!-- 百度统计（com.cn 站 + info 站，两个站点代码合并注入） -->
+  <!-- 百度统计（com.cn 主站） -->
   <script>
   var _hmt = _hmt || [];
   (function() {
-    var ids = ["2f4df5057c929092e36a0d6357e35261", "70e38224e5ebd850150b00a19835a25f"];
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2f4df5057c929092e36a0d6357e35261";
     var s = document.getElementsByTagName("script")[0];
-    for (var i = 0; i < ids.length; i++) {
-      var hm = document.createElement("script");
-      hm.src = "https://hm.baidu.com/hm.js?" + ids[i];
-      s.parentNode.insertBefore(hm, s);
-    }
+    s.parentNode.insertBefore(hm, s);
   })();
   </script>
 </head>
