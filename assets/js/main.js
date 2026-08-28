@@ -177,8 +177,11 @@
     }
     /* URL hash 同步 */
     updateHash();
-    /* 显隐变化后立即复检溢出标记（卡片从隐藏恢复显示时，
-       clientWidth 从 0 恢复正常，必须重新检测，否则滚轮接管失效） */
+    /* 任何筛选状态变更（切换分类/关键词/收藏/标签）后，卡片名称与描述
+       复位为默认折叠态，保证视图一致（同一行卡片不再因之前展开而高低不齐）。 */
+    resetExpandCollapsed();
+    /* 显隐变化 + 复位后复检溢出标记（卡片从隐藏恢复显示时 clientWidth 从 0 恢复，
+       且名称/描述收起后宽度可能变化，必须重新检测，否则滚轮接管失效） */
     refreshScrollable();
   }
 
@@ -247,6 +250,9 @@
       if (siteInput.value.trim()) { addTag(siteInput.value); } else { applyFilter(); }
     }
   });
+  /* 点击/聚焦内部搜索框：卡片名称与描述复位为默认折叠态（即便尚未输入，纯点击也复位，
+     与切换分类/筛选保持一致的视图行为） */
+  siteInput.addEventListener('focus', resetExpandCollapsed);
 
   /* ── 类型1/2/3 描述「整行联动」展开（简化版）：
      点同行任意一张 → 全行统一展示「同行内容最多的那张」完整需要的行数；
