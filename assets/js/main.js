@@ -34,6 +34,78 @@
   var emptyState = document.getElementById('empty-state');
   var randomBtn = document.getElementById('random-site');
 
+  /* ── 数据分析埋点（OSM 指标树 · #45 棒落地 · #46 棒接百度统计）──
+     PIPL 红线：搜索词属敏感个人信息，绝不采集原始 query；
+     仅上报 {cat 维度, 是否 0 结果, 关键词长度(非内容), 标签数} 的聚合信号。
+     境内合规优先：已选【百度统计】为事件级后端（数据可不出境，消解 #17 出境风险）——页面存在
+     window._hmt 时，zxTrack 直接转发为 _trackEvent（见 zxTrackBaidu）；ZX_ANALYTICS_ENDPOINT 保留为
+     可选自托管 beacon（Umami/Plausible 等），留空则不发送。两者可并存。 */
+  var ZX_ANALYTICS_ENDPOINT = '';   // ← 可选：自托管 beacon 端点（Umami/Plausible 等，留空=不发送）
+  var ZX_BAIDU_TONGJI_ID = '2f4df5057c929092e36a0d6357e35261';  // ← 百度统计站点 ID（与页面已有 snippet 同一 ID，保证全站事件可达）
+  var ZX_SESSION_ID = (function () {
+    try { return 's_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10); }
+    catch (e) { return 's_anon'; }
+  })();
+  var ZX_LAST_SEARCH_TS = 0;
+  /* 百度统计自动注入：仅当页面未自带 snippet（window._hmt 不存在）时注入，避免重复加载；
+     站点已自带 snippet 的页面（index/overview/404/directory）沿用其队列，zxTrack 统一转发。 */
+  (function loadBaiduTongji() {
+    if (!ZX_BAIDU_TONGJI_ID || window._hmt) { return; }
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://hm.baidu.com/hm.js?' + encodeURIComponent(ZX_BAIDU_TONGJI_ID);
+    var first = document.getElementsByTagName('script')[0];
+    if (first && first.parentNode) { first.parentNode.insertBefore(s, first); }
+    else { (document.head || document.documentElement).appendChild(s); }
+  })();
+  /* 卡片稳定标识（非 PII）：优先取收藏 data-key，否则 data-id */
+  function zxCardId(card) {
+    var f = card.querySelector('.card__fav');
+    return f ? f.getAttribute('data-key') : (card.getAttribute('data-id') || 'unknown');
+  }
+  /* 百度统计转发：事件 → _trackEvent(category, action, opt_label)，不传原始 query（PIPL） */
+  function zxTrackBaidu(name, props) {
+    try {
+      if (!window._hmt || typeof window._hmt.push !== 'function') { return; }
+      var def = {
+        search: ['站内搜索', 'search'],
+        fav_add: ['本地收藏', 'fav_add'],
+        card_click: ['卡片点击', 'card_click'],
+        engine_search: ['集合搜索', 'engine_search'],
+        random_click: ['随机漫步', 'random_click'],
+        ad_impression: ['广告位', 'impression'],
+        ad_click: ['广告位', 'click'],
+        about_view: ['关于页', 'view'],
+        about_read: ['关于页', 'read']
+      }[name];
+      if (!def) { return; }
+      var label = '';
+      if (name === 'search') { label = (props.cat || '') + (props.zeroResult ? '|零结果' : ''); }
+      else if (name === 'card_click') { label = (props.cardId || '') + '|' + (props.cat || ''); }
+      else if (name === 'fav_add' || name === 'random_click') { label = props.cardId || ''; }
+      else if (name === 'engine_search') { label = String(props.kwLen || 0); }
+      else if (name === 'ad_impression' || name === 'ad_click') { label = props.slot || 'other'; }
+      window._hmt.push(['_trackEvent', def[0], def[1], label]);
+    } catch (e) { /* 静默 */ }
+  }
+  /* 统一发送：① 百度统计（境内合规）转发；② 可选自托管 beacon（端点非空才发） */
+  function zxTrack(name, props) {
+    var payload = { v: 1, sid: ZX_SESSION_ID, t: Date.now(), ev: name, p: props || {} };
+    zxTrackBaidu(name, props || {});
+    if (!ZX_ANALYTICS_ENDPOINT) {
+      if (window.console && console.debug) { console.debug('[zx-track]', name, payload.p); }
+      return;
+    }
+    try {
+      var blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+      if (navigator.sendBeacon) { navigator.sendBeacon(ZX_ANALYTICS_ENDPOINT, blob); }
+      else {
+        var img = new Image();
+        img.src = ZX_ANALYTICS_ENDPOINT + '?d=' + encodeURIComponent(JSON.stringify(payload));
+      }
+    } catch (e) { /* 静默：埋点失败不影响主流程 */ }
+  }
+
   var catBtns = Array.prototype.slice.call(document.querySelectorAll('.category-btn'));
   var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
   /* 可整行联动展开的类型1/2/3卡片（类型4 等 2×N 栅格不参与） */
@@ -183,6 +255,17 @@
     /* 显隐变化 + 复位后复检溢出标记（卡片从隐藏恢复显示时 clientWidth 从 0 恢复，
        且名称/描述收起后宽度可能变化，必须重新检测，否则滚轮接管失效） */
     refreshScrollable();
+    /* 埋点：站内搜索（仅聚合信号，不含原始 query，PIPL 红线）
+       节流 800ms，避免逐键刷屏；只发 cat 维度 + 是否 0 结果 + 长度/标签数 */
+    if ((kw || filterTags.length || activeCat !== 'all') && Date.now() - ZX_LAST_SEARCH_TS > 800) {
+      ZX_LAST_SEARCH_TS = Date.now();
+      zxTrack('search', {
+        cat: activeCat,
+        zeroResult: visible === 0,
+        kwLen: kw ? kw.length : 0,
+        tagCount: filterTags.length
+      });
+    }
   }
 
   /* ── 渲染筛选标签 chips（插入中间滑道） ── */
@@ -399,7 +482,7 @@
       e.stopPropagation();
       var key = favBtn.getAttribute('data-key');
       var isFav = !!favs[key];
-      if (isFav) { delete favs[key]; } else { favs[key] = true; }
+      if (isFav) { delete favs[key]; } else { favs[key] = true; zxTrack('fav_add', { cardId: key }); }
       setFavUI(favBtn, !isFav);
       saveFavs();
       updateFavToggleStar();
@@ -408,6 +491,11 @@
     }
     /* 类型1/2/3 卡片：名称区→整行联动展名；描述区→整行联动展描述 */
     var targetCard = e.target.closest ? e.target.closest('.card') : null;
+    /* 卡片主链接点击：导航前埋点（不拦默认行为，sendBeacon 保证发出） */
+    var linkEl = e.target.closest ? e.target.closest('.card__link') : null;
+    if (linkEl && targetCard) {
+      zxTrack('card_click', { cat: targetCard.getAttribute('data-cat') || 'unknown', cardId: zxCardId(targetCard) });
+    }
     if (targetCard && !targetCard.hidden && getCardExpandType(targetCard)) {
       var onDesc = e.target.closest('.card__desc');
       var onTitle = e.target.closest('.card__title');
@@ -477,6 +565,7 @@
       e.preventDefault();
       var kw = engineInput.value.trim();
       if (!kw || !currentEngineUrl) { return; }
+      zxTrack('engine_search', { kwLen: kw.length });
       window.open(currentEngineUrl + encodeURIComponent(kw), '_blank', 'noopener');
     });
   }
@@ -847,7 +936,7 @@
       if (!visibleCards.length) { return; }
       var pick = visibleCards[Math.floor(Math.random() * visibleCards.length)];
       var link = pick.querySelector('.card__link');
-      if (link) { window.open(link.href, '_blank', 'noopener'); }
+      if (link) { zxTrack('random_click', { cardId: zxCardId(pick) }); window.open(link.href, '_blank', 'noopener'); }
     });
   }
 
@@ -899,4 +988,48 @@
   renderTags();
   applyFilter();
   syncFromHash();
+
+  /* ── 13. 埋点：广告位曝光/点击（仅 slot 位置，不含广告内容） ── */
+  (function () {
+    var adEls = Array.prototype.slice.call(document.querySelectorAll('.ad'));
+    if (!adEls.length || !('IntersectionObserver' in window)) { return; }
+    function slotOf(cls) {
+      return /ad--top/.test(cls) ? 'top' : (/ad--bottom/.test(cls) ? 'bottom' : 'other');
+    }
+    var seen = {};
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        var cls = en.target.className || '';
+        if (en.isIntersecting && !seen[cls]) {
+          seen[cls] = true;
+          zxTrack('ad_impression', { slot: slotOf(cls) });
+        }
+      });
+    }, { threshold: 0.5 });
+    adEls.forEach(function (el) {
+      io.observe(el);
+      var slot = slotOf(el.className || '');
+      el.addEventListener('click', function () { zxTrack('ad_click', { slot: slot }); });
+    });
+  })();
+
+  /* ── 14. 埋点：about 页浏览/阅读（整站级可信载体触达） ── */
+  (function () {
+    var aboutArticle = document.querySelector('.about-content');
+    if (!aboutArticle) { return; }
+    zxTrack('about_view', {});
+    if (!('IntersectionObserver' in window)) { return; }
+    var sentinel = document.createElement('div');
+    sentinel.setAttribute('data-zx-read-sentinel', '1');
+    aboutArticle.appendChild(sentinel);
+    var readObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          zxTrack('about_read', {});
+          readObs.disconnect();
+        }
+      });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0 });
+    readObs.observe(sentinel);
+  })();
 })();
