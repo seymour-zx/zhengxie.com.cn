@@ -163,7 +163,7 @@
 ### 3.1 页面类型 ↔ JSON-LD `@type` 映射表
 
 > 规则：所有页 `isPartOf` 统一回链**站点根 `WebSite`**（`https://zhengxie.com.cn/`），不回链门户页或频道页；页面层级路径用 `BreadcrumbList`（另加）表达，不靠 `isPartOf` 嵌套。
-> 自动化页面（根页 + 15 频道页）由 `build_homeplus.py` 的 `build_jsonld()` 生成；手写页（`pages/*`、门户页、404）需手工加。
+> 自动化页面（根页 + 频道页）由 `build_homeplus.py` 的 `build_jsonld()` 生成；手写页（`pages/*`、门户页、404）需手工加。
 
 #### 现有页面映射
 
@@ -248,7 +248,7 @@
 | **L5 暂存归档层** | `.workbuddy/staging/` `.workbuddy/backups/` `.workbuddy/trash/` | 草稿、回档点、待删物 | 一次性或按归档规则清理 |
 
 **铁律：**
-1. **备份永不进发布层与资源层**——`index.html.bak`、`self_links.bak.xlsx` 一律进 `.workbuddy/backups/`。
+1. **备份永不进发布层与资源层**——`index.html.bak`、`cards.bak.xlsx` 一律进 `.workbuddy/backups/`。
 2. **临时脚本用后即删**——`_` 前缀只表示「本次会话临时」，不表示可长期滞留；临时脚本不得留仓库根或同步区。
 3. **真值源唯一**——同一数据只允许一个权威位置，其余为草稿副本并明确标注。
 
@@ -265,7 +265,7 @@
 
 **分类型细则：**
 - **页面/URL 目录**：`pages/<name>/`、`directory/<name>/` —— `<name>` 小写英文单词（URL 友好），中文仅作页面标题。
-- **数据源 xlsx（单一真值源）**：`assets/xlsx/self_links.unified.xlsx`（含 `scope` 列区分 root/gov/engine；2026-08-28 由 3 份独立 `self_links.xlsx` 合并而来，取代 `self_links.<scope>.xlsx` 命名）+ 台账 `<层级>_verification_log.xlsx`（`card`/`link`/`html`）。
+- **数据源 xlsx（单一真值源）**：`assets/xlsx/cards.unified.xlsx`（含 `dir_path` 列区分 '/' / 'directory/gov' / 'directory/engine'；2026-08-28 由 3 份独立卡片 xlsx 合并而来，取代 `cards.<dir_path>.xlsx` 命名）+ 台账 `<层级>_verification_log.xlsx`（`card`/`link`/`html`）。
 - **Python 脚本**：生成器 `build_*.py`；工具 `check_links.py`/`collect_meta.py`；临时 `_临时名.py` 用后即删。
 - **文档 md**：`<主题>-<日期>.md`（交付物）或 `<序号>-<角色>-<日期>.md`（答卷归档）；**治理规范融入本节，不裸放独立文件**。
 - **备份**：统一 `.workbuddy/backups/<YYYY-MM-DD>-<用途>/`（目录）或 `<原名>.<YYYY-MM-DD>.bak.<ext>`（单文件）。
@@ -273,8 +273,8 @@
 
 ### 4.3 数据 schema 一致性
 
-- 全站统一真值源（`self_links.unified.xlsx`，英文蛇形，含 `scope` 列区分 root/gov/engine）为标准 schema；`build_homeplus.py` **仅接受英文表头**，表头含中文旧键（站序/分类/link1_name…）直接报错拒绝。
-- 频道数据（统一真值源中 `scope`=频道名 的行）须与根页同 schema；2026-08-28 起各 `directory/<name>/` **不再单独携带 self_links.xlsx**，数据统一进根 `assets/xlsx/self_links.unified.xlsx`，新增/编辑按英文列录入。
+- 全站统一真值源（`cards.unified.xlsx`，英文蛇形，含 `dir_path` 列区分 '/' / 'directory/gov' / 'directory/engine'）为标准 schema；`build_homeplus.py` **仅接受英文表头**，表头含中文旧键（站序/分类/link1_name…）直接报错拒绝。
+- 频道数据（统一真值源中 `dir_path`=频道路径 的行）须与根页同 schema；2026-08-28 起各 `directory/<name>/` **不再单独携带卡片 xlsx**，数据统一进根 `assets/xlsx/cards.unified.xlsx`，新增/编辑按英文列录入。
 - 台账（`card`/`link`/`html` `*_verification_log.xlsx`）是独立 ledger，不与主数据表合并。
 
 ### 4.4 备份与归档生命周期（权威位：含原五§5.2 归档规则）
@@ -297,12 +297,12 @@
 zhengxie.com.cn/
 ├── index.html / 404.html / robots.txt / sitemap.xml / CNAME / ads.txt / favicon.ico   # L1
 ├── pages/<name>/index.html        # L3 手写子页，英文小写
-├── directory/<name>/{index.html, assets/{json/self_meta.json}}  # L3 频道（数据在根 assets/xlsx/self_links.unified.xlsx 的 scope=<name> 行）
+├── directory/<name>/{index.html, assets/{json/self_meta.json}}  # L3 频道（数据在根 assets/xlsx/cards.unified.xlsx 的 dir_path=<name> 行）
 ├── assets/{css,js,images,json,xlsx,.build/reports}                                    # L2
 └── .workbuddy/{docs,memory,skills,backups,staging,trash,agent-review-survey}          # L4/L5
 ```
 
-> 站点 URL 可访问性实测（2026-08-27）：GitHub Pages 对点目录（`.build/`）返回 404，无需改名；`assets/xlsx/self_links.unified.xlsx` 可被 URL 下载（已确认接受公开）。
+> 站点 URL 可访问性实测（2026-08-27）：GitHub Pages 对点目录（`.build/`）返回 404，无需改名；`assets/xlsx/cards.unified.xlsx` 可被 URL 下载（已确认接受公开）。
 
 ### 4.6 文件体检（定期检查与整理，2026-08-27 用户确认纳入）
 
@@ -313,7 +313,7 @@ zhengxie.com.cn/
 |---|---|---|---|
 | **每周** | ~10 分钟 | 本会话新增/改动文件归层核对 | 新文件是否落在正确层（L1–L5，见 §4.1）；`_` 前缀临时文件是否滞留；`*.bak` 是否误落发布层/资源层（§4.1 铁律 1） |
 | **每月** | ~30 分钟 | 全仓文件盘点 + 数据对账 | 对照 §4.5 目录目标态找违规：无意义命名、副本混真值源、真值源不唯一（§4.1 铁律 3）；staging 清点（草稿批准即移权威位或删除）；死链全量（根页+频道，§5.3.6 #4）；台账对账（card/link/html，§5.3.6 #3） |
-| **每季度** | 1–2 小时 | 归档生命周期 + 备份抽查 + 数据源一致性 | trash 超 30 天确认删除（§4.4）；backups 仅留最近 3 个、旧 MANIFEST 标 `superseded`（§4.4）；backup.md 索引 ↔ 全空间一致性抽查；`self_links.unified.xlsx` 的 scope 分流一致性（§4.3）；域名/备案/DNS（§5.3.7 #3） |
+| **每季度** | 1–2 小时 | 归档生命周期 + 备份抽查 + 数据源一致性 | trash 超 30 天确认删除（§4.4）；backups 仅留最近 3 个、旧 MANIFEST 标 `superseded`（§4.4）；backup.md 索引 ↔ 全空间一致性抽查；`cards.unified.xlsx` 的 dir_path 分流一致性（§4.3）；域名/备案/DNS（§5.3.7 #3） |
 | **半年/年度** | ~半天 | 大清理 + 文件治理复盘 | 旧时间日志合并归档、changelog 蒸馏、backup.md 重生成核对（触发"备份"指令联动，见 MEMORY 备份铁律）；命名规范遵守复盘，需修订则更新 §4.2；新治理规则 → 沉淀本文件 |
 
 **红线提醒**：任何删除/移动前，**先记时间日志**（备份铁律 + 信息治理铁律 3）；批量删除类动作**先列清单请用户确认**（文件改动铁律）；临时脚本用后即删、`_` 前缀不表示可长期滞留（§4.1 铁律 2）。
@@ -325,7 +325,7 @@ zhengxie.com.cn/
 > 本节约束**设计 → 开发 → 部署 → 收录 → 运营 → 维护**全流程，按 **日 / 周 / 月 / 季度 / 每次部署 / 每次收录** 周期节点给出"按顺序做什么"。
 > 背景（2026-08-27 用户确认）：站点此前无全流程控制表，规定碎片化散在 5 处——迭代四阶段（§5.1）、文件命名规范（§4）、README §10.4 上线清单、`zhengxie-seo-standard` Backlog、卡片录入 SOP。本节把这些既有规则**编排成时间表，不新增规则**；冲突时以"用户最新指令 > 本文件既有章节 > 技能手册"裁决。
 > 草案文件 `.workbuddy/staging/网站全流程运营手册-草案-2026-08-27.md` 已移 trash 保留 30 天；正文以本节为准（真值源唯一）。
-> 现状快照（以 xlsx 实际为准）：单一真值源 `assets/xlsx/self_links.unified.xlsx`（scope=root 65 卡 / gov 59 卡 / engine 67 卡，32 列含 scope）；sitemap 13 条 URL；台账 card/link/html 三份已建（0 行，未接入渲染）。
+> 现状快照（以 xlsx 实际为准）：单一真值源 `assets/xlsx/cards.unified.xlsx`（dir_path='/' 337 卡 / 'directory/gov' 59 卡 / 'directory/engine' 67 卡，32 列含 dir_path）；sitemap 13 条 URL；台账 card/link/html 三份已建（0 行，未接入渲染）。
 
 ### 5.1 迭代四阶段（每次改动必走；2026-08-24 确立，合并自 dev-process-plan / execution-rules）
 
@@ -334,7 +334,7 @@ zhengxie.com.cn/
 | 阶段 | 动作（标准动作） |
 |------|------------------|
 | **1 立项 Plan** | 1.1 明确目标与范围（一句话）；1.2 列改动清单（文件+行号/区段+改前→改后），首次改/删等用户确认；1.3 定验收标准（可观测通过条件） |
-| **2 执行 Build** | 2.1 全量备份到 `.workbuddy/backups/backup_<功能>_<YYYYMMDD_HHMM>/` 并写 `MANIFEST.txt`；2.2 按清单改文件（不扩大范围）；2.3 涉及 build 模板/数据源的改动必须重跑 build 重生成根页+15 频道页；2.4 跑标准校验脚本 `assets/.build/verify_site.py` |
+| **2 执行 Build** | 2.1 全量备份到 `.workbuddy/backups/backup_<功能>_<YYYYMMDD_HHMM>/` 并写 `MANIFEST.txt`；2.2 按清单改文件（不扩大范围）；2.3 涉及 build 模板/数据源的改动必须重跑 build 重生成根页 + 全部频道页；2.4 跑标准校验脚本 `assets/.build/verify_site.py` |
 | **3 同步 Sync** | 3.1 更新约定/技能（若引出新规则）；3.2 写当日 `memory/YYYY-MM-DD.md` 迭代卡（非流水账）；3.3 确认新增约定落在同步区 |
 | **4 收口 Close** | 4.1 写迭代卡（目标/范围/清单/验收/回档锚点）；4.2 清理临时脚本/超期备份；4.3 提示可提交（**只提醒不询问**） |
 
@@ -363,7 +363,7 @@ zhengxie.com.cn/
 | 3 | 页面骨架判定：S1–S6 哪一类，套模板；不覆盖才新增 S7+ | README §三 | 网站开发 | — |
 | 4 | 视觉：奢华红金白语言 + 设计 token 文档（色板/字体/间距/圆角/阴影） | 圆桌 E4 | UI 设计 | 视觉细节 |
 | 5 | 合规地基：非官方声明（A1 已完成）+ 隐私政策（A4 已完成）+ 免责声明模板 | §二 | 法律合规/公文审稿 | 措辞审阅 |
-| 6 | 数据契约：定 schema（当前=英文 75 列）+ 域名白名单 + SCHEMA.md 数据字典 | 圆桌 P0-0 | 数据建表/文档管家 | 字段取舍 |
+| 6 | 数据契约：定 schema（当前=英文 32 列含 dir_path）+ 域名白名单 + SCHEMA.md 数据字典 | 圆桌 P0-0 | 数据建表/文档管家 | 字段取舍 |
 | 7 | 备份锚点：`backups/YYYY-MM-DD-<用途>/` + MANIFEST | §4.4 | 文档管家 | — |
 
 #### 5.3.2 每次部署发布（部署闸门，按序必走）
@@ -387,7 +387,7 @@ zhengxie.com.cn/
 |---|---|---|---|
 | 1 | **官方源核实**（官网域名/ICP 备案/属主/诈骗预警），禁止凭印象收录 | 圆桌 #13/#19/#21 红线 | 深度研究/数据核验 |
 | 2 | 判定位：进根页 / 频道页 / 两者；判分类与卡片 type（1/2/3） | README §五 | 产品管理 |
-| 3 | 按 `政协官网卡片录入规范-SOP` 填 `self_links.unified.xlsx`（`scope` 列标 root/gov/engine；英文列：row_seq/cat_id/card_layout/card_title/card_desc/card_media/card_tags/link_N_name/url…） | SOP + §4.3 | 数据建表/文档管家 |
+| 3 | 按 `政协官网卡片录入规范-SOP` 填 `cards.unified.xlsx`（`dir_path` 列标 '/' / 'directory/gov' / 'directory/engine'；英文列：row_seq/dir_path/cat_id/card_layout/card_title/card_desc/card_media/card_tags/link_N_name/url…） | SOP + §4.3 | 数据建表/文档管家 |
 | 4 | 登记台账：`card`/`link` 台账（verify_date/verify_channel/status） | 台账 xlsx | 文档管家 |
 | 5 | 重跑 build + 校验（同 5.3.2 第 3–4 步） | — | 网站开发 |
 | 6 | 更新 `pages/changelog` + 收进"本周上新"（C3 建成后） | — | 内容创作 |
@@ -483,7 +483,7 @@ zhengxie.com.cn/
 5. 面包屑虚构层级：`首页 › 网站全景 › 频道导航 › 频道名`（overview 与 directory 是兄弟，非父子）。
 
 **🟢 建议做（性价比高，未定优先级）**
-1. P0：补 `SCHEMA.md` 数据字典 + `validate.py` 校验脚本（对应英文 75 列真源）。
+1. P0：补 `SCHEMA.md` 数据字典 + `validate.py` 校验脚本（对应英文 32 列真源）。
 2. P0：域名白名单（消冒充官方风险；"官方"范围需用户/领域专家定，框架可先写）。
 3. P1：站内搜索打点 C7 → 周报 query（免费、真实、最该先做的数据动作）。
 4. P1：百度站长平台接入 F2（国内主战场收录生命线）。
@@ -537,3 +537,5 @@ zhengxie.com.cn/
 | D-8 | 功能新增排期（C1/C2/C3/C6/C7/C8…） | 待定 |
 | D-9 | MEMORY.md 瘦身（超 3000 字符注入上限） | 待定 |
 | D-10 | 未提交文件由用户本地 git 提交（agent 不执行） | 用户操作 |
+
+**2026-08-29 W0 拍板记录**：① M-1 = **方案甲**（新建 `assets/.build/verify_site.py`，已落地，覆盖 08-测试流程 §3 八项）② W0 全授权一次做完（P0-1 路径断链 / P0-2 OG 14/14 / P0-4 表单明示 / M-2~M-8 文档漂移回改，已全部完成）③ 波次顺序=严格 W0→W1→W2→W3 ④ build 脚本类改动（sitemap lastmod 自动生成、GA4/AdSense 去留）**先出方案再授权**。

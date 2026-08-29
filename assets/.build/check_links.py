@@ -30,8 +30,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from build_homeplus import load_rows, collect_links
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-XLSX_PATH = os.path.join(BASE_DIR, "assets", "xlsx", "self_links.xlsx")
-REPORT_PATH = os.path.join(BASE_DIR, "assets", "py", "link_report.txt")
+XLSX_PATH = os.path.join(BASE_DIR, "assets", "xlsx", "cards.unified.xlsx")
+REPORT_PATH = os.path.join(BASE_DIR, "assets", ".build", "reports", "link_report.txt")
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
