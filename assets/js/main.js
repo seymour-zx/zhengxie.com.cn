@@ -28,12 +28,24 @@
     var btn = document.getElementById('consent-close');
     if (!bar) return;
     var EXP = 30 * 24 * 60 * 60 * 1000, ts = 0;
+    /* 量出任务栏/系统 UI 高度作安全底边距：最大化时窗口底边常被任务栏覆盖，
+       声明条/滚动按钮若贴底会被"吃掉"（Edge 实测关闭钮点不到、悬停不触发）。
+       屏幕物理高 − 可用高 = 任务栏高；兜底 40px 覆盖常见任务栏尺寸。 */
+    function taskbarInset() {
+      var tb = 0;
+      try { if (screen.height && screen.availHeight) tb = Math.max(0, screen.height - screen.availHeight); } catch (e) {}
+      return Math.max(tb, 40);
+    }
+    function setInsetVar() {
+      try { document.documentElement.style.setProperty('--taskbar-inset', taskbarInset() + 'px'); } catch (e) {}
+    }
+    /* on: 声明条显示时额外加其高度避让；无论开关都叠加任务栏安全底边距，
+       避免重新最大化后滚动按钮落回任务栏遮挡带（关闭钮失效） */
     function liftScrollBtns(on) {
       var sb = document.getElementById('scroll-btns');
       if (!sb) return;
-      if (!on) { sb.style.bottom = ''; return; }
-      var base = window.innerWidth <= 639 ? 16 : 24;
-      sb.style.bottom = ((bar.offsetHeight || 0) + base) + 'px';
+      var inset = taskbarInset(), base = window.innerWidth <= 639 ? 16 : 24;
+      sb.style.bottom = ((on ? (bar.offsetHeight || 0) : 0) + inset + base) + 'px';
     }
     function hideBar() {
       bar.hidden = true;
@@ -46,11 +58,15 @@
       try { localStorage.setItem('zx_notice_closed', String(Date.now())); } catch (e) {}
     }
     try { var raw = localStorage.getItem('zx_notice_closed'); if (raw && /^\d{13}$/.test(raw)) ts = parseInt(raw, 10); } catch (e) {}
+    setInsetVar();  // 初始化即写入安全底边距变量（即使后续隐藏也先写）
     if (ts && (Date.now() - ts) <= EXP) { hideBar(); return; }
     if (bar.hidden || bar.style.display === 'none') { hideBar(); return; }
     try { document.body.classList.add('has-notice'); } catch (e) {}
     liftScrollBtns(true);
-    window.addEventListener('resize', function () { if (!bar.hidden) { liftScrollBtns(true); } });
+    window.addEventListener('resize', function () {
+      setInsetVar();
+      if (!bar.hidden) { liftScrollBtns(true); } else { liftScrollBtns(false); }
+    });
     if (btn) btn.addEventListener('click', closeBar);
   })();
 
