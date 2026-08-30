@@ -289,12 +289,18 @@ def frag_intro(page):
     return ""
 
 
-def frag_ads(page, slot_numbers):
-    out = []
+def frag_ads(slot_numbers):
+    """按插槽 CSS 类拆分顶部/底部广告片段：含 ad--bottom 类 → 底部，其余 → 顶部。
+    返回 (top_html, bottom_html)；无对应插槽时返回空串。
+    修复：原实现把 slot 1/2 拼成一段只插在顶部，导致 ad--bottom 也跑到页面上部。"""
+    top, bottom = [], []
     for n in slot_numbers:
-        if n in AD_SLOTS:
-            out.append("  " + AD_SLOTS[n])
-    return "\n".join(out) + "\n"
+        if n not in AD_SLOTS:
+            continue
+        frag = "  " + AD_SLOTS[n]
+        (bottom if "ad--bottom" in AD_SLOTS[n] else top).append(frag)
+    return ("\n".join(top) + "\n" if top else "",
+            "\n".join(bottom) + "\n" if bottom else "")
 
 
 def frag_category_nav(categories, active="all"):
@@ -649,7 +655,7 @@ def build_page(dp, page, cards, categories, pages):
                 slot_numbers.append(int(p))
     search_box = frag_search_box() if val(page, "search_box") in ("True", "1", "true") else ""
     intro = frag_intro(page)
-    ads = frag_ads(page, slot_numbers)
+    ads_top, ads_bottom = frag_ads(slot_numbers)
     # 卡片区分组渲染：先 type 再 row_seq；本页分类 = 本页卡片 cat 首次出现顺序
     page_cards = [c for c in cards if val(c, "dir_path") == dp]
     page_cards.sort(key=lambda c: (int_val(c, "card_layout", 99), int_val(c, "row_seq", 0)))
@@ -685,7 +691,7 @@ def build_page(dp, page, cards, categories, pages):
     <h1 class="hero__logo">{BRAND}</h1>
     <p class="hero__slogan">{SLOGAN}</p>
 {search_box}{intro}  </header>
-{ads}  <div class="sticky-top">
+{ads_top}  <div class="sticky-top">
 {nav}    <section class="site-search" aria-label="站内筛选">
       <div class="wrap">
         <input type="search" id="site-search-input" placeholder="在正协导航内筛选：标题 / 描述 / 分类 / 标签" autocomplete="off">
@@ -703,7 +709,7 @@ def build_page(dp, page, cards, categories, pages):
   <main class="cards-container wrap" id="cards-container" aria-label="卡片列表">
 {cards_html}  </main>
   <div class="empty-state" id="empty-state" hidden><p class="empty-state__text">没有找到匹配的结果，换个关键词或分类试试</p></div>
-{frag_footer(rel)}
+{ads_bottom}{frag_footer(rel)}
 {frag_scroll_btns()}
   <script src="{rel}assets/js/main.js?v={JS_VER}"></script>
 </body>
