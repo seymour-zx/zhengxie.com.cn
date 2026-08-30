@@ -77,7 +77,10 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html {
-  scroll-behavior: smooth;
+  /* ⚠ scroll-behavior:smooth 已移除（2026-08-30 22:3x，真根因）：
+     它与 JS window.scrollTo({behavior:'smooth'}) 冲突，导致 scrollTo 完全失效
+     （实测：CSS smooth 下 scrollTo(0,800) 后 scrollY=0；auto 后 scrollY=1600）。
+     滚动平滑由 JS safeScrollTo 统一接管（滚动按钮/随机漫步均经它）。 */
   /* ── 跨浏览器字体一致性（三道防线） ──
      1) 显式 16px 基准：浏览器默认字号可被用户设置改写，显式声明固定基数；
      2) text-size-adjust:100%：禁止浏览器（尤其移动端）"自动膨胀"文字，
@@ -801,9 +804,11 @@ input, textarea, select { font-family: inherit; }
 .footer__nav a:hover { color: var(--red); }
 /* A1 页脚非官方声明 */
 .footer__disclaimer { font-size: 12px; color: var(--text-sub); margin: 8px 0 0; line-height: 1.6; }
-/* A1 首页底部固定非官方声明条（可关闭） */
+/* A1 首页底部固定非官方声明条（可关闭）
+   z-index 80：必须低于 .scroll-btns(90)——声明条 fixed bottom 会覆盖右下角滚动按钮区域，
+   若 z-index 更高则拦截按钮点击（新世界 22:19 实测 bug，造物主定位图层覆盖）。 */
 .official-banner {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 200;
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 80;
   background: var(--red-deep); color: #fff;
   padding: 10px 48px 10px 16px; text-align: center;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, .25);
@@ -816,23 +821,19 @@ input, textarea, select { font-family: inherit; }
   cursor: pointer; padding: 2px 8px;
 }
 .official-banner__close:hover { opacity: .8; }
-/* A4 统计授权提示条（顶部） */
-.consent-bar {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 210;
-  background: var(--bg-warm); border-bottom: 1px solid var(--gold);
-  color: var(--text); font-size: 13px; line-height: 1.6;
-  padding: 10px 16px; display: flex; gap: 12px; align-items: center;
-  justify-content: center; flex-wrap: wrap;
+/* 声明条显示时，滚动按钮上移避开其覆盖区（空间分离——不依赖 z-index 对抗；
+   Edge 渲染 fixed 兄弟 z-index 与 Chrome 有差异，2026-08-30 23:39 造物主实测；
+   :has() 需 Chrome/Edge 105+，老内核回退默认低位） */
+body:has(.official-banner:not([hidden])) .scroll-btns { bottom: 76px; }
+@media (max-width: 768px) {
+  body:has(.official-banner:not([hidden])) .scroll-btns { bottom: 84px; }
 }
-.consent-bar[hidden] { display: none; }
-.consent-bar__text { flex: 1 1 280px; min-width: 0; }
-.consent-bar__text a { color: var(--red); }
-.consent-bar__actions { display: flex; gap: 8px; flex: none; }
-.consent-bar__btn {
-  border: 1px solid var(--gold); background: var(--red); color: #fff;
-  padding: 4px 16px; border-radius: 999px; cursor: pointer; font-size: 13px;
+/* 兜底：JS 驱动（不依赖 :has()，老内核/IE 模式同样生效）——声明条显示时脚本给 body 加 .has-notice，
+   关闭时移除；脚本另会按声明条实测高度写内联 bottom，优先级最高，此处仅作无 JS 时的样式降级 */
+body.has-notice .scroll-btns { bottom: 76px; }
+@media (max-width: 768px) {
+  body.has-notice .scroll-btns { bottom: 84px; }
 }
-.consent-bar__btn--ghost { background: transparent; color: var(--text-sub); }
 /* 工具簇：随机漫步 + 暗色切换，分隔成一组控制条 */
 .footer__tools {
   display: flex; align-items: center; justify-content: center;
@@ -920,3 +921,34 @@ input, textarea, select { font-family: inherit; }
 [data-theme="dark"] .breadcrumb__item { color: var(--text-sub); }
 [data-theme="dark"] .breadcrumb__item::after { color: var(--gold); }
 [data-theme="dark"] .breadcrumb__item--current { color: var(--red); }
+
+/* ═══ miniworld 新增（第 8 步）═══ */
+
+/* 随机漫步条（分类容器内 sticky，做-5） */
+.random-bar {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 4px 12px; font-size: 14px; color: var(--text);
+  background: var(--bg-warm, #fff8f2);
+}
+.random-bar[hidden] { display: none; }
+.random-btn {
+  border: 1px solid var(--gold); background: var(--red); color: #fff;
+  padding: 3px 14px; border-radius: 999px; cursor: pointer; font-size: 13px;
+}
+.random-btn--ghost { background: transparent; color: var(--text-sub); }
+
+/* 广告卡标识（is_ad，D-15） */
+.card--ad { position: relative; }
+.card__ad-label {
+  position: absolute; top: 4px; right: 4px; z-index: 2;
+  background: var(--gold, #d9b978); color: #fff; font-size: 10px;
+  padding: 1px 6px; border-radius: 3px; letter-spacing: .05em;
+}
+
+/* 无链接卡空行占位（与旧世界一致，不加提示文字——造物主拍板 2026-08-30） */
+
+/* T6 修复：滑道/卡片行允许横向触摸滚动，减少 JS 干预 */
+.track, .filter-tags__track,
+.card__tags, .card__links, .card__title, .card__desc {
+  touch-action: pan-x pan-y;
+}

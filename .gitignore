@@ -1,16 +1,17 @@
-# Python 构建产物：避免 __pycache__ / *.pyc 被提交（曾被误提交，字节码可反编译暴露源码）
+# miniworld · .gitignore（身份/治理文件全部进 git，仅忽略产物与备份）
+
+# Python 构建产物：字节码可反编译暴露源码，不进 git
 __pycache__/
 *.pyc
 
-# 回档备份：本地可回档即可，不进 Git（含 MANIFEST.txt，整体忽略）
+# 回档备份：本地可回档即可，不进 git（含 MANIFEST.txt，整体忽略）
 .workbuddy/backups/
 
 # 临时校验/调试脚本
 *.verify.tmp.py
 
-# 注意：.workbuddy/memory/、.workbuddy/docs/、.workbuddy/skills/ 等"强制同步文件"
-# 必须进 Git（跨设备可读）。不要在此忽略它们。详见 .workbuddy/docs/CONVENTIONS.md 第五节「流程与执行」。
-#
-# 站点 build 产物（index.html、directory/<name>/index.html 等由 build_homeplus.py 生成）
-# 同步策略（2026-08-25 拍板·方案甲）：产物进 Git、随仓库同步。依据 CONVENTIONS 5.2
-# 「站点源码 html」属强制同步文件；本文件不忽略它们（可重建≠不入仓，跨设备需可读整站）。
+# 注意：以下文件【必须进 git】（跨设备同步，GitHub Pages 不发布点目录 → 不公开）：
+#   - 身份文件：BOOTSTRAP.md / IDENTITY.md / SOUL.md / USER.md（创世神存在凭证）
+#   - 治理文件：.workbuddy/宪法.md、.workbuddy/contracts/、.workbuddy/memory/、
+#     .workbuddy/overviews/、.workbuddy/skills/
+# 不要在本文件忽略它们。

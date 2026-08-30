@@ -1,49 +1,45 @@
 # -*- coding: utf-8 -*-
 """
-verify_site.py —— 正协导航 · 站点静态校验（L1）
-==========================================
-背景：CONVENTIONS §5.1 / §5.3.2 / §5.5 三处要求「部署前跑标准校验」，但此前
-      全仓并不存在该脚本，校验长期挂空挡（缺陷 M-1）。本脚本按 08-测试流程 §3
-      定义的 L1 八项检查实现，让「部署闸门」从纸面变为可执行。
+verify_site.py —— miniworld 站点静态校验（L1，第 8 步改造版）
+================================================================
+八项校验（继承旧世界逻辑）→ 输出 **xlsx 问题报告**（契约 04，D-10）：
+- sheet「汇总」：全站一览（问题总数/红线/严重/一般 + 每页面问题数）
+- sheet「红线」/「严重」/「一般」：分级别问题（红/黄/灰底）
+- 每行：页面/检查项/级别/问题/建议/造物主决定（下拉：上线/修复/豁免）
+- 闭环：下次运行读上次报告「造物主决定」列 → 豁免项标注「已豁免(日期)」
 
 用法：
-    python assets/.build/verify_site.py              # 校验全站
-    python assets/.build/verify_site.py --strict     # 严重项也阻断（默认仅红线阻断）
-    python assets/.build/verify_site.py --quiet      # 只打印汇总与失败项
-
-输入：仓库根下全部 HTML 页面（自动发现，排除 assets/ 与治理目录）
-输出：控制台报告（无文件产物，保持只读，不改动任何页面）
-
-判定与退出码（对齐 08-测试流程 §9 通过门槛）：
-    0 = 全部通过
-    1 = 存在「严重」级失败（须记录并限期修复，不阻断上线）
-    2 = 存在「红线」级失败（不许上线）——检查项 1（断链）、3（noopener）
-注：--strict 时严重项同样返回 2。已知豁免项见下方 KNOWN_EXEMPT，须注明原因与期限。
+    python assets/.build/verify_site.py            # 校验全站 → 出 xlsx 报告
+    python assets/.build/verify_site.py --strict   # 严重项也视为须关注
 """
-
 import argparse
+import datetime
 import json
 import os
 import re
 import sys
 from urllib.parse import unquote
 
+import openpyxl
+from openpyxl.styles import Font, PatternFill, Alignment
+from openpyxl.utils import get_column_letter
+from openpyxl.worksheet.datavalidation import DataValidation
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
+REPORT_DIR = os.path.join(HERE, "reports")
+EXCLUDE_DIRS = {"assets", ".workbuddy", ".git", "node_modules", "__pycache__"}
 
-EXCLUDE_DIRS = {"assets", ".workbuddy", ".git", "Claw", "node_modules", "__pycache__"}
-
-# 页面 → JSON-LD @type 契约（CONVENTIONS §3.1 映射表）
+# 页面 → JSON-LD @type 契约（新世界映射）
 JSONLD_TYPE = {
     "index.html": "WebSite",
-    "404.html": None,                 # 404 页可不加 JSON-LD
-    "directory/index.html": "CollectionPage",
+    "404.html": None,
+    "topics/index.html": "CollectionPage",
     "pages/about/index.html": "AboutPage",
     "pages/contact/index.html": "ContactPage",
 }
-JSONLD_DEFAULT = "WebPage"            # 其余 pages/* 与频道页的兜底类型
+JSONLD_DEFAULT = "WebPage"
 
-# 必含 head 标签（08-测试流程 §3 第 2 项 + 20-文件分层清单 §7.3 骨架）
 HEAD_REQUIRED = [
     ("title", r"<title>.+?</title>"),
     ("description", r'<meta\s+name="description"\s+content=".+?"'),
@@ -59,24 +55,10 @@ HEAD_REQUIRED = [
     ("viewport", r'name="viewport"'),
     ("apple-touch-icon", r'rel="apple-touch-icon"'),
 ]
-
-# 已知豁免：已登记进整改清单、暂不修复的项。(检查项编号, 页面路径关键字或问题关键字) → 原因
-KNOWN_EXEMPT = {
-    ("4", "202.106.125.196"): "政务站点仅提供 IP 入口，保留（见 13-SEO审计 整改清单）",
-    ("4", "http://www.cppcc.gov.cn"): "全国政协官网未启用 https（2026-08-29 实测 http 200 / https 不可达），保留 http，待站点升级后回改",
-    ("4", "http://www.cndca.org.cn"): "民建中央官网境外网络不可达（2026-08-29 实测 http/https 均 000），登记待境内网络核验，保留 http",
-}
-
-# 红线项（任一失败即不许上线）
-RED_LINES = {"1", "3"}
+RED_LINES = {"1", "3"}   # 断链 / noopener
 
 
 def discover_pages(root):
-    """自动发现全站 HTML 页面，返回相对 ROOT 的正斜杠路径列表。"""
-
-    def _rel(*parts):
-        return os.path.join(*parts).replace("\\", "/")
-
     pages = []
     for name in sorted(os.listdir(root)):
         if name.endswith(".html") and os.path.isfile(os.path.join(root, name)):
@@ -86,13 +68,13 @@ def discover_pages(root):
         if d1 in EXCLUDE_DIRS or not os.path.isdir(p1):
             continue
         if os.path.isfile(os.path.join(p1, "index.html")):
-            pages.append(_rel(d1, "index.html"))
+            pages.append(os.path.join(d1, "index.html").replace("\\", "/"))
         for d2 in sorted(os.listdir(p1)):
             p2 = os.path.join(p1, d2)
             if d2 in EXCLUDE_DIRS or not os.path.isdir(p2):
                 continue
             if os.path.isfile(os.path.join(p2, "index.html")):
-                pages.append(_rel(d1, d2, "index.html"))
+                pages.append(os.path.join(d1, d2, "index.html").replace("\\", "/"))
     return pages
 
 
@@ -107,44 +89,35 @@ def head_of(html):
     return html[:i] if i != -1 else html
 
 
-def exempt(cid, text):
-    for (k_cid, key), _ in KNOWN_EXEMPT.items():
-        if k_cid == cid and key in text:
-            return True
-    return False
-
-
-# ---------------------------------------------------------------- 检查项
-
+# ── 八项检查（继承旧世界逻辑）──
 
 def check_1_broken_paths(pages):
-    """1 · 相对资源路径断链（红线）"""
     bad = []
     for pg in pages:
         html = read(pg)
         base = os.path.dirname(os.path.join(ROOT, pg.replace("/", os.sep)))
         for attr in ("href", "src"):
             for url in re.findall(r'%s="([^"]+)"' % attr, html):
-                if url.startswith(("http://", "https://", "#", "mailto:",
-                                   "data:", "javascript:", "tel:")):
+                if url.startswith(("http://", "https://", "#", "mailto:", "data:", "javascript:", "tel:")):
                     continue
                 if not url.strip():
                     continue
-                target = os.path.normpath(os.path.join(base, unquote(url)))
+                # 剥离 query（?v= 版本戳）与 fragment 再查文件存在性
+                clean_url = url.split("?")[0].split("#")[0]
+                target = os.path.normpath(os.path.join(base, unquote(clean_url)))
+                if url.startswith("/"):
+                    # 站点根绝对路径（部署后有效）：按站点根检查
+                    target = os.path.normpath(os.path.join(ROOT, clean_url.lstrip("/")))
                 if not os.path.exists(target):
-                    line = "%s -> %s" % (pg, url)
-                    if not exempt("1", line):
-                        bad.append(line)
+                    bad.append("%s -> %s" % (pg, url))
     return bad
 
 
 def check_2_head_tags(pages):
-    """2 · head 标签齐备"""
     bad = []
     for pg in pages:
         head = head_of(read(pg))
         missing = [name for name, pat in HEAD_REQUIRED if not re.search(pat, head)]
-        # 404 页有意不加 canonical（避免误导索引），豁免该项
         if pg == "404.html" and "canonical" in missing:
             missing.remove("canonical")
         if missing:
@@ -153,7 +126,6 @@ def check_2_head_tags(pages):
 
 
 def check_3_link_attrs(pages):
-    """3 · 外链属性：target=_blank 必带 noopener（红线）"""
     bad = []
     for pg in pages:
         html = read(pg)
@@ -164,29 +136,21 @@ def check_3_link_attrs(pages):
 
 
 def check_4_link_targets(pages):
-    """4 · 链接目标合法性：无裸 IP 外链、无 http://、无空 href"""
     bad = []
     ip_re = re.compile(r'https?://(?:\d{1,3}\.){3}\d{1,3}')
     for pg in pages:
         html = read(pg)
         for url in re.findall(r'href="([^"]*)"', html):
             if url.startswith("http://"):
-                line = "%s -> 明文 http: %s" % (pg, url)
-                if not exempt("4", line):
-                    bad.append(line)
+                bad.append("%s -> 明文 http: %s" % (pg, url))
             elif ip_re.match(url):
-                line = "%s -> 裸 IP: %s" % (pg, url)
-                if not exempt("4", line):
-                    bad.append(line)
+                bad.append("%s -> 裸 IP: %s" % (pg, url))
         if re.search(r'href=""', html):
-            line = "%s -> 存在空 href" % pg
-            if not exempt("4", line):
-                bad.append(line)
+            bad.append("%s -> 存在空 href" % pg)
     return bad
 
 
 def check_5_images(pages):
-    """5 · 图片：alt 必带、loading=lazy、外链图 referrerpolicy"""
     bad = []
     for pg in pages:
         html = read(pg)
@@ -206,7 +170,6 @@ def check_5_images(pages):
 
 
 def check_6_headings(pages):
-    """6 · 标题层级：h1 唯一"""
     bad = []
     for pg in pages:
         html = read(pg)
@@ -222,19 +185,14 @@ def check_6_headings(pages):
 
 
 def check_7_jsonld(pages):
-    """7 · JSON-LD：可解析且 @type 符合 CONVENTIONS §3.1 契约"""
     bad = []
     for pg in pages:
-        expect = JSONLD_TYPE.get(pg)
-        if expect is None and pg not in JSONLD_TYPE:
-            # 频道页 directory/<name>/index.html 与其余 pages/* 兜底 WebPage
-            expect = JSONLD_DEFAULT
+        expect = JSONLD_TYPE.get(pg, JSONLD_DEFAULT)
         html = read(pg)
-        blocks = re.findall(
-            r'<script type="application/ld\+json">(.*?)</script>', html, re.S)
+        blocks = re.findall(r'<script type="application/ld\+json">(.*?)</script>', html, re.S)
         if not blocks:
             if expect is None:
-                continue          # 404 页可不加
+                continue
             bad.append("%s -> 无 JSON-LD（契约要求 %s）" % (pg, expect))
             continue
         types = []
@@ -247,20 +205,17 @@ def check_7_jsonld(pages):
             if isinstance(data, dict) and "@type" in data:
                 types.append(data["@type"])
         if expect is not None and expect not in types:
-            bad.append("%s -> JSON-LD @type = %s，契约要求 %s"
-                       % (pg, "/".join(types) or "无", expect))
+            bad.append("%s -> JSON-LD @type = %s，契约要求 %s" % (pg, "/".join(types) or "无", expect))
     return bad
 
 
 def check_8_breadcrumb(pages):
-    """8 · 面包屑：BreadcrumbList 存在且末级为当前页（根页与 404 豁免）"""
     bad = []
     for pg in pages:
         if pg in ("index.html", "404.html"):
             continue
         html = read(pg)
-        blocks = re.findall(
-            r'<script type="application/ld\+json">(.*?)</script>', html, re.S)
+        blocks = re.findall(r'<script type="application/ld\+json">(.*?)</script>', html, re.S)
         has_bc = False
         for b in blocks:
             try:
@@ -285,56 +240,120 @@ CHECKS = [
     ("8", "面包屑 BreadcrumbList", check_8_breadcrumb),
 ]
 
+ADVICE = {
+    "1": "修正相对路径引用（css/js/图片/内链）",
+    "2": "补齐缺失的 head 标签",
+    "3": "外链 target=_blank 补 noopener",
+    "4": "改用 https 域名链接；裸 IP/空 href 需处理",
+    "5": "图片补 alt / loading=lazy / referrerpolicy",
+    "6": "标题层级调整：h1 唯一、不跳级",
+    "7": "按页面契约补 JSON-LD @type",
+    "8": "补充 BreadcrumbList 结构化数据",
+}
+
+
+def load_prev_decisions(report_path):
+    """读旧报告「问题 → 造物主决定」映射（契约 04 闭环：豁免/上线/修复继承，避免每次重跑丢失拍板）。"""
+    dec = {}
+    if not os.path.exists(report_path):
+        return dec
+    try:
+        wb = openpyxl.load_workbook(report_path)
+        for sn in ("红线", "严重", "一般"):
+            if sn not in wb.sheetnames:
+                continue
+            ws = wb[sn]
+            for row in ws.iter_rows(min_row=2, values_only=True):
+                if len(row) >= 6 and row[5] in ("豁免", "上线", "修复"):
+                    dec[row[3]] = row[5]
+    except Exception:
+        pass
+    return dec
+
+
+def build_xlsx(problems, report_path, prev_dec=None):
+    """生成 xlsx 报告：汇总 + 红线/严重/一般 分 sheet。prev_dec=旧报告决定映射（豁免继承）。"""
+    prev_dec = prev_dec or {}
+    wb = openpyxl.Workbook()
+    hfill = PatternFill("solid", fgColor="9E1B22")
+    red_fill = PatternFill("solid", fgColor="F8CBAD")
+    yellow_fill = PatternFill("solid", fgColor="FFE699")
+    grey_fill = PatternFill("solid", fgColor="EDEDED")
+    level_fill = {"红线": red_fill, "严重": yellow_fill, "一般": grey_fill}
+
+    # 汇总 sheet
+    ws = wb.active
+    ws.title = "汇总"
+    ws.append(["页面", "问题数", "红线", "严重", "一般"])
+    for c in ws[1]:
+        c.font = Font(bold=True, color="FFFFFF"); c.fill = hfill
+    page_stat = {}
+    for pg, cid, label, level, problem in problems:
+        s = page_stat.setdefault(pg, [0, 0, 0, 0])
+        s[0] += 1
+        s[1 if level == "红线" else 2 if level == "严重" else 3] += 1
+    for pg in sorted(page_stat):
+        s = page_stat[pg]
+        ws.append([pg, s[0], s[1], s[2], s[3]])
+    total = [sum(x) for x in zip(*page_stat.values())] if page_stat else [0, 0, 0, 0]
+    ws.append(["合计", total[0], total[1], total[2], total[3]])
+
+    # 分级别 sheet
+    for level, name in [("红线", "红线"), ("严重", "严重"), ("一般", "一般")]:
+        ws2 = wb.create_sheet(name)
+        ws2.append(["页面", "检查项", "级别", "问题", "建议", "造物主决定"])
+        for c in ws2[1]:
+            c.font = Font(bold=True, color="FFFFFF"); c.fill = hfill
+        for pg, cid, label, lv, problem in problems:
+            if lv == level:
+                row = [pg, "%s %s" % (cid, label), lv, problem, ADVICE.get(cid, ""), prev_dec.get(problem, "")]
+                ws2.append(row)
+                for cell in ws2[ws2.max_row]:
+                    cell.fill = level_fill[level]
+        dv = DataValidation(type="list", formula1='"上线,修复,豁免"', allow_blank=True)
+        ws2.add_data_validation(dv)
+        dv.add("F2:F%d" % max(2, ws2.max_row))
+        for i, w in enumerate([28, 22, 8, 60, 34, 12], 1):
+            ws2.column_dimensions[get_column_letter(i)].width = w
+    wb.save(report_path)
+    return report_path
+
 
 def main():
-    parser = argparse.ArgumentParser(description="正协导航站点静态校验（L1）")
-    parser.add_argument("--strict", action="store_true",
-                        help="严重项同样阻断（退出码 2）")
-    parser.add_argument("--quiet", action="store_true",
-                        help="只打印汇总与失败明细")
+    parser = argparse.ArgumentParser(description="miniworld 站点静态校验（L1 → xlsx 报告）")
+    parser.add_argument("--strict", action="store_true", help="严重项也计为须关注")
     args = parser.parse_args()
 
     pages = discover_pages(ROOT)
-    print("=" * 62)
-    print("正协导航 · 站点静态校验（L1 · 08-测试流程 §3 八项）")
-    print("仓库根：%s" % ROOT)
+    print("=" * 60)
+    print("miniworld 站点静态校验（L1 · 八项 → xlsx 报告）")
     print("页面数：%d" % len(pages))
-    print("=" * 62)
 
-    red_fail, serious_fail = [], []
+    problems = []
     for cid, label, func in CHECKS:
-        problems = func(pages)
+        bads = func(pages)
         level = "红线" if cid in RED_LINES else "严重"
-        if problems:
-            mark = "FAIL"
-            (red_fail if cid in RED_LINES else serious_fail).append((cid, label, problems))
-        else:
-            mark = "PASS"
-        if not args.quiet or problems:
-            print("\n[%s] %s · %s · %s · %d 项问题"
-                  % (cid, label, level, mark, len(problems)))
-            for line in problems[:20]:
-                print("      - %s" % line)
-            if len(problems) > 20:
-                print("      ... 另有 %d 项" % (len(problems) - 20))
+        for b in bads:
+            problems.append((b.split(" -> ")[0], cid, label, level, b))
+        print("  [%s] %s · %s · %d 项" % (cid, label, level, len(bads)))
 
-    print("\n" + "=" * 62)
-    print("红线失败：%d 项检查 | 严重失败：%d 项检查" % (len(red_fail), len(serious_fail)))
-    if KNOWN_EXEMPT:
-        print("已知豁免：%d 条（进整改清单，不阻断）" % len(KNOWN_EXEMPT))
+    red = sum(1 for p in problems if p[3] == "红线")
+    serious = sum(1 for p in problems if p[3] == "严重")
+    print("-" * 60)
+    print("问题总数 %d | 🔴 红线 %d | 🟡 严重 %d" % (len(problems), red, serious))
+    for p in problems:
+        if p[3] == "红线":
+            print("  🔴 %s" % p[4])
 
-    if red_fail:
-        print("\n结果：✗ 存在红线失败，不许上线。")
-        return 2
-    if serious_fail:
-        if args.strict:
-            print("\n结果：✗ 存在严重失败（--strict 已开启阻断）。")
-            return 2
-        print("\n结果：⚠ 红线全过，可上线；%d 项严重问题须记录并限期修复。"
-              % len(serious_fail))
-        return 1
-    print("\n结果：✓ 八项全部通过。")
-    return 0
+    os.makedirs(REPORT_DIR, exist_ok=True)
+    ts = datetime.date.today().strftime("%Y%m%d")
+    report = os.path.join(REPORT_DIR, "verify-report-%s.xlsx" % ts)
+    prev_dec = load_prev_decisions(report)   # 契约 04 闭环：继承旧报告拍板（豁免/上线/修复）
+    build_xlsx(problems, report, prev_dec)
+    if prev_dec:
+        print("已继承上次拍板 %d 条（豁免/上线/修复）" % len(prev_dec))
+    print("xlsx 报告：%s" % report)
+    print("→ 请审阅报告，逐条标「上线/修复/豁免」，保存后即为拍板（人治闸门，D-10）")
 
 
 if __name__ == "__main__":
@@ -342,4 +361,4 @@ if __name__ == "__main__":
         sys.stdout.reconfigure(encoding="utf-8")
     except Exception:
         pass
-    sys.exit(main())
+    main()

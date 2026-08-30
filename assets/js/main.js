@@ -33,22 +33,12 @@
   var themeToggle = document.getElementById('theme-toggle');
   var emptyState = document.getElementById('empty-state');
   var randomBtn = document.getElementById('random-site');
+  var randomBar = document.getElementById('random-bar');
+  var randomRefresh = document.getElementById('random-refresh');
+  var randomExit = document.getElementById('random-exit');
 
-  /* ── 数据分析埋点（OSM 指标树 · #45 棒落地 · #46 棒接百度统计）──
-     PIPL 红线：搜索词属敏感个人信息，绝不采集原始 query；
-     仅上报 {cat 维度, 是否 0 结果, 关键词长度(非内容), 标签数} 的聚合信号。
-     境内合规优先：已选【百度统计】为事件级后端（数据可不出境，消解 #17 出境风险）——页面存在
-     window._hmt 时，zxTrack 直接转发为 _trackEvent（见 zxTrackBaidu）；ZX_ANALYTICS_ENDPOINT 保留为
-     可选自托管 beacon（Umami/Plausible 等），留空则不发送。两者可并存。 */
-  var ZX_ANALYTICS_ENDPOINT = '';   // ← 可选：自托管 beacon 端点（Umami/Plausible 等，留空=不发送）
-  var ZX_BAIDU_TONGJI_ID = '2f4df5057c929092e36a0d6357e35261';  // ← 百度统计站点 ID（与页面已有 snippet 同一 ID，保证全站事件可达）
-  var ZX_SESSION_ID = (function () {
-    try { return 's_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10); }
-    catch (e) { return 's_anon'; }
-  })();
-  var ZX_LAST_SEARCH_TS = 0;
-  /* 百度统计自动注入：仅当页面未自带 snippet（window._hmt 不存在）时注入，避免重复加载；
-     站点已自带 snippet 的页面（index/overview/404/directory）沿用其队列，zxTrack 统一转发。 */
+  /* 百度统计兜底注入：页面未自带 snippet（window._hmt 不存在）时加载，避免重复 */
+  var ZX_BAIDU_TONGJI_ID = '2f4df5057c929092e36a0d6357e35261';  // 百度统计站点 ID（与 build 注入 snippet 同一 ID）
   (function loadBaiduTongji() {
     if (!ZX_BAIDU_TONGJI_ID || window._hmt) { return; }
     var s = document.createElement('script');
@@ -58,53 +48,6 @@
     if (first && first.parentNode) { first.parentNode.insertBefore(s, first); }
     else { (document.head || document.documentElement).appendChild(s); }
   })();
-  /* 卡片稳定标识（非 PII）：优先取收藏 data-key，否则 data-id */
-  function zxCardId(card) {
-    var f = card.querySelector('.card__fav');
-    return f ? f.getAttribute('data-key') : (card.getAttribute('data-id') || 'unknown');
-  }
-  /* 百度统计转发：事件 → _trackEvent(category, action, opt_label)，不传原始 query（PIPL） */
-  function zxTrackBaidu(name, props) {
-    try {
-      if (!window._hmt || typeof window._hmt.push !== 'function') { return; }
-      var def = {
-        search: ['站内搜索', 'search'],
-        fav_add: ['本地收藏', 'fav_add'],
-        card_click: ['卡片点击', 'card_click'],
-        engine_search: ['集合搜索', 'engine_search'],
-        random_click: ['随机漫步', 'random_click'],
-        ad_impression: ['广告位', 'impression'],
-        ad_click: ['广告位', 'click'],
-        about_view: ['关于页', 'view'],
-        about_read: ['关于页', 'read']
-      }[name];
-      if (!def) { return; }
-      var label = '';
-      if (name === 'search') { label = (props.cat || '') + (props.zeroResult ? '|零结果' : ''); }
-      else if (name === 'card_click') { label = (props.cardId || '') + '|' + (props.cat || ''); }
-      else if (name === 'fav_add' || name === 'random_click') { label = props.cardId || ''; }
-      else if (name === 'engine_search') { label = String(props.kwLen || 0); }
-      else if (name === 'ad_impression' || name === 'ad_click') { label = props.slot || 'other'; }
-      window._hmt.push(['_trackEvent', def[0], def[1], label]);
-    } catch (e) { /* 静默 */ }
-  }
-  /* 统一发送：① 百度统计（境内合规）转发；② 可选自托管 beacon（端点非空才发） */
-  function zxTrack(name, props) {
-    var payload = { v: 1, sid: ZX_SESSION_ID, t: Date.now(), ev: name, p: props || {} };
-    zxTrackBaidu(name, props || {});
-    if (!ZX_ANALYTICS_ENDPOINT) {
-      if (window.console && console.debug) { console.debug('[zx-track]', name, payload.p); }
-      return;
-    }
-    try {
-      var blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
-      if (navigator.sendBeacon) { navigator.sendBeacon(ZX_ANALYTICS_ENDPOINT, blob); }
-      else {
-        var img = new Image();
-        img.src = ZX_ANALYTICS_ENDPOINT + '?d=' + encodeURIComponent(JSON.stringify(payload));
-      }
-    } catch (e) { /* 静默：埋点失败不影响主流程 */ }
-  }
 
   var catBtns = Array.prototype.slice.call(document.querySelectorAll('.category-btn'));
   var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
@@ -255,17 +198,6 @@
     /* 显隐变化 + 复位后复检溢出标记（卡片从隐藏恢复显示时 clientWidth 从 0 恢复，
        且名称/描述收起后宽度可能变化，必须重新检测，否则滚轮接管失效） */
     refreshScrollable();
-    /* 埋点：站内搜索（仅聚合信号，不含原始 query，PIPL 红线）
-       节流 800ms，避免逐键刷屏；只发 cat 维度 + 是否 0 结果 + 长度/标签数 */
-    if ((kw || filterTags.length || activeCat !== 'all') && Date.now() - ZX_LAST_SEARCH_TS > 800) {
-      ZX_LAST_SEARCH_TS = Date.now();
-      zxTrack('search', {
-        cat: activeCat,
-        zeroResult: visible === 0,
-        kwLen: kw ? kw.length : 0,
-        tagCount: filterTags.length
-      });
-    }
   }
 
   /* ── 渲染筛选标签 chips（插入中间滑道） ── */
@@ -482,7 +414,7 @@
       e.stopPropagation();
       var key = favBtn.getAttribute('data-key');
       var isFav = !!favs[key];
-      if (isFav) { delete favs[key]; } else { favs[key] = true; zxTrack('fav_add', { cardId: key }); }
+      if (isFav) { delete favs[key]; } else { favs[key] = true; }
       setFavUI(favBtn, !isFav);
       saveFavs();
       updateFavToggleStar();
@@ -491,11 +423,6 @@
     }
     /* 类型1/2/3 卡片：名称区→整行联动展名；描述区→整行联动展描述 */
     var targetCard = e.target.closest ? e.target.closest('.card') : null;
-    /* 卡片主链接点击：导航前埋点（不拦默认行为，sendBeacon 保证发出） */
-    var linkEl = e.target.closest ? e.target.closest('.card__link') : null;
-    if (linkEl && targetCard) {
-      zxTrack('card_click', { cat: targetCard.getAttribute('data-cat') || 'unknown', cardId: zxCardId(targetCard) });
-    }
     if (targetCard && !targetCard.hidden && getCardExpandType(targetCard)) {
       var onDesc = e.target.closest('.card__desc');
       var onTitle = e.target.closest('.card__title');
@@ -565,7 +492,6 @@
       e.preventDefault();
       var kw = engineInput.value.trim();
       if (!kw || !currentEngineUrl) { return; }
-      zxTrack('engine_search', { kwLen: kw.length });
       window.open(currentEngineUrl + encodeURIComponent(kw), '_blank', 'noopener');
     });
   }
@@ -695,6 +621,24 @@
       return Math.max(0, fc.offsetTop - stickyTop.offsetHeight);
     };
     var btns = scrollBtns.querySelectorAll('.scroll-btn');
+    /* 兼容滚动（造物主 2026-08-30 三次迭代定案）：
+       1. 小米老内核（X5<61）不认 behavior:'smooth' → 抛 TypeError → 降级两参数
+       2. CSS scroll-behavior:smooth 会让 window.scrollTo 完全失效（真根因，已从 CSS 移除）
+       3. 部分环境 JS smooth 启动被吞（headless/个别浏览器）→ 120ms 未动则降级立即滚动
+       原则：任何环境按钮都必须有效果；smooth 只是体验加分，失效即降级。 */
+    var safeScrollTo = function (top) {
+      var startY = window.scrollY;
+      try {
+        window.scrollTo({ top: top, behavior: 'smooth' });
+        /* smooth 启动检测：120ms 内 scrollY 未变化且目标距当前位置 > 2px → 降级立即滚动
+           （覆盖 smooth 被静默吞掉、未抛错的场景，如 CSS smooth 冲突残留/headless 虚拟时间） */
+        if (Math.abs(startY - top) > 2) {
+          setTimeout(function () {
+            if (window.scrollY === startY) { window.scrollTo(0, top); }
+          }, 120);
+        }
+      } catch (e) { window.scrollTo(0, top); }
+    };
     /* 点击循环顺序：3(向下) → 4(到底) → 1(向上) → 2(到顶) → 3 */
     var clickCycleNext = function (cur) {
       var order = ['down', 'bottom', 'up', 'top'];
@@ -826,9 +770,20 @@
             lastY = window.scrollY;
           }
           pendingUnlock = lockUserInput();
-          if (cur === 'top') window.scrollTo({ top: 0, behavior: 'smooth' });
-          else if (cur === 'bottom') window.scrollTo({ top: bottomYAbs(), behavior: 'smooth' });
-          else window.scrollTo({ top: alignTarget(), behavior: 'smooth' });
+          /* T6 兜底：自动滚动若异常（小米浏览器等），超时强制解锁，防滑动卡死 */
+          if (window.__zxScrollUnlockTimer) { clearTimeout(window.__zxScrollUnlockTimer); }
+          window.__zxScrollUnlockTimer = setTimeout(function () {
+            if (pendingUnlock) { pendingUnlock(); pendingUnlock = null; }
+            clickLock = false; pendingTarget = null;
+          }, 8000);
+          try {
+            if (cur === 'top') safeScrollTo(0);
+            else if (cur === 'bottom') safeScrollTo(bottomYAbs());
+            else safeScrollTo(alignTarget());
+          } catch (e) {
+            /* 滚动失败也必须解锁，绝不锁死用户输入 */
+            forceUnlock();
+          }
           showTarget(next);
         };
       })(btns[i]));
@@ -929,16 +884,154 @@
     });
   }
 
-  /* ── 12. 随机漫步：随机打开一张卡片 ── */
-  if (randomBtn) {
-    randomBtn.addEventListener('click', function () {
-      var visibleCards = cards.filter(function (c) { return !c.hidden; });
-      if (!visibleCards.length) { return; }
-      var pick = visibleCards[Math.floor(Math.random() * visibleCards.length)];
-      var link = pick.querySelector('.card__link');
-      if (link) { zxTrack('random_click', { cardId: zxCardId(pick) }); window.open(link.href, '_blank', 'noopener'); }
-    });
+  /* ── 12. 随机漫步：当前筛选池（含广告卡，不分普通/广告）数量加权随机类型 → 随机 2 行（行内同 type）；用户自选，不跳转 ── */
+  var RANDOM_LINES = 2;        // 随机卡行数（当前筛选池，含广告卡）
+  var inRandom = false;
+
+  function cardType(c) {
+    if (c.classList.contains('card--t2')) { return '2'; }
+    if (c.classList.contains('card--t3')) { return '3'; }
+    return '1';
   }
+
+  function groupByType(pool) {
+    var g = { '1': [], '2': [], '3': [] };
+    pool.forEach(function (c) { g[cardType(c)].push(c); });
+    return g;
+  }
+
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  /* 当前筛选状态下的可见卡（与 applyFilter 同条件；广告卡同池参与，不分普通/广告） */
+  function getVisibleCards() {
+    var kw = siteInput.value.trim();
+    var visible = [];
+    cards.forEach(function (card) {
+      var catOk = activeCat === 'all' || card.getAttribute('data-cat') === activeCat;
+      var text = card.__search.toLowerCase();
+      var kwOk = true;
+      var i;
+      for (i = 0; i < filterTags.length; i++) {
+        if (!textMatches(text, filterTags[i])) { kwOk = false; break; }
+      }
+      if (kwOk && kw && !textMatches(text, kw)) { kwOk = false; }
+      var favBtn = card.querySelector('.card__fav');
+      var favOk = !showFav || !!(favBtn && favs[favBtn.getAttribute('data-key')]);
+      if (catOk && kwOk && favOk) { visible.push(card); }
+    });
+    return visible;
+  }
+
+  /* 一行数量：桌面 4 / 平板 3 / 移动 2（与 CSS grid 列数一致） */
+  function getRowSize() {
+    try {
+      if (window.matchMedia('(min-width: 1024px)').matches) { return 4; }
+      if (window.matchMedia('(min-width: 768px)').matches) { return 3; }
+    } catch (e) { /* 无 matchMedia 时退回移动端 */ }
+    return 2;
+  }
+
+  /* 数量加权随机选类型：类型数量越多越可能被选中（不做任何排除——造物主 2026-08-30 拍板，排除会拔高少数类型） */
+  function weightedTypePick(candidates, group) {
+    var total = 0, i;
+    for (i = 0; i < candidates.length; i++) { total += group[candidates[i]].length; }
+    if (!total) { return candidates[0]; }
+    var r = Math.random() * total;
+    for (i = 0; i < candidates.length; i++) {
+      r -= group[candidates[i]].length;
+      if (r < 0) { return candidates[i]; }
+    }
+    return candidates[candidates.length - 1];
+  }
+
+  /* 随机取 n 行：按数量加权随机一个卡片类型 → 从该类型随机取 n 行（行内同 type；不足取全部 → 1~n*size 张） */
+  function pickLines(group, n, size) {
+    var allTypes = ['1', '2', '3'].filter(function (t) { return group[t].length > 0; });
+    if (!allTypes.length) { return { type: null, cards: [] }; }   // 池空（如筛选无结果）→ 空批
+    var t = weightedTypePick(allTypes, group);
+    return { type: t, cards: shuffle(group[t]).slice(0, n * size) };
+  }
+
+  function enterRandom() {
+    var rowSize = getRowSize();
+    // 当前筛选池（含广告卡）数量加权随机类型 → 随机 2 行
+    var group = groupByType(getVisibleCards());
+    var picked = pickLines(group, RANDOM_LINES, rowSize);
+    var pick = picked.cards;
+    // 显示随机卡，隐藏其余（不调 applyFilter，随机模式锁定）
+    cards.forEach(function (c) { c.hidden = true; });
+    pick.forEach(function (c) { c.hidden = false; });
+    // UI：显示随机条，隐藏分类标签 + 本地收藏按钮（随机模式不筛选收藏）
+    if (randomBar) { randomBar.hidden = false; }
+    document.querySelectorAll('.category-btn').forEach(function (b) { b.style.display = 'none'; });
+    document.querySelectorAll('.category-nav__fav').forEach(function (b) { b.style.display = 'none'; });
+    inRandom = true;
+    // 结果计数：随机漫步状态（手动更新，不用 applyFilter，防止按分类/搜索覆盖随机选择）
+    if (resultCount) { resultCount.textContent = '随机漫步：' + pick.length + ' 张卡片'; }
+  }
+
+  function exitRandom() {
+    cards.forEach(function (c) { c.hidden = false; });
+    if (randomBar) { randomBar.hidden = true; }
+    document.querySelectorAll('.category-btn').forEach(function (b) { b.style.display = ''; });
+    document.querySelectorAll('.category-nav__fav').forEach(function (b) { b.style.display = ''; });
+    inRandom = false;
+    applyFilter();
+  }
+
+  if (randomBtn) {
+    randomBtn.addEventListener('click', function () { enterRandom(); });
+  }
+  if (randomRefresh) {
+    randomRefresh.addEventListener('click', function () { enterRandom(); });
+  }
+  if (randomExit) {
+    randomExit.addEventListener('click', function () { exitRandom(); });
+  }
+
+  /* ── 13. 首次访问声明条（D-18 + 30 天有效期）：双保险——页面内联脚本（普通浏览器优先）
+        与本逻辑（Edge 增强安全阻止内联脚本时，由外部 main.js 接管；2026-08-30 23:58）── */
+  (function () {
+    var bar = document.getElementById('consent-bar');
+    var btn = document.getElementById('consent-close');
+    if (!bar) return;
+    var EXP = 30 * 24 * 60 * 60 * 1000, ts = 0;
+    /* 滚动按钮避让：不依赖 :has()（需 Edge 105+，老内核/IE 模式不生效会导致滚动按钮压住关闭按钮），
+       改按声明条实测高度内联计算，旧 CSS 同样生效（与页面内联脚本同一份逻辑，勿单边修改） */
+    function liftScrollBtns(on) {
+      var sb = document.getElementById('scroll-btns');
+      if (!sb) return;
+      if (!on) { sb.style.bottom = ''; return; }
+      var base = window.innerWidth <= 639 ? 16 : 24;
+      sb.style.bottom = ((bar.offsetHeight || 0) + base) + 'px';
+    }
+    /* 隐藏三重兜底：hidden 属性 + 内联 display（免疫缺 [hidden] 规则的旧 CSS 缓存）+ 撤回避让 */
+    function hideBar() {
+      bar.hidden = true;
+      bar.style.display = 'none';
+      try { document.body.classList.remove('has-notice'); } catch (e) {}
+      liftScrollBtns(false);
+    }
+    function closeBar() {
+      hideBar();
+      try { localStorage.setItem('zx_notice_closed', String(Date.now())); } catch (e) {}
+    }
+    try { var raw = localStorage.getItem('zx_notice_closed'); if (raw && /^\d{13}$/.test(raw)) ts = parseInt(raw, 10); } catch (e) {}
+    if (ts && (Date.now() - ts) <= EXP) { hideBar(); return; }
+    /* 内联脚本已关闭过（例如 localStorage 写入失败）→ 保持关闭，不再重新显示 */
+    if (bar.hidden || bar.style.display === 'none') { hideBar(); return; }
+    try { document.body.classList.add('has-notice'); } catch (e) {}
+    liftScrollBtns(true);
+    window.addEventListener('resize', function () { if (!bar.hidden) { liftScrollBtns(true); } });
+    if (btn) btn.addEventListener('click', closeBar);
+  })();
 
   /* ── 初始化 ── */
   /* 还原各卡片星标态（localStorage） */
@@ -1002,14 +1095,13 @@
         var cls = en.target.className || '';
         if (en.isIntersecting && !seen[cls]) {
           seen[cls] = true;
-          zxTrack('ad_impression', { slot: slotOf(cls) });
         }
       });
     }, { threshold: 0.5 });
     adEls.forEach(function (el) {
       io.observe(el);
       var slot = slotOf(el.className || '');
-      el.addEventListener('click', function () { zxTrack('ad_click', { slot: slot }); });
+      el.addEventListener('click', function () { /* 广告点击（打点已移除，D-16） */ });
     });
   })();
 
@@ -1017,7 +1109,6 @@
   (function () {
     var aboutArticle = document.querySelector('.about-content');
     if (!aboutArticle) { return; }
-    zxTrack('about_view', {});
     if (!('IntersectionObserver' in window)) { return; }
     var sentinel = document.createElement('div');
     sentinel.setAttribute('data-zx-read-sentinel', '1');
@@ -1025,7 +1116,6 @@
     var readObs = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         if (en.isIntersecting) {
-          zxTrack('about_read', {});
           readObs.disconnect();
         }
       });
