@@ -577,11 +577,52 @@
       if (wcard && getCardExpandType(wcard) && (el.classList.contains('card__title') || el.classList.contains('card__desc'))) { el = null; }
     }
     if (el && el.classList.contains('is-scrollable')) {
+      var max = el.scrollWidth - el.clientWidth;
+      if (max <= 1) { return; }   // 无横向溢出 → 页面正常滚动
+      /* trackpad 横向手势走 deltaX，普通鼠标竖向滚轮走 deltaY */
+      var delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      var atStart = el.scrollLeft <= 0;
+      var atEnd = el.scrollLeft >= max - 1;
+      /* 已到横向边界：竖向滚轮交还页面，否则鼠标悬停该滑道时整页“滑不动”（旧 bug） */
+      if ((delta < 0 && atStart) || (delta > 0 && atEnd)) { return; }
       e.preventDefault();
-      el.scrollLeft += e.deltaY;
-      return;
+      el.scrollLeft += delta;
     }
   }, { passive: false });
+
+  /* 桌面拖拽横向滚动（满足 .track 的 grab/grabbing 光标语义；触屏已由原生 pan-x 承接）。
+     单例管理：仅 3 个 document 级监听，避免给每个滑道挂大量监听。
+     仅在真溢出(is-scrollable)时启用；拖动超阈值才视为拖拽并抑制本次 click，
+     避免误触发分类/标签/链接的点击行为。 */
+  (function () {
+    var active = null, startX = 0, startLeft = 0, moved = false;
+    scrollRows.forEach(function (el) {
+      el.addEventListener('pointerdown', function (e) {
+        if (e.pointerType === 'touch') { return; }   // 触屏用原生 touch 滚动
+        if (e.pointerType === 'mouse' && e.button !== 0) { return; }
+        if (!el.classList.contains('is-scrollable')) { return; }
+        active = el; moved = false; startX = e.clientX; startLeft = el.scrollLeft;
+      });
+    });
+    document.addEventListener('pointermove', function (e) {
+      if (!active) { return; }
+      var dx = e.clientX - startX;
+      if (Math.abs(dx) > 6) { moved = true; }
+      active.scrollLeft = startLeft - dx;
+    }, { passive: true });
+    document.addEventListener('pointerup', function () {
+      if (!active) { return; }
+      var el = active; active = null;
+      if (moved) {
+        /* 拖拽结束抑制本次 click，避免误点分类/标签/链接 */
+        var stop = function (ev) { ev.preventDefault(); ev.stopPropagation(); };
+        el.addEventListener('click', stop, true);
+        setTimeout(function () { el.removeEventListener('click', stop, true); }, 0);
+      }
+      moved = false;
+    }, { passive: true });
+    document.addEventListener('pointercancel', function () { active = null; moved = false; }, { passive: true });
+  })();
 
   /* ── 7. 暗色模式切换（localStorage 持久化） ── */
   if (themeToggle) {
@@ -693,45 +734,8 @@
     /* 滚动自动判定显示哪个按钮 */
     var lastDir = 'down';
     var lastY = window.scrollY;
-    var clickLock = false;        // 点击触发的滚动期间锁住用户输入与 syncScroll
-    var pendingTarget = null;     // 滚动结束后应显示的目标（点击循环 next）
-    var pendingUnlock = null;     // 滚动结束后解除锁定的函数
-
-    var lockUserInput = function () {
-      /* 阻止用户滚动输入；返回 unlock 函数用于解除监听。
-         注：每次调用都生成新 handler 引用，但 unlock 时只移除这一组。
-         连续点击时若前一次 unlock 尚未触发，新调用会覆盖 pendingUnlock，
-         导致旧 handler 残留。修复：每次 lock 前先调用旧 unlock 清场。 */
-      var wheelHandler = function (e) { e.preventDefault(); };
-      var touchHandler = function (e) { e.preventDefault(); };
-      var keyHandler = function (e) {
-        var keys = ['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' ', 'Spacebar'];
-        if (keys.indexOf(e.key) !== -1) e.preventDefault();
-      };
-      window.addEventListener('wheel', wheelHandler, { passive: false });
-      window.addEventListener('touchmove', touchHandler, { passive: false });
-      window.addEventListener('keydown', keyHandler, { passive: false });
-      return function unlock() {
-        window.removeEventListener('wheel', wheelHandler);
-        window.removeEventListener('touchmove', touchHandler);
-        window.removeEventListener('keydown', keyHandler);
-      };
-    };
-    /* 在新一次 lock 前，强制清理旧的锁（避免残留 handler 永久锁定）。 */
-    var forceUnlock = function () {
-      if (pendingUnlock) { pendingUnlock(); pendingUnlock = null; }
-      clickLock = false;
-      pendingTarget = null;
-      if (scrollEndTimer) { clearTimeout(scrollEndTimer); scrollEndTimer = null; }
-    };
 
     var syncScroll = function () {
-      if (clickLock) {
-        // 锁定期间：不重算 lastDir（保留用户预期方向）
-        var y = window.scrollY;
-        lastY = y;   // 只更新 lastY，不更新 lastDir
-        return;
-      }
       var y = window.scrollY;
       lastDir = (y > lastY) ? 'down' : (y < lastY ? 'up' : lastDir);
       lastY = y;
@@ -761,22 +765,11 @@
       }
     };
 
-    /* 滚动结束检测：连续 100ms y 不变视为滚动结束 */
+    /* 滚动结束检测：连续 100ms y 不变视为滚动结束，重算应显示的按钮 */
     var scrollEndTimer = null;
     var onScrollEnd = function () {
       if (scrollEndTimer) clearTimeout(scrollEndTimer);
-      scrollEndTimer = setTimeout(function () {
-        clickLock = false;
-        // 解除用户输入锁定
-        if (pendingUnlock) { pendingUnlock(); pendingUnlock = null; }
-        // 滚动结束：直接显示点击循环稳态（pendingTarget），不再让 syncScroll 重算
-        if (pendingTarget) {
-          showTarget(pendingTarget);
-          pendingTarget = null;
-        } else {
-          syncScroll();
-        }
-      }, 100);
+      scrollEndTimer = setTimeout(syncScroll, 100);
     };
 
     window.addEventListener('scroll', function () {
@@ -794,31 +787,20 @@
              点 2(到顶) → 滚到 0           + 显示 3(向下)
              点 3(向下) → 滚到 alignTarget + 显示 4(到底)
              点 4(到底) → 滚到 bottomY     + 显示 1(向上)
-             连续点击时先 forceUnlock 清掉上一轮的锁，避免 handler 残留。 */
+             不锁用户输入：滚动交给 safeScrollTo 统一接管（含 smooth→降级），
+             失败也无锁可死；按钮位置同步交由 scroll 事件的 syncScroll 自然完成，
+             彻底消除旧版“点击后页面最长冻结 8s”的卡死问题。 */
           var cur = btn.getAttribute('data-target');
           var next = clickCycleNext(cur);
-          forceUnlock();   // 清掉上一轮残留的锁 + 计时器
-          clickLock = true;
-          pendingTarget = next;
           if (cur === 'up' || cur === 'down') {
             lastDir = (cur === 'up') ? 'up' : 'down';
             lastY = window.scrollY;
           }
-          pendingUnlock = lockUserInput();
-          /* T6 兜底：自动滚动若异常（小米浏览器等），超时强制解锁，防滑动卡死 */
-          if (window.__zxScrollUnlockTimer) { clearTimeout(window.__zxScrollUnlockTimer); }
-          window.__zxScrollUnlockTimer = setTimeout(function () {
-            if (pendingUnlock) { pendingUnlock(); pendingUnlock = null; }
-            clickLock = false; pendingTarget = null;
-          }, 8000);
           try {
             if (cur === 'top') safeScrollTo(0);
             else if (cur === 'bottom') safeScrollTo(bottomYAbs());
             else safeScrollTo(alignTarget());
-          } catch (e) {
-            /* 滚动失败也必须解锁，绝不锁死用户输入 */
-            forceUnlock();
-          }
+          } catch (e) { /* 滚动异常不影响后续交互 */ }
           showTarget(next);
         };
       })(btns[i]));
