@@ -19,6 +19,41 @@
 (function () {
   'use strict';
 
+  /* ── 0. 首次访问声明条（D-18 + 30 天有效期）── 单一真源 + 顶部优先执行：
+        原 HTML 内联 NOTICE_SCRIPT 已于 2026-08-31 移除，声明条逻辑仅在本文件维护（避免重复 + 消除内联 CSP 隐患）。
+        置于 main.js 大 IIFE 最前：即便后续功能代码抛未捕获错误，本段已先执行，声明条仍会初始化（不被连累）。
+        不依赖 :has()；按声明条实测高度内联计算滚动按钮避让，旧 CSS 同样生效。 */
+  (function () {
+    var bar = document.getElementById('consent-bar');
+    var btn = document.getElementById('consent-close');
+    if (!bar) return;
+    var EXP = 30 * 24 * 60 * 60 * 1000, ts = 0;
+    function liftScrollBtns(on) {
+      var sb = document.getElementById('scroll-btns');
+      if (!sb) return;
+      if (!on) { sb.style.bottom = ''; return; }
+      var base = window.innerWidth <= 639 ? 16 : 24;
+      sb.style.bottom = ((bar.offsetHeight || 0) + base) + 'px';
+    }
+    function hideBar() {
+      bar.hidden = true;
+      bar.style.display = 'none';
+      try { document.body.classList.remove('has-notice'); } catch (e) {}
+      liftScrollBtns(false);
+    }
+    function closeBar() {
+      hideBar();
+      try { localStorage.setItem('zx_notice_closed', String(Date.now())); } catch (e) {}
+    }
+    try { var raw = localStorage.getItem('zx_notice_closed'); if (raw && /^\d{13}$/.test(raw)) ts = parseInt(raw, 10); } catch (e) {}
+    if (ts && (Date.now() - ts) <= EXP) { hideBar(); return; }
+    if (bar.hidden || bar.style.display === 'none') { hideBar(); return; }
+    try { document.body.classList.add('has-notice'); } catch (e) {}
+    liftScrollBtns(true);
+    window.addEventListener('resize', function () { if (!bar.hidden) { liftScrollBtns(true); } });
+    if (btn) btn.addEventListener('click', closeBar);
+  })();
+
   var cardsContainer = document.getElementById('cards-container');
   var siteInput = document.getElementById('site-search-input');
   var tagsWrap = document.getElementById('filter-tags');
@@ -995,43 +1030,6 @@
   if (randomExit) {
     randomExit.addEventListener('click', function () { exitRandom(); });
   }
-
-  /* ── 13. 首次访问声明条（D-18 + 30 天有效期）：双保险——页面内联脚本（普通浏览器优先）
-        与本逻辑（Edge 增强安全阻止内联脚本时，由外部 main.js 接管；2026-08-30 23:58）── */
-  (function () {
-    var bar = document.getElementById('consent-bar');
-    var btn = document.getElementById('consent-close');
-    if (!bar) return;
-    var EXP = 30 * 24 * 60 * 60 * 1000, ts = 0;
-    /* 滚动按钮避让：不依赖 :has()（需 Edge 105+，老内核/IE 模式不生效会导致滚动按钮压住关闭按钮），
-       改按声明条实测高度内联计算，旧 CSS 同样生效（与页面内联脚本同一份逻辑，勿单边修改） */
-    function liftScrollBtns(on) {
-      var sb = document.getElementById('scroll-btns');
-      if (!sb) return;
-      if (!on) { sb.style.bottom = ''; return; }
-      var base = window.innerWidth <= 639 ? 16 : 24;
-      sb.style.bottom = ((bar.offsetHeight || 0) + base) + 'px';
-    }
-    /* 隐藏三重兜底：hidden 属性 + 内联 display（免疫缺 [hidden] 规则的旧 CSS 缓存）+ 撤回避让 */
-    function hideBar() {
-      bar.hidden = true;
-      bar.style.display = 'none';
-      try { document.body.classList.remove('has-notice'); } catch (e) {}
-      liftScrollBtns(false);
-    }
-    function closeBar() {
-      hideBar();
-      try { localStorage.setItem('zx_notice_closed', String(Date.now())); } catch (e) {}
-    }
-    try { var raw = localStorage.getItem('zx_notice_closed'); if (raw && /^\d{13}$/.test(raw)) ts = parseInt(raw, 10); } catch (e) {}
-    if (ts && (Date.now() - ts) <= EXP) { hideBar(); return; }
-    /* 内联脚本已关闭过（例如 localStorage 写入失败）→ 保持关闭，不再重新显示 */
-    if (bar.hidden || bar.style.display === 'none') { hideBar(); return; }
-    try { document.body.classList.add('has-notice'); } catch (e) {}
-    liftScrollBtns(true);
-    window.addEventListener('resize', function () { if (!bar.hidden) { liftScrollBtns(true); } });
-    if (btn) btn.addEventListener('click', closeBar);
-  })();
 
   /* ── 初始化 ── */
   /* 还原各卡片星标态（localStorage） */

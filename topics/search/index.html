@@ -24,7 +24,7 @@
   <meta name="theme-color" content="#9E1B22" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#1E1B1F" media="(prefers-color-scheme: dark)">
   <link rel="manifest" href="../../assets/json/manifest.json">
-  <link rel="stylesheet" href="../../assets/css/style.css?v=5ae56cf0">
+  <link rel="stylesheet" href="../../assets/css/style.css?v=15849494">
   <link rel="icon" type="image/svg+xml" href="../../assets/images/logo.svg">
   <link rel="apple-touch-icon" href="../../assets/images/logo.svg">
   <script>(function(){try{var t=localStorage.getItem("zx_theme");if(t==="dark"){document.documentElement.setAttribute("data-theme","dark");}}catch(e){}})();</script>
@@ -225,41 +225,6 @@
     </button>
   </div>
 
-  <script>
-  (function () {
-    var bar = document.getElementById('consent-bar');
-    var btn = document.getElementById('consent-close');
-    if (!bar) return;
-    var EXP = 30 * 24 * 60 * 60 * 1000, ts = 0;
-    /* 滚动按钮避让：不依赖 :has()（需 Edge 105+，老内核/IE 模式不生效会导致滚动按钮压住关闭按钮），
-       改按声明条实测高度内联计算，旧 CSS 同样生效 */
-    function liftScrollBtns(on) {
-      var sb = document.getElementById('scroll-btns');
-      if (!sb) return;
-      if (!on) { sb.style.bottom = ''; return; }
-      var base = window.innerWidth <= 639 ? 16 : 24;
-      sb.style.bottom = ((bar.offsetHeight || 0) + base) + 'px';
-    }
-    /* 隐藏三重兜底：hidden 属性 + 内联 display（免疫缺 [hidden] 规则的旧 CSS 缓存）+ 撤回避让 */
-    function hideBar() {
-      bar.hidden = true;
-      bar.style.display = 'none';
-      try { document.body.classList.remove('has-notice'); } catch (e) {}
-      liftScrollBtns(false);
-    }
-    function closeBar() {
-      hideBar();
-      try { localStorage.setItem('zx_notice_closed', String(Date.now())); } catch (e) {}
-    }
-    try { var raw = localStorage.getItem('zx_notice_closed'); if (raw && /^\d{13}$/.test(raw)) ts = parseInt(raw, 10); } catch (e) {}
-    if (ts && (Date.now() - ts) <= EXP) { hideBar(); return; }
-    if (bar.hidden || bar.style.display === 'none') { hideBar(); return; }
-    try { document.body.classList.add('has-notice'); } catch (e) {}
-    liftScrollBtns(true);
-    window.addEventListener('resize', function () { if (!bar.hidden) { liftScrollBtns(true); } });
-    if (btn) btn.addEventListener('click', closeBar);
-  })();
-  </script>
-  <script src="../../assets/js/main.js?v=cd3b45da"></script>
+  <script src="../../assets/js/main.js?v=17795562"></script>
 </body>
 </html>

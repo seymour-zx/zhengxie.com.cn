@@ -11,11 +11,11 @@
   <meta name="keywords" content="正协导航,政协,人民政协,全国政协,政协官网,各省市政协,民主党派,民革,民盟,民建,民进,农工党,致公党,九三学社,台盟,政务导航,搜索工具">
   <meta name="author" content="正协导航">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://zhengxie.com.cn">
+  <link rel="canonical" href="https://zhengxie.com.cn/">
   <meta property="og:title" content="正协导航 - 让每一次寻找，都不止于找到">
   <meta property="og:description" content="正协导航是独立第三方导航站：综合全品类导航，首页汇集政协与民主党派官方入口（按层级与组织分类陈列），另设政务导航、搜索工具等专题。本站为独立第三方，与任何官方机构无隶属关系。">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://zhengxie.com.cn">
+  <meta property="og:url" content="https://zhengxie.com.cn/">
   <meta property="og:image" content="https://zhengxie.com.cn/assets/images/logo.svg">
   <meta property="og:site_name" content="正协导航">
   <meta name="twitter:card" content="summary">
@@ -24,7 +24,7 @@
   <meta name="theme-color" content="#9E1B22" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#1E1B1F" media="(prefers-color-scheme: dark)">
   <link rel="manifest" href="assets/json/manifest.json">
-  <link rel="stylesheet" href="assets/css/style.css?v=5ae56cf0">
+  <link rel="stylesheet" href="assets/css/style.css?v=15849494">
   <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
   <link rel="apple-touch-icon" href="assets/images/logo.svg">
   <script>(function(){try{var t=localStorage.getItem("zx_theme");if(t==="dark"){document.documentElement.setAttribute("data-theme","dark");}}catch(e){}})();</script>
@@ -33,7 +33,7 @@
   <script>var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?2f4df5057c929092e36a0d6357e35261";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s);})();</script>
   
   <title>正协导航 - 让每一次寻找，都不止于找到</title>
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "正协导航 - 让每一次寻找，都不止于找到", "url": "https://zhengxie.com.cn", "description": "正协导航是独立第三方导航站：综合全品类导航，首页汇集政协与民主党派官方入口（按层级与组织分类陈列），另设政务导航、搜索工具等专题。本站为独立第三方，与任何官方机构无隶属关系。", "potentialAction": {"@type": "SearchAction", "target": "https://zhengxie.com.cn?q={search_term_string}", "query-input": "required name=search_term_string"}}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "正协导航 - 让每一次寻找，都不止于找到", "url": "https://zhengxie.com.cn/", "description": "正协导航是独立第三方导航站：综合全品类导航，首页汇集政协与民主党派官方入口（按层级与组织分类陈列），另设政务导航、搜索工具等专题。本站为独立第三方，与任何官方机构无隶属关系。", "potentialAction": {"@type": "SearchAction", "target": "https://zhengxie.com.cn/?q={search_term_string}", "query-input": "required name=search_term_string"}}</script>
 </head>
 <body>
   <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden"><symbol id="zx-fav-star" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></symbol></svg>
@@ -490,41 +490,6 @@
     </button>
   </div>
 
-  <script>
-  (function () {
-    var bar = document.getElementById('consent-bar');
-    var btn = document.getElementById('consent-close');
-    if (!bar) return;
-    var EXP = 30 * 24 * 60 * 60 * 1000, ts = 0;
-    /* 滚动按钮避让：不依赖 :has()（需 Edge 105+，老内核/IE 模式不生效会导致滚动按钮压住关闭按钮），
-       改按声明条实测高度内联计算，旧 CSS 同样生效 */
-    function liftScrollBtns(on) {
-      var sb = document.getElementById('scroll-btns');
-      if (!sb) return;
-      if (!on) { sb.style.bottom = ''; return; }
-      var base = window.innerWidth <= 639 ? 16 : 24;
-      sb.style.bottom = ((bar.offsetHeight || 0) + base) + 'px';
-    }
-    /* 隐藏三重兜底：hidden 属性 + 内联 display（免疫缺 [hidden] 规则的旧 CSS 缓存）+ 撤回避让 */
-    function hideBar() {
-      bar.hidden = true;
-      bar.style.display = 'none';
-      try { document.body.classList.remove('has-notice'); } catch (e) {}
-      liftScrollBtns(false);
-    }
-    function closeBar() {
-      hideBar();
-      try { localStorage.setItem('zx_notice_closed', String(Date.now())); } catch (e) {}
-    }
-    try { var raw = localStorage.getItem('zx_notice_closed'); if (raw && /^\d{13}$/.test(raw)) ts = parseInt(raw, 10); } catch (e) {}
-    if (ts && (Date.now() - ts) <= EXP) { hideBar(); return; }
-    if (bar.hidden || bar.style.display === 'none') { hideBar(); return; }
-    try { document.body.classList.add('has-notice'); } catch (e) {}
-    liftScrollBtns(true);
-    window.addEventListener('resize', function () { if (!bar.hidden) { liftScrollBtns(true); } });
-    if (btn) btn.addEventListener('click', closeBar);
-  })();
-  </script>
-  <script src="assets/js/main.js?v=cd3b45da"></script>
+  <script src="assets/js/main.js?v=17795562"></script>
 </body>
 </html>

@@ -71,22 +71,9 @@ BAIDU_SCRIPT = ('<script>var _hmt=_hmt||[];(function(){var hm=document.createEle
 FOUC = ('<script>(function(){try{var t=localStorage.getItem("zx_theme");'
         'if(t==="dark"){document.documentElement.setAttribute("data-theme","dark");}}catch(e){}})();</script>')
 
-# 首次访问声明条（D-18 + 30 天有效期）：独立内联脚本，不依赖 main.js——
-# 防单点脆弱（main.js 任一处运行时错误=全站 JS 死，声明条关闭不得被连累；2026-08-30 23:47）
-NOTICE_SCRIPT = """  <script>
-  (function () {
-    var bar = document.getElementById('consent-bar');
-    var btn = document.getElementById('consent-close');
-    if (!bar) return;
-    var EXP = 30 * 24 * 60 * 60 * 1000, ts = 0;
-    try { var raw = localStorage.getItem('zx_notice_closed'); if (raw && /^\\d{13}$/.test(raw)) ts = parseInt(raw, 10); } catch (e) {}
-    if (ts && (Date.now() - ts) <= EXP) { bar.hidden = true; return; }
-    if (btn) btn.addEventListener('click', function () {
-      bar.hidden = true;
-      try { localStorage.setItem('zx_notice_closed', String(Date.now())); } catch (e) {}
-    });
-  })();
-  </script>"""
+# 首次访问声明条 JS 已收敛到 assets/js/main.js（单一真源，2026-08-31 造物主决议）。
+# 不再内联进 HTML：消除与 main.js 的重复维护，并去除内联脚本的 CSP 隐患。
+# 收敛后声明条逻辑仅由 main.js 顶部 IIFE 负责（详见 assets/js/main.js 第 13 节）。
 
 
 def read_xlsx(path):
@@ -148,7 +135,7 @@ def frag_head(page, dp, has_ad, rel="", pages=None):
     title = val(page, "title") or f"{BRAND} - {SLOGAN}"
     desc = val(page, "description")
     kws = val(page, "keywords")
-    canonical = SITE_DOMAIN + ("" if dp == "/" else "/" + dp + "/")
+    canonical = SITE_DOMAIN + ("/" if dp == "/" else "/" + dp + "/")
     jsonld = build_jsonld(page, dp, canonical, pages)
     pre = []
     if val(page, "stat_ga4") in ("True", "1", "true"):
@@ -718,7 +705,6 @@ def build_page(dp, page, cards, categories, pages):
   <div class="empty-state" id="empty-state" hidden><p class="empty-state__text">没有找到匹配的结果，换个关键词或分类试试</p></div>
 {frag_footer(rel)}
 {frag_scroll_btns()}
-{NOTICE_SCRIPT}
   <script src="{rel}assets/js/main.js?v={JS_VER}"></script>
 </body>
 </html>
