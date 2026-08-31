@@ -119,7 +119,7 @@ input, textarea, select { font-family: inherit; }
    共用 is-scrollable 高亮态；只在真溢出时 JS 标记。
    ═══════════════════════════════════════════════════════ */
 .track,
-.card__title, .card__desc, .card__tags, .card__links {
+.card__title, .card__desc, .card__tags, .card__links, .card__sources {
   overflow-x: auto;
   scrollbar-width: none;
   white-space: nowrap;
@@ -966,8 +966,16 @@ body.has-notice .scroll-btns { bottom: calc(var(--taskbar-inset, 0px) + 76px); }
 
 /* 无链接卡空行占位（与旧世界一致，不加提示文字——造物主拍板 2026-08-30） */
 
-/* T6 修复：滑道/卡片行允许横向触摸滚动，减少 JS 干预 */
+/* T6 修复（2026-08-31 v2）：横向滑道只声明 pan-x，让浏览器独占横手势，
+   竖手势自动留给页面 → 解决小米「左右滑时好时坏」。
+   overscroll-behavior: contain 阻止到边界时把手势链到页面/系统导航
+   （小米左滑回桌面、到尽头往上滑的根因）。
+   标题/描述区是「点按展开」非滑道，不在此列，保留纵向滚页面手势。 */
 .track, .filter-tags__track,
-.card__tags, .card__links, .card__title, .card__desc {
-  touch-action: pan-x pan-y;
+.card__tags, .card__links, .card__sources {
+  touch-action: pan-x;
+  overscroll-behavior: contain;
 }
+/* T6 修复（2026-08-31）：禁用整页橡皮筋回弹，杜绝 MIUI 把页面 overscroll
+   钩成「左滑回桌面」系统手势，避免用户被甩出站点。本产品无下拉刷新，无副作用。 */
+html, body { overscroll-behavior: none; }

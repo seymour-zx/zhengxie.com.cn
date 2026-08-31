@@ -60,6 +60,7 @@
 - 改声明条（#consent-bar）必跑 `assets/.build/qa-consent-check.js`(需 playwright-core + 本地 8899 服务)
 - 双场景：现代 smooth / 老内核降级；stub 须用真实 index.html 卡片 + 覆盖「池为空」边界(广告卡当前 0 张)
 - scrollTo 用 safeScrollTo(smooth→降级两参数→120ms 未动再降级)；**CSS 禁 scroll-behavior:smooth**(与 JS scrollTo 冲突致完全失效——真根因 22:33)；**滚动按钮不锁用户输入、永不被冻结，位置由 scroll 事件自然同步；safeScrollTo 须 smooth→降级兜底(T6/小米)**
+- **滑道触摸(T6/MIUI，2026-08-31 已修)**：`.track/.filter-tags__track/.card__tags/.card__links/.card__sources` 用 `touch-action:pan-x`+`overscroll-behavior:contain`；`html,body` 用 `overscroll-behavior:none`。根治小米「左右滑时好时坏/到尽头往上滑/左滑回桌面退站」。标题/描述为点按展开，不在此列（保留纵向滚页面）。改后必跑 qa-scroll-check + 容器可滚探针。
 
 ## README 铁律（改 README 必校 contract 06）
 - 公开层**纯手工流**教程(教手写 HTML，禁 xlsx/.py/.build)；零内部引用；目录树不列内部层；定位=综合全品类；不写已删功能；改后跑契约 06 校准清单
