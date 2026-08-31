@@ -118,11 +118,37 @@
   function defaultTitleLines(card) {
     return getCardExpandType(card) === 't1' ? 2 : 1;
   }
+  /* 卡片内 desc / title 元素缓存（懒建一次，之后复用）。
+     展开/复位路径原本每次都对每张卡执行 querySelector，
+     337 张卡 × 每次复位 = 674 次 DOM 查询。 */
+  function getDesc(card) {
+    if (card.__desc === undefined) { card.__desc = card.querySelector('.card__desc'); }
+    return card.__desc;
+  }
+  function getTitle(card) {
+    if (card.__title === undefined) { card.__title = card.querySelector('.card__title'); }
+    return card.__title;
+  }
 
-  /* 性能：预计算每张卡的可搜索文本（标题+描述+分类等纯文本），
-     避免 applyFilter 每次按键都 live 读取 128 张卡的 textContent。
-     卡片内容静态，init 时算一次即可。 */
-  cards.forEach(function (card) { card.__search = card.textContent; });
+  /* 性能（2026-08-31）：预计算每张卡的静态信息，避免每次筛选重复计算。
+     原实现在 applyFilter 里对每张卡做 querySelector('.card__fav') 与
+     textContent.toLowerCase()，337 张卡 × 每次按键 = 每敲一个字符
+     就多出 337 次 DOM 查询与 337 次长字符串小转换。卡片内容静态，
+     初始化算一次即可：
+       __search      —— 可搜索纯文本（保留原字段，供外部/调试使用）
+       __searchLower —— 小写副本（匹配时直接用，不再逐次转换）
+       __favKey      —— 收藏键（不再是每次 querySelector）
+       __etype       —— 可展开类型 t1/t2/t3（不再是每次三重 classList 判断）
+       __shown       —— 上一轮显隐结果（用于脏检查，只写状态真变的卡） */
+  cards.forEach(function (card, cardIdx) {
+    card.__search = card.textContent;
+    card.__searchLower = card.__search.toLowerCase();
+    var fb = card.querySelector('.card__fav');
+    card.__favKey = fb ? fb.getAttribute('data-key') : '';
+    card.__etype = getCardExpandType(card);
+    card.__shown = !card.hidden;
+    card.__zxIdx = cardIdx;
+  });
 
   /* 防抖：最后一次触发后 wait 毫秒才执行 fn（用于搜索框逐键输入）。
      只延迟"筛选动作"——输入框里的字不会丢，applyFilter 跑时读的是实时 value。 */
@@ -176,10 +202,15 @@
     '学习': ['教育', '课程', '培训'],
     '视频': ['影音', '影视', '播放']
   };
-  /* 返回某关键词的完整匹配集合（含自身与互为别名的词），用于站内筛选 */
+  /* 返回某关键词的完整匹配集合（含自身与互为别名的词），用于站内筛选。
+     性能（2026-08-31）：结果按关键词缓存。原实现在 textMatches 里被调用
+     「卡片数 × 关键词数」次（337 × 3 ≈ 1000 次），每次都遍历 ALIASES 的
+     8 个键重建数组；别名词表是常量，同一关键词的结果永远相同。 */
+  var ALIAS_CACHE = {};
   function aliasSet(kw) {
     kw = (kw || '').trim().toLowerCase();
     if (!kw) { return []; }
+    if (ALIAS_CACHE[kw]) { return ALIAS_CACHE[kw]; }
     var set = [kw];
     Object.keys(ALIASES).forEach(function (k) {
       if (k === kw) {
@@ -192,6 +223,7 @@
         if (set.indexOf(k.toLowerCase()) === -1) { set.push(k.toLowerCase()); }
       }
     });
+    ALIAS_CACHE[kw] = set;
     return set;
   }
   /* 大小写不敏感 + 别名匹配（B3 + B15），text 已 lowercased */
@@ -203,30 +235,46 @@
     return false;
   }
 
-  /* ── 应用筛选：分类 AND 关键词 AND 本地收藏（含输入框实时关键词） ── */
+  /* ── 应用筛选：分类 AND 关键词 AND 本地收藏（含输入框实时关键词） ──
+     性能（2026-08-31）重写：严格分阶段，杜绝「写→读→写→读」造成的强制同步布局。
+       阶段 1  纯计算；只写「状态真变了」的卡（脏检查：337 次无谓 display 切换降到实际变化数）
+       阶段 2  复位展开态（当前无卡处于展开态时整段跳过）
+       阶段 3  几何读取：只测「本次显隐变化 且 当前在视口内」的卡
+       阶段 4  高亮：只重写「高亮签名变了」的卡
+     原实现在阶段 1 的循环里直接穿插 highlightCard 的 innerHTML 写入，
+     末尾又全量调 refreshScrollable 读 678 个元素的几何量，形成典型的
+     写读交替 → 每敲一个字符至少 2 次全文档强制重排。 */
   function applyFilter() {
     var kw = siteInput.value.trim();
     var visible = 0;
     var activeKeywords = filterTags.slice();
     if (kw && activeKeywords.indexOf(kw) === -1) { activeKeywords.push(kw); }
+    var hlSig = activeKeywords.join('\u0001');
+    var changed = [];
+    var toHighlight = [];
+
+    /* 阶段 1：计算 + 只写变化项（此阶段不得读取任何几何属性） */
     cards.forEach(function (card) {
       var catOk = activeCat === 'all' || card.getAttribute('data-cat') === activeCat;
-      var text = card.__search.toLowerCase();   // 预计算文本已为纯文本，直接小写（B3 大小写不敏感）
+      var text = card.__searchLower;          // 预计算的小写副本，不再逐次转换
       var kwOk = true;
-      var i;
-      for (i = 0; i < filterTags.length; i++) {
+      for (var i = 0; i < filterTags.length; i++) {
         if (!textMatches(text, filterTags[i])) { kwOk = false; break; }
       }
       if (kwOk && kw && !textMatches(text, kw)) { kwOk = false; }
-      var favBtn = card.querySelector('.card__fav');
-      var favOk = !showFav || !!(favBtn && favs[favBtn.getAttribute('data-key')]);
+      var favOk = !showFav || !!favs[card.__favKey];
       var show = catOk && kwOk && favOk;
-      card.hidden = !show;
+      if (card.__shown !== show) {
+        card.__shown = show;
+        card.hidden = !show;
+        changed.push(card);
+      }
       if (show) {
         visible++;
-        highlightCard(card, activeKeywords);
+        if (card.__hlSig !== hlSig) { card.__hlSig = hlSig; toHighlight.push(card); }
       }
     });
+
     /* 结果计数：无筛选显示总数，有筛选显示「当前显示 X / N」 */
     if (resultCount) {
       var filtering = activeCat !== 'all' || filterTags.length > 0 || kw || showFav;
@@ -243,12 +291,20 @@
     }
     /* URL hash 同步 */
     updateHash();
-    /* 任何筛选状态变更（切换分类/关键词/收藏/标签）后，卡片名称与描述
+
+    /* 阶段 2：任何筛选状态变更（切换分类/关键词/收藏/标签）后，卡片名称与描述
        复位为默认折叠态，保证视图一致（同一行卡片不再因之前展开而高低不齐）。 */
     resetExpandCollapsed();
-    /* 显隐变化 + 复位后复检溢出标记（卡片从隐藏恢复显示时 clientWidth 从 0 恢复，
-       且名称/描述收起后宽度可能变化，必须重新检测，否则滚轮接管失效） */
-    refreshScrollable();
+
+    /* 阶段 3：复检溢出标记。只处理本次显隐变化且当前在视口内的卡——
+       视口外的卡由 IntersectionObserver 在进入视口时补测，避免对
+       content-visibility 跳过的卡片强行读 scrollWidth（那会抵消懒渲染收益）。 */
+    if (changed.length) { queueRowCheck(changed); }
+
+    /* 阶段 4：高亮（写 DOM 子树，必须排在所有几何读取之后，不打断批处理） */
+    for (var h = 0; h < toHighlight.length; h++) {
+      highlightCard(toHighlight[h], activeKeywords);
+    }
   }
 
   /* ── 渲染筛选标签 chips（插入中间滑道） ── */
@@ -277,7 +333,9 @@
 
     hint.hidden = filterTags.length === 0;
     clearBtn.hidden = filterTags.length === 0;
-    refreshScrollable();
+    /* 只复检筛选标签滑道本身：标签增删不改变任何卡片的显隐，
+       没必要连带检测 337 张卡片的行宽（原实现在这里全量 refreshScrollable）。 */
+    markRows(standaloneRows);
   }
 
   function addTag(word) {
@@ -326,41 +384,81 @@
      行 = 视觉同一行(getBoundingClientRect().top 相同)的同类型(1/2/3)卡片；
      每张卡"完整内容行数"在初始化时一次性预计算(存 card.__fullLines)，点击时只比对数组取最大值。 */
   function getRowCards(card) {
-    var type = getCardExpandType(card);
+    var type = card.__etype;                    // 初始化时已缓存，不再三重 classList 判断
     if (!type) { return []; }
     var top = Math.round(card.getBoundingClientRect().top);
-    return cards.filter(function (c) {
-      return !c.hidden && getCardExpandType(c) === type &&
-             Math.round(c.getBoundingClientRect().top) === top;
-    });
+    /* 连续读取 getBoundingClientRect 中间不夹写操作，浏览器只需布局一次 */
+    var out = [];
+    for (var i = 0; i < cards.length; i++) {
+      var c = cards[i];
+      if (c.hidden || c.__etype !== type) { continue; }
+      if (Math.round(c.getBoundingClientRect().top) === top) { out.push(c); }
+    }
+    return out;
   }
-  /* 预计算：每张类型1卡片「展示全部需要多少行」，存到 card.__fullLines。
-     只在初始化做一次（点击时直接比对，不再临时改 DOM 测量 → 避免 line-clamp 折叠 bug + 省性能）。 */
-  function precomputeLines() {
-    expandableCards.forEach(function (card) {
-      var desc = card.querySelector('.card__desc');
-      if (!desc) { card.__fullLines = 1; return; }
-      var cs = getComputedStyle(desc);
-      var lh = parseFloat(cs.lineHeight) || (parseFloat(cs.fontSize) * 1.5);
-      if (!lh) { card.__fullLines = 1; return; }
-      /* 临时进入「完整展示」态测量真实内容行数（仅初始化一次）。
-         关键：必须 height:auto 且不设 --lines，否则 CSS 的 .is-expanded{height:calc(var(--lines)*1.5em)}
-         会按 --lines 把盒子撑高，scrollHeight 量到的就是那个被撑的高度（旧 bug=999 行的来源）。 */
-      var prevWhiteSpace = desc.style.whiteSpace;
-      var prevHeight = desc.style.height;
-      var wasExpanded = desc.classList.contains('is-expanded');
-      desc.style.whiteSpace = 'normal';
-      desc.style.height = 'auto';
-      var h = desc.scrollHeight;
-      desc.style.whiteSpace = prevWhiteSpace || '';
-      desc.style.height = prevHeight || '';
-      if (!wasExpanded) { desc.classList.remove('is-expanded'); }
-      card.__fullLines = Math.max(1, Math.round(h / lh));
-    });
+  /* 惰性测量：算出「这批卡片完整展示需要多少行」。
+     性能（2026-08-31）：原 precomputeLines / precomputeTitleLines 在初始化时
+     对全部 337 张卡逐一执行「写 3 个样式 → 读 scrollHeight → 写回」，
+     每张卡都触发一次全文档强制同步布局（desc + title 合计 674 次），
+     且这段同步代码跑完才允许用户交互——这是首屏卡死的第一根因。
+     改为：只在用户真的点开某一行时才测量，且只测那一行的 3~4 张卡；
+     并采用「先批量写 → 再集中读 → 最后批量还原」三段式，
+     一次展开操作只触发 1 次布局（原为 4 次）。
+     结果按卡缓存；容器宽度变化（resize/换方向）时清空缓存下次重测。
+     kind: 'desc' 测描述行，'title' 测标题行。 */
+  function measureRows(list, kind) {
+    var isDesc = kind === 'desc';
+    var field = isDesc ? '__fullLines' : '__fullTitleLines';
+    var sel = isDesc ? '.card__desc' : '.card__title';
+    var pend = [];
+    var i, el, c;
+    /* 阶段 1：只写，不读 */
+    for (i = 0; i < list.length; i++) {
+      c = list[i];
+      if (c[field] !== undefined) { continue; }          // 已测过，直接复用
+      el = c.querySelector(sel);
+      if (!el) {
+        c[field] = isDesc ? 1 : defaultTitleLines(c);
+        continue;
+      }
+      /* 必须 height:auto 且不设 --lines，否则 CSS 的
+         .is-expanded{height:calc(var(--lines)*1.5em)} 会按 --lines 把盒子撑高，
+         scrollHeight 量到的就是被撑的高度（旧 bug = 999 行的来源）。 */
+      el.__pWS = el.style.whiteSpace;
+      el.__pH = el.style.height;
+      el.style.whiteSpace = 'normal';
+      el.style.height = 'auto';
+      if (!isDesc) {
+        el.__pLC = el.style.getPropertyValue('-webkit-line-clamp');
+        el.style.setProperty('-webkit-line-clamp', '999');
+      }
+      pend.push({ c: c, el: el });
+    }
+    if (!pend.length) { return; }
+    /* 阶段 2：集中读（一次布局即可满足本批全部读取） */
+    for (i = 0; i < pend.length; i++) {
+      var cs = getComputedStyle(pend[i].el);
+      pend[i].lh = parseFloat(cs.lineHeight) || (parseFloat(cs.fontSize) * 1.5) || 1;
+      pend[i].h = pend[i].el.scrollHeight;
+    }
+    /* 阶段 3：批量还原样式 + 写回结果 */
+    for (i = 0; i < pend.length; i++) {
+      var p = pend[i];
+      p.el.style.whiteSpace = p.el.__pWS || '';
+      p.el.style.height = p.el.__pH || '';
+      if (!isDesc) { p.el.style.setProperty('-webkit-line-clamp', p.el.__pLC || ''); }
+      p.c[field] = Math.max(1, Math.round(p.h / p.lh));
+    }
   }
+  /* 是否有卡正处于展开态：resetExpandCollapsed 的脏检查开关。
+     原实现每次 applyFilter 都无条件遍历 337 张卡做复位，而绝大多数时候
+     根本没有任何卡被展开——加这个开关后可整段跳过。 */
+  var anyExpanded = false;
+
   function setRowLines(rowCards, n) {
+    if (n > 1) { anyExpanded = true; }
     rowCards.forEach(function (c) {
-      var d = c.querySelector('.card__desc');
+      var d = getDesc(c);
       if (d) {
         d.style.setProperty('--lines', String(n));
         d.classList.toggle('is-expanded', n > 1);
@@ -369,32 +467,12 @@
       c.setAttribute('data-row-lines', String(n));
     });
   }
-  /* 预计算：每张类型1卡片「标题展示全部需要多少行」，存到 card.__fullTitleLines（与描述数组同理）。
-     测量时临时解除 line-clamp 限制（white-space:normal + height:auto + -webkit-line-clamp:999）测真实内容高，测完还原。 */
-  function precomputeTitleLines() {
-    expandableCards.forEach(function (card) {
-      var title = card.querySelector('.card__title');
-      if (!title) { card.__fullTitleLines = defaultTitleLines(card); return; }
-      var cs = getComputedStyle(title);
-      var lh = parseFloat(cs.lineHeight) || (parseFloat(cs.fontSize) * 1.5);
-      if (!lh) { card.__fullTitleLines = defaultTitleLines(card); return; }
-      var prevWS = title.style.whiteSpace;
-      var prevH = title.style.height;
-      var prevLC = title.style.getPropertyValue('-webkit-line-clamp');
-      title.style.whiteSpace = 'normal';
-      title.style.height = 'auto';
-      title.style.setProperty('-webkit-line-clamp', '999');
-      var h = title.scrollHeight;
-      title.style.whiteSpace = prevWS || '';
-      title.style.height = prevH || '';
-      title.style.setProperty('-webkit-line-clamp', prevLC || '');
-      card.__fullTitleLines = Math.max(1, Math.round(h / lh));
-    });
-  }
+  /* 标题行数测量已并入 measureRows(list, 'title')，不再单独预计算。 */
   /* 设置同行所有标题的行数（CSS --title-lines 变量驱动；>2 视为展开态，给 aria 与 class） */
   function setRowTitleLines(rowCards, n) {
+    if (rowCards.length && n > defaultTitleLines(rowCards[0])) { anyExpanded = true; }
     rowCards.forEach(function (c) {
-      var t = c.querySelector('.card__title');
+      var t = getTitle(c);
       if (t) {
         t.style.setProperty('--title-lines', String(n));
         t.classList.toggle('is-expanded', n > 2);
@@ -407,7 +485,9 @@
     if (!card || card.hidden) { return; }
     var rowCards = getRowCards(card);
     if (!rowCards.length) { return; }
-    /* 同行「内容最多的那张」完整需要多少行 → 全行统一展示该值（直接比对预计算数组，不临时测 DOM） */
+    /* 惰性测量：首次展开这一行时才测（只测同行的 3~4 张，结果按卡缓存） */
+    measureRows(rowCards, 'desc');
+    /* 同行「内容最多的那张」完整需要多少行 → 全行统一展示该值 */
     var maxLines = 1;
     rowCards.forEach(function (c) {
       var n = c.__fullLines || 1;
@@ -420,8 +500,10 @@
     if (!card || card.hidden) { return; }
     var rowCards = getRowCards(card);
     if (!rowCards.length) { return; }
+    /* 同上：惰性测量本行标题行数 */
+    measureRows(rowCards, 'title');
     var def = defaultTitleLines(rowCards[0] || card);   /* 类型1=2 行、类型2/3=1 行（折叠默认） */
-    /* 同行「标题内容最多的那张」完整需要多少行 → 全行统一展示该值（直接比对预计算数组，不临时测 DOM） */
+    /* 同行「标题内容最多的那张」完整需要多少行 → 全行统一展示该值 */
     var maxLines = def;
     rowCards.forEach(function (c) {
       var n = c.__fullTitleLines || def;
@@ -432,15 +514,20 @@
   }
   /* 宽度/方向变化 → 所有类型1卡片收回到 1 行（描述行归 1 + 标题也收起展开态），清空旧行数标记 */
   function resetExpandCollapsed() {
+    /* 脏检查：压根没有卡处于展开态时，337 张卡的全量遍历直接跳过。
+       原实现每次 applyFilter 都无条件执行这一段（337 × 3 次属性写），
+       而它被 applyFilter 与搜索框 focus 高频调用。 */
+    if (!anyExpanded) { return; }
+    anyExpanded = false;
     expandableCards.forEach(function (card) {
-      var d = card.querySelector('.card__desc');
+      var d = getDesc(card);
       if (d) {
         d.style.removeProperty('--lines');
         d.classList.remove('is-expanded');
         d.setAttribute('aria-expanded', 'false');
       }
       card.removeAttribute('data-row-lines');
-      var t = card.querySelector('.card__title');
+      var t = getTitle(card);
       if (t) {
         t.style.removeProperty('--title-lines');
         t.classList.remove('is-expanded');
@@ -449,11 +536,16 @@
       card.removeAttribute('data-title-lines');
     });
   }
-  /* 重新初始化：先全部收起 → 再按当前宽度重算「完整行数」数组（行数随容器宽度变化，必须重测） */
+  /* 重新初始化：先全部收起 → 清空「完整行数」缓存。
+     行数随容器宽度变化，旧值不能沿用；但【不在这里重测】——
+     重测推迟到下次真正展开时惰性执行，避免 resize / 转屏时
+     再次触发 674 次全文档强制重排（原实现正是在这里重测的）。 */
   function recomputeExpandLines() {
     resetExpandCollapsed();
-    precomputeLines();
-    precomputeTitleLines();
+    expandableCards.forEach(function (card) {
+      card.__fullLines = undefined;
+      card.__fullTitleLines = undefined;
+    });
   }
 
   /* 卡片内：星标按钮（内含 SVG，用 closest 命中）+ 文字标签按钮点击（事件委托） */
@@ -553,72 +645,160 @@
        左右滑动该行内容，页面不再上下滚动；
      - 触屏设备 → 触摸该滑道/行时激活同样的 UI 变化，手指左右滑动滚动（原生）。 */
   var SCROLL_ROW_SEL = '.track, .card__title, .card__desc, .card__tags, .card__links, .card__sources';
-  var scrollRows = Array.prototype.slice.call(document.querySelectorAll(SCROLL_ROW_SEL));
-  /* 类型1 名称/描述改为「点击展开」交互，不再作为横向滚动行：
+  /* 类型1/2/3 的标题/描述是「点击展开」交互，不作为横向滚动行：
      排除后不会被标 is-scrollable，避免悬停时滚轮被接管、显示抓取光标。 */
-  scrollRows = scrollRows.filter(function (el) {
-    var c = el.closest('.card');
-    if (!c || !getCardExpandType(c)) { return true; }
-    return !(el.classList.contains('card__title') || el.classList.contains('card__desc'));
+  function isScrollRow(el) {
+    var c = el.closest ? el.closest('.card') : null;
+    if (c && c.__etype && (el.classList.contains('card__title') || el.classList.contains('card__desc'))) { return false; }
+    return true;
+  }
+  /* 预建「卡片 → 其滚动行」映射：只查一次，之后复用。
+     原实现每次检测都遍历全局 ~678 个元素再逐个 closest('.card')。 */
+  cards.forEach(function (card) {
+    var rows = card.querySelectorAll(SCROLL_ROW_SEL);
+    var keep = [];
+    for (var i = 0; i < rows.length; i++) { if (isScrollRow(rows[i])) { keep.push(rows[i]); } }
+    card.__rows = keep;
   });
+  /* 不属于任何卡片的独立滑道（分类滑道 / 筛选标签滑道 / 引擎滑道等，数量很少） */
+  var standaloneRows = Array.prototype.slice.call(document.querySelectorAll(SCROLL_ROW_SEL))
+    .filter(function (el) { return !(el.closest && el.closest('.card')); });
 
-  function refreshScrollable() {
-    scrollRows.forEach(function (el) {
+  function markRows(rows) {
+    for (var i = 0; i < rows.length; i++) {
+      var el = rows[i];
       /* 隐藏卡片（被筛选掉）的行宽为 0：既不检测也不清除标记，
          防止卡片重新显示后标记丢失导致滚轮左右滑失效 */
-      if (el.clientWidth === 0) { return; }
+      if (el.clientWidth === 0) { continue; }
       el.classList.toggle('is-scrollable', el.scrollWidth > el.clientWidth + 1);
-    });
+    }
   }
-  refreshScrollable();
-  window.addEventListener('load', refreshScrollable);   // 字体/布局稳定后复检
-  window.addEventListener('resize', refreshScrollable);
+  /* 只检测指定卡片的行（增量） */
+  function refreshScrollableFor(list) {
+    var rows = [], i, j;
+    for (i = 0; i < list.length; i++) {
+      var r = list[i].__rows;
+      if (!r) { continue; }
+      for (j = 0; j < r.length; j++) { rows.push(r[j]); }
+    }
+    if (rows.length) { markRows(rows); }
+  }
+  /* 全量检测（含视口外卡片）：仅保留给极少数必须的场景，正常路径走 queueRowCheck */
+  function refreshScrollable() {
+    markRows(standaloneRows);
+    refreshScrollableFor(cards);
+  }
 
-  /* 触屏：触摸时激活 UI，结束后移除 */
-  scrollRows.forEach(function (el) {
-    el.addEventListener('touchstart', function () {
-      if (el.classList.contains('is-scrollable')) { el.classList.add('is-touch-active'); }
-    }, { passive: true });
-    el.addEventListener('touchend', function () { el.classList.remove('is-touch-active'); });
-    el.addEventListener('touchcancel', function () { el.classList.remove('is-touch-active'); });
-  });
+  /* ── 视口感知：只给「进入视口」的卡片做溢出检测 ──
+     必要性：读取 scrollWidth 会强制浏览器完成该卡片的布局与渲染。
+     CSS 已启用 content-visibility: auto（视口外卡片跳过渲染），
+     若这里仍对全部 337 张卡读几何，等于把懒渲染的收益又全部吃掉。
+     故：视口内的立即检测，视口外的交给 IntersectionObserver 进入时补测。 */
+  var inView = [];              // 按 __zxIdx 记录，含 300px 预取提前量
+  var rowObserver = null;
+  if ('IntersectionObserver' in window) {
+    rowObserver = new window.IntersectionObserver(function (entries) {
+      var toCheck = [];
+      for (var i = 0; i < entries.length; i++) {
+        var en = entries[i], c = en.target;
+        if (en.isIntersecting) {
+          inView[c.__zxIdx] = true;
+          if (c.__rowPending) { c.__rowPending = false; toCheck.push(c); }
+        } else {
+          inView[c.__zxIdx] = false;
+        }
+      }
+      if (toCheck.length) { refreshScrollableFor(toCheck); }
+    }, { rootMargin: '300px 0px' });
+    cards.forEach(function (c) { rowObserver.observe(c); });
+  }
+  /* 入队待检测：视口内立即做，视口外标记等进入视口时补测。
+     无 IntersectionObserver（老内核）时退化为「全部立即检测」，即旧行为。 */
+  function queueRowCheck(list) {
+    var now = [], i;
+    for (i = 0; i < list.length; i++) {
+      var c = list[i];
+      if (!rowObserver || inView[c.__zxIdx]) { now.push(c); }
+      else { c.__rowPending = true; }
+    }
+    if (now.length) { refreshScrollableFor(now); }
+  }
 
-  /* 鼠标：悬停在内容真溢出的滑道/行上时，滚轮改为对应方向滑动（阻止页面上下滚动） */
-  document.addEventListener('wheel', function (e) {
-    /* 横向滑道：滚轮 → 左右滑 */
+  /* 初始化 / load / resize：只检测独立滑道 + 视口内卡片。
+     原实现这三处都全量遍历 678 个元素读几何，是首屏与转屏卡顿的来源之一。 */
+  function refreshVisibleRows() {
+    markRows(standaloneRows);
+    queueRowCheck(cards);
+  }
+  refreshVisibleRows();
+  window.addEventListener('load', refreshVisibleRows);   // 字体/布局稳定后复检
+  window.addEventListener('resize', refreshVisibleRows);
+
+  /* 触屏：触摸时激活 UI，结束后移除。
+     改为 document 级事件委托：原实现给 ~678 个元素各挂 3 个监听（约 2034 个），
+     初始化耗时且全部常驻内存。 */
+  var touchActiveEl = null;
+  function clearTouchActive() {
+    if (touchActiveEl) { touchActiveEl.classList.remove('is-touch-active'); touchActiveEl = null; }
+  }
+  document.addEventListener('touchstart', function (e) {
     var el = e.target.closest ? e.target.closest(SCROLL_ROW_SEL) : null;
-    /* 类型1/2/3 名称区/描述区是点击展开（非滚动行），忽略 → 页面正常上下滚动 */
-    if (el) {
-      var wcard = el.closest('.card');
-      if (wcard && getCardExpandType(wcard) && (el.classList.contains('card__title') || el.classList.contains('card__desc'))) { el = null; }
-    }
     if (el && el.classList.contains('is-scrollable')) {
-      var max = el.scrollWidth - el.clientWidth;
-      if (max <= 1) { return; }   // 无横向溢出 → 页面正常滚动
-      /* trackpad 横向手势走 deltaX，普通鼠标竖向滚轮走 deltaY */
-      var delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-      var atStart = el.scrollLeft <= 0;
-      var atEnd = el.scrollLeft >= max - 1;
-      /* 已到横向边界：竖向滚轮交还页面，否则鼠标悬停该滑道时整页“滑不动”（旧 bug） */
-      if ((delta < 0 && atStart) || (delta > 0 && atEnd)) { return; }
-      e.preventDefault();
-      el.scrollLeft += delta;
+      clearTouchActive();
+      touchActiveEl = el;
+      el.classList.add('is-touch-active');
     }
+  }, { passive: true });
+  document.addEventListener('touchend', clearTouchActive, { passive: true });
+  document.addEventListener('touchcancel', clearTouchActive, { passive: true });
+
+  /* 鼠标：悬停在内容真溢出的滑道/行上时，滚轮改为对应方向滑动（阻止页面上下滚动）。
+     性能（2026-08-31）：滚轮目标改由 pointerover 预先缓存。
+     原实现在 document 上以 { passive: false } 常驻监听，每次滚轮都要
+     e.target.closest() 走一遍祖先链；而 passive:false 会让浏览器无法把
+     滚动交给合成线程，必须等这段 JS 跑完才能滚，低端机上直接体现为掉帧。
+     现在 wheel 处理器只做一次缓存命中判断；触屏设备根本不触发
+     pointerover / wheel，这段在移动端是零成本。 */
+  var wheelTarget = null;
+  function resolveWheelTarget(t) {
+    var el = t && t.closest ? t.closest(SCROLL_ROW_SEL) : null;
+    if (el && !isScrollRow(el)) { el = null; }
+    return (el && el.classList.contains('is-scrollable')) ? el : null;
+  }
+  document.addEventListener('pointerover', function (e) {
+    wheelTarget = resolveWheelTarget(e.target);
+  }, { passive: true });
+  document.addEventListener('pointerout', function () { wheelTarget = null; }, { passive: true });
+  document.addEventListener('wheel', function (e) {
+    /* 缓存未命中时（如页面刚加载鼠标已停在滑道上）兜底解析一次 */
+    var el = wheelTarget || resolveWheelTarget(e.target);
+    if (!el) { return; }
+    var max = el.scrollWidth - el.clientWidth;
+    if (max <= 1) { return; }   // 无横向溢出 → 页面正常滚动
+    /* trackpad 横向手势走 deltaX，普通鼠标竖向滚轮走 deltaY */
+    var delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+    var atStart = el.scrollLeft <= 0;
+    var atEnd = el.scrollLeft >= max - 1;
+    /* 已到横向边界：竖向滚轮交还页面，否则鼠标悬停该滑道时整页“滑不动”（旧 bug） */
+    if ((delta < 0 && atStart) || (delta > 0 && atEnd)) { return; }
+    e.preventDefault();
+    el.scrollLeft += delta;
   }, { passive: false });
 
   /* 桌面拖拽横向滚动（满足 .track 的 grab/grabbing 光标语义；触屏已由原生 pan-x 承接）。
-     单例管理：仅 3 个 document 级监听，避免给每个滑道挂大量监听。
+     单例管理：全部是 document 级监听 + 事件委托。
+     性能（2026-08-31）：pointerdown 原本逐个绑到 ~678 个滚动行上，
+     现改为一个 document 委托，监听器总数从约 2700 个降到 4 个。
      仅在真溢出(is-scrollable)时启用；拖动超阈值才视为拖拽并抑制本次 click，
      避免误触发分类/标签/链接的点击行为。 */
   (function () {
     var active = null, startX = 0, startLeft = 0, moved = false;
-    scrollRows.forEach(function (el) {
-      el.addEventListener('pointerdown', function (e) {
-        if (e.pointerType === 'touch') { return; }   // 触屏用原生 touch 滚动
-        if (e.pointerType === 'mouse' && e.button !== 0) { return; }
-        if (!el.classList.contains('is-scrollable')) { return; }
-        active = el; moved = false; startX = e.clientX; startLeft = el.scrollLeft;
-      });
+    document.addEventListener('pointerdown', function (e) {
+      if (e.pointerType === 'touch') { return; }   // 触屏用原生 touch 滚动
+      if (e.pointerType === 'mouse' && e.button !== 0) { return; }
+      var el = e.target.closest ? e.target.closest(SCROLL_ROW_SEL) : null;
+      if (!el || !isScrollRow(el) || !el.classList.contains('is-scrollable')) { return; }
+      active = el; moved = false; startX = e.clientX; startLeft = el.scrollLeft;
     });
     document.addEventListener('pointermove', function (e) {
       if (!active) { return; }
@@ -948,15 +1128,14 @@
     var visible = [];
     cards.forEach(function (card) {
       var catOk = activeCat === 'all' || card.getAttribute('data-cat') === activeCat;
-      var text = card.__search.toLowerCase();
+      var text = card.__searchLower;            // 复用预计算的小写副本
       var kwOk = true;
       var i;
       for (i = 0; i < filterTags.length; i++) {
         if (!textMatches(text, filterTags[i])) { kwOk = false; break; }
       }
       if (kwOk && kw && !textMatches(text, kw)) { kwOk = false; }
-      var favBtn = card.querySelector('.card__fav');
-      var favOk = !showFav || !!(favBtn && favs[favBtn.getAttribute('data-key')]);
+      var favOk = !showFav || !!favs[card.__favKey];   // 复用缓存的收藏键
       if (catOk && kwOk && favOk) { visible.push(card); }
     });
     return visible;
@@ -999,8 +1178,11 @@
     var picked = pickLines(group, RANDOM_LINES, rowSize);
     var pick = picked.cards;
     // 显示随机卡，隐藏其余（不调 applyFilter，随机模式锁定）
-    cards.forEach(function (c) { c.hidden = true; });
-    pick.forEach(function (c) { c.hidden = false; });
+    /* 必须同步 __shown：applyFilter 靠它与上一轮比对来做脏检查，
+       若这里只改 hidden 而不更新 __shown，退出随机后筛选会算出「状态未变」
+       而跳过写入，导致卡片显隐错乱。 */
+    cards.forEach(function (c) { c.hidden = true; c.__shown = false; });
+    pick.forEach(function (c) { c.hidden = false; c.__shown = true; });
     // UI：显示随机条，隐藏分类标签 + 本地收藏按钮（随机模式不筛选收藏）
     if (randomBar) { randomBar.hidden = false; }
     document.querySelectorAll('.category-btn').forEach(function (b) { b.style.display = 'none'; });
@@ -1011,7 +1193,7 @@
   }
 
   function exitRandom() {
-    cards.forEach(function (c) { c.hidden = false; });
+    cards.forEach(function (c) { c.hidden = false; c.__shown = true; });
     if (randomBar) { randomBar.hidden = true; }
     document.querySelectorAll('.category-btn').forEach(function (b) { b.style.display = ''; });
     document.querySelectorAll('.category-nav__fav').forEach(function (b) { b.style.display = ''; });
@@ -1035,36 +1217,37 @@
   cardFavBtns.forEach(function (btn) {
     setFavUI(btn, !!favs[btn.getAttribute('data-key')]);
   });
-  /* 类型1/2/3 名称/描述：可达性 + 键盘交互（Enter / 空格），与点击行为一致 */
+  /* 类型1/2/3 名称/描述：可达性（role / tabindex / aria）+ 键盘交互（Enter / 空格）。
+     性能（2026-08-31）：键盘交互改为事件委托。原实现给每张卡的 title 与 desc
+     各挂一个 keydown（337 × 2 = 674 个监听器），现在整个容器只有一个。
+     role / tabindex / aria 这类静态属性仍在初始化时一次性写好（不触发布局）。 */
   expandableCards.forEach(function (card) {
-    var title = card.querySelector('.card__title');
-    var desc = card.querySelector('.card__desc');
+    var title = getTitle(card);
+    var desc = getDesc(card);
     if (title) {
       title.setAttribute('role', 'button');
       title.setAttribute('tabindex', '0');
       title.setAttribute('aria-expanded', 'false');
-      title.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
-          e.preventDefault();
-          toggleTitleExpand(card);
-        }
-      });
     }
     if (desc) {
       desc.setAttribute('role', 'button');
       desc.setAttribute('tabindex', '0');
       desc.setAttribute('aria-expanded', 'false');
-      desc.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
-          e.preventDefault();
-          toggleDescExpand(card);
-        }
-      });
     }
   });
-  /* 初始化即预计算各类型1卡「完整行数」，点击展开时只比对数组取最大值（不再临时测 DOM） */
-  precomputeLines();
-  precomputeTitleLines();
+  if (cardsContainer) {
+    cardsContainer.addEventListener('keydown', function (e) {
+      if (e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') { return; }
+      var t = e.target;
+      var card = t.closest ? t.closest('.card') : null;
+      if (!card || card.hidden || !card.__etype) { return; }
+      if (t.classList.contains('card__title')) { e.preventDefault(); toggleTitleExpand(card); }
+      else if (t.classList.contains('card__desc')) { e.preventDefault(); toggleDescExpand(card); }
+    });
+  }
+  /* 「完整行数」不再于初始化时全量预计算——改由 measureRows 在用户首次展开
+     某一行时惰性测量。原 precomputeLines() + precomputeTitleLines() 会在启动时
+     同步触发 674 次全文档强制重排，是首屏可交互时间被推迟的首要原因。 */
   /* 防抖：屏幕/容器宽度变化（换屏幕方向、桌面浏览器放大缩小等）→ 所有卡片归 1 行 + 重算数组，避免旧宽度下算出的行数在新宽度下错位 */
   var t1ResizeTimer = null;
   function onViewportMetricChange() {
@@ -1086,7 +1269,7 @@
       return /ad--top/.test(cls) ? 'top' : (/ad--bottom/.test(cls) ? 'bottom' : 'other');
     }
     var seen = {};
-    var io = new IntersectionObserver(function (entries) {
+    var io = new window.IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         var cls = en.target.className || '';
         if (en.isIntersecting && !seen[cls]) {
@@ -1109,7 +1292,7 @@
     var sentinel = document.createElement('div');
     sentinel.setAttribute('data-zx-read-sentinel', '1');
     aboutArticle.appendChild(sentinel);
-    var readObs = new IntersectionObserver(function (entries) {
+    var readObs = new window.IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         if (en.isIntersecting) {
           readObs.disconnect();

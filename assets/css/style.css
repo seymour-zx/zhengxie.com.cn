@@ -60,9 +60,9 @@
   --sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 
-/* 暗色模式：sticky 背景半透明（暖炭漆面，与 --bg 同调） */
+/* 暗色模式：sticky 背景（性能：与亮色同样改不透明，去掉毛玻璃每帧模糊重算） */
 [data-theme="dark"] .sticky-top {
-  background: rgba(30, 27, 31, .96);
+  background: var(--bg);
 }
 /* B9 暗色描边柔和化：暗底下金描边改用半透明金，避免过亮刺眼 */
 [data-theme="dark"] .card { border-color: rgba(197, 165, 114, .35); }
@@ -208,7 +208,7 @@ input, textarea, select { font-family: inherit; }
   color: var(--text-sub);
   padding: 6px 18px; border-radius: 999px;
   font-size: 14px; white-space: nowrap;
-  transition: all .15s ease;
+  transition: background-color .15s ease, color .15s ease;
 }
 .hero__engines button.active { background: var(--red); color: #fff; }
 .hero__searchrow {
@@ -244,7 +244,7 @@ input, textarea, select { font-family: inherit; }
   color: var(--text-sub);
   padding: 5px 14px; border-radius: 999px;
   font-size: 13px; white-space: nowrap;
-  transition: all .15s ease;
+  transition: color .15s ease, background-color .15s ease, border-color .15s ease;
 }
 .hero__engines-track button:hover { color: var(--red); border-color: var(--gold-bright); }
 .hero__engines-track button.active { background: var(--red); color: #fff; border-color: var(--red); }
@@ -273,8 +273,11 @@ input, textarea, select { font-family: inherit; }
 /* ═══════════ 第3-5行块：置顶区（分类 + 站内搜索 + 筛选，整体 sticky 吸顶） ═══════════ */
 .sticky-top {
   position: sticky; top: 0; z-index: 100;
-  background: rgba(255, 255, 255, .97);
-  backdrop-filter: blur(6px);
+  /* 性能（2026-08-31）：去掉 backdrop-filter: blur(6px)，改不透明 var(--bg)。
+     原因：sticky + 毛玻璃会让浏览器在滚动的每一帧对整页内容做全宽模糊重算，
+     移动端（尤其小米自带浏览器）GPU 退化到软件渲染时直接掉帧。
+     --bg 随主题切换（亮色 #FFFFFF / 暗色 #1E1B1F），故暗色无需单独覆盖。 */
+  background: var(--bg);
   border-bottom: 1px solid var(--gold);
   box-shadow: 0 2px 8px rgba(158, 27, 34, .05);
 }
@@ -308,7 +311,7 @@ input, textarea, select { font-family: inherit; }
   color: var(--text-sub);
   font-size: 14px; padding: 7px 15px;
   border-radius: 999px; white-space: nowrap;
-  transition: all .18s ease;
+  transition: color .18s ease, background-color .18s ease, border-color .18s ease;
 }
 .category-btn:hover { color: var(--red); border-color: var(--gold); background: var(--bg-warm); }
 .category-btn.active {
@@ -328,7 +331,7 @@ input, textarea, select { font-family: inherit; }
   align-items: center; justify-content: center;
   font-family: var(--serif); font-size: inherit;
   box-shadow: 0 2px 6px rgba(158, 27, 34, .22);
-  transition: all .15s ease;
+  transition: box-shadow .15s ease;
 }
 /* logo 双文字（v4.3）：激活=品牌名「正协/导航」；未激活（已选某分类）=「全部」，
    引导用户点它返回全部分类。纯 CSS 切换，JS 只管已有的 active 类。 */
@@ -361,7 +364,7 @@ input, textarea, select { font-family: inherit; }
   display: flex; align-items: center; justify-content: center;
   font-family: var(--serif);
   box-shadow: 0 2px 6px rgba(197, 165, 114, .35);
-  transition: all .15s ease;
+  transition: box-shadow .15s ease;
 }
 .category-nav__fav-star { font-size: 20px; line-height: 1; }
 .category-nav__fav-text { display: none; flex-direction: column; align-items: center; }
@@ -457,9 +460,20 @@ input, textarea, select { font-family: inherit; }
   box-shadow: var(--shadow);
   overflow: hidden;
   min-width: 0;
+  /* 性能（2026-08-31）：视口外的卡片整体跳过样式计算、布局与绘制。
+     337 张卡实际只渲染视口内十几张，渲染成本不再随卡片总数线性增长。
+     contain-intrinsic-size 的 auto 关键字让浏览器记住该卡真实高度，
+     滚过一次后滚动条长度自动修正，避免首屏滚动条明显跳动。 */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 300px;
   transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
 }
-.card:hover { border-color: var(--gold-bright); transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+/* 整卡位移 + 大阴影只在真支持悬停的设备启用：
+   移动端触摸后 :hover 态会粘滞不消失，337 张卡同时挂着 transform 与
+   大范围阴影会持续触发重绘，是移动端滚动掉帧的放大器之一。 */
+@media (hover: hover) and (pointer: fine) {
+  .card:hover { border-color: var(--gold-bright); transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+}
 
 /* 卡片收藏按钮（v4.1：SVG 星形，grid 布局成员，统一固定在名称行右端） */
 .card__fav {
@@ -472,8 +486,11 @@ input, textarea, select { font-family: inherit; }
 }
 .card__fav { color: var(--gold); }
 .card__fav svg { width: 20px; height: 20px; display: block; }
-.card__fav:hover { transform: scale(1.12); }
-.card__fav:hover, .card__fav[aria-pressed="true"] { color: var(--gold-bright); }
+.card__fav[aria-pressed="true"] { color: var(--gold-bright); }
+/* 同上：缩放悬停只在支持真实悬停的设备启用，避免移动端触摸后粘滞重绘 */
+@media (hover: hover) and (pointer: fine) {
+  .card__fav:hover { transform: scale(1.12); color: var(--gold-bright); }
+}
 
 /* 媒体区：URL→仅图片（失败移除后露出红色渐变底）；空/非URL→文字 logo 占位 */
 .card__media { position: relative; background: linear-gradient(135deg, var(--red), var(--red-deep)); overflow: hidden; }
@@ -512,7 +529,7 @@ input, textarea, select { font-family: inherit; }
   border: 1px solid var(--gold); background: var(--bg-warm);
   color: var(--red); border-radius: 999px;
   padding: 2px 10px; font-size: 12px;
-  transition: all .15s ease;
+  transition: color .15s ease, background-color .15s ease, border-color .15s ease;
 }
 .card__tag:hover { background: var(--red); color: #fff; border-color: var(--red); }
 .card__tag--cat { border-color: var(--red); font-weight: 600; }
@@ -522,7 +539,7 @@ input, textarea, select { font-family: inherit; }
   text-decoration: none;
   border: 1px solid var(--gold); border-radius: 0;
   padding: 3px 12px;
-  transition: all .15s ease;
+  transition: color .15s ease, background-color .15s ease, border-color .15s ease;
 }
 .card__link:hover { background: var(--red); color: #fff; border-color: var(--red); }
 .card__link-arrow { font-size: 11px; margin-left: 2px; opacity: .7; }
@@ -702,7 +719,7 @@ input, textarea, select { font-family: inherit; }
   color: var(--gold-bright);
   display: flex; align-items: center; justify-content: center;
   padding: 0; cursor: pointer;
-  transition: all .15s ease;
+  transition: color .15s ease, border-color .15s ease, box-shadow .15s ease;
 }
 .theme-toggle svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .theme-toggle__moon { display: none; }
@@ -846,7 +863,7 @@ body.has-notice .scroll-btns { bottom: calc(var(--taskbar-inset, 0px) + 76px); }
   border: 1px solid var(--gold); background: transparent;
   color: var(--red); font-size: 13px; padding: 6px 18px;
   border-radius: 999px; cursor: pointer; white-space: nowrap;
-  transition: all .15s ease;
+  transition: color .15s ease, background-color .15s ease, border-color .15s ease;
 }
 .footer__random:hover { background: var(--red); color: #fff; border-color: var(--red); }
 /* 暗色切换（已在 footer 工具簇中） */
